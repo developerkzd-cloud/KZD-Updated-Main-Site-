@@ -212,3 +212,117 @@
 .kzd-stat-link:hover .icon {
   transform: translateX(3px);
 }
+
+/* Guest landing hero + marketing feature cards */
+.kzd-guest-hero {
+  border-radius: var(--bs-border-radius-2xl);
+  padding: 64px 40px;
+  text-align: center;
+  color: #fff;
+  background-image: linear-gradient(180deg, rgba(0, 13, 81, .85), rgba(0, 13, 81, .9)), url("/public/branding/bg-auth.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.kzd-guest-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: var(--bs-border-radius-pill);
+  background: rgba(255, 255, 255, .12);
+  color: #fff;
+  font-size: .8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 20px;
+}
+
+.kzd-guest-hero-eyebrow .icon {
+  height: 14px;
+  width: 14px;
+}
+
+.kzd-guest-hero h1 {
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: 700;
+  max-width: 700px;
+  margin: 0 auto 16px;
+}
+
+.kzd-guest-hero p {
+  color: rgba(255, 255, 255, .85);
+  font-size: 1.1rem;
+  max-width: 560px;
+  margin: 0 auto 32px;
+}
+
+.kzd-guest-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.kzd-guest-hero-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kzd-feature-card {
+  border: none;
+  text-align: center;
+}
+
+.kzd-feature-card .card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.kzd-feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--bs-box-shadow);
+}
+
+.kzd-feature-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--bs-border-radius-lg);
+  background: var(--bs-primary-bg-subtle);
+  color: var(--bs-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.kzd-feature-icon .icon {
+  height: 26px;
+  width: 26px;
+}
+
+.kzd-feature-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.kzd-feature-card p {
+  color: var(--bs-secondary-color);
+  font-size: .875rem;
+  margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+  .kzd-guest-hero {
+    padding: 40px 24px;
+  }
+
+  .kzd-guest-hero h1 {
+    font-size: 1.75rem;
+  }
+}
