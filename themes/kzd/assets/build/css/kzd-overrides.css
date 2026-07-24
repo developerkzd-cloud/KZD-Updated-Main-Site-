@@ -76,13 +76,59 @@
   transition: transform .25s ease, box-shadow .25s ease;
 }
 
-/* Auth pages (login / signup / password reset) get the shared marketing-site background */
-.page-login,
-.page-signup,
-.page-password-reset {
-  background-image: linear-gradient(180deg, rgba(0, 13, 81, .82), rgba(0, 13, 81, .82)), url("/public/branding/bg-auth.jpg");
+/* Auth pages (login / signup / password reset): split layout with a branded side panel */
+.kzd-auth-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.kzd-auth-panel {
+  width: 42%;
+  max-width: 560px;
+  padding: 48px;
+  background-image: linear-gradient(180deg, rgba(0, 13, 81, .82), rgba(0, 13, 81, .88)), url("/public/branding/bg-auth.jpg");
   background-size: cover;
   background-position: center;
+  color: #fff;
+}
+
+.kzd-auth-panel-brand {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.kzd-auth-panel-copy h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.kzd-auth-panel-copy p {
+  color: rgba(255, 255, 255, .8);
+  font-size: 1rem;
+  max-width: 380px;
+}
+
+.kzd-auth-panel-footer small {
+  color: rgba(255, 255, 255, .6);
+}
+
+.kzd-auth-form-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+.kzd-auth-form-inner {
+  width: 100%;
+  max-width: 420px;
+}
+
+.kzd-auth-form-inner-wide {
+  max-width: 560px;
 }
 
 .page-login .card,

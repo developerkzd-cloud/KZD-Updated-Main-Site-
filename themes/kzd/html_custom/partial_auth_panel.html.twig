@@ -1,0 +1,24 @@
+{#
+    KZD Solutions branded side panel, shared across the login / signup / password-reset pages.
+    Override lives in html_custom so it takes priority without touching module templates.
+#}
+{% set panel_logo_url = public_logo_url|default(company.logo_url) %}
+{% set panel_dark_logo_url = public_dark_logo_url|default(company.logo_url_dark) %}
+
+<div class="kzd-auth-panel d-none d-lg-flex flex-column justify-content-between">
+    <div>
+        <a href="{{ '/'|url }}" class="d-inline-flex align-items-center gap-2 text-decoration-none">
+            {% if panel_logo_url or panel_dark_logo_url %}
+                <img src="{{ panel_dark_logo_url|default(panel_logo_url) }}" alt="{{ company.name }}" height="40">
+            {% endif %}
+            <span class="kzd-auth-panel-brand">{{ company.name }}</span>
+        </a>
+    </div>
+    <div class="kzd-auth-panel-copy">
+        <h2 class="mb-3">{{ 'Your hosting, domains, and billing — all in one place.'|trans }}</h2>
+        <p class="mb-0">{{ 'Manage your services, invoices, and support tickets from the same account you use on kzdsolutions.co.za.'|trans }}</p>
+    </div>
+    <div class="kzd-auth-panel-footer">
+        <small>&copy; {{ 'now'|date('Y') }} {{ company.name }}</small>
+    </div>
+</div>
