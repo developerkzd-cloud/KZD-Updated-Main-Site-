@@ -1,0 +1,59 @@
+{
+    "name": "php-debugbar/twig-bridge",
+    "description": "Twig bridge for PHP Debugbar",
+    "keywords": ["debugbar", "twig", "dev"],
+    "homepage": "https://github.com/php-debugbar/php-debugbar",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Maxime Bouroumeau-Fuseau",
+            "email": "maxime.bouroumeau@gmail.com",
+            "homepage": "http://maximebf.com"
+        },
+        {
+            "name": "Barry vd. Heuvel",
+            "email": "barryvdh@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "php-debugbar/php-debugbar": "^3",
+        "twig/twig": "^3.22"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10",
+        "symfony/panther": "^1|^2.1",
+        "dbrekelmans/bdi": "^1.4",
+        "symfony/dom-crawler": "^6|^7",
+        "symfony/browser-kit": "^6|^7"
+    },
+    "autoload": {
+        "psr-4": {
+            "DebugBar\\Bridge\\Twig\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DebugBar\\Bridge\\Twig\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "demo": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php -S localhost:8000"
+        ],
+        "unit-test": "@php vendor/bin/phpunit --testsuite=Unit",
+        "browser-test": "@php vendor/bin/phpunit --testsuite=Browser",
+        "browser-debug": [
+            "@putenv PANTHER_NO_HEADLESS=1",
+            "@php vendor/bin/phpunit --testsuite=Browser --debug"
+        ]
+    },
+     "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
+    },
+    "minimum-stability": "beta"
+}

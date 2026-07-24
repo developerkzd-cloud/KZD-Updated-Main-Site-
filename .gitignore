@@ -1,0 +1,7 @@
+/config.php
+/data/cache/*
+/data/log/*
+/data/uploads/*
+!/data/cache/index.html
+!/data/log/index.html
+!/data/uploads/index.html

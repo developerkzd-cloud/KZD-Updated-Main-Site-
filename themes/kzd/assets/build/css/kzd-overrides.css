@@ -1,0 +1,88 @@
+/*
+ * KZD Solutions branding overrides.
+ * Loaded after huraga.css so it cascades on top without touching the
+ * compiled theme build. Maps the kzdsolutions-website design tokens
+ * onto Bootstrap 5.3's CSS custom properties, which Huraga is built on.
+ * Source of truth for these values: kzdsolutions-website/css/style.css
+ */
+
+:root,
+[data-bs-theme=light] {
+  --bs-primary: #2946f3;
+  --bs-primary-rgb: 41, 70, 243;
+  --bs-primary-text-emphasis: #101d61;
+  --bs-primary-bg-subtle: #dde3fd;
+  --bs-primary-border-subtle: #aab7fa;
+
+  --bs-link-color: #2946f3;
+  --bs-link-color-rgb: 41, 70, 243;
+  --bs-link-hover-color: #1c31c2;
+  --bs-link-hover-color-rgb: 28, 49, 194;
+
+  --bs-border-radius: 0.5rem;
+  --bs-border-radius-sm: 0.375rem;
+  --bs-border-radius-lg: 0.75rem;
+  --bs-border-radius-xl: 1.25rem;
+  --bs-border-radius-2xl: 2rem;
+  --bs-border-radius-pill: 999px;
+
+  --bs-box-shadow: 0 20px 45px rgba(17, 24, 39, .08);
+  --bs-box-shadow-sm: 0 4px 12px rgba(17, 24, 39, .04);
+  --bs-box-shadow-lg: 0 28px 55px rgba(17, 24, 39, .12);
+
+  --kzd-navy: #000d51;
+  --kzd-accent-purple: #6b21a8;
+  --kzd-accent-purple-light: #9f5cff;
+}
+
+[data-bs-theme=dark] {
+  --bs-primary: #6a83ff;
+  --bs-primary-rgb: 106, 131, 255;
+  --bs-primary-text-emphasis: #b7c3ff;
+  --bs-primary-bg-subtle: #1a2050;
+  --bs-primary-border-subtle: #33408f;
+
+  --bs-link-color: #6a83ff;
+  --bs-link-color-rgb: 106, 131, 255;
+  --bs-link-hover-color: #8fa0ff;
+  --bs-link-hover-color-rgb: 143, 160, 255;
+
+  --kzd-navy: #b9c3ff;
+  --kzd-accent-purple: #b088e0;
+  --kzd-accent-purple-light: #c9a3ff;
+}
+
+.btn {
+  transition: all .25s ease;
+}
+
+.btn-primary {
+  --bs-btn-hover-transform: translateY(-2px);
+}
+
+.btn-primary:hover,
+.btn-primary:active {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(41, 70, 243, .25);
+}
+
+.card {
+  box-shadow: var(--bs-box-shadow-sm);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+/* Auth pages (login / signup / password reset) get the shared marketing-site background */
+.page-login,
+.page-signup,
+.page-password-reset {
+  background-image: linear-gradient(180deg, rgba(0, 13, 81, .82), rgba(0, 13, 81, .82)), url("/public/branding/bg-auth.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.page-login .card,
+.page-signup .card,
+.page-password-reset .card {
+  border: none;
+  box-shadow: var(--bs-box-shadow-lg);
+}
