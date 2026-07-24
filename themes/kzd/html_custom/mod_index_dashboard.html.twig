@@ -269,13 +269,17 @@
             </div>
         </div>
 
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-header h6 py-3">{{ 'Already Have an Account?'|trans }}</div>
+        <div class="kzd-quicklinks-header">
+            <h2>{{ 'Quick Links'|trans }}</h2>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 g-3">
+            <div class="col">
+                <div class="card kzd-quicklink-card h-100">
                     <div class="card-body">
+                        <div class="kzd-quicklink-icon"><svg class="icon"><use href="#user" /></svg></div>
+                        <h3>{{ 'Already Have an Account?'|trans }}</h3>
                         <p>{{ 'Log in to manage your existing services, invoices, and support tickets.'|trans }}</p>
-                        <div class="d-flex gap-2">
+                        <div class="kzd-quicklink-actions">
                             <a class="btn btn-sm btn-primary" href="{{ 'login'|url }}">{{ 'Login'|trans }}</a>
                             <a class="btn btn-sm btn-outline-primary" href="{{ 'signup'|url }}">{{ 'Register'|trans }}</a>
                         </div>
@@ -284,12 +288,13 @@
             </div>
 
             {% if guest.extension_is_on({"mod":"news"}) %}
-                <div class="col-md-6">
-                    <div class="card mb-4">
-                        <div class="card-header h6 py-3">{{ 'News'|trans }}</div>
+                <div class="col">
+                    <div class="card kzd-quicklink-card h-100">
                         <div class="card-body">
+                            <div class="kzd-quicklink-icon"><svg class="icon"><use href="#news" /></svg></div>
+                            <h3>{{ 'News'|trans }}</h3>
                             <p>{{ 'Latest news and announcements'|trans }}</p>
-                            <div class="d-flex gap-2">
+                            <div class="kzd-quicklink-actions">
                                 <a class="btn btn-sm btn-outline-primary" href="{{ 'news'|url }}">{{ 'Announcements'|trans }}</a>
                             </div>
                         </div>
@@ -298,12 +303,13 @@
             {% endif %}
 
             {% if guest.support_kb_enabled() %}
-                <div class="col-md-6">
-                    <div class="card mb-4">
-                        <div class="card-header h6 py-3">{{ 'Knowledge Base'|trans }}</div>
+                <div class="col">
+                    <div class="card kzd-quicklink-card h-100">
                         <div class="card-body">
+                            <div class="kzd-quicklink-icon"><svg class="icon"><use href="#book" /></svg></div>
+                            <h3>{{ 'Knowledge Base'|trans }}</h3>
                             <p>{{ 'Find answers to frequent questions'|trans }}</p>
-                            <div class="d-flex gap-2">
+                            <div class="kzd-quicklink-actions">
                                 <a class="btn btn-sm btn-outline-primary" href="{{ 'support/kb'|url }}">{{ 'Knowledge Base'|trans }}</a>
                             </div>
                         </div>

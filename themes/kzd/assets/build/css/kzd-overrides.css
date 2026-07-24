@@ -317,6 +317,67 @@
   margin-bottom: 0;
 }
 
+.kzd-quicklinks-header {
+  margin-bottom: 16px;
+}
+
+.kzd-quicklinks-header h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--bs-body-color);
+  margin-bottom: 0;
+}
+
+.kzd-quicklink-card {
+  border: none;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.kzd-quicklink-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--bs-box-shadow);
+}
+
+.kzd-quicklink-card .card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.kzd-quicklink-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--bs-border-radius);
+  background: var(--bs-primary-bg-subtle);
+  color: var(--bs-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.kzd-quicklink-icon .icon {
+  height: 22px;
+  width: 22px;
+}
+
+.kzd-quicklink-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.kzd-quicklink-card p {
+  color: var(--bs-secondary-color);
+  font-size: .875rem;
+  flex-grow: 1;
+}
+
+.kzd-quicklink-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
 @media (max-width: 767px) {
   .kzd-guest-hero {
     padding: 40px 24px;
