@@ -66,6 +66,11 @@
   box-shadow: 0 10px 25px rgba(41, 70, 243, .25);
 }
 
+.kzd-brand-name {
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+
 .card {
   box-shadow: var(--bs-box-shadow-sm);
   transition: transform .25s ease, box-shadow .25s ease;
