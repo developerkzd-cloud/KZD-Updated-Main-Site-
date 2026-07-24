@@ -1,0 +1,276 @@
+{% extends request.ajax ? "layout_blank.html.twig" : "layout_default.html.twig" %}
+{% set active_menu = 'dashboard' %}
+
+{% block meta_title %}{{ 'Client Area'|trans }}{% endblock %}
+{% block page_header %}{{ 'Dashboard'|trans }}{% endblock %}
+
+{% block body_class %}dashboard{% endblock %}
+{% block breadcrumbs %}
+    {% if not settings.hide_dashboard_breadcrumb %}
+        <ul class="breadcrumb">
+            <li><a href="{{ '/'|url }}">{{ 'Home'|trans }}</a> <span class="dropdown-divider">/</span></li>
+            <li class="active">{{ 'Dashboard'|trans }}</li>
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% import "macro_functions.html.twig" as mf %}
+
+{% block content %}
+    {{ render_widgets('client.index.dashboard.content.before') }}
+
+    {% if settings.showcase_enabled %}
+        <div class="alert alert-info" role="alert">
+            <p>{{ (settings.showcase_text ?? '')|markdown_to_html }}</p>
+
+            {% if (settings.showcase_button_url) and (settings.showcase_button_title) %}
+                <a class="btn btn-sm btn-primary btn-large"
+                   href="{{ settings.showcase_button_url }}">{{ settings.showcase_button_title }}</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if client %}
+        {% set dashboard = client.index_get_dashboard %}
+        {% set profile = dashboard.profile %}
+
+        {{ render_widgets('client.index.dashboard.client.before', { 'dashboard': dashboard, 'profile': profile }) }}
+
+        {% if dashboard.tickets.on_hold > 0 %}
+            <div class="row">
+                <div class="col-md-12">
+                    {% for ticket in dashboard.recent_tickets %}
+                        {% if ticket.status == 'on_hold' %}
+                            <div class="alert alert-info d-flex justify-content-between" role="alert">
+                                <span>Ticket <strong>#{{ ticket.id }}</strong> was replied to {{ ticket.updated_at|timeago }} {{ 'ago'|trans }}.</span>
+                                <a href='{{ "support/ticket/#{ticket.id}"|url }}'
+                                   class="alert-link">{{ 'Reply'|trans }}</a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {# Quick actions: the things a client is most likely to do, always visible up top #}
+        <div class="kzd-quick-actions mb-4">
+            <a class="btn btn-primary order-button" href="{{ 'order'|url }}">
+                <svg class="icon"><use href="#shopping-cart" /></svg>
+                {{ 'New Order'|trans }}
+            </a>
+            {% if dashboard.invoices.unpaid > 0 %}
+                <a class="btn btn-outline-primary" href="{{ 'invoice'|url }}">
+                    <svg class="icon"><use href="#receipt" /></svg>
+                    {{ 'Pay Unpaid Invoices'|trans }} ({{ dashboard.invoices.unpaid }})
+                </a>
+            {% endif %}
+            <a class="btn btn-outline-primary" href="{{ 'support'|url(query: { 'ticket': 1 }) }}">
+                <svg class="icon"><use href="#lifebuoy" /></svg>
+                {{ 'New Ticket'|trans }}
+            </a>
+            <a class="btn btn-outline-primary" href="{{ 'client/profile'|url }}">
+                <svg class="icon"><use href="#user" /></svg>
+                {{ 'My Profile'|trans }}
+            </a>
+        </div>
+
+        {# Overview stat cards #}
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-lg-3">
+                <div class="card kzd-stat-card h-100">
+                    <div class="card-body">
+                        <div class="kzd-stat-icon"><svg class="icon"><use href="#wallet" /></svg></div>
+                        <div class="kzd-stat-value">
+                            {% if profile.currency is not null %}
+                                {{ profile.balance|format_currency(profile.currency) }}
+                            {% else %}
+                                &ndash;
+                            {% endif %}
+                        </div>
+                        <div class="kzd-stat-label">{{ 'Account Balance'|trans }}</div>
+                        <a class="kzd-stat-link" href="{{ 'client/profile'|url }}">{{ 'View Profile'|trans }} <svg class="icon"><use href="#arrow-right" /></svg></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="card kzd-stat-card h-100">
+                    <div class="card-body">
+                        <div class="kzd-stat-icon"><svg class="icon"><use href="#receipt" /></svg></div>
+                        <div class="kzd-stat-value">{{ dashboard.invoices.total }}</div>
+                        <div class="kzd-stat-label">{{ 'Invoices'|trans }}</div>
+                        <div class="kzd-stat-breakdown">
+                            <span class="text-success">{{ dashboard.invoices.paid }} {{ 'paid'|trans }}</span>
+                            {% if dashboard.invoices.unpaid > 0 %}
+                                <span class="text-danger">&middot; {{ dashboard.invoices.unpaid }} {{ 'unpaid'|trans }}</span>
+                            {% endif %}
+                        </div>
+                        <a class="kzd-stat-link" href="{{ 'invoice'|url }}">{{ 'All Invoices'|trans }} <svg class="icon"><use href="#arrow-right" /></svg></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="card kzd-stat-card h-100">
+                    <div class="card-body">
+                        <div class="kzd-stat-icon"><svg class="icon"><use href="#shopping-cart" /></svg></div>
+                        <div class="kzd-stat-value">{{ dashboard.orders.active }}</div>
+                        <div class="kzd-stat-label">{{ 'Active Services'|trans }}</div>
+                        <div class="kzd-stat-breakdown">
+                            {% if dashboard.orders.expiring > 0 %}
+                                <span class="text-warning">{{ dashboard.orders.expiring }} {{ 'expiring soon'|trans }}</span>
+                            {% else %}
+                                <span class="text-muted">{{ dashboard.orders.total }} {{ 'total'|trans }}</span>
+                            {% endif %}
+                        </div>
+                        <a class="kzd-stat-link" href="{{ 'order/service'|url }}">{{ 'All Orders'|trans }} <svg class="icon"><use href="#arrow-right" /></svg></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="card kzd-stat-card h-100">
+                    <div class="card-body">
+                        <div class="kzd-stat-icon"><svg class="icon"><use href="#lifebuoy" /></svg></div>
+                        <div class="kzd-stat-value">{{ dashboard.tickets.open }}</div>
+                        <div class="kzd-stat-label">{{ 'Open Tickets'|trans }}</div>
+                        <div class="kzd-stat-breakdown">
+                            <span class="text-muted">{{ dashboard.tickets.total }} {{ 'total'|trans }}</span>
+                        </div>
+                        <a class="kzd-stat-link" href="{{ 'support'|url }}">{{ 'All Tickets'|trans }} <svg class="icon"><use href="#arrow-right" /></svg></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Recent activity #}
+        <div class="row g-3">
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 pt-1">{{ 'Recent Orders'|trans }}</h6>
+                    </div>
+                    <div class="card-body p-1">
+                        {% if dashboard.recent_orders %}
+                            <div class="list-group list-group-flush">
+                                {% for order in dashboard.recent_orders %}
+                                    <a href='{{ "order/service/manage/#{order.id}"|url }}'
+                                       class="list-group-item d-flex justify-content-between align-items-center" aria-current="true">
+                                        <div>
+                                            <div>
+                                                <span><strong>#{{ order.id }}</strong></span>&nbsp;<span>{{ order.title|truncate(45) }}</span>
+                                            </div>
+                                            <span class="text-secondary small" title="{{ order.updated_at|format_date }}">{{ order.updated_at|timeago }} {{ 'ago'|trans }}</span>
+                                        </div>
+                                        <div>
+                                            {{ mf.status_badge(order.status, 'order') }}
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="d-flex justify-content-center my-2 p-2">
+                                <span class="m-0">{{ 'No recent orders'|trans }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 pt-1">{{ 'Support Tickets'|trans }}</h6>
+                    </div>
+                    <div class="card-body p-1">
+                        {% if dashboard.recent_tickets %}
+                            <div class="list-group list-group-flush">
+                                {% for ticket in dashboard.recent_tickets %}
+                                    <a href='{{ "support/ticket/#{ticket.id}"|url }}'
+                                       class="list-group-item d-flex justify-content-between align-items-center" aria-current="true">
+                                        <div>
+                                            <div>
+                                                <span><strong>#{{ ticket.id }}</strong></span>&nbsp;<span>{{ ticket.subject|truncate(45) }}</span>
+                                            </div>
+                                            <span class="text-secondary small" title="{{ ticket.updated_at|format_date }}">{{ ticket.updated_at|timeago }} {{ 'ago'|trans }}</span>
+                                        </div>
+                                        <div>
+                                            {{ mf.status_badge(ticket.status, 'ticket') }}
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="d-flex justify-content-center my-2 p-2">
+                                <span class="m-0">{{ 'No recent support tickets'|trans }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{ render_widgets('client.index.dashboard.client.after', { 'dashboard': dashboard, 'profile': profile }) }}
+    {% else %}
+        {{ render_widgets('client.index.dashboard.guest.before') }}
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header h6 py-3">{{ 'Profile'|trans }}</div>
+                    <div class="card-body">
+                        <p>{{ 'You are currently logged out'|trans }}</p>
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-sm btn-primary" href="{{ 'login'|url }}">{{ 'Login'|trans }}</a>
+                            <a class="btn btn-sm btn-outline-primary" href="{{ 'signup'|url }}">{{ 'Register'|trans }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header h6 py-3">{{ 'Order'|trans }}</div>
+                    <div class="card-body">
+                        <p>{{ 'Order new products and services'|trans }}</p>
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-sm btn-outline-primary" href="{{ 'order'|url }}">{{ 'Order'|trans }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if guest.extension_is_on({"mod":"news"}) %}
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header h6 py-3">{{ 'News'|trans }}</div>
+                        <div class="card-body">
+                            <p>{{ 'Latest news and announcements'|trans }}</p>
+                            <div class="d-flex gap-2">
+                                <a class="btn btn-sm btn-outline-primary" href="{{ 'news'|url }}">{{ 'Announcements'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if guest.support_kb_enabled() %}
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header h6 py-3">{{ 'Knowledge Base'|trans }}</div>
+                        <div class="card-body">
+                            <p>{{ 'Find answers to frequent questions'|trans }}</p>
+                            <div class="d-flex gap-2">
+                                <a class="btn btn-sm btn-outline-primary" href="{{ 'support/kb'|url }}">{{ 'Knowledge Base'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        {{ render_widgets('client.index.dashboard.guest.after') }}
+    {% endif %}
+
+    {{ render_widgets('client.index.dashboard.content.after') }}
+{% endblock %}

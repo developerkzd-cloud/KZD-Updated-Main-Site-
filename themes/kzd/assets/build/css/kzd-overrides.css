@@ -137,3 +137,78 @@
   border: none;
   box-shadow: var(--bs-box-shadow-lg);
 }
+
+/* Dashboard: quick actions + overview stat cards, matching the website's card language */
+.kzd-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.kzd-quick-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kzd-stat-card {
+  border: none;
+}
+
+.kzd-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--bs-box-shadow);
+}
+
+.kzd-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--bs-border-radius);
+  background: var(--bs-primary-bg-subtle);
+  color: var(--bs-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.kzd-stat-icon .icon {
+  height: 22px;
+  width: 22px;
+}
+
+.kzd-stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.kzd-stat-label {
+  color: var(--bs-secondary-color);
+  font-size: .85rem;
+  margin-bottom: 4px;
+}
+
+.kzd-stat-breakdown {
+  font-size: .8rem;
+  margin-bottom: 8px;
+}
+
+.kzd-stat-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.kzd-stat-link .icon {
+  height: 14px;
+  width: 14px;
+  transition: transform .2s ease;
+}
+
+.kzd-stat-link:hover .icon {
+  transform: translateX(3px);
+}
