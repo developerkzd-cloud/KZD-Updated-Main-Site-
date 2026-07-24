@@ -378,6 +378,31 @@
   margin-top: 8px;
 }
 
+/* Sidebar navigation: grouping + pinned quick action */
+.kzd-sidebar-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.kzd-nav-group-label {
+  padding: 16px 12px 6px;
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--bs-secondary-color);
+}
+
+.offcanvas-item {
+  border-radius: var(--bs-border-radius);
+}
+
+.offcanvas-item.active {
+  border-radius: var(--bs-border-radius);
+}
+
 @media (max-width: 767px) {
   .kzd-guest-hero {
     padding: 40px 24px;
