@@ -8,8 +8,18 @@ database reset.
 ## create_hosting_products.php
 
 Creates the "Shared Hosting" product category and the four Shared Hosting
-plans (Starter/Basic/Business/Standard) with monthly-only recurring pricing,
-matching the exact plan specs from the KZD Solutions brief. Run once with:
+plans (Starter/Basic/Business/Standard) with monthly, annual (1Y), and
+2-year (2Y) recurring pricing enabled, matching the exact plan specs and
+discounted multi-year rates from the KZD Solutions brief:
+
+| Plan | Monthly | Annual (save 2 months) | 2-Year (save 5 months) |
+|---|---|---|---|
+| Starter | R99 | R990/yr | R1,881/2yr |
+| Basic | R149 | R1,490/yr | R2,831/2yr |
+| Standard | R199 | R1,990/yr | R3,781/2yr |
+| Business | R249 | R2,490/yr | R4,731/2yr |
+
+Run once with:
 
 ```
 php create_hosting_products.php

@@ -10,6 +10,8 @@ $plans = [
         'slug' => 'hosting-starter',
         'title' => 'Starter',
         'price' => 99,
+        'annual_price' => 990,
+        'biennial_price' => 1881,
         'features' => [
             '5 GB SSD Storage',
             'DirectAdmin Control Panel',
@@ -29,6 +31,8 @@ $plans = [
         'slug' => 'hosting-basic',
         'title' => 'Basic',
         'price' => 149,
+        'annual_price' => 1490,
+        'biennial_price' => 2831,
         'features' => [
             '10 GB SSD Storage',
             'DirectAdmin Control Panel',
@@ -48,6 +52,8 @@ $plans = [
         'slug' => 'hosting-standard',
         'title' => 'Standard',
         'price' => 199,
+        'annual_price' => 1990,
+        'biennial_price' => 3781,
         'features' => [
             '20 GB SSD Storage',
             'DirectAdmin Control Panel',
@@ -67,6 +73,8 @@ $plans = [
         'slug' => 'hosting-business',
         'title' => 'Business',
         'price' => 249,
+        'annual_price' => 2490,
+        'biennial_price' => 4731,
         'features' => [
             '50 GB SSD Storage',
             'DirectAdmin Control Panel',
@@ -88,8 +96,8 @@ $insertPayment = $pdo->prepare(
         (type, once_price, once_setup_price, w_price, m_price, q_price, b_price, a_price, bia_price, tria_price,
          w_enabled, m_enabled, q_enabled, b_enabled, a_enabled, bia_enabled, tria_enabled)
      VALUES
-        ("recurrent", 0, 0, 0, :m_price, 0, 0, 0, 0, 0,
-         0, 1, 0, 0, 0, 0, 0)'
+        ("recurrent", 0, 0, 0, :m_price, 0, 0, :a_price, :bia_price, 0,
+         0, 1, 0, 0, 1, 1, 0)'
 );
 
 $insertProduct = $pdo->prepare(
@@ -102,7 +110,11 @@ $insertProduct = $pdo->prepare(
 $results = [];
 $priority = 1;
 foreach ($plans as $plan) {
-    $insertPayment->execute(['m_price' => $plan['price']]);
+    $insertPayment->execute([
+        'm_price' => $plan['price'],
+        'a_price' => $plan['annual_price'],
+        'bia_price' => $plan['biennial_price'],
+    ]);
     $paymentId = (int) $pdo->lastInsertId();
 
     $description = "**" . $plan['title'] . " Hosting** - R" . $plan['price'] . "/month\n\n";
