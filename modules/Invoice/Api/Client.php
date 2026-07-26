@@ -139,4 +139,96 @@ class Client extends \FOSSBilling\Api\AbstractApi
 
         return $service->getTaxRateForClient($this->getIdentity());
     }
+
+    /**
+     * One-click payment: return the client's saved card summary for a
+     * gateway (card_type/last4/exp only -- never the authorization_code
+     * itself), or null if no reusable card is saved.
+     *
+     * @optional string $gateway - defaults to "Paystack"
+     *
+     * @return array|null
+     */
+    public function get_saved_card($data = [])
+    {
+        $gateway = $data['gateway'] ?? 'Paystack';
+        $row = $this->getDi()['pdo']->prepare(
+            'SELECT card_type, last4, exp_month, exp_year FROM client_saved_card WHERE client_id = :client_id AND gateway = :gateway'
+        );
+        $row->execute([':client_id' => $this->getIdentity()->id, ':gateway' => $gateway]);
+        $card = $row->fetch(\PDO::FETCH_ASSOC);
+
+        return $card ?: null;
+    }
+
+    /**
+     * One-click payment: charge the client's saved card for an invoice
+     * directly, with no redirect to the gateway's hosted checkout.
+     *
+     * @return bool
+     */
+    #[RequiredParams(['id' => 'Invoice ID was not passed'])]
+    public function pay_with_saved_card($data)
+    {
+        $identity = $this->getIdentity();
+        $invoice = $this->getDi()['db']->getExistingModelById('Invoice', $data['id'], 'Invoice not found');
+
+        if ((int) $invoice->client_id !== (int) $identity->id) {
+            throw new \FOSSBilling\InformationException('Invoice not found');
+        }
+
+        if ($invoice->status !== 'unpaid') {
+            throw new \FOSSBilling\InformationException('Invoice is not awaiting payment');
+        }
+
+        $gateway = 'Paystack';
+
+        $cardStmt = $this->getDi()['pdo']->prepare(
+            'SELECT authorization_code, email FROM client_saved_card WHERE client_id = :client_id AND gateway = :gateway'
+        );
+        $cardStmt->execute([':client_id' => $identity->id, ':gateway' => $gateway]);
+        $card = $cardStmt->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$card) {
+            throw new \FOSSBilling\InformationException('No saved card found for one-click payment');
+        }
+
+        $pgModel = $this->getDi()['db']->findOne('PayGateway', 'gateway = :gateway AND enabled = 1', [':gateway' => $gateway]);
+        if (!$pgModel) {
+            throw new \FOSSBilling\InformationException('Paystack is not enabled');
+        }
+
+        $payGatewayService = $this->getDi()['mod_service']('Invoice', 'PayGateway');
+        $adapter = $payGatewayService->getPaymentAdapter($pgModel, $invoice);
+
+        // invoice.total isn't a raw DB column -- it's computed (subtotal + tax)
+        // from the invoice's line items in toApiArray().
+        $invoiceTotal = (float) $this->getService()->toApiArray($invoice)['total'];
+
+        $reference = 'KZD-INV' . $invoice->id . '-' . time();
+        $amountInCents = (int) round($invoiceTotal * 100);
+
+        $chargeResult = $adapter->chargeAuthorization($card['authorization_code'], $card['email'], $amountInCents, $reference);
+
+        if (!$chargeResult || empty($chargeResult['status'])) {
+            throw new \FOSSBilling\Exception('One-click payment failed: :error', [':error' => $chargeResult['message'] ?? 'Unknown error from Paystack']);
+        }
+
+        // Feed the same reference into the existing verify/credit/pay-invoice
+        // pipeline that the redirect and webhook flows already use --
+        // Paystack.php::verifyAndApply() independently re-verifies with
+        // Paystack's API before crediting anything.
+        $ipn = [
+            'invoice_id' => (int) $invoice->id,
+            'gateway_id' => (int) $pgModel->id,
+            'source' => 'one_click',
+            'get' => ['reference' => $reference],
+            'post' => [],
+            'server' => [],
+            'http_raw_post_data' => '',
+        ];
+        $this->getDi()['mod_service']('Invoice', 'Transaction')->createAndProcess($ipn);
+
+        return true;
+    }
 }

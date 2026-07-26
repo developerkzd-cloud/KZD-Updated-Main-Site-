@@ -365,7 +365,7 @@ class Payment_Adapter_Paystack extends Payment_AdapterAbstract implements FOSSBi
         $currency  = $txData['currency'] ?? 'ZAR';
 
         // Check for duplicate — same approach as PayPal adapter's isIpnDuplicate()
-        if ($this->isTransactionDuplicate($txData['id'] ?? $reference)) {
+        if ($this->isTransactionDuplicate((string) ($txData['id'] ?? $reference))) {
             $api_admin->invoice_transaction_update([
                 'id'         => $id,
                 'error'      => 'Cannot process duplicate Paystack transaction',
@@ -411,6 +411,78 @@ class Payment_Adapter_Paystack extends Payment_AdapterAbstract implements FOSSBi
             'status'     => 'processed',
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
+
+        // One-click payment: if Paystack returned a reusable authorization
+        // for this charge, save it so a future payment can skip the redirect
+        // to Paystack's hosted checkout entirely.
+        $this->saveReusableAuthorization($client_id, $txData);
+    }
+
+    // -------------------------------------------------------------------------
+    // One-click payment (saved card)
+    // -------------------------------------------------------------------------
+
+    /**
+     * Persist a reusable authorization_code for this client, if Paystack
+     * returned one and flagged it reusable. One row per (client, gateway) --
+     * a newer reusable authorization overwrites the previous saved card.
+     */
+    private function saveReusableAuthorization(int $clientId, array $txData): void
+    {
+        $auth = $txData['authorization'] ?? null;
+        if (!is_array($auth) || empty($auth['authorization_code']) || empty($auth['reusable'])) {
+            return;
+        }
+
+        $now = date('Y-m-d H:i:s');
+        $sql = 'INSERT INTO client_saved_card
+                    (client_id, gateway, authorization_code, email, card_type, last4, exp_month, exp_year, bank, created_at, updated_at)
+                VALUES
+                    (:client_id, :gateway, :authorization_code, :email, :card_type, :last4, :exp_month, :exp_year, :bank, :now, :now)
+                ON DUPLICATE KEY UPDATE
+                    authorization_code = VALUES(authorization_code),
+                    email = VALUES(email),
+                    card_type = VALUES(card_type),
+                    last4 = VALUES(last4),
+                    exp_month = VALUES(exp_month),
+                    exp_year = VALUES(exp_year),
+                    bank = VALUES(bank),
+                    updated_at = VALUES(updated_at)';
+
+        $this->di['pdo']->prepare($sql)->execute([
+            ':client_id'          => $clientId,
+            ':gateway'            => 'Paystack',
+            ':authorization_code' => $auth['authorization_code'],
+            ':email'              => $txData['customer']['email'] ?? '',
+            ':card_type'          => $auth['card_type'] ?? null,
+            ':last4'              => $auth['last4'] ?? null,
+            ':exp_month'          => $auth['exp_month'] ?? null,
+            ':exp_year'           => $auth['exp_year'] ?? null,
+            ':bank'               => $auth['bank'] ?? null,
+            ':now'                => $now,
+        ]);
+    }
+
+    /**
+     * Charge a previously-saved reusable authorization directly, with no
+     * redirect to Paystack's hosted checkout. Used for one-click payments.
+     *
+     * @param string $authorizationCode Paystack authorization_code (e.g. "AUTH_xxx")
+     * @param string $email             must match the email the authorization was created under
+     * @param int    $amountInCents     amount in the smallest currency unit (ZAR cents)
+     * @param string $reference         our own reference, so the existing verify/credit
+     *                                  pipeline (KZD-INV{id}-{time}) can resolve the invoice
+     */
+    public function chargeAuthorization(string $authorizationCode, string $email, int $amountInCents, string $reference): ?array
+    {
+        $payload = json_encode([
+            'authorization_code' => $authorizationCode,
+            'email'              => $email,
+            'amount'             => $amountInCents,
+            'reference'          => $reference,
+        ]);
+
+        return $this->paystackPost('https://api.paystack.co/transaction/charge_authorization', $payload);
     }
 
     // -------------------------------------------------------------------------
