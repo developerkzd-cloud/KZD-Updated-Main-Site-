@@ -82,7 +82,7 @@
 {% set guest_support_url = guest.support_guest_tickets_enabled() ? 'support/contact-us'|url : 'login'|url %}
 {% set support_url = client ? 'support'|url : guest_support_url %}
 
-<div class="container">
+<div class="container-fluid">
     <header>
         {{ render_widgets('client.theme.header.start') }}
         <nav class="navbar navbar-expand-md py-4">
@@ -182,7 +182,7 @@
         </nav>
         {{ render_widgets('client.theme.header.end') }}
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
         {% if client or not settings.hide_menu %}
             <div class="col-3 d-none d-md-block">
