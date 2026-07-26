@@ -307,6 +307,17 @@
             }
         }
 
+        // KZD Solutions addition: carry the EPP/auth code the customer already
+        // typed on the website's transfer page through to this form, instead
+        // of silently discarding it and making them re-enter it.
+        const eppParam = urlParams.get('epp');
+        if (eppParam) {
+            const transferCodeInput = document.querySelector('input[name="transfer_code"]');
+            if (transferCodeInput) {
+                transferCodeInput.value = eppParam;
+            }
+        }
+
         // KZD Solutions addition: honour ?action=transfer from the website so a
         // customer coming from the "Transfer a Domain" page lands directly on
         // the Transfer tab instead of Register, with the domain still prefilled
