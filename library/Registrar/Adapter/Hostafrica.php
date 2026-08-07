@@ -350,7 +350,7 @@ class Registrar_Adapter_Hostafrica extends Registrar_AdapterAbstract
     {
         return [
             'dnsmanagement' => 0,
-            'emailforwarding' => 1,
+            'emailforwarding' => 0,
             // 0 = no privacy add-on at order time; use enablePrivacyProtection()
             // separately if/when the client opts in, since toggling this on
             // triggers a paid HostAfrica service per their docs.

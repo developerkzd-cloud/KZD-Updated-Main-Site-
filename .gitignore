@@ -1,7 +1,25 @@
 /config.php
+/config.old.php
 /data/cache/*
 /data/log/*
 /data/uploads/*
 !/data/cache/index.html
 !/data/log/index.html
 !/data/uploads/index.html
+
+# IDE / editor
+/.vscode/
+/.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# temp / backup files
+*.tmp
+*.bak
+*.orig
+*.swp
