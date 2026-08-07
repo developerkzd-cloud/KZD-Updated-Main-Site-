@@ -1,0 +1,42 @@
+name: CI Checks
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  php-lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ['8.2']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coding-standards: none
+          tools: none
+
+      - name: Lint PHP files (syntax check)
+        run: |
+          find . -path ./vendor -prune -o -name '*.php' -print0 \
+            | xargs -0 -n1 -P4 php -l
+
+# NOTE: This repo currently ships without a root composer.json (vendor/ is
+# committed directly rather than installed via Composer), so there is no
+# `composer validate` / `composer install` step here. If that changes in
+# future, add those steps back in.
+#
+# Deployment is intentionally NOT automated here yet. This workflow only
+# validates PHP syntax on push/PR to main and develop.
