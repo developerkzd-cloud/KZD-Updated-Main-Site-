@@ -1,0 +1,50 @@
+/*
+ * KZD Solutions branding overrides for the admin area.
+ * Loaded after vendor.css/fossbilling.css so it cascades on top without
+ * touching the compiled Tabler build. Tabler derives almost every other
+ * component color (buttons, nav-pills, pagination, focus rings, etc.) from
+ * --tblr-primary/--tblr-primary-rgb via var(), so overriding just the base
+ * tokens here re-colors the whole admin area consistently.
+ * Same brand blue as the client theme: themes/kzd/assets/build/css/kzd-overrides.css
+ */
+
+:root,
+[data-bs-theme=light] {
+  --tblr-primary: #2946f3;
+  --tblr-primary-rgb: 41, 70, 243;
+  --tblr-primary-fg: #ffffff;
+  --tblr-primary-darken: #1c31c2;
+  --tblr-primary-lt: #e8ecfe;
+  --tblr-primary-lt-rgb: 232, 236, 254;
+  --tblr-primary-bg-subtle: #dde3fd;
+  --tblr-primary-border-subtle: #aab7fa;
+  --tblr-primary-text-emphasis: #101d61;
+
+  --tblr-link-color: #2946f3;
+  --tblr-link-color-rgb: 41, 70, 243;
+  --tblr-link-hover-color: #1c31c2;
+  --tblr-link-hover-color-rgb: 28, 49, 194;
+}
+
+[data-bs-theme=dark] {
+  --tblr-primary: #6a83ff;
+  --tblr-primary-rgb: 106, 131, 255;
+  --tblr-primary-fg: #0b1030;
+  --tblr-primary-darken: #8fa0ff;
+  --tblr-primary-lt: #1a2050;
+  --tblr-primary-lt-rgb: 26, 32, 80;
+  --tblr-primary-bg-subtle: #1a2050;
+  --tblr-primary-border-subtle: #33408f;
+  --tblr-primary-text-emphasis: #b7c3ff;
+
+  --tblr-link-color: #6a83ff;
+  --tblr-link-color-rgb: 106, 131, 255;
+  --tblr-link-hover-color: #8fa0ff;
+  --tblr-link-hover-color-rgb: 143, 160, 255;
+}
+
+.kzd-admin-brand-name {
+  font-weight: 600;
+  margin-left: 0.5rem;
+  color: inherit;
+}
