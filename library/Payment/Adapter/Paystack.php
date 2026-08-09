@@ -156,20 +156,19 @@ class Payment_Adapter_Paystack extends Payment_AdapterAbstract implements FOSSBi
 
         $authUrl = $response['data']['authorization_url'];
 
-        // Return a form that auto-redirects (matching PayPal adapter's auto_redirect pattern)
-        // and falls back to a visible button if JS is off.
+        // Auto-redirect straight to Paystack, matching how FOSSBilling's own
+        // banklink template (modules/Invoice/templates/client/mod_invoice_banklink.html.twig)
+        // handles every other redirect-based gateway: submit immediately, and
+        // only show the button as a fallback for clients with JS disabled.
         $form  = '<form name="payment_form" action="' . htmlspecialchars($authUrl) . '" method="get">' . PHP_EOL;
         $form .= '<input class="btn btn-primary btn-lg" type="submit" value="Pay with Paystack" id="payment_button"/>' . PHP_EOL;
         $form .= '</form>' . PHP_EOL;
-
-        if (!empty($this->config['auto_redirect'])) {
-            $form .= sprintf('<h2>%s</h2>', __trans('Redirecting to Paystack...'));
-            $form .= "<script type='text/javascript'>"
-                  . "$(document).ready(function(){"
-                  . "document.getElementById('payment_button').style.display = 'none';"
-                  . "document.forms['payment_form'].submit();"
-                  . "});</script>";
-        }
+        $form .= sprintf('<h2>%s</h2>', __trans('Redirecting to Paystack...'));
+        $form .= "<script type='text/javascript'>"
+              . "$(document).ready(function(){"
+              . "document.getElementById('payment_button').style.display = 'none';"
+              . "document.forms['payment_form'].submit();"
+              . "});</script>";
 
         return $form;
     }
