@@ -5,6 +5,35 @@
     <div class="col-md-12">
         <div class="card border-0" id="orderbutton" style="margin-bottom: 0">
             <div class="card-body p-1">
+
+                {# Step indicator: purely visual, mirrors whichever accordion section
+                   is currently open. data-step-target must match that section's
+                   accordion-collapse id (see mod_orderbutton_*.html.twig). #}
+                <div class="kzd-order-steps d-flex" id="orderSteps">
+                    <div class="kzd-order-step" data-step-target="products">
+                        <span class="kzd-order-step-icon"><svg class="icon"><use href="#apps" /></svg></span>
+                        <span class="kzd-order-step-label">{{ 'Product'|trans }}</span>
+                    </div>
+                    <div class="kzd-order-step" data-step-target="order">
+                        <span class="kzd-order-step-icon"><svg class="icon"><use href="#settings" /></svg></span>
+                        <span class="kzd-order-step-label">{{ 'Configure'|trans }}</span>
+                    </div>
+                    {% if not client %}
+                        <div class="kzd-order-step" data-step-target="register">
+                            <span class="kzd-order-step-icon"><svg class="icon"><use href="#user" /></svg></span>
+                            <span class="kzd-order-step-label">{{ 'Account'|trans }}</span>
+                        </div>
+                    {% endif %}
+                    <div class="kzd-order-step" data-step-target="checkout">
+                        <span class="kzd-order-step-icon"><svg class="icon"><use href="#shopping-cart" /></svg></span>
+                        <span class="kzd-order-step-label">{{ 'Cart'|trans }}</span>
+                    </div>
+                    <div class="kzd-order-step" data-step-target="payment-html">
+                        <span class="kzd-order-step-icon"><svg class="icon"><use href="#credit-card" /></svg></span>
+                        <span class="kzd-order-step-label">{{ 'Payment'|trans }}</span>
+                    </div>
+                </div>
+
                 <div id="orderManager" class="accordion">
 
                     {{ include('mod_orderbutton_choose_product.html.twig') }}
@@ -48,3 +77,36 @@
 </div>
 
 {{ include('mod_orderbutton_js.html.twig') }}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var stepOrder = ['products', 'order', 'register', 'checkout', 'payment-html'];
+        var steps = document.querySelectorAll('#orderSteps .kzd-order-step');
+
+        function setActiveStep(targetId) {
+            var activeIndex = stepOrder.indexOf(targetId);
+            if (activeIndex === -1) {
+                return;
+            }
+            steps.forEach(function (step) {
+                var stepIndex = stepOrder.indexOf(step.dataset.stepTarget);
+                step.classList.remove('is-active', 'is-done');
+                if (stepIndex === activeIndex) {
+                    step.classList.add('is-active');
+                } else if (stepIndex < activeIndex) {
+                    step.classList.add('is-done');
+                }
+            });
+        }
+
+        var orderManager = document.getElementById('orderManager');
+        if (orderManager) {
+            orderManager.addEventListener('shown.bs.collapse', function (event) {
+                setActiveStep(event.target.id);
+            });
+
+            var openSection = orderManager.querySelector('.accordion-collapse.show');
+            setActiveStep(openSection ? openSection.id : 'products');
+        }
+    });
+</script>
