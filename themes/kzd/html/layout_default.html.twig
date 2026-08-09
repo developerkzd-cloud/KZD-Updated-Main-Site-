@@ -69,7 +69,7 @@
 
             const isAllowed = publicPaths.some(path => currentPath.startsWith(path));
             if (!isAllowed) {
-                window.location.href = '{{ "login"|url }}';
+                window.location.href = '{{ "login"|url }}?redirect_uri=' + encodeURIComponent(currentPath);
             }
         });
     </script>
@@ -144,7 +144,7 @@
 
                         {% if settings.top_menu_profile and not client %}
                             <li class="nav-item d-md-flex">
-                                <a class="nav-link{% if current_active_menu == 'login' %} active{% endif %}" href="{{ 'login'|url }}"{% if current_active_menu == 'login' %} aria-current="page"{% endif %}>{{ 'Login'|trans }}</a>
+                                <a class="nav-link{% if current_active_menu == 'login' %} active{% endif %}" href="{{ 'login'|url }}{% if request_path and request_path != '/' and request_path != '/login' %}?redirect_uri={{ request_path|url_encode }}{% endif %}"{% if current_active_menu == 'login' %} aria-current="page"{% endif %}>{{ 'Login'|trans }}</a>
                             </li>
                         {% endif %}
 

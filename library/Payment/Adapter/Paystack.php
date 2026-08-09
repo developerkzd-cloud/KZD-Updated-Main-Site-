@@ -427,12 +427,43 @@ class Payment_Adapter_Paystack extends Payment_AdapterAbstract implements FOSSBi
      * returned one and flagged it reusable. One row per (client, gateway) --
      * a newer reusable authorization overwrites the previous saved card.
      */
+    /**
+     * One-click payment's client_saved_card table isn't part of FOSSBilling's
+     * core schema, so there's no install/upgrade migration that creates it.
+     * Creating it here (idempotent, CREATE TABLE IF NOT EXISTS) means a fresh
+     * deploy or new environment just works on first use instead of 500ing
+     * until someone remembers to run a one-off setup script.
+     */
+    public static function ensureSavedCardTableExists(\PDO $pdo): void
+    {
+        $pdo->exec(
+            'CREATE TABLE IF NOT EXISTS client_saved_card (
+                id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                client_id INT UNSIGNED NOT NULL,
+                gateway VARCHAR(50) NOT NULL,
+                authorization_code VARCHAR(191) NOT NULL,
+                email VARCHAR(191) NOT NULL,
+                card_type VARCHAR(50) DEFAULT NULL,
+                last4 VARCHAR(4) DEFAULT NULL,
+                exp_month VARCHAR(2) DEFAULT NULL,
+                exp_year VARCHAR(4) DEFAULT NULL,
+                bank VARCHAR(100) DEFAULT NULL,
+                created_at DATETIME NOT NULL,
+                updated_at DATETIME NOT NULL,
+                UNIQUE KEY uniq_client_gateway (client_id, gateway),
+                KEY idx_client (client_id)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4'
+        );
+    }
+
     private function saveReusableAuthorization(int $clientId, array $txData): void
     {
         $auth = $txData['authorization'] ?? null;
         if (!is_array($auth) || empty($auth['authorization_code']) || empty($auth['reusable'])) {
             return;
         }
+
+        self::ensureSavedCardTableExists($this->di['pdo']);
 
         $now = date('Y-m-d H:i:s');
         $sql = 'INSERT INTO client_saved_card
