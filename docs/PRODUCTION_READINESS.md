@@ -25,7 +25,6 @@ needs checking directly.
 
 | Issue | Severity | Status |
 |---|---|---|
-| Production SMTP times out connecting to `mail.kzdsolutions.co.za:587` | High — no transactional email can send | ⚠️ Open, support ticket filed (see SMTP checklist below) |
 | Domain registration/transfer untestable from local dev (registrar IP whitelist) | Medium — process risk, not a code bug | ⚠️ Needs a manual live-site test pass |
 | Generic email signature on every email (`company_signature` setting) | Low — cosmetic | ⚠️ Open, needs the project owner's preferred wording |
 | ~23 email templates still stock FOSSBilling styling (internal staff-facing + dead product types) | Low | Documented as intentionally deprioritized, see email-templates README |
@@ -56,18 +55,17 @@ needs checking directly.
   an *unrelated* XAMPP PHP install that isn't what serves the site, and the
   admin test-email recipient being a different address than the one being
   checked
-- [ ] **Production: connection times out** to `mail.kzdsolutions.co.za:587`.
-  Confirmed network-level (TCP connect itself hangs, not an auth/app
-  error) and confirmed specific to that host (the same server successfully
-  reaches `smtp.gmail.com:587`). Best working theory: the mail server's own
-  brute-force/connection monitor (common on DirectAdmin) auto-banned this
-  server's IP after an earlier failed login attempt with wrong credentials.
-  Support ticket filed with the mail host to check/clear any IP ban and
-  confirm no allowlist restriction. **Blocks all transactional email in
-  production until resolved** — treat as the top open item.
-- [ ] Once resolved: re-run the production test-email script (see
-  `END_TO_END_TESTING.md` methodology) to confirm, then trigger one real
-  password-reset email end-to-end.
+- [x] **Production: resolved.** Confirmed root cause via the mail host's
+  support ticket response: Contabo's server IP had been auto-blocked by
+  their firewall (CSF/LFD) after 5 failed SMTP AUTH attempts within an hour
+  on 2026-08-07 — this matches an earlier log entry showing a failed login
+  with incorrect credentials, from before the SMTP settings were corrected.
+  Not an ongoing risk: the credentials now in place are correct, so the
+  same failure shouldn't recur. Connectivity and an actual test send were
+  both re-confirmed working on 2026-08-10 (real email received), and the
+  email queue has no stuck/retrying backlog.
+- [x] Verified via a real test-email send (`RESULT: true`, email confirmed
+  received) — not just a connectivity check.
 
 ## Paystack checklist
 
