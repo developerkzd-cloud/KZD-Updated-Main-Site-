@@ -14,6 +14,17 @@ was pushed into the database for the following action codes:
 - `mod_invoice_paid` — payment received / receipt
 - `mod_support_ticket_open` — support ticket opened confirmation
 - `mod_support_ticket_staff_reply` — staff replied to ticket
+- `mod_servicecustom_activated` / `_suspended` / `_canceled` / `_renewed` / `_unsuspended` — lifecycle emails for hosting/email products (these are `type=custom` products, so `servicecustom_*` is what actually fires, not `servicehosting_*`)
+- `mod_servicedomain_activated` / `_renewed` / `_suspended` / `_unsuspended` — lifecycle emails for domain orders
+- `mod_invoice_due_after` — payment overdue reminder
+- `mod_invoice_payment_reminder` — payment due-soon reminder
+
+Deliberately left as stock FOSSBilling styling: `servicehosting_*`,
+`servicelicense_*`, `servicedownloadable_*` (dead code -- no products of
+those types exist in this catalog, only `custom` and `domain`), and the
+internal-facing `staff/*` / `mod_client_signup_admin` /
+`mod_support_ticket_staff_close` / `mod_support_ticket_staff_open` templates
+(sent to the KZD team, not customers).
 
 ## Important: `guest.system_company` has a reduced key set in email context
 

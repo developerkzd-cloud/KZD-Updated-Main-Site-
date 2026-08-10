@@ -164,8 +164,13 @@ class Payment_Adapter_Paystack extends Payment_AdapterAbstract implements FOSSBi
         $form .= '<input class="btn btn-primary btn-lg" type="submit" value="Pay with Paystack" id="payment_button"/>' . PHP_EOL;
         $form .= '</form>' . PHP_EOL;
         $form .= sprintf('<h2>%s</h2>', __trans('Redirecting to Paystack...'));
+        // Plain JS, not jQuery -- the kzd client theme doesn't load jQuery
+        // anywhere, so a $(document).ready(...) call here silently throws
+        // "$ is not defined" and never runs, leaving the button as the only
+        // way through. This exact bug was invisible before because the
+        // script used to be gated behind a setting that could never be true.
         $form .= "<script type='text/javascript'>"
-              . "$(document).ready(function(){"
+              . "document.addEventListener('DOMContentLoaded', function(){"
               . "document.getElementById('payment_button').style.display = 'none';"
               . "document.forms['payment_form'].submit();"
               . "});</script>";
