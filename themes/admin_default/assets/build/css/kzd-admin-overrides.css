@@ -46,5 +46,23 @@
 .kzd-admin-brand-name {
   font-weight: 600;
   margin-left: 0.5rem;
-  color: inherit;
+}
+
+/* Match the logo swap: black text with the black logo in light mode,
+   white text with the white logo in dark mode (see partial_company_logo's
+   hide-theme-light/hide-theme-dark img classes for the logo half of this).
+   The theme toggle here (layout_default.html.twig) represents light mode
+   by the *absence* of data-bs-theme, not data-bs-theme="light" -- so :root
+   is the light-mode default, matching how --tblr-primary is scoped above. */
+:root,
+[data-bs-theme=light] {
+  --kzd-admin-brand-name-color: #000000;
+}
+
+[data-bs-theme=dark] {
+  --kzd-admin-brand-name-color: #ffffff;
+}
+
+.kzd-admin-brand-name {
+  color: var(--kzd-admin-brand-name-color);
 }
