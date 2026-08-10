@@ -18,6 +18,7 @@
 
     <link rel="stylesheet" href="{{ 'build/css/vendor.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'build/css/fossbilling.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'build/css/kzd-admin-overrides.css' | asset_url }}">
     {{ 'js/fossbilling.js' | public_asset_url | script_tag }}
     {{ 'js/api.js' | public_asset_url | script_tag }}
     <script type="module" src="{{ 'build/js/fossbilling.js' | asset_url }}"></script>
@@ -58,9 +59,13 @@
                            <span class="navbar-toggler-icon"></span>
                        </button>
                        <h1 class="d-none d-sm-flex navbar-brand d-none-navbar-horizontal pe-0 pe-md-3">
+                           {# KZD Solutions: show the company name next to the logo, not just the
+                              logo image alone -- see html_custom/partial_company_logo.html.twig
+                              for the show_name option this relies on. #}
                            {{ include('partial_company_logo.html.twig', {
                                company: company,
-                               image_class: 'navbar-brand-image'
+                               image_class: 'navbar-brand-image',
+                               show_name: true
                            }) }}
                        </h1>
                    </div>

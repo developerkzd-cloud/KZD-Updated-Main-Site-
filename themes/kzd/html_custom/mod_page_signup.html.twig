@@ -28,7 +28,8 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="text-center m-4">{{ 'Create a new account'|trans }}</h5>
-                    <form method="post" action="{{ 'client/create'|api_url(role: 'guest') }}" class="auth" {{ fb_api_form({redirect: '/'|url}) }}>
+                    {% set effective_redirect_uri = request_query.redirect_uri|default('/') %}
+                    <form method="post" action="{{ 'client/create'|api_url(role: 'guest') }}" class="auth" {{ fb_api_form({redirect: effective_redirect_uri|url}) }}>
                         {% set r = guest.client_required %}
 
                         <div class="row">
@@ -212,7 +213,7 @@
                     <div class="row">
                         <div class="col">
                             <a class="btn btn-outline-primary mb-2 w-100"
-                               href="{{ 'login'|url }}">{{ 'Already a User?'|trans }}</a>
+                               href="{{ 'login'|url }}{% if effective_redirect_uri and effective_redirect_uri != '/' %}?redirect_uri={{ effective_redirect_uri|url_encode }}{% endif %}">{{ 'Already a User?'|trans }}</a>
                         </div>
                         {% if settings.show_password_reset_link %}
                             <div class="col">

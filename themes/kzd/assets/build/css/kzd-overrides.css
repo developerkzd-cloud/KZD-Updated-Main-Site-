@@ -412,3 +412,67 @@
     font-size: 1.75rem;
   }
 }
+
+/* Order flow step indicator (mod_orderbutton_content.html.twig) */
+.kzd-order-steps {
+  gap: 8px;
+}
+
+.kzd-order-step {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--bs-border-color);
+  color: var(--bs-secondary-color);
+  min-width: 72px;
+}
+
+.kzd-order-step-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bs-tertiary-bg);
+  margin-bottom: 6px;
+}
+
+.kzd-order-step-icon .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.kzd-order-step-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.kzd-order-step.is-done {
+  border-bottom-color: var(--bs-primary);
+  color: var(--bs-body-color);
+}
+
+.kzd-order-step.is-done .kzd-order-step-icon {
+  background: var(--bs-primary-bg-subtle);
+  color: var(--bs-primary);
+}
+
+.kzd-order-step.is-active {
+  border-bottom-color: var(--bs-primary);
+  color: var(--bs-body-color);
+}
+
+.kzd-order-step.is-active .kzd-order-step-icon {
+  background: var(--bs-primary);
+  color: #fff;
+}
+
+@media (max-width: 575px) {
+  .kzd-order-step-label {
+    display: none;
+  }
+}

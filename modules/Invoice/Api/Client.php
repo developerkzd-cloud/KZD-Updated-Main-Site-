@@ -152,6 +152,7 @@ class Client extends \FOSSBilling\Api\AbstractApi
     public function get_saved_card($data = [])
     {
         $gateway = $data['gateway'] ?? 'Paystack';
+        \Payment_Adapter_Paystack::ensureSavedCardTableExists($this->getDi()['pdo']);
         $row = $this->getDi()['pdo']->prepare(
             'SELECT card_type, last4, exp_month, exp_year FROM client_saved_card WHERE client_id = :client_id AND gateway = :gateway'
         );
@@ -183,6 +184,7 @@ class Client extends \FOSSBilling\Api\AbstractApi
 
         $gateway = 'Paystack';
 
+        \Payment_Adapter_Paystack::ensureSavedCardTableExists($this->getDi()['pdo']);
         $cardStmt = $this->getDi()['pdo']->prepare(
             'SELECT authorization_code, email FROM client_saved_card WHERE client_id = :client_id AND gateway = :gateway'
         );
