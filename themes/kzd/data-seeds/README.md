@@ -64,3 +64,25 @@ per product.
 Current mapping (fresh install order, continuing from the hosting plans
 above): Business Email=6, Premium Business Email=7. Update `KZD.products` in
 the website's `js/kzd-integration.js` if they change.
+
+## rebrand_service_emails.php
+
+Rebrands the 11 customer-facing lifecycle/reminder email templates
+(`servicecustom_*`, `servicedomain_*`, `invoice_due_after`,
+`invoice_payment_reminder`) to the same visual system as the 8 templates in
+`email-templates/` (see that folder's own README). Content lives in the
+`email_template` DB table; this script's job is just to push the branded
+HTML into it. Safe to re-run -- it's a plain `UPDATE`, not an insert, so
+running it twice just overwrites with the same content.
+
+Run once with:
+
+```
+php rebrand_service_emails.php
+```
+
+(edit the PDO connection string at the top first). The full rendered
+content for each template also lives as `.twig` files in
+`email-templates/`, kept there purely as a readable backup/reference —
+this script is the actual mechanism for getting that content into a fresh
+database.
