@@ -27,6 +27,16 @@ Both repos (website and FOSSBilling) follow this same convention.
    HostAfrica's API only accepts whitelisted IPs (see `HOSTAFRICA.md`).
    Budget for live-site testing on anything touching domain registration or
    transfer.
+4a. **Never run a `php -r "..."` or similar CLI script directly on the
+   production server as `root`.** The web server there runs as `www`, not
+   `root` — a CLI script run as root that touches Doctrine's cache (e.g.
+   almost anything that bootstraps the app) leaves `data/cache/doctrine/`
+   root-owned, which then blocks the actual website from writing there and
+   crashes it (`Your proxy directory ".../doctrine/proxies" must be
+   writable`). This has caused two real production incidents — see
+   `DEPLOYMENT.md`'s "Known incident" section. If you must run a one-off
+   diagnostic script on production, run
+   `chown -R www:www data/cache` immediately after.
 5. Run `php -l` on changed PHP files before committing — no PHPUnit/static
    analysis is wired into CI beyond syntax linting (see below), so this is
    the cheapest sanity check available.

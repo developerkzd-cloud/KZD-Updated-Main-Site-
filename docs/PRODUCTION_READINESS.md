@@ -101,16 +101,15 @@ needs checking directly.
 
 ## Cron jobs
 
-- ⚠️ **Needs direct verification on production.** `disable_auto_cron` is
-  `true` in config, meaning FOSSBilling relies on a **real system cron job**
-  hitting `cron.php` periodically rather than triggering on web requests.
-  Local dev's `last_cron_exec` setting shows a timestamp over two weeks
-  stale relative to this review — that's expected for local dev (no real
-  cron configured there), but **production's actual crontab/aaPanel cron
-  job needs to be checked directly** to confirm it's running on schedule.
-  If it isn't, invoice due-date reminders, service renewal processing, and
-  registrar sync silently stop happening with no obvious symptom until a
-  customer notices a missed renewal.
+- [x] **Verified and fixed.** `disable_auto_cron` is `true` in config, so
+  FOSSBilling relies on a real system cron hitting `cron.php` every 5
+  minutes. It was running — but from **root's** crontab instead of `www`'s,
+  which caused a real production incident: every run recreated Doctrine's
+  proxy cache directory as root, breaking the site for the `www`-owned web
+  server (`Your proxy directory ".../doctrine/proxies" must be writable`).
+  Moved to `www`'s crontab; both sides re-verified via `crontab -l` /
+  `sudo -u www crontab -l`. Full incident writeup in
+  `DEPLOYMENT.md`'s "Known incident" section.
 
 ## Backups
 
