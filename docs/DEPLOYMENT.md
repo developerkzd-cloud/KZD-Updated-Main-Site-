@@ -90,15 +90,55 @@ If this ever needs to be rebuilt from scratch (new server, lost key, etc.):
    ```
    git remote set-url origin git@github.com-fossbilling:developerkzd-cloud/KZD-Fossbilling.git
    ```
-4. Create `/root/fossbilling-deploy.sh` (see the script content referenced
-   in the forced-command line above — `cd` to the site root, `git pull
-   origin main`, clear `data/cache/*`, echo a status line), `chmod +x` it.
+4. Create `/root/fossbilling-deploy.sh` from `deploy/fossbilling-deploy.sh`
+   in this repo (that file is the source of truth — copy it to the server,
+   don't hand-write it there), `chmod +x` it.
 5. Test end-to-end **before** wiring up GitHub Actions:
    ```
    ssh -i <forced-command-key> -o IdentitiesOnly=yes user@host "anything"
    ```
    The command you pass doesn't matter — the forced command runs
    regardless. You should see the deploy script's real output.
+
+### Known incident: Doctrine proxy cache permission errors
+
+Twice, the site broke with `Your proxy directory
+".../data/cache/doctrine/proxies" must be writable`. Root cause both times:
+the web server runs as `www` (confirm with `ps aux | grep php-fpm`), but
+something had run as `root` and left `data/cache/doctrine/` (and
+`sf_cache/`) **root-owned** — `www` then can't write there and every page
+that touches Doctrine crashes.
+
+**Immediate fix:**
+```bash
+chown -R www:www /www/wwwroot/my.kzdsolutions.co.za/data/cache
+```
+
+**The actual recurring cause, found the second time**: FOSSBilling's own
+cron (`cron.php`, required since `disable_auto_cron: true` in config —
+see `PRODUCTION_READINESS.md`'s Cron Jobs section) was registered in
+**root's** crontab (`crontab -l`), not `www`'s. Every 5-minute run
+recreated the proxy cache as root, breaking the site again shortly after
+any fix. Moved to `www`'s crontab instead:
+```bash
+# Remove the FOSSBilling line from root's crontab (leave aaPanel's own
+# entries alone):
+crontab -l | grep -v "my.kzdsolutions.co.za/cron.php" | crontab -
+# Add it to www's crontab instead:
+(sudo -u www crontab -l 2>/dev/null; echo "*/5 * * * * php /www/wwwroot/my.kzdsolutions.co.za/cron.php") | sudo -u www crontab -
+```
+Verify with `crontab -l` (should no longer show the FOSSBilling line) and
+`sudo -u www crontab -l` (should show exactly that one line).
+
+The deploy script also now defensively `chown -R www:www data/cache` after
+every clear (see `deploy/fossbilling-deploy.sh`) as a second layer, in case
+anything else ever runs as root against this path again — but the cron fix
+above is the one that actually stopped it recurring.
+
+**If this happens a third time**: check `crontab -l` again first (maybe a
+panel update reset it), then look for any other root-run process touching
+this app (a manual `php -r "..."` run as root during troubleshooting will
+do the same thing — see `DEVELOPMENT_WORKFLOW.md`'s note about this).
 
 ## Applying database changes (manual, every time)
 
