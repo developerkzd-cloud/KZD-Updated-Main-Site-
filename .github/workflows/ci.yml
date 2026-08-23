@@ -15,7 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['8.2']
+        # Must stay >= 8.3: the codebase uses typed class constants
+        # (e.g. `private const string X = ...` in
+        # modules/Servicehosting/Service.php), a PHP 8.3 feature. Linting
+        # with 8.2 fails with a parse error on every push.
+        php-version: ['8.3']
 
     steps:
       - name: Checkout code
@@ -25,7 +29,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          coding-standards: none
           tools: none
 
       - name: Lint PHP files (syntax check)
