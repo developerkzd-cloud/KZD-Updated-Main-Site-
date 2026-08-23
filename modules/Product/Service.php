@@ -239,6 +239,11 @@ class Service implements InjectionAwareInterface
             'allow_domain_own',
             'allow_subdomain',
             'subdomain_base_domain',
+            // KZD Solutions addition: gates the Register/Transfer/Own-domain
+            // tabs on the `type=custom` order form (see
+            // modules/Servicecustom/Service.php + docs/CUSTOMIZATIONS.md) --
+            // same visibility class as the allow_domain_* flags above.
+            'domain_association',
         ];
 
         return array_intersect_key($config, array_flip($publicConfigKeys));

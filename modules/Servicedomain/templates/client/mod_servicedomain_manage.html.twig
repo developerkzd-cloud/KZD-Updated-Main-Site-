@@ -63,8 +63,33 @@
                     <h5 class="mt-1 mb-1">{{ 'Domain Privacy Settings'|trans }}</h5>
                     <span class="small text-muted">{{ 'If you would like to hide domain contact information which is shown on WHOIS you can enable privacy protection. Once domain privacy protection is enabled no one will know who registered this service. And once you decide to disable privacy protection, information that is listed above on "Update Domain Contact Details" section will be seen on domain WHOIS again.'|trans }}</span>
                 </div>
-                <button class="btn btn-warning" type="button" id="domain-disable-pp" {% if service.privacy == 0 %}style="display:none;"{% endif %}>{{ 'Disable Privacy protection'|trans }}</button>
-                <button class="btn btn-primary" type="button" id="domain-enable-pp" {% if service.privacy == 1 %}style="display:none;"{% endif %}>{{ 'Enable Privacy protection'|trans }}</button>
+
+                <div class="mb-3 p-3 bg-body-tertiary rounded">
+                    <strong>{{ 'Domain Protection & Privacy'|trans }}</strong>
+                    {% if service.protection_price %}
+                        <span class="text-muted">— {{ service.protection_price|format_currency(default_currency) }}/{{ 'year'|trans }}</span>
+                    {% endif %}
+                    <div class="mt-1">
+                        {{ 'Status'|trans }}:
+                        {% if service.protection_purchased %}
+                            {% if service.protection_registrar_status == 'active' %}
+                                <span class="badge text-bg-success">{{ 'Enabled'|trans }}</span>
+                            {% elseif service.protection_registrar_status == 'failed' %}
+                                <span class="badge text-bg-danger">{{ 'Activation failed — contact support'|trans }}</span>
+                            {% else %}
+                                <span class="badge text-bg-secondary">{{ 'Pending'|trans }}</span>
+                            {% endif %}
+                        {% else %}
+                            <span class="badge text-bg-secondary">{{ 'Not Enabled'|trans }}</span>
+                            <span class="small text-muted d-block mt-1">{{ 'Not purchased for this domain. Add it next time you order or renew a domain.'|trans }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if service.protection_purchased %}
+                    <button class="btn btn-warning" type="button" id="domain-disable-pp" {% if service.privacy == 0 %}style="display:none;"{% endif %}>{{ 'Disable Privacy protection'|trans }}</button>
+                    <button class="btn btn-primary" type="button" id="domain-enable-pp" {% if service.privacy == 1 %}style="display:none;"{% endif %}>{{ 'Enable Privacy protection'|trans }}</button>
+                {% endif %}
             </div>
 
             {# Domain nameservers #}

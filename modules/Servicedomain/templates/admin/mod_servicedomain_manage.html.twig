@@ -50,6 +50,28 @@
                         <td id="privacy-value">{{ mf.boolean_badge(service.privacy, 'Enabled'|trans, 'Disabled'|trans, 'text-bg-danger', 'text-bg-success') }}</td>
                     </tr>
                     <tr>
+                        <td class="text-end">{{ 'Domain Protection & Privacy purchased'|trans }}:</td>
+                        <td>{{ mf.boolean_badge(service.protection_purchased, 'Yes'|trans, 'No'|trans, 'text-bg-success', 'text-bg-secondary') }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-end">{{ 'Registrar protection status'|trans }}:</td>
+                        <td>
+                            {% if service.protection_registrar_status == 'active' %}
+                                <span class="badge text-bg-success">{{ 'Active'|trans }}</span>
+                            {% elseif service.protection_registrar_status == 'failed' %}
+                                <span class="badge text-bg-danger">{{ 'Failed'|trans }}</span>
+                            {% else %}
+                                <span class="badge text-bg-secondary">{{ 'Unknown'|trans }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% if service.protection_order_id %}
+                    <tr>
+                        <td class="text-end">{{ 'Protection add-on order'|trans }}:</td>
+                        <td><a href="{{ ('order/manage/' ~ service.protection_order_id)|url }}">#{{ service.protection_order_id }}</a></td>
+                    </tr>
+                    {% endif %}
+                    <tr>
                         <td class="text-end">{{ 'Registration/Renewal Years'|trans }}:</td>
                         <td>{{ service.period }}</td>
                     </tr>

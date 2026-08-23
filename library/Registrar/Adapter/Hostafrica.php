@@ -136,7 +136,11 @@ class Registrar_Adapter_Hostafrica extends Registrar_AdapterAbstract
             'regperiod' => $domain->getRegistrationPeriod(),
             'nameservers' => $this->_buildNameservers($domain),
             'contacts' => $this->_buildContacts($domain),
-            'addons' => $this->_buildAddons($domain),
+            // idprotection deliberately omitted here (always 0) -- see
+            // _buildAddons(). If the client purchased Domain Protection &
+            // Privacy, it's enabled via a separate enablePrivacyProtection()
+            // call after registration succeeds, not bundled into this order.
+            'addons' => $this->_buildAddons(),
             'idnLanguage' => '',
         ];
 
@@ -153,7 +157,8 @@ class Registrar_Adapter_Hostafrica extends Registrar_AdapterAbstract
             'regperiod' => $domain->getRegistrationPeriod(),
             'nameservers' => $this->_buildNameservers($domain),
             'contacts' => $this->_buildContacts($domain),
-            'addons' => $this->_buildAddons($domain),
+            // Same reasoning as registerDomain() -- see _buildAddons().
+            'addons' => $this->_buildAddons(),
             'idnLanguage' => '',
         ];
 
@@ -167,6 +172,10 @@ class Registrar_Adapter_Hostafrica extends Registrar_AdapterAbstract
         $params = [
             'domain' => $domain->getName(),
             'regperiod' => $domain->getRegistrationPeriod(),
+            // Unlike register/transfer, renewal DOES reflect the domain's
+            // current stored privacy state, since this isn't an
+            // order-creation call and it's how continued protection gets
+            // communicated to HostAfrica on each renewal.
             'addons' => $this->_buildAddons($domain),
             'idnLanguage' => '',
         ];
@@ -346,15 +355,23 @@ class Registrar_Adapter_Hostafrica extends Registrar_AdapterAbstract
         return $ns;
     }
 
-    private function _buildAddons(Registrar_Domain $domain): array
+    /**
+     * @param Registrar_Domain|null $domain Pass null (register/transfer) to
+     *                                       always send idprotection=0 --
+     *                                       enabling it at order time risks
+     *                                       HostAfrica auto-billing a paid
+     *                                       add-on through their own system,
+     *                                       separate from FOSSBilling's
+     *                                       billing. Pass the domain (renew)
+     *                                       to reflect its stored privacy
+     *                                       state instead.
+     */
+    private function _buildAddons(?Registrar_Domain $domain = null): array
     {
         return [
             'dnsmanagement' => 0,
             'emailforwarding' => 0,
-            // 0 = no privacy add-on at order time; use enablePrivacyProtection()
-            // separately if/when the client opts in, since toggling this on
-            // triggers a paid HostAfrica service per their docs.
-            'idprotection' => $domain->getPrivacyEnabled() ? 1 : 0,
+            'idprotection' => ($domain !== null && $domain->getPrivacyEnabled()) ? 1 : 0,
         ];
     }
 

@@ -65,6 +65,97 @@ Current mapping (fresh install order, continuing from the hosting plans
 above): Business Email=6, Premium Business Email=7. Update `KZD.products` in
 the website's `js/kzd-integration.js` if they change.
 
+## 2026-08-21_domain_protection_columns.sql + create_domain_protection_addon.php
+
+Adds the "Domain Protection & Privacy" optional domain add-on (R99/year,
+WHOIS privacy), unchecked by default at checkout, mirroring HostAfrica's
+own storefront upsell. Two parts, apply in order:
+
+1. **`2026-08-21_domain_protection_columns.sql`** — schema migration.
+   FOSSBilling runs frozen (no auto-migration), so this is a plain
+   reversible SQL file (up block + commented-out down block). Adds three
+   columns to `service_domain`:
+   - `protection_purchased` (bool, default 0) — customer has a paid
+     protection add-on order for this domain. This is the billing-truth
+     flag; existing domains default to 0/not-purchased.
+   - `protection_order_id` (nullable) — the linked add-on order's id, for
+     admin traceability.
+   - `protection_registrar_status` (nullable enum-ish string:
+     `active`/`failed`/NULL=unknown) — whether the registrar actually
+     confirmed WHOIS privacy is on, kept separate from `protection_purchased`
+     so a registrar-side failure is never confused with "not purchased."
+   Apply with: `mysql -u <user> -p <db> < 2026-08-21_domain_protection_columns.sql`
+
+2. **`create_domain_protection_addon.php`** — creates the add-on product
+   itself (type=`custom`, `is_addon=1`, `hidden=1` so it's never
+   independently browsable/orderable, annual-only recurring pricing at
+   R99/year) and attaches its id to the domain product's (id 1) `addons`
+   JSON list, so FOSSBilling's existing generic add-on UI
+   (`Orderbutton/templates/client/mod_orderbutton_addons.html.twig`) shows
+   it automatically on both the Register and Transfer tabs of the domain
+   order form — no template changes needed for the checkbox itself. Safe
+   to re-run (skips creation if the product already exists, re-syncs the
+   domain product's addon list either way). Run once with:
+
+   ```
+   php create_domain_protection_addon.php
+   ```
+
+   (edit the PDO connection string first). On the local dev DB this
+   created product id 8. Price lives in `product_payment.a_price` for
+   that product -- change it from Admin -> Products ->
+   "Domain Protection & Privacy" any time; nothing else needs updating,
+   the checkout price, invoice amount, and client/admin status displays
+   all read it live.
+
+   Code-side changes that make the purchase actually mean something (not
+   part of this seed data): `library/Registrar/Adapter/Hostafrica.php`
+   (register/transfer never auto-enable the registrar add-on -- see that
+   file's own comments; renewal reflects stored purchase state) and
+   `modules/Servicedomain/Service.php` (links a same-cart add-on order
+   back to its domain order, activates registrar privacy post-registration
+   only if purchased, records real success/failure instead of assuming
+   success). See `docs/CUSTOMIZATIONS.md`.
+
+   **Known limitation**: if a customer registers multiple domains in one
+   cart and selects protection for only some, the domain <-> add-on-order
+   linkage (matched via cart `group_id`) can't disambiguate which
+   protection order belongs to which domain -- it's only reliable for the
+   normal one-domain-at-a-time checkout.
+
+## configure_domain_association.php
+
+Turns on the domain-association checkout step for the 4 Shared Hosting
+products (optional -- customer may skip) and the 2 Business Email
+products (required -- email needs a domain), by writing
+`product.config.domain_association` (`optional`/`required`) plus the
+three `allow_domain_*` flags. Renders via the new
+`modules/Servicecustom/templates/client/mod_servicecustom_order_form.html.twig`
+(a real module template, not a `html_custom/` override -- see
+`docs/CUSTOMIZATIONS.md` for why) and the domain-association methods
+added to
+`modules/Servicecustom/Service.php` -- see `docs/CUSTOMIZATIONS.md` for
+the full design (why `type=custom` products needed their own version of
+what `Servicehosting` already does for `type=hosting`).
+
+Idempotent -- always overwrites `config` for the listed IDs (2-7), safe
+to re-run. Run once with:
+
+```
+php configure_domain_association.php
+```
+
+(edit the PDO connection string first). Product IDs are the same fresh-
+install mapping noted above (Starter=2, Basic=3, Standard=4, Business=5,
+Business Email=6, Premium Business Email=7) -- update the ID arrays at
+the top of the script if yours differ.
+
+The domain→hosting cross-sell suggestion shown on the domain order form
+(`mod_servicedomain_order_form.html.twig`) is separate: no seed data,
+just a hardcoded list of hosting product IDs directly in that template
+-- flagged there for becoming an admin-configurable `cross_sell_products`
+field later.
+
 ## rebrand_service_emails.php
 
 Rebrands the 11 customer-facing lifecycle/reminder email templates

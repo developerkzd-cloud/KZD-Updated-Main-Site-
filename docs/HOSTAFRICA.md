@@ -31,6 +31,15 @@ with everything else in this codebase.
   it, not bill them for it by default. **Don't re-enable this without
   checking why it was disabled** — it was a deliberate anti-surprise-billing
   decision, not an oversight.
+- Same reasoning now applies to `idprotection`: `registerDomain()`/
+  `transferDomain()` always send `idprotection=0` — WHOIS privacy
+  purchased through FOSSBilling's Domain Protection & Privacy add-on
+  (see `docs/CUSTOMIZATIONS.md`) is enabled via a separate
+  `enablePrivacyProtection()` call after registration succeeds, keeping
+  FOSSBilling as the single source of billing truth instead of letting
+  HostAfrica bill it independently. `renewDomain()` is the exception — it
+  passes the domain's actual stored privacy state, since it's not an
+  order-creation call.
 - `_isSuccess()` has an inline comment flagging it as unverified — HostAfrica's
   docs don't document their error response envelope shape, so this method's
   correctness for edge-case error formats hasn't been confirmed against

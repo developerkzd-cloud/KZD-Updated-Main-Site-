@@ -1,0 +1,79 @@
+{#
+  KZD Solutions override of the stock Orderbutton addons partial.
+
+  Why this exists: the stock version renders each add-on as a heading-sized
+  <h4> title plus a pair of green-check/red-X radio buttons. That reads as
+  its own page section and doesn't match the compact form-label sizing
+  used everywhere else on the order form (e.g. domain search), and the
+  two-button toggle isn't how customers expect to opt into an add-on --
+  HostAfrica's own domain checkout (the UX this was modeled after) uses a
+  plain checkbox. This keeps the exact same field names/values the backend
+  already validates (Product\Service::validateSelectedAddonsForProduct(),
+  Cart\Service::addItem()) -- only the markup/styling changed.
+
+  A hidden "0" input before each checkbox, sharing the same field name,
+  guarantees addons[{id}][selected] is always present in the POST (0 when
+  unchecked, 1 when checked -- the checked box's value comes later in the
+  form and wins) instead of being omitted entirely when unchecked, so the
+  server-side handling doesn't need to change.
+#}
+{% if product.addons is defined and product.addons|length > 0 %}
+<label class="form-label mt-3">{{ 'Addons & Extras'|trans }}</label>
+<div class="addons">
+  {% for addon in product.addons %}
+  <div class="border rounded-3 p-3 mb-2">
+    <div class="d-flex align-items-start gap-2">
+      <div class="form-check mt-1">
+        <input type="hidden" name="addons[{{ addon.id }}][selected]" value="0">
+        <input class="form-check-input" type="checkbox" value="1"
+               name="addons[{{ addon.id }}][selected]" id="addon_{{ addon.id }}">
+      </div>
+
+      {% if addon.icon_url %}
+      <img src="{{ addon.icon_url }}" alt="" width="28" class="mt-1">
+      {% endif %}
+
+      <label class="flex-grow-1 mb-0" for="addon_{{ addon.id }}" style="cursor:pointer;">
+        <div class="fw-semibold">{{ addon.title }}</div>
+        {% if addon.description %}
+          <div class="fs-7 text-muted">{{ (addon.description ?? '')|markdown_to_html }}</div>
+        {% endif %}
+      </label>
+
+      <div class="text-end text-nowrap">
+        {% set cart_currency = guest.cart_get_currency %}
+        {% if addon.pricing.type is same as('recurrent') %}
+          {% set periods = guest.system_periods %}
+          {% set enabled_periods = addon.pricing.recurrent|filter(p => p.enabled) %}
+          {% if enabled_periods|length > 1 %}
+            <select class="form-select form-select-sm" name="addons[{{ addon.id }}][period]" rel="addon-periods-{{ addon.id }}">
+              {% for code, prices in addon.pricing.recurrent %}
+                {% if prices.enabled %}
+                <option value="{{ code }}">{{ (prices.price * cart_currency.conversion_rate)|format_currency(cart_currency.code) }} {% if prices.setup != '0.00' %}{{ 'Setup:'|trans }} {{ (prices.setup * cart_currency.conversion_rate)|format_currency(cart_currency.code) }}{% endif %} ({{ periods[code] }})</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          {% else %}
+            {% for code, prices in addon.pricing.recurrent %}
+              {% if prices.enabled %}
+                <input type="hidden" name="addons[{{ addon.id }}][period]" value="{{ code }}">
+                <div class="fw-semibold">{{ (prices.price * cart_currency.conversion_rate)|format_currency(cart_currency.code) }}</div>
+                <div class="fs-7 text-muted">/ {{ periods[code] }}</div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endif %}
+
+        {% if addon.pricing.type is same as('once') %}
+          <span class="badge text-bg-success">{{ ((addon.pricing.once.price + addon.pricing.once.setup) * cart_currency.conversion_rate)|format_currency(cart_currency.code) }}</span>
+        {% endif %}
+
+        {% if addon.pricing.type is same as('free') %}
+          <span class="badge text-bg-success">{{ 0|format_currency(cart_currency.code) }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

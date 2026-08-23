@@ -101,12 +101,189 @@ class Service implements \FOSSBilling\InjectionAwareInterface
         $model->client_id = $order->client_id;
         $model->plugin = $product->getPlugin();
         $model->plugin_config = $product->getPluginConfig();
-        $model->config = $order->config;
+
+        $config = json_decode((string) $order->config, true) ?? [];
+        $associatedDomain = $this->resolveAssociatedDomain($config);
+        if ($associatedDomain !== null) {
+            $config['associated_domain'] = $associatedDomain;
+
+            $domainOrder = $this->findAssociatedDomainOrder($order);
+            $config['associated_domain_order_id'] = $domainOrder?->id;
+
+            $this->di['logger']->info('Domain "%s" associated with custom service order #%s', $associatedDomain, $order->id);
+        }
+
+        $model->config = json_encode($config);
         $model->created_at = date('Y-m-d H:i:s');
         $model->updated_at = date('Y-m-d H:i:s');
         $this->di['db']->store($model);
 
         return $model;
+    }
+
+    /* -----------------------------------------------------------------
+     * Domain association (optional/required, per product.config) --
+     * lets a `type=custom` product (hosting, Business Email) collect a
+     * register/transfer/own-domain choice at checkout the same way
+     * `Servicehosting` does, without inheriting its mandatory-domain
+     * requirement or its real account-provisioning side effects. Reused
+     * generically by Cart\Service::addItem() via getDomainProductFromConfig()
+     * -- see modules/Servicecustom/Service.php's docblock references in
+     * docs/CUSTOMIZATIONS.md.
+     * --------------------------------------------------------------- */
+
+    /**
+     * 'off' (default -- untouched behaviour for any other type=custom
+     * product), 'optional' (hosting -- customer may skip), or 'required'
+     * (Business Email -- a domain must be chosen).
+     */
+    private function domainAssociationMode(array $data): string
+    {
+        return $data['domain_association'] ?? 'off';
+    }
+
+    public function attachOrderConfig(Product $product, array $data): array
+    {
+        $c = json_decode($product->getConfig() ?? '', true) ?? [];
+        $data = array_merge($c, $data);
+
+        $action = $data['domain']['action'] ?? null;
+        if ($this->domainAssociationMode($data) !== 'off' && !empty($action)) {
+            $this->assertDomainActionAllowed($action, $data);
+        }
+
+        return $data;
+    }
+
+    private function assertDomainActionAllowed(string $action, array $productConfig): void
+    {
+        $allowRegister = $productConfig['allow_domain_register'] ?? true;
+        $allowTransfer = $productConfig['allow_domain_transfer'] ?? true;
+        $allowOwn = $productConfig['allow_domain_own'] ?? true;
+
+        match ($action) {
+            'register' => $allowRegister || throw new \FOSSBilling\InformationException('Domain registration is not available for this product.'),
+            'transfer' => $allowTransfer || throw new \FOSSBilling\InformationException('Domain transfer is not available for this product.'),
+            'owndomain' => $allowOwn || throw new \FOSSBilling\InformationException('Using your own domain is not allowed for this product.'),
+            default => throw new \FOSSBilling\InformationException('Invalid domain action specified.'),
+        };
+    }
+
+    public function validateOrderData(array &$data): void
+    {
+        $mode = $this->domainAssociationMode($data);
+        if ($mode === 'off') {
+            return;
+        }
+
+        $action = $data['domain']['action'] ?? null;
+
+        if (empty($action)) {
+            if ($mode === 'required') {
+                throw new \FOSSBilling\InformationException('Please choose a domain option to continue.');
+            }
+
+            // 'optional' and no domain chosen -- valid, customer skipped it.
+            return;
+        }
+
+        $this->assertDomainActionAllowed($action, $data);
+
+        [$sld, $tld] = $this->getDomainTuple($action, $data['domain']);
+        if (empty($sld) || empty($tld)) {
+            throw new \FOSSBilling\InformationException('Domain name is invalid.');
+        }
+    }
+
+    private function getDomainTuple(string $action, array $domain): array
+    {
+        if ($action === 'owndomain') {
+            $tld = (string) ($domain['owndomain_tld'] ?? '');
+
+            return [$domain['owndomain_sld'] ?? null, $tld !== '' && !str_contains($tld, '.') ? '.' . $tld : $tld];
+        }
+
+        if ($action === 'register') {
+            return [$domain['register_sld'] ?? null, $domain['register_tld'] ?? null];
+        }
+
+        if ($action === 'transfer') {
+            return [$domain['transfer_sld'] ?? null, $domain['transfer_tld'] ?? null];
+        }
+
+        return [null, null];
+    }
+
+    /**
+     * @return bool|array{product: Product, config: array}
+     */
+    public function getDomainProductFromConfig(Product $product, array &$data): bool|array
+    {
+        $data = $this->attachOrderConfig($product, $data);
+        $this->validateOrderData($data);
+
+        if ($this->domainAssociationMode($data) === 'off') {
+            return false;
+        }
+
+        $action = $data['domain']['action'] ?? null;
+        if (empty($action) || $action === 'owndomain') {
+            // No domain chosen, or the customer already owns it elsewhere --
+            // nothing to register/transfer, so no companion domain order.
+            return false;
+        }
+
+        $dc = $data['domain'];
+        $this->di['mod_service']('servicedomain')->validateOrderData($dc);
+
+        $mainDomainProduct = $this->di['mod_service']('product')->getMainDomainProduct();
+        if (!$mainDomainProduct instanceof Product) {
+            throw new \FOSSBilling\Exception('Could not find main domain product');
+        }
+
+        return ['product' => $mainDomainProduct, 'config' => $dc];
+    }
+
+    /** Human-readable "example.co.za" for the domain chosen at checkout, if any. */
+    private function resolveAssociatedDomain(array $orderConfig): ?string
+    {
+        $action = $orderConfig['domain']['action'] ?? null;
+        if (empty($action)) {
+            return null;
+        }
+
+        [$sld, $tld] = $this->getDomainTuple($action, $orderConfig['domain']);
+        if (empty($sld) || empty($tld)) {
+            return null;
+        }
+
+        return strtolower($sld . $tld);
+    }
+
+    /**
+     * Finds the real domain order bundled into the same cart checkout as
+     * this custom-service order (register/transfer only -- "owndomain"
+     * never creates one). Same group_id + product-id matching pattern as
+     * Servicedomain\Service::findProtectionAddonOrder().
+     */
+    private function findAssociatedDomainOrder(\Model_ClientOrder $order): ?\Model_ClientOrder
+    {
+        if (empty($order->group_id)) {
+            return null;
+        }
+
+        $mainDomainProduct = $this->di['mod_service']('product')->getMainDomainProduct();
+        if (!$mainDomainProduct instanceof Product) {
+            return null;
+        }
+
+        $found = $this->di['db']->findOne(
+            'ClientOrder',
+            'group_id = ? AND client_id = ? AND id != ? AND product_id = ?',
+            [$order->group_id, $order->client_id, $order->id, $mainDomainProduct->getId()]
+        );
+
+        return $found instanceof \Model_ClientOrder ? $found : null;
     }
 
     public function action_activate(\Model_ClientOrder $order): bool

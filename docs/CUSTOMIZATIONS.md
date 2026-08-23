@@ -71,6 +71,130 @@ touch stock code. **[core edit]** = a stock file was directly modified.
   suggestions, and pre-fills EPP/transfer code + domain name from the
   website's query params (`?epp=`, `?sld=`, `?tld=`, `?action=transfer`).
 
+## Domain Protection & Privacy add-on
+
+- **Optional R99/year WHOIS privacy add-on** at domain checkout, unchecked
+  by default, mirroring HostAfrica's own storefront upsell. Built almost
+  entirely on stock FOSSBilling mechanisms already present (generic
+  Product Addon system, `service_domain.privacy` column, the client/admin
+  "Privacy" tab/buttons, HostAfrica's `enablePrivacyProtection()`/
+  `disablePrivacyProtection()`) -- see `themes/kzd/data-seeds/README.md`
+  for the full breakdown of what already existed vs. what was added.
+- **`library/Registrar/Adapter/Hostafrica.php`** **[core edit]**:
+  `_buildAddons()` now takes an optional `Registrar_Domain` -- register/
+  transfer always pass `idprotection=0` (enabling a paid HostAfrica
+  add-on at order-creation time risks HostAfrica auto-billing it through
+  their own system, separate from FOSSBilling's billing -- same reasoning
+  already applied to `emailforwarding`); renewal passes the domain's
+  actual stored privacy state.
+- **`modules/Servicedomain/Service.php`** **[core edit]**: `_getD()` now
+  sets `Registrar_Domain::setPrivacyEnabled()` from
+  `protection_purchased` (previously never set at all, so the registrar
+  adapter's own privacy-aware code was silently inert); `action_create()`
+  links a same-cart-checkout protection add-on order to the domain via
+  `group_id` + product-id matching; `action_activate()` calls registrar
+  privacy activation as an explicit post-registration step, only if
+  purchased, with failures logged and never blocking domain registration
+  itself; `enablePrivacyProtection()`/`disablePrivacyProtection()` now
+  check the adapter's actual result instead of assuming success
+  unconditionally (a real correctness fix -- previously a registrar-side
+  failure was still recorded as "Enabled").
+- **`themes/kzd/html_custom/mod_orderbutton_addons.html.twig`**
+  **[override]**: restyles the stock generic add-on picker (used for the
+  R99/year checkbox above) from a heading-sized title + green-check/red-X
+  radio pair into a single checkbox with the price shown inline, matching
+  HostAfrica's own checkout UX and the compact label sizing already used
+  elsewhere on the domain order form. Field names/values submitted are
+  unchanged from stock (a hidden `0` input per add-on guarantees an
+  explicit value is always posted even when unchecked) -- purely visual,
+  server-side validation is untouched.
+- **Client/admin domain manage templates** **[core edit]**: added a
+  Domain Protection & Privacy status block (purchased / registrar status)
+  to the client Privacy tab and three new rows to the admin service
+  details table; the existing manual Enable/Disable Privacy buttons are
+  unchanged for admins, gated behind `protection_purchased` for clients
+  (you shouldn't be able to "enable" a service you never bought).
+- **Schema**: `service_domain` gained `protection_purchased`,
+  `protection_order_id`, `protection_registrar_status` -- see the
+  migration SQL and full detail in `themes/kzd/data-seeds/README.md`.
+- **Not done in this pass**: associating Business Email with a domain
+  (spec Parts 9-12 of the original request) is a separate feature,
+  planned as a follow-up once this one is verified live.
+
+## Hosting/Business Email ↔ domain association + domain→hosting cross-sell
+
+- **Goal**: non-technical customers buying a domain alone often don't
+  realise they still need hosting (or email) to put anything on it.
+  Buying Shared Hosting now optionally offers Register/Transfer/Own-domain
+  at checkout (skippable); buying Business Email requires it (email needs
+  a domain to attach to); buying a domain shows a plain-language warning
+  plus hosting suggestions.
+- **Reused, not rebuilt**: stock FOSSBilling already has this whole
+  domain-bundling mechanism for `type=hosting` products
+  (`modules/Servicehosting/Service.php`'s `attachOrderConfig()`/
+  `validateOrderData()`/`getDomainProductFromConfig()`, called generically
+  by `modules/Cart/Service.php::addItem()` based on whatever service class
+  the product's `type` resolves to). KZD's hosting (ids 2-5) and Business
+  Email (ids 6-7) products are `type=custom`, so the same three methods
+  were added to **`modules/Servicecustom/Service.php`** **[core edit]**
+  instead — same field names/AJAX endpoints as the hosting version, so
+  `Cart\Service`'s duplicate-domain detection keeps working unchanged —
+  but with a `domain_association` config knob (`off`/`optional`/
+  `required`) stock hosting doesn't have, since stock hosting's domain
+  requirement is hard-coded mandatory. `action_create()` also now records
+  `associated_domain`/`associated_domain_order_id` into the service's
+  existing `config` JSON blob (no schema change) when a domain was
+  chosen; both keys surface automatically in the admin order-management
+  screen (`modules/Servicecustom/templates/admin/mod_servicecustom_manage.html.twig`
+  already loops over every `toApiArray()` key generically).
+- **`modules/Servicecustom/templates/client/mod_servicecustom_order_form.html.twig`**
+  **[core edit — new template file]** — didn't exist before (no stock
+  template to override). Lives in the module's own template directory,
+  not `themes/kzd/html_custom/`, because FOSSBilling's
+  `system_template_exists()` check (gates whether this file is even
+  included) only searches `theme/html` + each module's own
+  `templates/client` directory — it doesn't know about `html_custom` at
+  all, which is a separate, Twig-loader-only override mechanism for
+  templates that already resolve via that first check. A brand-new
+  template with no stock counterpart is invisible to it unless it's a
+  real module template — same reasoning as
+  `library/Registrar/Adapter/Hostafrica.php` being a new file rather than
+  an override of something nonexistent. Adapted from
+  `mod_servicehosting_order_form.html.twig` (same tabs/JS/AJAX calls,
+  minus the subdomain tab, plus an "I'll set this up later" skip option
+  shown only when `domain_association` is `optional`).
+- **`modules/Product/Service.php::getPublicConfig()`** **[core edit]** —
+  this existing hardcoded whitelist controls which `product.config` keys
+  guests are allowed to see (security boundary, e.g. keeps hosting's
+  `server_id` private); it only knew about `Servicehosting`'s own keys,
+  so the new `domain_association` key was invisible to the checkout
+  template until added here. Found by testing locally — the checkbox/tabs
+  silently didn't render even though the seed script correctly wrote the
+  config, because the guest-facing product API response was filtering it
+  out.
+- **`themes/kzd/data-seeds/configure_domain_association.php`**
+  **[new]** — sets `product.config.domain_association` to `optional` for
+  the 4 hosting products, `required` for the 2 Business Email products.
+- **`themes/kzd/html_custom/mod_servicedomain_order_form.html.twig`**
+  **[override]** — added a warning + hosting-suggestion block below the
+  Register/Transfer tabs. **The suggested product IDs (`[2, 3, 4, 5]`)
+  are hardcoded in the template for now** — flagged there and here as the
+  thing to replace with an admin-configurable `cross_sell_products` field
+  on `Product` (mirroring the existing `addons` JSON field and its
+  generic `mod_orderbutton_addons.html.twig` renderer) once it's worth
+  the extra admin UI.
+- **Not done in this pass** (see the plan for the full list): switching
+  hosting products to `type=hosting` for real DirectAdmin account
+  automation (DirectAdmin connectivity was confirmed working, but this is
+  a deliberately separate, bigger follow-up); an actual DirectAdmin
+  mailbox-creation API (`CMD_API_POP`) for Business Email -- domain
+  association is now captured, but a real mailbox still has to be created
+  manually; a client-facing "your associated domain" display (admin gets
+  it for free, there's no client template for `type=custom` services to
+  add it to yet); a dropdown of the client's own already-purchased
+  FOSSBilling domains for "own domain" (free-text only, matching stock
+  hosting's own behaviour).
+
 ## Product catalog / pricing
 
 - **4 Shared Hosting products** (Starter/Basic/Standard/Business) — seeded

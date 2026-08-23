@@ -212,6 +212,9 @@ class Service implements \FOSSBilling\InjectionAwareInterface
         $model->period = $years;
         $model->transfer_code = $c['transfer_code'] ?? null;
         $model->privacy = false;
+        $model->protection_purchased = false;
+        $model->protection_order_id = null;
+        $model->protection_registrar_status = null;
         $model->action = $c['action'];
         $model->ns1 = (isset($c['ns1']) && !empty($c['ns1'])) ? $c['ns1'] : $ns['nameserver_1'];
         $model->ns2 = (isset($c['ns2']) && !empty($c['ns1'])) ? $c['ns2'] : $ns['nameserver_2'];
@@ -236,9 +239,116 @@ class Service implements \FOSSBilling\InjectionAwareInterface
         $model->created_at = date('Y-m-d H:i:s');
         $model->updated_at = date('Y-m-d H:i:s');
 
+        $protectionOrder = $this->findProtectionAddonOrder($order);
+        if ($protectionOrder instanceof \Model_ClientOrder) {
+            $model->protection_purchased = true;
+            $model->protection_order_id = $protectionOrder->id;
+            $this->di['logger']->info('Domain Protection & Privacy selected for domain service (order #%s, protection order #%s)', $order->id, $protectionOrder->id);
+        }
+
         $this->di['db']->store($model);
 
         return $model;
+    }
+
+    /**
+     * Find the "Domain Protection & Privacy" add-on order (if any) that was
+     * added to the same cart/checkout as this domain order. Add-on orders
+     * share the domain order's `group_id` (the cart id every order from one
+     * checkout is stamped with -- see Cart\Service::createFromCart()) and
+     * are otherwise ordinary orders, so this only inspects orders already
+     * present in that group rather than assuming anything about the addon
+     * product's own lifecycle.
+     *
+     * Known limitation: if a customer registers multiple domains in one
+     * cart and selects protection for only some of them, group_id alone
+     * can't tell which domain a given protection order belongs to (every
+     * order from that checkout shares the same group_id). This only
+     * disambiguates correctly when there is a single eligible protection
+     * order in the group, which covers the normal one-domain-at-a-time
+     * checkout.
+     */
+    private function findProtectionAddonOrder(\Model_ClientOrder $order): ?\Model_ClientOrder
+    {
+        if (empty($order->group_id)) {
+            return null;
+        }
+
+        $addonProductIds = $this->getDomainAddonProductIds((int) $order->product_id);
+        if (empty($addonProductIds)) {
+            return null;
+        }
+
+        $placeholders = implode(',', array_fill(0, count($addonProductIds), '?'));
+        $candidates = $this->di['db']->find(
+            'ClientOrder',
+            "group_id = ? AND client_id = ? AND id != ? AND product_id IN ({$placeholders})",
+            [$order->group_id, $order->client_id, $order->id, ...$addonProductIds]
+        );
+
+        if (empty($candidates)) {
+            return null;
+        }
+
+        if (count($candidates) > 1) {
+            $this->di['logger']->warning('Multiple Domain Protection & Privacy candidate orders found in cart group %s for domain order #%s -- using the first match', $order->group_id, $order->id);
+        }
+
+        return reset($candidates);
+    }
+
+    /**
+     * Add-on product IDs attached to the given domain product (Product
+     * module is fully Doctrine-managed in this FOSSBilling version -- no
+     * legacy RedBean 'Product' bean exists, so lookups go through
+     * Product\Service, matching how the rest of the codebase accesses
+     * products, e.g. Cart\Service::addItem()).
+     *
+     * @return int[]
+     */
+    private function getDomainAddonProductIds(int $domainProductId): array
+    {
+        try {
+            $domainProduct = $this->di['mod_service']('product')->findProductById($domainProductId);
+        } catch (\FOSSBilling\InformationException) {
+            return [];
+        }
+
+        $addonProductIds = json_decode((string) $domainProduct->getAddons(), true);
+
+        return is_array($addonProductIds) ? array_map('intval', $addonProductIds) : [];
+    }
+
+    /**
+     * Current price of the Domain Protection & Privacy add-on, read live
+     * from its product configuration (Admin -> Products) rather than
+     * hardcoded, so an admin changing the price is reflected everywhere
+     * immediately -- client/admin display included. Returns null if no
+     * add-on is currently attached to the main domain product.
+     */
+    public function getProtectionAddonPrice(): ?float
+    {
+        $productService = $this->di['mod_service']('product');
+
+        $domainProduct = $productService->getMainDomainProduct();
+        if (!$domainProduct) {
+            return null;
+        }
+
+        $addonProductIds = $this->getDomainAddonProductIds((int) $domainProduct->getId());
+        if (empty($addonProductIds)) {
+            return null;
+        }
+
+        try {
+            $addonProduct = $productService->findProductById(reset($addonProductIds));
+        } catch (\FOSSBilling\InformationException) {
+            return null;
+        }
+
+        $pricing = $productService->getProductPricingArray($addonProduct);
+
+        return isset($pricing['recurrent']['1Y']['price']) ? (float) $pricing['recurrent']['1Y']['price'] : null;
     }
 
     /**
@@ -267,6 +377,20 @@ class Service implements \FOSSBilling\InjectionAwareInterface
         // reset action
         $model->action = null;
         $this->di['db']->store($model);
+
+        // Domain Protection & Privacy is deliberately NOT enabled at
+        // order/registrar-creation time (see Hostafrica.php _buildAddons())
+        // -- it's activated as its own explicit step here, only once
+        // registration/transfer has actually succeeded, so a registrar
+        // failure never leaves the domain in an inconsistent state and a
+        // failure here never blocks the domain registration itself.
+        if ($model->protection_purchased) {
+            try {
+                $this->enablePrivacyProtection($model);
+            } catch (\Throwable $e) {
+                $this->di['logger']->error('Domain Protection & Privacy activation failed for domain service #%s (order #%s): %s', $model->id, $order->id, $e->getMessage());
+            }
+        }
 
         try {
             $this->syncWhois($model, $order);
@@ -510,29 +634,77 @@ class Service implements \FOSSBilling\InjectionAwareInterface
         return true;
     }
 
+    /**
+     * Calls the registrar to enable WHOIS privacy and persists the outcome.
+     *
+     * Unlike the previous implementation, this only marks `privacy` (and
+     * `protection_registrar_status`) as active when the adapter actually
+     * reports success -- a registrar-reported failure is recorded as such
+     * and re-thrown, never silently treated as success. Different
+     * registrar adapters signal failure differently (HostAfrica returns
+     * false, others may throw) -- both are handled here so this stays
+     * correct regardless of which adapter is active.
+     */
     public function enablePrivacyProtection(\Model_ServiceDomain $model): bool
     {
         // @adapterAction
         [$domain, $adapter] = $this->_getD($model);
-        $adapter->enablePrivacyProtection($domain);
 
-        $model->privacy = true;
+        try {
+            $success = $adapter->enablePrivacyProtection($domain) !== false;
+        } catch (\Throwable $e) {
+            $model->protection_registrar_status = 'failed';
+            $model->updated_at = date('Y-m-d H:i:s');
+            $this->di['db']->store($model);
+
+            $this->di['logger']->error('Failed to enable privacy protection for domain service #%s: %s', $model->id, $e->getMessage());
+
+            throw $e;
+        }
+
+        $model->privacy = $success;
+        $model->protection_registrar_status = $success ? 'active' : 'failed';
         $model->updated_at = date('Y-m-d H:i:s');
 
         $id = $this->di['db']->store($model);
 
-        $this->di['logger']->info('Enabled privacy protection of #%s domain', $id);
+        if ($success) {
+            $this->di['logger']->info('Enabled privacy protection of #%s domain', $id);
+        } else {
+            $this->di['logger']->warning('Registrar reported failure enabling privacy protection of #%s domain', $id);
+
+            throw new \FOSSBilling\InformationException('The registrar was unable to enable privacy protection for this domain. Please try again or contact support.');
+        }
 
         return true;
     }
 
+    /**
+     * Calls the registrar to disable WHOIS privacy and persists the
+     * outcome. Same success/failure handling as enablePrivacyProtection()
+     * -- see that method's docblock.
+     */
     public function disablePrivacyProtection(\Model_ServiceDomain $model): bool
     {
         // @adapterAction
         [$domain, $adapter] = $this->_getD($model);
-        $adapter->disablePrivacyProtection($domain);
+
+        try {
+            $success = $adapter->disablePrivacyProtection($domain) !== false;
+        } catch (\Throwable $e) {
+            $this->di['logger']->error('Failed to disable privacy protection for domain service #%s: %s', $model->id, $e->getMessage());
+
+            throw $e;
+        }
+
+        if (!$success) {
+            $this->di['logger']->warning('Registrar reported failure disabling privacy protection of #%s domain', $model->id);
+
+            throw new \FOSSBilling\InformationException('The registrar was unable to disable privacy protection for this domain. Please try again or contact support.');
+        }
 
         $model->privacy = false;
+        $model->protection_registrar_status = null;
         $model->updated_at = date('Y-m-d H:i:s');
 
         $id = $this->di['db']->store($model);
@@ -608,6 +780,9 @@ class Service implements \FOSSBilling\InjectionAwareInterface
             'ns4' => $model->ns4,
             'period' => $model->period,
             'privacy' => $model->privacy,
+            'protection_purchased' => (bool) $model->protection_purchased,
+            'protection_registrar_status' => $model->protection_registrar_status,
+            'protection_price' => $this->getProtectionAddonPrice(),
             'locked' => $model->locked,
             'registered_at' => $model->registered_at,
             'expires_at' => $model->expires_at,
@@ -629,6 +804,7 @@ class Service implements \FOSSBilling\InjectionAwareInterface
 
         if ($identity instanceof \Model_Admin) {
             $data['transfer_code'] = $model->transfer_code;
+            $data['protection_order_id'] = $model->protection_order_id;
 
             $tldRegistrar = $this->di['db']->load('TldRegistrar', $model->tld_registrar_id);
             $data['registrar'] = $tldRegistrar instanceof \Model_TldRegistrar ? $tldRegistrar->name : null;
@@ -676,6 +852,12 @@ class Service implements \FOSSBilling\InjectionAwareInterface
         $d = new \Registrar_Domain();
 
         $d->setLocked($model->locked);
+        // Drives the `idprotection` add-on flag on renewal (see
+        // Hostafrica.php _buildAddons()) -- reflects whether the customer
+        // has purchased Domain Protection & Privacy, not whether the
+        // registrar has confirmed it active, so a renewal keeps asking for
+        // it even if a prior activation attempt failed.
+        $d->setPrivacyEnabled((bool) $model->protection_purchased);
         $d->setNs1($model->ns1);
         $d->setNs2($model->ns2);
         $d->setNs3($model->ns3);
