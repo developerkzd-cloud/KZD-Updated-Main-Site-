@@ -156,6 +156,43 @@ just a hardcoded list of hosting product IDs directly in that template
 -- flagged there for becoming an admin-configurable `cross_sell_products`
 field later.
 
+## configure_hosting_plans.php
+
+Switches the 4 Shared Hosting products (ids 2-5) from `type=custom` to
+`type=hosting`, so FOSSBilling automatically creates/suspends/
+unsuspends/cancels a real DirectAdmin account instead of requiring
+manual setup, and the client area gets a stock "Login to Control Panel"
+single sign-on button. See `docs/CUSTOMIZATIONS.md` ("Hosting DirectAdmin
+automation") for the full design and why this needed zero code changes.
+
+Creates one `service_hosting_hp` row per plan (resource limits matching
+`hosting.html`'s advertised specs) and points each product's `config` at
+that plan + `service_hosting_server` id 1 ("HostAfrica Reseller",
+already configured). No DirectAdmin package needs to exist on the
+server beforehand -- the adapter falls back to custom resource values
+automatically when there's no name match.
+
+**Trade-off**: hosting checkout now requires a domain again (no "skip
+for now" option) -- confirmed with the client as worth it for full
+automation. Business Email (ids 6-7) is untouched.
+
+Idempotent -- safe to re-run (updates the Hp row + product config rather
+than duplicating). Run once with:
+
+```
+php configure_hosting_plans.php
+```
+
+(edit the PDO connection string first). Only affects new orders --
+existing hosting orders sold under `type=custom` are unaffected
+(`client_order.service_type` is frozen at order-creation time).
+
+**Before running against a real DirectAdmin account creation test**: this
+creates a real user on the live server. See `docs/CUSTOMIZATIONS.md` and
+get explicit sign-off before triggering `action_activate()` against
+production -- `action_create()` alone (building the local FOSSBilling
+record) is safe and doesn't touch DirectAdmin at all.
+
 ## rebrand_service_emails.php
 
 Rebrands the 11 customer-facing lifecycle/reminder email templates

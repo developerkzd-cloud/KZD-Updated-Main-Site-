@@ -195,6 +195,53 @@ touch stock code. **[core edit]** = a stock file was directly modified.
   FOSSBilling domains for "own domain" (free-text only, matching stock
   hosting's own behaviour).
 
+## Hosting DirectAdmin automation (type=hosting)
+
+- **Follow-up to the section above**: the 4 hosting products
+  (Starter/Basic/Standard/Business, ids 2-5) switched from `type=custom`
+  to `type=hosting`, trading the optional-domain/skippable flow built
+  above for full stock automation — real DirectAdmin account creation on
+  order activation, suspend/unsuspend/cancel wired to the account,
+  and a "Login to Control Panel" single sign-on button in the client area
+  (`modules/Servicehosting/templates/client/mod_servicehosting_manage.html.twig`
+  — stock, no template work needed). Domain is mandatory at hosting
+  checkout again as a result — `Servicehosting::validateOrderData()` has
+  no skip path. Deliberate trade-off, confirmed with the client.
+- **This turned out to require zero code changes** — `Servicehosting`'s
+  full lifecycle (`action_create`/`action_activate`/`action_suspend`/
+  `action_unsuspend`/`action_cancel`/`action_uncancel`) is complete, stock
+  FOSSBilling, already wired to real
+  `library/Server/Manager/Directadmin.php` adapter calls. `action_renew()`
+  is a stock no-op — renewal doesn't touch DirectAdmin, which is correct
+  (nothing about the account needs to change on a billing renewal).
+- **`themes/kzd/data-seeds/configure_hosting_plans.php`** **[new]** —
+  creates one `service_hosting_hp` (Hosting Plan) row per product with
+  resource limits matching what's advertised on `hosting.html`, and flips
+  `product.type` to `hosting` + sets `product.config` to
+  `{"server_id": 1, "hosting_plan_id": <id>}` (server id 1 = "HostAfrica
+  Reseller", already configured and connection-tested working). Note:
+  the DirectAdmin server (`library/Server/Manager/Directadmin.php`,
+  hosting accounts) is a completely separate integration from the
+  similarly-named domain registrar adapter
+  (`library/Registrar/Adapter/Hostafrica.php`, domains) — same reseller,
+  two unrelated APIs, don't confuse them.
+- **No DirectAdmin package needs to pre-exist on the server.**
+  `Directadmin.php::createAccount()` tries to match the Hosting Plan's
+  name against real DirectAdmin packages; if there's no match (there
+  won't be, we never created any), it automatically falls back to custom
+  resource fields computed straight from the `service_hosting_hp` row.
+  No coordination with HostAfrica's DirectAdmin panel was needed.
+- Business Email (ids 6-7) is untouched, still `type=custom` with the
+  domain-association flow from the section above.
+- **Only affects new orders** — `client_order.service_type` is frozen at
+  order-creation time, so pre-existing hosting orders (sold while
+  `type=custom`) keep working under `Servicecustom` exactly as before.
+- **Not done yet**: Business Email / DirectAdmin mailbox automation
+  (`CMD_API_POP` — no per-mailbox API in the adapter at all yet); hosting
+  plan upgrade/downgrade between tiers (stock supports it, not
+  specifically tested); general UI/UX polish, deliberately deferred to a
+  later session.
+
 ## Product catalog / pricing
 
 - **4 Shared Hosting products** (Starter/Basic/Standard/Business) — seeded
