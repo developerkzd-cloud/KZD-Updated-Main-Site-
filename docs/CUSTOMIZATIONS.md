@@ -233,14 +233,53 @@ touch stock code. **[core edit]** = a stock file was directly modified.
   No coordination with HostAfrica's DirectAdmin panel was needed.
 - Business Email (ids 6-7) is untouched, still `type=custom` with the
   domain-association flow from the section above.
+- **`themes/kzd/html_custom/mod_servicehosting_order_form.html.twig`**
+  **[override, bug fix]** — stock wraps the whole product info block
+  (`{{ product_details }}` — title, description bullet list, pricing,
+  quantity) in `<h5 class="mb-1">...</h5>`, which makes every nested
+  element inherit bold heading styling (noticed once hosting checkout
+  started actually being used, after the `type=hosting` switch above).
+  Rendered unwrapped instead, matching how the same block renders for
+  every other product type. The same copy-paste bug was in our own
+  `modules/Servicecustom/templates/client/mod_servicecustom_order_form.html.twig`
+  (adapted from the stock hosting template) — fixed there too.
 - **Only affects new orders** — `client_order.service_type` is frozen at
   order-creation time, so pre-existing hosting orders (sold while
   `type=custom`) keep working under `Servicecustom` exactly as before.
-- **Not done yet**: Business Email / DirectAdmin mailbox automation
-  (`CMD_API_POP` — no per-mailbox API in the adapter at all yet); hosting
-  plan upgrade/downgrade between tiers (stock supports it, not
-  specifically tested); general UI/UX polish, deliberately deferred to a
-  later session.
+- **Not done yet**: hosting plan upgrade/downgrade between tiers (stock
+  supports it, not specifically tested); general UI/UX polish,
+  deliberately deferred to a later session.
+
+## Business Email DirectAdmin automation (type=hosting)
+
+- **Follow-up to the section above, using the same mechanism as the
+  hosting automation section**: the 2 Business Email products (Business
+  Email / Premium Business Email, ids 6-7) switched from `type=custom`
+  to `type=hosting` too.
+- **Why this needed no new mailbox-creation code**: DirectAdmin has no
+  "mailbox-only" account type — a mailbox always lives inside a
+  DirectAdmin User account tied to a domain. Rather than building a
+  `CMD_API_POP` adapter method plus a mailbox-naming step at checkout,
+  this reuses the exact same Hosting Plan mechanism as regular hosting:
+  two new minimal `service_hosting_hp` rows (small quota, hosting
+  features like PHP/CGI turned off since these accounts don't host a
+  website, `max_pop` set to the advertised mailbox counts — 25 / 100).
+  The client creates their own named mailboxes (`info@`, `sales@`, etc.)
+  through DirectAdmin's own built-in "Email Accounts" screen, reached via
+  the same stock "Login to Control Panel" SSO button
+  (`modules/Servicehosting/templates/client/mod_servicehosting_manage.html.twig`)
+  that ships automatically once `type=hosting` is set.
+- **`themes/kzd/data-seeds/configure_email_hosting_plans.php`** **[new]**
+  — same shape as `configure_hosting_plans.php`. Quota (mail storage) is
+  a reasonable default, not a specific advertised number (the site copy
+  only says "Larger Mail Storage" for Premium, no GB figure) — worth
+  revisiting if that ever gets a specific advertised size.
+- **Deliberately not built this pass** (client's choice, given the
+  option): real per-mailbox automation (`CMD_API_POP`) so a mailbox like
+  `info@domain.com` gets created automatically with zero client action.
+  Would be a genuine follow-up if clients struggle with DirectAdmin's own
+  email-account screen — logged here so it isn't forgotten, not because
+  it's currently planned.
 
 ## Product catalog / pricing
 

@@ -174,7 +174,8 @@ automatically when there's no name match.
 
 **Trade-off**: hosting checkout now requires a domain again (no "skip
 for now" option) -- confirmed with the client as worth it for full
-automation. Business Email (ids 6-7) is untouched.
+automation. Business Email (ids 6-7) got the same treatment separately
+-- see `configure_email_hosting_plans.php` below.
 
 Idempotent -- safe to re-run (updates the Hp row + product config rather
 than duplicating). Run once with:
@@ -192,6 +193,28 @@ creates a real user on the live server. See `docs/CUSTOMIZATIONS.md` and
 get explicit sign-off before triggering `action_activate()` against
 production -- `action_create()` alone (building the local FOSSBilling
 record) is safe and doesn't touch DirectAdmin at all.
+
+## configure_email_hosting_plans.php
+
+Same mechanism as `configure_hosting_plans.php` above, applied to the 2
+Business Email products (ids 6-7) instead of the 4 hosting products.
+DirectAdmin has no mailbox-only account type, so rather than building a
+`CMD_API_POP` adapter method, this creates two minimal Hosting Plans
+(small quota, hosting features off, `max_pop` set to 25/100) and switches
+Business Email to `type=hosting` too -- the client creates their own
+named mailboxes through DirectAdmin's own "Email Accounts" screen via the
+same SSO "Login to Control Panel" button. See
+`docs/CUSTOMIZATIONS.md` ("Business Email DirectAdmin automation") for
+the full reasoning and the deliberately-not-built `CMD_API_POP`
+alternative.
+
+Idempotent, same caveats as above (real DirectAdmin account creation
+needs explicit sign-off before running against production). Run once
+with:
+
+```
+php configure_email_hosting_plans.php
+```
 
 ## rebrand_service_emails.php
 
