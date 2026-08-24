@@ -95,6 +95,7 @@
                             </div>
                             <button class="btn btn-sm btn-dark" type="button" id="domain-check">{{ 'Check'|trans }}</button>
                         </div>
+                        <div id="domain-check-error" class="alert alert-warning mt-2" style="display:none;"></div>
                     </div>
                     <div class="col-sm-12">
                         <div id="register-config" style="display:none;">
@@ -188,6 +189,8 @@
 
 {% set currency = guest.cart_get_currency %}
 <script>
+    const kzdRegisterableTlds = [{% for tld in tlds %}"{{ tld.tld }}"{% if not loop.last %}, {% endif %}{% endfor %}];
+
     function fadeIn(el) {
         el.style.removeProperty('display');
         el.style.opacity = '0';
@@ -260,6 +263,10 @@
                 event.preventDefault();
                 const sld = document.querySelector('input[name="domain[register_sld]"]').value.toLowerCase();
                 const tld = document.querySelector('select[name="domain[register_tld]"]').value.toLowerCase();
+                const domain = sld + tld;
+
+                const errorBox = document.getElementById('domain-check-error');
+                if (errorBox) errorBox.style.display = 'none';
 
                 FOSSBilling.api.guest.post('servicedomain/check', { sld: sld, tld: tld },
                     function(result) {
@@ -268,6 +275,25 @@
                         if (registerConfig) fadeIn(registerConfig);
                         domainChecked = true;
                         domainCheck.style.display = 'none';
+                    },
+                    function(err) {
+                        if (!errorBox) return;
+                        const alternatives = kzdRegisterableTlds.filter(t => t !== tld);
+                        const suggestionsHtml = alternatives.length
+                            ? '<div class="mt-2 d-flex flex-wrap gap-2">' + alternatives.map(function(altTld) {
+                                return '<button type="button" class="btn btn-sm btn-outline-dark kzd-tld-suggestion" data-tld="' + altTld + '">' + sld + altTld + '</button>';
+                            }).join('') + '</div>'
+                            : '';
+                        errorBox.innerHTML = '<strong>' + domain + '</strong> ' + (err.message || 'is not available.') +
+                            (alternatives.length ? '<div class="small mt-1">Try one of these instead:</div>' + suggestionsHtml : '');
+                        errorBox.style.display = '';
+
+                        errorBox.querySelectorAll('.kzd-tld-suggestion').forEach(function(btn) {
+                            btn.addEventListener('click', function() {
+                                document.querySelector('select[name="domain[register_tld]"]').value = btn.dataset.tld;
+                                domainCheck.click();
+                            });
+                        });
                     },
                 );
             });
