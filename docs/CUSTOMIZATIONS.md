@@ -281,6 +281,41 @@ touch stock code. **[core edit]** = a stock file was directly modified.
   email-account screen — logged here so it isn't forgotten, not because
   it's currently planned.
 
+## Checkout copy + own-domain safeguard
+
+- **"Why do I need a domain?" explanation** added to the hosting/email
+  order form (`themes/kzd/html_custom/mod_servicehosting_order_form.html.twig`
+  — the `Servicecustom` version already had equivalent copy from when it
+  was first built) — a customer landing on "Domain Configuration" with no
+  context wasn't obvious *why* it's required.
+- **Cross-sell copy on the domain order form** rewritten from plain/
+  functional to a shorter, punchier framing ("A domain is just an
+  address...") — same hardcoded-IDs caveat as before, unchanged.
+- **Own-domain ownership checkbox**: "Own domain" (bring-your-own,
+  register/transfer don't need this — register is for unclaimed domains,
+  transfer already requires a real EPP/auth code) previously accepted any
+  typed domain name with zero verification. Added a required checkbox
+  ("I own this domain, or I am authorised to manage it") to both the
+  hosting and `Servicecustom` order forms, client-side only (HTML5
+  `required`, standard practice for this — real ownership verification
+  isn't standard for this flow, and isn't a security hole regardless:
+  nothing resolves to us unless the customer actually controls the
+  domain's real DNS, so the risk is accidental typos, not hijacking).
+  Submitted as `domain[owndomain_authorized]`, lands in the order's
+  config for the record, no server-side enforcement added.
+- **`themes/kzd/html_custom/mod_servicehosting_manage.html.twig`**
+  **[override]** — surfaces that customers can log in to DirectAdmin
+  directly (not just via the SSO button) once they set their own
+  password on the Password tab, with the actual control panel URL shown
+  (`server.cpanel_url`, already computed by stock
+  `Servicehosting\Service::getManagerUrls()` — not hardcoded). Worth
+  knowing why this needed spelling out at all: FOSSBilling never
+  shows or emails the auto-generated account password (stock behaviour
+  — `Servicehosting\Service::action_activate()` overwrites it with a
+  placeholder immediately after `createAccount()` for security), so
+  direct login without going through FOSSBilling first genuinely wasn't
+  discoverable before this.
+
 ## Product catalog / pricing
 
 - **4 Shared Hosting products** (Starter/Basic/Standard/Business) — seeded

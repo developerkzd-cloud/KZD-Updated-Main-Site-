@@ -162,6 +162,12 @@
                                    placeholder=".com">
                         </div>
                         <p class="fs-7 text-muted mt-2">{{ 'You will need to update your nameservers or DNS records to point to our servers.'|trans }}</p>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" name="domain[owndomain_authorized]" value="1" id="owndomain-authorized" required>
+                            <label class="form-check-label fs-7" for="owndomain-authorized">
+                                {{ 'I own this domain, or I am authorised to manage it.'|trans }}
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>

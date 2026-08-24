@@ -49,6 +49,7 @@
 {% if show_domain_config %}
 <hr />
 <h4 class="mt-4 mb-1"><strong>{{ 'Domain Configuration'|trans }}</strong></h4>
+<p class="fs-7 text-muted mb-3">{{ 'Your hosting account is created under a domain -- it\'s where your website and email will actually live. Register a new one, transfer an existing one, or connect one you already own.'|trans }}</p>
 
 <div class="d-flex mb-3">
     <nav class="nav nav-pills flex-column border-end me-3 gap-2">
@@ -151,6 +152,12 @@
                                    placeholder=".com">
                         </div>
                         <p class="fs-7 text-muted mt-2">{{ 'You will need to update your nameservers to point to our servers.'|trans }}</p>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" name="domain[owndomain_authorized]" value="1" id="owndomain-authorized" required>
+                            <label class="form-check-label fs-7" for="owndomain-authorized">
+                                {{ 'I own this domain, or I am authorised to manage it.'|trans }}
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -111,8 +111,8 @@
 {% set cross_sell_hosting_ids = [2, 3, 4, 5] %}
 {% set cross_sell_currency = guest.cart_get_currency %}
 <div class="alert alert-secondary mt-3 mb-0" role="alert">
-    <strong>{{ 'Just the domain?'|trans }}</strong>
-    {{ 'A domain name alone doesn\'t give you a website or email address -- you\'ll also need a hosting package to put files or mailboxes on it.'|trans }}
+    <strong>{{ 'A domain is just an address.'|trans }}</strong>
+    {{ 'You still need somewhere for your website and email to actually live -- that\'s what hosting does. Add a plan below and you\'re ready to go.'|trans }}
     <div class="d-flex flex-wrap gap-2 mt-2">
         {% for hosting_id in cross_sell_hosting_ids %}
             {% set hosting_product = guest.product_get({"id": hosting_id}) %}
