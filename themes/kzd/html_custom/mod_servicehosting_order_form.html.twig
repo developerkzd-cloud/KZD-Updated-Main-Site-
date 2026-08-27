@@ -32,9 +32,22 @@
 {# Only show domain configuration section if at least one option is available #}
 {% set show_domain_config = can_register or can_transfer or can_own or can_subdomain %}
 
-{# Determine which option should be active by default #}
+{# Determine which option should be active by default.
+   KZD Solutions addition: honour an explicit ?action= request param (e.g.
+   from the "add hosting to a domain already in your cart" cross-sell on the
+   checkout step, or a future direct link) when that action is actually
+   available for this product -- falls back to the original
+   capability-based priority order otherwise, so normal traffic without the
+   param is unaffected. #}
+{% set requested_action = request.action ?? null %}
 {% set default_action = null %}
-{% if can_register %}
+{% if requested_action == 'owndomain' and can_own %}
+    {% set default_action = 'owndomain' %}
+{% elseif requested_action == 'transfer' and can_transfer %}
+    {% set default_action = 'transfer' %}
+{% elseif requested_action == 'register' and can_register %}
+    {% set default_action = 'register' %}
+{% elseif can_register %}
     {% set default_action = 'register' %}
 {% elseif can_transfer %}
     {% set default_action = 'transfer' %}
