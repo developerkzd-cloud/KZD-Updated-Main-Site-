@@ -131,6 +131,11 @@
                     <div class="col-sm-12">
                         <div id="transfer-config" style="display:none;">
                             <p class="fs-7 mt-2">{{ 'Transfer price is'|trans }}&nbsp;<span class="fw-bold" id="transfer-price"></span></p>
+                            <input class="form-control form-control-sm" type="text" name="domain[transfer_code]" value="{{ request.transfer_code }}"
+                                   style="max-width: 320px" placeholder="{{ 'Authorization/EPP code (optional)'|trans }}">
+                            <p class="fs-7 text-muted mt-1" style="max-width: 500px;">
+                                {{ 'Most domains have a secret authorization code (EPP code) from their current registrar. If you have it, add it here to speed things up -- if not, no problem, we\'ll help you get the transfer moving after you order.'|trans }}
+                            </p>
                         </div>
                     </div>
                 </div>
