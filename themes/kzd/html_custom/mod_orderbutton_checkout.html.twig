@@ -159,7 +159,7 @@
                                 {% set hosting_product = guest.product_get({"id": hosting_id}) %}
                                 {% if hosting_product %}
                                     <a class="btn btn-sm btn-outline-dark"
-                                       href="{{ 'order'|url(query: {'product': hosting_id, 'action': 'owndomain', 'owndomain_sld': cs_sld, 'owndomain_tld': cs_tld}) }}">
+                                       href="{{ 'order'|url(query: {'product': hosting_id, 'action': 'owndomain', 'owndomain_sld': cs_sld, 'owndomain_tld': cs_tld, 'linked_domain': 1}) }}">
                                         {{ hosting_product.title }}
                                         {% if hosting_product.pricing.recurrent['1M'].enabled %}
                                             &mdash; {{ 'from'|trans }} {{ (hosting_product.pricing.recurrent['1M'].price * cross_sell_currency.conversion_rate)|format_currency(cross_sell_currency.code) }}/{{ 'mo'|trans }}

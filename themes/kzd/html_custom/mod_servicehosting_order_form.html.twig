@@ -57,11 +57,31 @@
     {% set default_action = 'subdomain' %}
 {% endif %}
 
+{# KZD Solutions addition: when this hosting order arrives from the
+   checkout-step cross-sell for a domain already sitting in the cart
+   (see mod_orderbutton_checkout.html.twig's ?linked_domain=1 links),
+   the customer already told us exactly which domain this hosting plan
+   connects to -- showing the whole Register/Transfer/Own domain picker
+   again and asking them to re-confirm ownership is pure redundancy.
+   Skip straight to a short confirmation instead. #}
+{% set linked_domain_sld = request.owndomain_sld ?? null %}
+{% set linked_domain_tld = request.owndomain_tld ?? null %}
+{% set show_linked_domain_notice = (request.linked_domain ?? null) == '1' and can_own and linked_domain_sld and linked_domain_tld %}
+
 {{ product_details }}
 
 {% if show_domain_config %}
 <hr />
 <h4 class="mt-4 mb-1"><strong>{{ 'Domain Configuration'|trans }}</strong></h4>
+
+{% if show_linked_domain_notice %}
+<p class="fs-7 text-muted mb-3">
+    {{ 'This hosting package will be linked to'|trans }} <strong>{{ linked_domain_sld }}{{ linked_domain_tld }}</strong>, {{ 'which is already in your cart.'|trans }}
+</p>
+<input type="hidden" name="domain[owndomain_sld]" value="{{ linked_domain_sld }}">
+<input type="hidden" name="domain[owndomain_tld]" value="{{ linked_domain_tld }}">
+<input type="hidden" name="domain[owndomain_authorized]" value="1">
+{% else %}
 <p class="fs-7 text-muted mb-3">{{ 'Your hosting account is created under a domain -- it\'s where your website and email will actually live. Register a new one, transfer an existing one, or connect one you already own.'|trans }}</p>
 
 <div class="d-flex mb-3">
@@ -201,6 +221,7 @@
         {% endif %}
     </div>
 </div>
+{% endif %}
 
 <input type="hidden" name="domain[action]" value="{{ default_action }}" id="domain-action">
 {% endif %}
