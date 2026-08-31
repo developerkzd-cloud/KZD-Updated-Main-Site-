@@ -76,10 +76,20 @@ div.InvoiceInfo {
     line-height: 0.2;
 }
 
-img.CompanyLogo {
+div.CompanyHeader {
     position: relative;
     left: 40px;
     top: 7px;
+}
+
+img.CompanyLogo {
+    vertical-align: middle;
+}
+
+b.CompanyName {
+    vertical-align: middle;
+    font-size: 18px;
+    margin-left: 10px;
 }
 
 h3.CompanyInfo {

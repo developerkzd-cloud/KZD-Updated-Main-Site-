@@ -38,10 +38,12 @@
 		</style>
 	</head>
 	<body>
-		{% if logo_source is not empty %}
-			<img src='{{ logo_source }}' height='50' class='CompanyLogo' style='vertical-align: middle; margin-right: 10px;'>
-		{% endif %}
-		<b class='CompanyName' style='vertical-align: middle; font-size: 18px;'>{{ footer.company_name|default('') }}</b>
+		<div class='CompanyHeader'>
+			{% if logo_source is not empty %}
+				<img src='{{ logo_source }}' height='50' class='CompanyLogo'>
+			{% endif %}
+			<b class='CompanyName'>{{ footer.company_name|default('') }}</b>
+		</div>
 		<hr class='TopSectionDivider'>
 		<div class='InvoiceInfo'>
 			<p>{{ 'Invoice Number'|trans }}: {{ invoice.serie_nr }}</p>
