@@ -38,6 +38,8 @@
     {{ 'js/api.js' | public_asset_url | script_tag }}
     <script type="module" src="{{ 'build/js/huraga.js' | asset_url }}"></script>
 
+    {{ include('partials/kzd_modals.html.twig') }}
+
     {{ debug_bar_render_head() }}
 
     {% block head %}{% endblock %}
