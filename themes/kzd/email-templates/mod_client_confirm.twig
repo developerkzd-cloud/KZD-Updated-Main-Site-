@@ -25,7 +25,7 @@
 	<div class="email-wrapper">
 		<div class="email-card">
 			<div class="email-header">
-				{% if guest.system_company.logo_url %}<img src="{{ guest.system_company.logo_url }}" alt="{{ guest.system_company.name }}">{% else %}<strong>{{ guest.system_company.name }}</strong>{% endif %}
+				{% if guest.system_company.logo_url %}<img src="{{ guest.system_company.logo_url }}" alt="{{ guest.system_company.name }}" style="height:36px;vertical-align:middle;margin-right:10px;">{% endif %}<strong style="font-size:18px;vertical-align:middle;">{{ guest.system_company.name }}</strong>
 			</div>
 			<div class="email-body">
 				<h1>{{ 'Confirm Your Email Address'|trans }}</h1>

@@ -150,11 +150,11 @@ install mapping noted above (Starter=2, Basic=3, Standard=4, Business=5,
 Business Email=6, Premium Business Email=7) -- update the ID arrays at
 the top of the script if yours differ.
 
-The domain→hosting cross-sell suggestion shown on the domain order form
-(`mod_servicedomain_order_form.html.twig`) is separate: no seed data,
-just a hardcoded list of hosting product IDs directly in that template
--- flagged there for becoming an admin-configurable `cross_sell_products`
-field later.
+The domain→hosting cross-sell (now shown on the cart/checkout step, not
+the domain order form -- see `docs/CUSTOMIZATIONS.md`'s "Checkout UX"
+section) is separate: no seed data, admin-configurable via Products ->
+Domains registration and transfer -> Configuration tab, stored in
+`product.config.cross_sell_products`.
 
 ## configure_hosting_plans.php
 
@@ -237,3 +237,25 @@ content for each template also lives as `.twig` files in
 `email-templates/`, kept there purely as a readable backup/reference —
 this script is the actual mechanism for getting that content into a fresh
 database.
+
+## fix_email_header_logo_and_name.php
+
+Fixes a bug in the header markup shared by all 19 rebranded email
+templates (the 8 originals + the 11 from `rebrand_service_emails.php`
+above): it was an either/or --
+`{% if logo_url %}<img>{% else %}<strong>{{ name }}</strong>{% endif %}`
+-- so once KZD Solutions had a logo configured, every email showed only
+the logo image and never the company name text next to it. Fixed to show
+both together. Idempotent (a plain string `REPLACE` keyed on the exact
+old snippet -- a no-op if already applied). Also fixed at the source in
+`rebrand_service_emails.php` and the 19 `.twig` backup files in
+`email-templates/`, so a future fresh install or re-run doesn't
+reintroduce the bug.
+
+Run once with:
+
+```
+php fix_email_header_logo_and_name.php
+```
+
+(edit the PDO connection string first).
