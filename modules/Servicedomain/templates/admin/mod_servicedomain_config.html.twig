@@ -1,7 +1,7 @@
 {% embed 'partial_admin_related_section.html.twig' with {
     title: 'Domain Management'|trans,
     subtitle: 'Domain products are configured from the shared domain management area, including TLD pricing, registrars, and nameservers.'|trans,
-    card_class: 'mb-0'
+    card_class: 'mb-3'
 } %}
     {% block section_footer %}
         <div class="d-flex justify-content-end">
@@ -14,3 +14,49 @@
         </div>
     {% endblock %}
 {% endembed %}
+
+{#
+  KZD Solutions addition: admin-configurable replacement for the hardcoded
+  cross-sell product IDs that used to live directly in
+  mod_orderbutton_checkout.html.twig. Stored as `cross_sell_products` in
+  this product's own `config` JSON (whitelisted for guest reads in
+  Product\Service::getPublicConfig(), since the checkout template reads it
+  as a guest). Follows the same list-of-checkboxes pattern as the
+  Addons/Upgrades tabs elsewhere on this page.
+#}
+<form method="post" action="{{ 'product/update_config'|api_url }}" {{ fb_api_form({message: 'Cross-sell Products Updated'|trans, reload: true}) }}>
+    {% embed 'partial_admin_related_section.html.twig' with {
+        title: 'Cart Cross-sell'|trans,
+        subtitle: 'Choose which products are suggested to customers on the cart/checkout step, shown once this domain is in the cart with none of the selected products in the cart yet.'|trans,
+        card_class: 'mb-0'
+    } %}
+        {% block section_content %}
+            <input type="hidden" name="config[cross_sell_products][]" value="">
+            {% set cross_sell_ids = product.config.cross_sell_products|default([]) %}
+            {% set cross_sell_pairs = admin.product_get_pairs %}
+            {% if cross_sell_pairs|length > 0 %}
+                <div class="list-group list-group-flush">
+                    {% for pid, ptitle in cross_sell_pairs %}
+                        {% if pid != product.id %}
+                            <div class="list-group-item d-flex align-items-center gap-3">
+                                <input class="form-check-input mt-0" type="checkbox" name="config[cross_sell_products][]" value="{{ pid }}" id="cross_sell_{{ pid }}"{% if pid in cross_sell_ids %} checked{% endif %}>
+                                <label class="mb-0 flex-grow-1" for="cross_sell_{{ pid }}">{{ ptitle }}</label>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="card-body pt-0">
+                    <p class="text-muted mb-0">{{ 'The list is empty'|trans }}</p>
+                </div>
+            {% endif %}
+        {% endblock %}
+
+        {% block section_footer %}
+            <div class="d-flex justify-content-end">
+                <input type="hidden" name="id" value="{{ product.id }}">
+                <input type="submit" value="{{ 'Update'|trans }}" class="btn btn-primary">
+            </div>
+        {% endblock %}
+    {% endembed %}
+</form>

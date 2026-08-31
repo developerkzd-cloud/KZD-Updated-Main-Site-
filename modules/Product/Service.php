@@ -244,6 +244,11 @@ class Service implements InjectionAwareInterface
             // modules/Servicecustom/Service.php + docs/CUSTOMIZATIONS.md) --
             // same visibility class as the allow_domain_* flags above.
             'domain_association',
+            // KZD Solutions addition: admin-configurable list of product IDs
+            // suggested as a cross-sell on the cart/checkout step when this
+            // product is in the cart with nothing else linked to it yet (see
+            // themes/kzd/html_custom/mod_orderbutton_checkout.html.twig).
+            'cross_sell_products',
         ];
 
         return array_intersect_key($config, array_flip($publicConfigKeys));

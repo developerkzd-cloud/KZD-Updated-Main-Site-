@@ -15,12 +15,11 @@
   the matching `requested_action`/`request.action` handling added to
   mod_servicehosting_order_form.html.twig).
 
-  The suggested product IDs below are hardcoded for now -- see
-  docs/CUSTOMIZATIONS.md for the note that this should become an
-  admin-configurable `cross_sell_products` field on Product, mirroring
-  how the existing `addons` field already works for Domain Protection &
-  Privacy (modules/Product/Entity/Product.php, rendered generically by
-  modules/Orderbutton/templates/client/mod_orderbutton_addons.html.twig).
+  The suggested product IDs come from the domain product's own
+  `cross_sell_products` config, editable in admin under that product's
+  Configuration tab (see modules/Servicedomain/templates/admin/
+  mod_servicedomain_config.html.twig) -- nothing renders here if the
+  admin hasn't configured any.
 #}
 {% set cart = guest.cart_get %}
 <div class="accordion-item">
@@ -145,8 +144,22 @@
                     {% endif %}
                 {% endfor %}
 
+                {% set cross_sell_hosting_ids = [] %}
                 {% if cross_sell_domain_item is not null and not has_hosting_item %}
-                    {% set cross_sell_hosting_ids = [2, 3, 4, 5] %}
+                    {% set cross_sell_source_product = guest.product_get({"id": cross_sell_domain_item.product_id}) %}
+                    {# The admin form always submits an empty placeholder value alongside
+                       the checked boxes (so unchecking everything still clears the saved
+                       list) -- filter it back out here rather than trusting the stored
+                       array is already clean. #}
+                    {% set raw_cross_sell_ids = cross_sell_source_product.config.cross_sell_products|default([]) %}
+                    {% for raw_id in raw_cross_sell_ids %}
+                        {% if raw_id is not empty %}
+                            {% set cross_sell_hosting_ids = cross_sell_hosting_ids|merge([raw_id]) %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                {% if cross_sell_hosting_ids is not empty %}
                     {% set cross_sell_currency = guest.cart_get_currency %}
                     {% set cs_action = cross_sell_domain_item.action %}
                     {% set cs_sld = cs_action == 'transfer' ? cross_sell_domain_item.transfer_sld : cross_sell_domain_item.register_sld %}
