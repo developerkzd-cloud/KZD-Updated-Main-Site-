@@ -24,7 +24,7 @@
   as a guest). Follows the same list-of-checkboxes pattern as the
   Addons/Upgrades tabs elsewhere on this page.
 #}
-<form method="post" action="{{ 'product/update_config'|api_url }}" {{ fb_api_form({message: 'Cross-sell Products Updated'|trans, reload: true}) }}>
+<form method="post" action="{{ 'product/update_config'|api_url }}" {{ fb_api_form({message: 'Cross-sell Products Updated'|trans}) }}>
     {% embed 'partial_admin_related_section.html.twig' with {
         title: 'Cart Cross-sell'|trans,
         subtitle: 'Choose which products are suggested to customers on the cart/checkout step, shown once this domain is in the cart with none of the selected products in the cart yet.'|trans,
