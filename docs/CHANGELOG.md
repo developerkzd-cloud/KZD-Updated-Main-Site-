@@ -91,3 +91,35 @@ Full test pass across new customer purchase, returning customer, support
 tickets (client + guest), admin workflow, and Business Email ordering — see
 `END_TO_END_TESTING.md` for detailed results. Domain registration/transfer
 identified as untestable from local dev (registrar IP whitelist).
+
+## Phase 11 — domain/hosting checkout UX and DirectAdmin go-live
+
+- Fixed Register/Transfer being silently blocked by a hidden own-domain
+  checkbox's `required` attribute, added the same TLD-unavailable
+  suggestions the domain page already had to the hosting order form's
+  Register check (`49e9ebd`, `56bb143`).
+- Confirmed HostAfrica's live nameservers (`dan1`/`dan2.host-ww.net`) and
+  set them as FOSSBilling's default domain-registration nameservers —
+  the last missing piece for a hosting+domain order to actually go live
+  without manual DNS work.
+- Ran the DirectAdmin automation plan's real end-to-end test (live order
+  → account created → SSO "Login to Control Panel" confirmed working →
+  cancelled to clean up) — confirms the `type=hosting` automation
+  switched to earlier is fully working in production, not just in theory.
+- Added the EPP/authorization-code field (optional, matching HostAfrica's
+  own storefront) to both order forms' Transfer tabs, and made it
+  optional on the website's transfer page too (`d0bca7f`, `1bb5cca`).
+- Auto-run the domain check on arrival from the website, and moved the
+  hosting cross-sell from the domain order form to the cart/checkout step
+  so clicking it can no longer lose an in-progress domain entry
+  (`fc394d3`).
+- Made cross-sell products admin-configurable (was hardcoded IDs), and
+  taught the hosting order form to skip its domain picker entirely when
+  arriving from a cross-sell for a domain already in the cart (`68be327`,
+  `fa7d269`).
+- Replaced the native `window.confirm()`/`window.prompt()` fallback
+  FOSSBilling silently uses everywhere (client-side; admin still has this
+  gap) with proper Bootstrap-styled modals (`9adc706`) — see
+  `CUSTOMIZATIONS.md` for why this was stock behaviour, not a KZD bug.
+- See `CUSTOMIZATIONS.md`'s "Checkout UX" and "Styled confirmation
+  modals" sections for the full detail on all of the above.

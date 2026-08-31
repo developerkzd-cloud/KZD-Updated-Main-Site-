@@ -175,14 +175,9 @@ touch stock code. **[core edit]** = a stock file was directly modified.
 - **`themes/kzd/data-seeds/configure_domain_association.php`**
   **[new]** — sets `product.config.domain_association` to `optional` for
   the 4 hosting products, `required` for the 2 Business Email products.
-- **`themes/kzd/html_custom/mod_servicedomain_order_form.html.twig`**
-  **[override]** — added a warning + hosting-suggestion block below the
-  Register/Transfer tabs. **The suggested product IDs (`[2, 3, 4, 5]`)
-  are hardcoded in the template for now** — flagged there and here as the
-  thing to replace with an admin-configurable `cross_sell_products` field
-  on `Product` (mirroring the existing `addons` JSON field and its
-  generic `mod_orderbutton_addons.html.twig` renderer) once it's worth
-  the extra admin UI.
+- **Cross-sell block later moved off this template entirely** — see
+  "Checkout UX: auto-check, cross-sell placement, admin-configurable
+  products" below for where it lives now and why.
 - **Not done in this pass** (see the plan for the full list): switching
   hosting products to `type=hosting` for real DirectAdmin account
   automation (DirectAdmin connectivity was confirmed working, but this is
@@ -288,9 +283,19 @@ touch stock code. **[core edit]** = a stock file was directly modified.
   — the `Servicecustom` version already had equivalent copy from when it
   was first built) — a customer landing on "Domain Configuration" with no
   context wasn't obvious *why* it's required.
-- **Cross-sell copy on the domain order form** rewritten from plain/
-  functional to a shorter, punchier framing ("A domain is just an
-  address...") — same hardcoded-IDs caveat as before, unchanged.
+- **Cross-sell copy** ("A domain is just an address...") — see "Checkout
+  UX" below; the block itself has since moved off this template to the
+  checkout step, copy carried over unchanged.
+- **EPP/authorization code field** added to both the domain order form's
+  and hosting order form's Transfer tabs, with identical explainer copy
+  ("Most domains have a secret authorization code (EPP code)...").
+  Neither tab asked for it at all before — the hosting form's Transfer
+  tab had no field for it whatsoever (silently sent `transfer_code: null`
+  to HostAfrica), and the domain order form had the input but no
+  explanation of what it was or that it's optional. Kept explicitly
+  optional on both, matching HostAfrica's own storefront (confirmed via a
+  live test transfer on hostafrica.co.za — their checkout doesn't ask for
+  it either) and FOSSBilling's own validator, which never required it.
 - **Own-domain ownership checkbox**: "Own domain" (bring-your-own,
   register/transfer don't need this — register is for unclaimed domains,
   transfer already requires a real EPP/auth code) previously accepted any
@@ -315,6 +320,102 @@ touch stock code. **[core edit]** = a stock file was directly modified.
   placeholder immediately after `createAccount()` for security), so
   direct login without going through FOSSBilling first genuinely wasn't
   discoverable before this.
+
+## Checkout UX: auto-check, cross-sell placement, admin-configurable products
+
+- **Auto-run the availability/transferability check on arrival** — the
+  marketing website's domain search and transfer form already handed off
+  to this order form pre-filled via `?tld=`/`?name=`/`?action=`/`?epp=`
+  query params (existing behaviour), but the customer still had to click
+  "Check" a second time for the exact domain they'd already searched.
+  `themes/kzd/html_custom/mod_servicedomain_order_form.html.twig`
+  **[override]** now auto-clicks the Register or Transfer Check button
+  once both a name and TLD are present in the URL. Verified locally:
+  fires correctly for both actions (transfer's stubbed
+  `can_be_transferred()` check completes fully offline; register's real
+  HostAfrica lookup hits the documented IP-whitelist wall the same way
+  it always has on local dev — unrelated to this change, see
+  `HOSTAFRICA.md`).
+- **Cross-sell moved from the domain order form to the cart/checkout
+  step.** It used to sit below the Register/Transfer tabs on the domain
+  order form; clicking it *before* clicking "Next" navigated away and
+  lost whatever the customer had just typed/checked, since nothing is in
+  the cart yet at that point — "Next" is what actually adds it. Now lives
+  in `themes/kzd/html_custom/mod_orderbutton_checkout.html.twig`
+  **[override, new file]** (stock has no cross-sell concept at all),
+  shown only when the cart contains a domain (register or transfer) with
+  no hosting product yet — the domain is already safely in the cart by
+  then, so clicking through can't lose anything.
+- **Admin-configurable cross-sell products** — the suggested product IDs
+  were originally hardcoded (`[2, 3, 4, 5]`) directly in the template.
+  Replaced with a `cross_sell_products` field on the domain product's own
+  `config` JSON, editable from Products → Domains registration and
+  transfer → **Configuration** tab in admin
+  (`modules/Servicedomain/templates/admin/mod_servicedomain_config.html.twig`
+  **[core edit]** — same checkbox-list-of-products pattern already used
+  for the Addons/Upgrades tabs elsewhere on that page). Whitelisted in
+  `modules/Product/Service.php::getPublicConfig()` **[core edit]** since
+  the checkout template reads it via the guest API role, same reasoning
+  as `domain_association` above. **Gotcha found via a real admin-form
+  round-trip test** (not just a direct DB edit): the admin form always
+  submits an empty placeholder value alongside real checkbox selections
+  (needed so unchecking everything actually clears the saved list) — an
+  empty string sneaking into the saved array broke `product_get()` for
+  that one entry and silently emptied the *entire* cross-sell box instead
+  of just skipping it. The checkout template now filters blank entries
+  out of the stored array before use.
+- **Redundant domain picker skipped when hosting arrives linked to a cart
+  domain.** Clicking a cross-sell link used to land on the hosting order
+  form's full Register/Transfer/Own-domain picker, asking the customer to
+  re-pick an action and re-confirm ownership for a domain they'd just
+  registered/transferred moments earlier in the same order. Checkout's
+  cross-sell links now carry `?action=owndomain&owndomain_sld=&owndomain_tld=&linked_domain=1`;
+  when `linked_domain=1` is present (and the product allows own-domain),
+  `mod_servicehosting_order_form.html.twig` **[override]** skips the
+  whole tab UI and shows a one-line confirmation instead ("This hosting
+  package will be linked to `example.com`, which is already in your
+  cart."), submitting the same fields as hidden inputs. Also taught the
+  form's `default_action` logic to honour a plain `?action=` param
+  (falling back to its original capability-based priority order when
+  absent) so this and the auto-check work above compose correctly. A
+  bare `?action=owndomain` link *without* `linked_domain=1` (no cart
+  guarantee) still shows the full picker as before.
+- **Verified domain transfer + hosting works the same as register +
+  hosting** through this whole chain — transferred a domain into the
+  cart, used the cross-sell, confirmed the resulting cart has exactly one
+  domain-transfer item and one linked hosting item, no duplicate domain
+  entry.
+
+## Styled confirmation modals (replacing native browser dialogs)
+
+- **Problem**: FOSSBilling's own `public/assets/js/api.js` already has a
+  fully-built styled-modal code path for `fb_api_link({modal: {...}})`
+  confirmations and prompts (the `type==="confirm"/"danger"/"prompt"`
+  branches) — but it only uses that path if `typeof Modals !==
+  "undefined"`, and nothing anywhere in stock FOSSBilling, client or
+  admin, ever actually defines that global. It silently falls back to
+  the browser's native `window.confirm()`/`window.prompt()` on every
+  confirm-type action (e.g. removing a cart item) instead — this is
+  stock behaviour, not something the `kzd` theme broke. Confirmed via
+  both tracing `api.js` and a live Playwright test capturing the native
+  `dialog` event firing.
+- **Fix**: `themes/kzd/html/partials/kzd_modals.html.twig` **[new]**
+  defines the missing `Modals` global with a `.create(options)` matching
+  exactly the interface `api.js` already calls, built on Bootstrap 5's
+  own `Modal` component (already loaded for this theme — no new
+  dependency). Dynamic strings (title/content/label) are set via
+  `textContent`, never `innerHTML`, matching `window.confirm()`'s own
+  plain-text behaviour rather than trusting them as markup. Included from
+  both `layout_default.html.twig` and `layout_public.html.twig`
+  **[both overrides, edited]** — the order/checkout page
+  (`mod_orderbutton_index`) extends `layout_public`, not `layout_default`,
+  so both needed the include for full client-side coverage.
+- **Not done**: the admin panel (`themes/admin_default`, a separate stock
+  theme this change doesn't touch) has the exact same gap — its
+  prompt-type dialogs (API key regeneration, etc.) still fall back to
+  native `window.prompt()`. Left as a known follow-up since it wasn't the
+  instance actually observed/reported; same fix (an equivalent partial
+  included in `admin_default`'s own layout) would close it.
 
 ## Product catalog / pricing
 
