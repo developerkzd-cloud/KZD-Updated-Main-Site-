@@ -1,0 +1,375 @@
+/* ==========================================================================
+   KZD Solutions — Problems We Solve (light theme, bento grid)
+   Replaces the swiper carousel version of this section.
+
+   SELF-CONTAINED AND SCOPED. Everything is namespaced under .kzd-problems with
+   --kzd-p- prefixed properties. No bare element, :root, body or existing site
+   class is targeted, so it cannot affect other sections or the other 17 pages.
+
+   THE CELLS STAY DARK. The captions sit on top of the photos, so every cell
+   keeps its dark bottom scrim regardless of the page background. The section
+   reads as dark tiles on white paper — that is intentional, and it matches the
+   light Creative Approach photo panel. Removing the scrim would force the
+   captions below their photos, which changes the layout, not the theme.
+
+   Geometry: the board is a 1240x520 grid at 24px gaps inside a 1240 column.
+   This site's container is 1098, so the grid holds the board's proportions via
+   fr units + aspect-ratio rather than hard-coded board pixels.
+     GAPS            0,   0    610 x 520
+     ANALYTICS       634, 0    606 x 248
+     INEFFICIENCIES  634, 272  291 x 248
+     DIGITAL         949, 272  291 x 248
+   (610 + 24 + 606 = 1240 · 291 + 24 + 291 = 606 · 248 + 24 + 248 = 520)
+   ========================================================================== */
+
+.kzd-problems {
+  /* Light palette — same values as the Creative Approach section. */
+  --kzd-p-paper:      #FFFFFF;
+  --kzd-p-ink:        #232323;
+  --kzd-p-muted:      #717580;
+  --kzd-p-blue:       #2F6FED;
+  --kzd-p-ember:      #FF6B35;
+  --kzd-p-line:       #E1E4EA;
+  --kzd-p-grad-from:  #232323;
+  --kzd-p-grad-to:    #4A5468;
+
+  /* Caption tones — unchanged from the dark theme, because the captions still
+     sit on a dark scrim. */
+  --kzd-p-cap-lg:     #B9C6DC;
+  --kzd-p-cap-sm:     #93A4C1;
+
+  --kzd-p-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-p-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-p-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --kzd-p-ease: cubic-bezier(.22, .61, .36, 1);
+
+  position: relative;
+  /* Flat --paper. No ambient wash: this section was flat on the dark board too,
+     deliberately, because it alternates with the washed sections either side. */
+  background: var(--kzd-p-paper);
+  padding-top: 120px;
+  padding-bottom: 140px;
+}
+
+/* --------------------------------------------------------------------------
+   1. Header — eyebrow + heading left, intro right
+   Board: eyebrow y=120, H2 y=180, intro at x=760 y=186 width 470.
+   660 : 470 is the board's column split (100..760 and 760..1230).
+   -------------------------------------------------------------------------- */
+
+.kzd-problems__head {
+  display: grid;
+  grid-template-columns: 660fr 470fr;
+  column-gap: 30px;
+  align-items: start;
+}
+
+.kzd-problems__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 34px;
+  padding-left: 20px;
+  padding-right: 22px;
+  border-radius: 17px;
+  background: var(--kzd-p-paper);
+  border: 1px solid var(--kzd-p-line);
+}
+
+.kzd-problems__dot {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--kzd-p-ember);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, .24);
+}
+
+.kzd-problems__eyebrow-text {
+  font-family: var(--kzd-p-mono);
+  font-weight: 500;
+  font-size: 11.5px;
+  line-height: 1;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--kzd-p-blue);
+  margin-right: -.18em;
+}
+
+/* Heading gradient INVERTS versus the dark board: that ran #FFFFFF → #B9CDF5;
+   this runs #232323 → #4A5468. */
+.kzd-problems__title {
+  margin: 26px 0 0;
+  font-family: var(--kzd-p-display);
+  font-weight: 600;
+  font-size: 52px;
+  line-height: 1.06;
+  letter-spacing: -.03em;
+  color: var(--kzd-p-ink);          /* fallback if background-clip:text fails */
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .kzd-problems__title {
+    background-image: linear-gradient(180deg, var(--kzd-p-grad-from) 0%, var(--kzd-p-grad-to) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+.kzd-problems__intro {
+  margin: 66px 0 0;                 /* board: 186 - 120 = 66 below the eyebrow top */
+  font-family: var(--kzd-p-body);
+  font-weight: 500;                 /* optical bump, as in Creative Approach */
+  font-size: 17px;
+  line-height: 1.706;
+  color: var(--kzd-p-muted);
+  text-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   2. Bento grid
+   -------------------------------------------------------------------------- */
+
+.kzd-problems__grid {
+  margin-top: 67px;                 /* lands the grid top on the board's y=340 */
+  display: grid;
+  grid-template-columns: 610fr 291fr 291fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 24px;
+  aspect-ratio: 1240 / 520;         /* holds the board proportions at any width */
+}
+
+.kzd-problems__cell--gaps      { grid-column: 1; grid-row: 1 / span 2; }
+.kzd-problems__cell--analytics { grid-column: 2 / span 2; grid-row: 1; }
+.kzd-problems__cell--ineff     { grid-column: 2; grid-row: 2; }
+.kzd-problems__cell--digital   { grid-column: 3; grid-row: 2; }
+
+.kzd-problems__cell {
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  /* A light edge rather than the dark theme's translucent white — it sits over
+     a dark photo, so it reads as a subtle rim, not a line on the paper. */
+  border: 1px solid rgba(255, 255, 255, .16);
+  /* Lifts the tile off the white paper. */
+  box-shadow: 0 10px 28px -12px rgba(38, 52, 78, .30);
+  opacity: 0;
+  transform: scale(.98);
+  transition:
+    opacity 600ms var(--kzd-p-ease),
+    transform 600ms var(--kzd-p-ease);
+  transition-delay: calc(var(--kzd-p-i, 0) * 90ms);
+}
+
+.kzd-problems__cell.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger by grid position, large cell first (DOM order matches). */
+.kzd-problems__cell--gaps      { --kzd-p-i: 0; }
+.kzd-problems__cell--analytics { --kzd-p-i: 1; }
+.kzd-problems__cell--ineff     { --kzd-p-i: 2; }
+.kzd-problems__cell--digital   { --kzd-p-i: 3; }
+
+.kzd-problems__cell img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* PER-PHOTO TREATMENT — these are not interchangeable. Each photo fights the
+   white page differently. Lifted slightly versus the dark theme (they no longer
+   need to sink into the page) but still clearly dark objects. */
+.kzd-problems__cell--gaps img {
+  filter: grayscale(.48) brightness(.94) contrast(1.04);
+  object-position: center 45%;
+}
+.kzd-problems__cell--analytics img {
+  filter: grayscale(.60) brightness(.92) contrast(1.05);
+  object-position: center 34%;
+}
+/* .90, deliberately harder than the .84 the dark theme used: this is a 3D
+   render in olive and teal, and lifting brightness for the light theme brings
+   the green cast straight back. Do not lower it to match the dark value. */
+.kzd-problems__cell--ineff img {
+  filter: grayscale(.90) brightness(.96) contrast(1.07);
+  object-position: 56% center;
+}
+.kzd-problems__cell--digital img {
+  filter: grayscale(.52) brightness(.92) contrast(1.04);
+  object-position: center 42%;
+}
+
+/* Left-edge blue wash, fading out by ~80% width.
+   FLAG: the brief gives the extent but no opacity; .16 is my value. */
+.kzd-problems__cell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(47, 111, 237, .16) 0%,
+    rgba(47, 111, 237, 0) 80%
+  );
+}
+
+/* THE SCRIM. Starts at 24% of cell height, ramps to near-opaque at the bottom.
+   This is what makes the white captions legible — it is not decorative. */
+.kzd-problems__cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 24, 38, 0) 24%,
+    rgba(18, 24, 38, .55) 64%,
+    rgba(18, 24, 38, .93) 100%
+  );
+}
+
+/* --------------------------------------------------------------------------
+   3. Captions — white on the scrim, unchanged from the dark theme
+   -------------------------------------------------------------------------- */
+
+.kzd-problems__cap {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  bottom: 0;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 600ms var(--kzd-p-ease),
+    transform 600ms var(--kzd-p-ease);
+  /* 120ms behind its own cell. */
+  transition-delay: calc(var(--kzd-p-i, 0) * 90ms + 120ms);
+}
+
+.kzd-problems__cell.is-in .kzd-problems__cap {
+  opacity: 1;
+  transform: none;
+}
+
+.kzd-problems__label {
+  display: block;
+  margin: 0;
+  font-family: var(--kzd-p-mono);
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.kzd-problems__text {
+  margin: 0;
+  font-family: var(--kzd-p-body);
+  font-weight: 400;
+  text-wrap: wrap;
+}
+
+/* Large cells */
+.kzd-problems__cell--gaps .kzd-problems__cap,
+.kzd-problems__cell--analytics .kzd-problems__cap { padding: 32px; }
+
+.kzd-problems__cell--gaps .kzd-problems__label,
+.kzd-problems__cell--analytics .kzd-problems__label {
+  font-size: 11.5px;
+  letter-spacing: .18em;
+  margin-right: -.18em;
+}
+
+.kzd-problems__cell--gaps .kzd-problems__text,
+.kzd-problems__cell--analytics .kzd-problems__text {
+  margin-top: 24px;
+  max-width: 430px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--kzd-p-cap-lg);
+}
+
+/* Small cells */
+.kzd-problems__cell--ineff .kzd-problems__cap,
+.kzd-problems__cell--digital .kzd-problems__cap { padding: 24px; }
+
+.kzd-problems__cell--ineff .kzd-problems__label,
+.kzd-problems__cell--digital .kzd-problems__label {
+  font-size: 10.5px;
+  letter-spacing: .16em;
+  margin-right: -.16em;
+}
+
+.kzd-problems__cell--ineff .kzd-problems__text,
+.kzd-problems__cell--digital .kzd-problems__text {
+  margin-top: 21px;
+  max-width: 228px;
+  font-size: 12.8px;
+  line-height: 1.6;
+  color: var(--kzd-p-cap-sm);
+}
+
+/* --------------------------------------------------------------------------
+   4. Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1199px) {
+  .kzd-problems { padding-top: 96px; padding-bottom: 100px; }
+  .kzd-problems__title { font-size: 44px; }
+  .kzd-problems__grid { margin-top: 52px; }
+  .kzd-problems__cell--gaps .kzd-problems__text,
+  .kzd-problems__cell--analytics .kzd-problems__text { font-size: 14px; }
+}
+
+/* Spec 4: below this the bento becomes a single column, all cells 4:3. */
+@media (max-width: 991px) {
+  .kzd-problems__head { grid-template-columns: minmax(0, 1fr); }
+  .kzd-problems__intro { margin-top: 24px; }
+
+  .kzd-problems__grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    aspect-ratio: auto;
+    margin-top: 44px;
+  }
+  .kzd-problems__cell { grid-column: 1 !important; grid-row: auto !important; aspect-ratio: 4 / 3; }
+
+  /* At one column the small cells are as wide as the large ones, so their
+     captions should not stay pinned to a 228px measure. */
+  .kzd-problems__cell--ineff .kzd-problems__cap,
+  .kzd-problems__cell--digital .kzd-problems__cap { padding: 32px; }
+  .kzd-problems__cell--ineff .kzd-problems__label,
+  .kzd-problems__cell--digital .kzd-problems__label { font-size: 11.5px; letter-spacing: .18em; }
+  .kzd-problems__cell--ineff .kzd-problems__text,
+  .kzd-problems__cell--digital .kzd-problems__text { max-width: 430px; font-size: 15px; }
+}
+
+@media (max-width: 767px) {
+  .kzd-problems { padding-top: 70px; padding-bottom: 70px; }
+  .kzd-problems__title { font-size: clamp(2rem, 7vw, 2.75rem); }
+  .kzd-problems__cell { aspect-ratio: 3 / 2; }
+  .kzd-problems__cap { padding: 24px !important; }
+  .kzd-problems__text { font-size: 14px !important; }
+}
+
+/* --------------------------------------------------------------------------
+   5. Reduced motion — everything lands in its final state.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .kzd-problems__cell,
+  .kzd-problems__cap {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+

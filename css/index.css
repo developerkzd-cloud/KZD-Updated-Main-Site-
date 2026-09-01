@@ -1,0 +1,129 @@
+/* .client-heading styles are shared globally via css/about.css (loaded on every page) */
+
+/* img ._250-x-250-keits-logo-1250x250{
+  max-width: 50%; 
+  height: auto;
+} */
+
+
+
+
+/* NOTE: the "Why Partner With Us" styles that used to live here were removed
+   along with that section (replaced by Testimonials, css/kzd-testimonials.css).
+   .shape-image-animation stays — it is shared by the hero and 15 other pages. */
+
+  .shape-image-animation {
+    position: absolute; /* Ensures it's properly positioned */
+    bottom: 0; /* Adjust this if needed */
+    left: 0;
+    width: 100%;
+    z-index: 1; /* Ensure it's above the background */
+}
+
+/* Logos Section */
+.row {
+  box-sizing: border-box;
+}
+.row-ep {
+  background: #ffffff;
+  padding: 60px 120px 74px 92px;
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  height: 238px;
+  position: relative;
+}
+
+
+.duys {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    object-fit: cover;
+  }
+  ._1-db-28-f-67-bc-46-400-f-a-714-dc-674683-a-04-e-1 {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    object-fit: cover;
+  }
+  ._01-home-v-1-dark-1-1 {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    object-fit: cover;
+  }
+  .computer-gardens-1 {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    object-fit: cover;
+  }
+  .za-gear-1 {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    object-fit: cover;
+  }
+  ._250-x-250-keits-logo-1 {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    object-fit: cover;
+  }
+
+
+/* service cards*/
+
+/* Ensure all cards have the same height */
+.swiper-slide {
+  display: flex;
+  height: 100%;
+}
+
+/* Make sure the card stretches equally */
+.services-box-style-03 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Set a fixed height for images */
+.services-box-style-03 .position-relative img {
+  width: 100%;
+  height: 200px; /* Adjust this as needed */
+  object-fit: cover;
+}
+
+/* Ensure content fills available space */
+.services-box-style-03 .bg-white {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Ensures all cards stretch equally */
+}
+
+/* Make sure text section expands evenly */
+.services-box-style-03 .ps-65px.pe-65px.pt-30px.pb-30px {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Keep buttons aligned at the bottom */
+.services-box-style-03 .d-flex.justify-content-center {
+  margin-top: auto;
+}
+
+
+
+/* Global Scaling Fix, navbar fix, and footer fix are shared globally via css/about.css (loaded on every page) */

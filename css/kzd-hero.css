@@ -1,0 +1,123 @@
+/* ==========================================================================
+   KZD Solutions — Services hero image treatment
+
+   SCOPED. Everything is namespaced under .kzd-hero. This file only governs the
+   hero's PHOTO and the scrim over it — the section's height, the heading, the
+   eyebrow, the entry animation and the curved bottom edge are all untouched
+   theme markup and are not styled here.
+
+   Why an <img> and not a background-image: the brief asks for object-position,
+   srcset/sizes, fetchpriority and a preload, none of which a CSS background
+   can carry. The photo therefore moves into a <picture> layer behind the
+   content. (Note the homepage hero is still a plain background-image — its
+   <picture> blocks are in the Problems section, not the hero.)
+
+   Legibility is the point of this file. The replacement photo is much brighter
+   than the one it replaces: the band where "Services" sits averages 108
+   luminance and PEAKS AT 255 — blown windows sit directly behind white text.
+   The filter plus the three scrim layers below exist to bring that under
+   control without flattening the photo into grey mud.
+   ========================================================================== */
+
+.kzd-hero {
+  position: relative;
+  isolation: isolate;          /* keeps the negative z-indexes inside */
+  overflow: hidden;
+}
+
+/* The photo layer. Sits behind everything; the scrim sits between it and the
+   content. */
+.kzd-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.kzd-hero__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;             /* beats the theme's global img { max-width:100% } */
+  object-fit: cover;
+
+  /* Biased down from centre: the top third is ceiling ducting and the bottom
+     is empty floor, so centring wastes the crop on nothing. 58% keeps the
+     table, chairs and windows — the part of the photo that says something. */
+  object-position: center 58%;
+
+  filter: grayscale(.22) contrast(1.06) brightness(.72) saturate(.9);
+}
+
+/* Three layers, painted in the order given:
+   1. vertical ramp    — anchors the top under the nav, the bottom into the curve
+   2. centre vignette  — the one doing the real work behind the heading
+   3. cool wash        — pulls the warm wood and pink chairs toward the palette  */
+.kzd-hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(180deg,
+      rgba(4, 9, 26, .72) 0%,
+      rgba(4, 9, 26, .42) 34%,
+      rgba(4, 9, 26, .55) 72%,
+      rgba(4, 9, 26, .80) 100%),
+    radial-gradient(66% 58% at 50% 46%,
+      rgba(4, 9, 26, .10) 0%,
+      rgba(4, 9, 26, .66) 100%),
+    linear-gradient(112deg,
+      rgba(29, 107, 255, .20) 0%,
+      rgba(29, 107, 255, 0) 58%);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive — the cover crop tightens as the viewport narrows, so the focal
+   point walks with it and the vignette deepens to compensate for there being
+   less dark area around the heading.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .kzd-hero__media img { object-position: center 55%; }
+
+  .kzd-hero__scrim {
+    background-image:
+      linear-gradient(180deg,
+        rgba(4, 9, 26, .74) 0%,
+        rgba(4, 9, 26, .46) 34%,
+        rgba(4, 9, 26, .58) 72%,
+        rgba(4, 9, 26, .82) 100%),
+      radial-gradient(70% 62% at 50% 46%,
+        rgba(4, 9, 26, .14) 0%,
+        rgba(4, 9, 26, .74) 100%),
+      linear-gradient(112deg,
+        rgba(29, 107, 255, .20) 0%,
+        rgba(29, 107, 255, 0) 58%);
+  }
+}
+
+@media (max-width: 560px) {
+  /* Favours the left-hand windows and the table; the right-hand glazing reads
+     as nothing at phone width. */
+  .kzd-hero__media img { object-position: 42% 55%; }
+
+  /* A tall hero on a phone pushes everything below the fold. */
+  .kzd-hero { max-height: 62vh; }
+
+  .kzd-hero__scrim {
+    background-image:
+      linear-gradient(180deg,
+        rgba(4, 9, 26, .76) 0%,
+        rgba(4, 9, 26, .50) 34%,
+        rgba(4, 9, 26, .62) 72%,
+        rgba(4, 9, 26, .84) 100%),
+      radial-gradient(76% 68% at 50% 46%,
+        rgba(4, 9, 26, .18) 0%,
+        rgba(4, 9, 26, .78) 100%),
+      linear-gradient(112deg,
+        rgba(29, 107, 255, .20) 0%,
+        rgba(29, 107, 255, 0) 58%);
+  }
+}

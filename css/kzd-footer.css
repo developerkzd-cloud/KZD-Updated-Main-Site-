@@ -1,0 +1,408 @@
+/* ==========================================================================
+   KZD Solutions — Footer (light theme)
+
+   SELF-CONTAINED AND SCOPED. Namespaced under .kzd-footer with --kzd-f-
+   prefixed properties. Nothing targets a bare element, :root, body or an
+   existing site class.
+
+   THE FOOTER DOES NOT SIT ON PURE WHITE. It takes --paper-2 (#F7F9FC) plus a
+   faint blue wash rising from the bottom-left. On the dark theme this region
+   separated itself with a glow; on pure white it would merge into the section
+   above with only a hairline to mark the boundary. The tint is what makes it
+   read as its own region.
+
+   Board geometry (1440 x 616):
+     BAND 1  label 96 · email 122 · phone 134 · divider 252
+     BAND 2  brand/headers 300 · tagline 350 · links 336 (+30) · socials 428
+     BAND 3  divider 512 · copyright 540
+   ========================================================================== */
+
+.kzd-footer {
+  --kzd-f-paper-2: #F7F9FC;
+  --kzd-f-card:    #FAFBFD;
+  --kzd-f-ink:     #232323;
+  --kzd-f-muted:   #717580;
+  --kzd-f-dim:     #9298A4;
+  --kzd-f-blue:    #2F6FED;
+  --kzd-f-ember:   #FF6B35;
+  --kzd-f-line:    #E1E4EA;
+  --kzd-f-link:    #4A5468;
+  --kzd-f-glyph:   #5A6470;
+  --kzd-f-grad-from: #232323;
+  --kzd-f-grad-to:   #4A5468;
+
+  --kzd-f-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-f-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-f-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --kzd-f-ease:    cubic-bezier(.22, .61, .36, 1);
+
+  position: relative;
+  isolation: isolate;
+  background: var(--kzd-f-paper-2);
+  padding-top: 96px;
+  padding-bottom: 65px;
+  overflow: hidden;
+}
+
+.kzd-footer__wash {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    62% 58% at 22% 102%,
+    rgba(47, 111, 237, .08) 0%,
+    rgba(47, 111, 237, 0) 100%
+  );
+}
+
+/* Entry — the whole footer rises 24px and fades. */
+.kzd-footer__inner {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 600ms var(--kzd-f-ease),
+    transform 600ms var(--kzd-f-ease);
+}
+
+.kzd-footer.is-in .kzd-footer__inner {
+  opacity: 1;
+  transform: none;
+}
+
+/* Shared mono label */
+.kzd-footer__label {
+  margin: 0;
+  font-family: var(--kzd-f-mono);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--kzd-f-dim);
+}
+
+.kzd-footer__rule {
+  height: 1px;
+  background: var(--kzd-f-line);
+  border: 0;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   BAND 1 — contact. The page ends on a call to action, not a list of links.
+   -------------------------------------------------------------------------- */
+
+.kzd-footer__band1 {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 40px;
+}
+
+.kzd-footer__contact-r { text-align: right; }
+
+.kzd-footer__email {
+  position: relative;
+  display: inline-block;      /* so the underline is TEXT width, not container */
+  margin-top: 15px;           /* label ends 107; email box top = 122 */
+  font-family: var(--kzd-f-display);
+  font-weight: 600;
+  font-size: 52px;
+  line-height: 1.1;
+  letter-spacing: -.03em;
+  text-decoration: none;
+  color: var(--kzd-f-ink);
+  transition: --kzd-f-grad-to 320ms var(--kzd-f-ease);
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .kzd-footer__email {
+    background-image: linear-gradient(180deg, var(--kzd-f-grad-from) 0%, var(--kzd-f-grad-to) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Text darkens toward --ink on hover. */
+.kzd-footer__email:hover { --kzd-f-grad-to: #232323; }
+
+/* Resting underline: 2px, ~82% opacity. Slightly heavier and more opaque than
+   the dark version — ember loses a little presence on white. */
+.kzd-footer__email::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: var(--kzd-f-ember);
+  opacity: .82;
+}
+
+/* Hover wipe: a full-strength line sweeps L->R over the resting one. */
+.kzd-footer__email::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: var(--kzd-f-ember);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 320ms var(--kzd-f-ease);
+  z-index: 1;
+}
+
+.kzd-footer__email:hover::before { transform: scaleX(1); }
+
+.kzd-footer__phone {
+  display: inline-block;
+  margin-top: 27px;           /* label ends 107; phone box top = 134 */
+  font-family: var(--kzd-f-display);
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  color: var(--kzd-f-ink);
+  text-decoration: none;
+  transition: color 200ms var(--kzd-f-ease);
+}
+
+.kzd-footer__phone:hover { color: var(--kzd-f-blue); }
+
+.kzd-footer__rule--1 { margin-top: 73px; }   /* lands the divider on y=252 */
+
+/* --------------------------------------------------------------------------
+   BAND 2 — brand + columns
+   Board x: brand 100, COMPANY 640, SERVICES 900, column ends 1340
+   -> 540 : 260 : 440 within the 1240 column.
+   -------------------------------------------------------------------------- */
+
+.kzd-footer__band2 {
+  margin-top: 47px;           /* divider at 253; band top = 300 */
+  display: grid;
+  grid-template-columns: 540fr 260fr 440fr;
+  align-items: start;
+}
+
+/* Block-level flex, not inline-flex: as an inline box it sat on a text
+   baseline and picked up ~9px of line-height below the 28px mark, pushing the
+   tagline off its y=350 mark. */
+.kzd-footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: max-content;
+  max-width: 100%;
+  text-decoration: none;
+}
+
+/* TODO: still the 96x95 raster placeholder shared with the nav. Replace with
+   the original vector before launch — it cannot be recoloured and will soften
+   above ~40px. It IS dark-on-transparent (#010101), so it reads correctly on
+   this theme; the white variant would be invisible here. */
+.kzd-footer__mark {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.kzd-footer__wordmark {
+  font-family: var(--kzd-f-display);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  color: var(--kzd-f-ink);
+}
+
+.kzd-footer__tagline {
+  margin: 22px 0 0;           /* brand row ends 328; tagline top = 350 */
+  width: 280px;
+  max-width: 100%;
+  font-family: var(--kzd-f-body);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.73;
+  color: var(--kzd-f-muted);
+}
+
+/* Socials — WHITE circles with --line borders. The dark version had pale
+   glyphs in translucent-white discs, which inverts to nothing on paper. */
+.kzd-footer__socials {
+  margin: 26px 0 0;           /* tagline ends ~402; socials top = 428 */
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 12px;
+}
+
+/* Same global-list margin as the link columns — 5px here pushed band 3 down. */
+.kzd-footer__socials li { margin: 0; display: flex; }
+
+.kzd-footer__social {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid var(--kzd-f-line);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--kzd-f-glyph);
+  transition:
+    background-color 200ms ease-out,
+    border-color 200ms ease-out,
+    color 200ms ease-out,
+    transform 200ms ease-out;
+}
+
+.kzd-footer__social svg { width: 18px; height: 18px; fill: currentColor; }
+.kzd-footer__social--wa svg { width: 19px; height: 19px; }
+
+.kzd-footer__social:hover {
+  background: var(--kzd-f-card);
+  border-color: rgba(47, 111, 237, .35);
+  color: var(--kzd-f-ink);
+  transform: translateY(-2px);
+}
+
+.kzd-footer__col-head {
+  margin: 0;
+  font-family: var(--kzd-f-mono);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--kzd-f-dim);
+}
+
+.kzd-footer__list {
+  margin: 25px 0 0;           /* header ends 311; first link box top = 336 */
+  padding: 0;
+  list-style: none;
+}
+
+.kzd-footer__list li {
+  /* margin:0 is load-bearing — the site's global list styles add 5px below
+     each item, which stretched the 30px rhythm to 35px. */
+  margin: 0;
+  height: 30px;               /* links sit 30px apart */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kzd-footer__list a {
+  font-family: var(--kzd-f-body);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.2;
+  color: var(--kzd-f-link);
+  text-decoration: none;
+  transition: color 180ms ease-out, transform 180ms ease-out;
+}
+
+.kzd-footer__list a:hover {
+  color: var(--kzd-f-blue);
+  transform: translateX(4px);
+}
+
+/* HOT badge — label FLIPS to white here. On dark it was near-black (#1A0800)
+   because dark-on-ember won there; on light the badge must read as a solid
+   stamp, so white. */
+.kzd-footer__hot {
+  display: inline-flex;
+  align-items: center;
+  height: 17px;
+  padding: 0 7px;
+  border-radius: 9px;
+  background: var(--kzd-f-ember);
+  color: #FFFFFF;
+  font-family: var(--kzd-f-mono);
+  font-weight: 500;
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   BAND 3 — bottom bar
+   -------------------------------------------------------------------------- */
+
+.kzd-footer__rule--2 { margin-top: 46px; }   /* band 2 ends 466; divider 512 */
+
+.kzd-footer__band3 {
+  margin-top: 27px;                          /* divider 513; text top = 540 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.kzd-footer__band3 p {
+  margin: 0;
+  font-family: var(--kzd-f-mono);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: .10em;
+  color: var(--kzd-f-dim);
+}
+
+/* Only the location is uppercased — the copyright line keeps its sentence
+   case, as the board has it. */
+.kzd-footer__band3 .kzd-footer__loc { text-transform: uppercase; }
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1199px) {
+  .kzd-footer { padding-top: 80px; }
+  .kzd-footer__email { font-size: 40px; }
+  .kzd-footer__phone { font-size: 28px; }
+  .kzd-footer__band2 { grid-template-columns: 1fr 260fr 300fr; }
+}
+
+@media (max-width: 991px) {
+  .kzd-footer__band1 { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .kzd-footer__contact-r { text-align: left; }
+  .kzd-footer__phone { margin-top: 12px; }
+  .kzd-footer__rule--1 { margin-top: 44px; }
+  .kzd-footer__band2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); row-gap: 44px; margin-top: 40px; }
+  .kzd-footer__brand-col { grid-column: 1 / -1; }
+  .kzd-footer__rule--2 { margin-top: 40px; }
+}
+
+@media (max-width: 767px) {
+  .kzd-footer { padding-top: 60px; padding-bottom: 48px; }
+  .kzd-footer__email { font-size: clamp(1.5rem, 6.6vw, 2.25rem); }
+  .kzd-footer__phone { font-size: 24px; }
+  .kzd-footer__band2 { grid-template-columns: minmax(0, 1fr); row-gap: 36px; }
+  .kzd-footer__band3 { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .kzd-footer__inner {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .kzd-footer__email::before { transition: none; }
+  .kzd-footer__email:hover::before { transform: scaleX(1); }
+  .kzd-footer__social,
+  .kzd-footer__list a { transition: none; }
+  .kzd-footer__social:hover { transform: none; }
+  .kzd-footer__list a:hover { transform: none; }
+}

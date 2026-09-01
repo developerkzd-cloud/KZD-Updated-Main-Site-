@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kzdsolutions.co.za/sitemap.xml

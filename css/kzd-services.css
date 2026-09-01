@@ -1,0 +1,353 @@
+/* ==========================================================================
+   KZD Solutions — Services (light theme)
+   New section, inserted between Creative Approach and Problems We Solve.
+
+   SELF-CONTAINED AND SCOPED. Namespaced under .kzd-services with --kzd-s-
+   prefixed properties. No bare element, :root, body or existing site class is
+   targeted, so it cannot affect other sections or the other 17 pages.
+
+   ELEVATION REPLACES FILL CONTRAST. On the dark board these cards were LIGHTER
+   than their background. That trick does not invert — a card slightly darker
+   than white just looks dirty. On paper the drop shadow is what separates the
+   card from the page, so it is load-bearing, not decoration.
+
+   Board geometry (1440 x 1000, 1240 content column):
+     H2            centred, two lines, 52 / 1.115 / -0.03em
+     sub           y=242
+     cards         y=330, 397 x 500, 24px gaps  (397*3 + 24*2 = 1239)
+     arrows        y=853, two 46px circles, 10px apart, right edge x=1340
+   ========================================================================== */
+
+.kzd-services {
+  /* Light palette */
+  --kzd-s-paper:      #FFFFFF;
+  --kzd-s-card:       #FAFBFD;
+  --kzd-s-ink:        #232323;
+  --kzd-s-muted:      #717580;
+  --kzd-s-line:       #E1E4EA;
+  --kzd-s-ember:      #FF6B35;   /* dots, next-arrow fill */
+  --kzd-s-ember-dk:   #E85824;   /* icon strokes only */
+  --kzd-s-ring-fill:  #FFF0EA;
+  --kzd-s-ring-line:  rgba(255, 107, 53, .25);
+  --kzd-s-grad-from:  #232323;
+  --kzd-s-grad-to:    #4A5468;
+
+  --kzd-s-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-s-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-s-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --kzd-s-ease: cubic-bezier(.22, .61, .36, 1);
+
+  position: relative;
+  isolation: isolate;
+  background: var(--kzd-s-paper);
+  padding-top: 120px;
+  padding-bottom: 100px;
+  overflow: hidden;
+}
+
+/* Faint radial blue behind the header only. ~9% max — blue on white goes
+   muddy fast, so this stays weak and high up. */
+.kzd-services__wash {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    52% 42% at 50% 16%,
+    rgba(47, 111, 237, .09) 0%,
+    rgba(47, 111, 237, 0) 100%
+  );
+}
+
+/* --------------------------------------------------------------------------
+   1. Header — centred, unlike most sections on this page
+   -------------------------------------------------------------------------- */
+
+.kzd-services__head { text-align: center; }
+
+/* Inverted gradient: the dark board ran #FFFFFF -> #B9CDF5; this runs
+   #232323 -> #4A5468. */
+.kzd-services__title {
+  margin: 0;
+  font-family: var(--kzd-s-display);
+  font-weight: 600;
+  font-size: 52px;
+  line-height: 1.115;
+  letter-spacing: -.03em;
+  color: var(--kzd-s-ink);          /* fallback if background-clip:text fails */
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .kzd-services__title {
+    background-image: linear-gradient(180deg, var(--kzd-s-grad-from) 0%, var(--kzd-s-grad-to) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+.kzd-services__sub {
+  /* Board: H2 box 120..236 (two lines at 52 x 1.115 = 58); sub box top = 242.
+     The 6px box gap reads as a much larger visual gap because of the leading. */
+  margin: 6px 0 0;
+  font-family: var(--kzd-s-body);
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--kzd-s-muted);
+}
+
+/* --------------------------------------------------------------------------
+   2. Card row — a scroll-snap track at every width.
+   Three cards fit exactly at >=1200; below that the row overflows and the
+   arrows have something to do.
+   -------------------------------------------------------------------------- */
+
+.kzd-services__row {
+  /* Sub box ends at 271; the row carries 2px of top padding, so 57 lands the
+     card top on the board's y=330. */
+  margin-top: 57px;
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  /* The track is a scroller, not a scrollbar UI. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* Room for the drop shadow, which is clipped by the scroll box. The shadow
+     is 0 10px 26px -12px, so it bleeds ~11px below and ~1px sideways.
+     Horizontal padding must stay 0: scroll-snap aligns to the card's start
+     edge, so any left padding makes the resting scrollLeft non-zero and the
+     prev arrow never reads as "at the start". */
+  padding: 2px 0 22px;
+}
+
+.kzd-services__row::-webkit-scrollbar { display: none; }
+
+.kzd-services__card {
+  position: relative;
+  flex: 0 0 calc((100% - 48px) / 3);
+  min-height: 500px;
+  scroll-snap-align: start;
+  border-radius: 22px;
+  background: var(--kzd-s-card);
+  border: 1px solid var(--kzd-s-line);
+  /* Load-bearing: this is what lifts the card off the paper. */
+  box-shadow: 0 10px 26px -12px rgba(38, 52, 78, .26);
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 600ms var(--kzd-s-ease),
+    transform 600ms var(--kzd-s-ease);
+  transition-delay: calc(var(--kzd-s-i, 0) * 90ms);
+}
+
+.kzd-services__card.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.kzd-services__card:nth-child(1) { --kzd-s-i: 0; }
+.kzd-services__card:nth-child(2) { --kzd-s-i: 1; }
+.kzd-services__card:nth-child(3) { --kzd-s-i: 2; }
+
+/* --------------------------------------------------------------------------
+   3. Card internals — absolutely placed, straight off the board
+   -------------------------------------------------------------------------- */
+
+.kzd-services__dot {
+  position: absolute;
+  left: 32px;
+  top: 38px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  /* Dots stay at standard ember — only the icon strokes darken. */
+  background: var(--kzd-s-ember);
+}
+
+.kzd-services__index {
+  position: absolute;
+  left: 50px;
+  top: 34px;
+  margin: 0;
+  font-family: var(--kzd-s-mono);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: .14em;
+  color: var(--kzd-s-muted);
+}
+
+.kzd-services__name {
+  position: absolute;
+  left: 32px;
+  top: 62px;
+  right: 32px;
+  margin: 0;
+  font-family: var(--kzd-s-display);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  color: var(--kzd-s-ink);
+}
+
+/* On dark this ring was rgba(255,255,255,.06) — invisible on white, so it
+   becomes a soft ember disc instead. */
+.kzd-services__ring {
+  position: absolute;
+  top: 186px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: var(--kzd-s-ring-fill);
+  border: 1px solid var(--kzd-s-ring-line);
+  display: grid;
+  place-items: center;
+}
+
+.kzd-services__icon {
+  display: block;
+  width: 72px;
+  height: 72px;
+}
+
+/* Icon strokes are #E85824, NOT --ember. Dark-on-light needs less weight than
+   light-on-dark to read at the same strength, hence 2.4 rather than 2.7. */
+.kzd-services__icon .kzd-draw {
+  fill: none;
+  stroke: var(--kzd-s-ember-dk);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Draw-in. Every drawable carries pathLength="100" so one dasharray fits all. */
+.kzd-services__icon .kzd-draw {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset 900ms var(--kzd-s-ease);
+  transition-delay: calc(var(--kzd-s-i, 0) * 90ms + 260ms);
+}
+
+.kzd-services__card.is-in .kzd-services__icon .kzd-draw { stroke-dashoffset: 0; }
+
+/* Bottom-aligned, not flowing under the title — this is what makes the three
+   cards line up. */
+.kzd-services__copy {
+  position: absolute;
+  left: 32px;
+  bottom: 40px;
+  width: 333px;
+  max-width: calc(100% - 64px);
+  margin: 0;
+  font-family: var(--kzd-s-body);
+  font-weight: 400;
+  font-size: 15.5px;
+  line-height: 1.68;
+  color: var(--kzd-s-muted);
+  text-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   4. Carousel arrows — bottom right, right edge on the content column
+   -------------------------------------------------------------------------- */
+
+.kzd-services__nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 1px;                  /* board: 853, i.e. 23px under the cards */
+}
+
+.kzd-services__arrow {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition:
+    background-color 220ms var(--kzd-s-ease),
+    border-color 220ms var(--kzd-s-ease),
+    opacity 220ms var(--kzd-s-ease),
+    transform 220ms var(--kzd-s-ease);
+}
+
+.kzd-services__arrow svg { width: 18px; height: 18px; }
+
+.kzd-services__arrow--prev {
+  background: #FFFFFF;
+  border: 1px solid var(--kzd-s-line);
+  color: var(--kzd-s-ink);
+}
+.kzd-services__arrow--prev:hover:not(:disabled) { background: #F4F6FA; }
+
+/* Solid ember stamp with a WHITE glyph — on the dark board this glyph was
+   near-black #1A0800; on light it flips so the badge reads as a solid stamp. */
+.kzd-services__arrow--next {
+  background: var(--kzd-s-ember);
+  border: 1px solid var(--kzd-s-ember);
+  color: #FFFFFF;
+}
+.kzd-services__arrow--next:hover:not(:disabled) { background: #F2551C; border-color: #F2551C; }
+
+.kzd-services__arrow:hover:not(:disabled) { transform: translateY(-2px); }
+
+.kzd-services__arrow:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+/* --------------------------------------------------------------------------
+   5. Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1199px) {
+  .kzd-services { padding-top: 96px; padding-bottom: 80px; }
+  .kzd-services__title { font-size: 44px; }
+  /* 2.4 cards visible — the row overflows, so the arrows do real work. */
+  .kzd-services__card { flex-basis: calc((100% - 48px) / 2.4); }
+}
+
+@media (max-width: 991px) {
+  .kzd-services__card { flex-basis: calc((100% - 24px) / 1.7); }
+  /* Mobile: the row is a scroll-snap container and the arrows go away. */
+  .kzd-services__nav { display: none; }
+}
+
+@media (max-width: 767px) {
+  .kzd-services { padding-top: 70px; padding-bottom: 60px; }
+  .kzd-services__title { font-size: clamp(2rem, 7vw, 2.75rem); }
+  .kzd-services__row { margin-top: 40px; }
+  .kzd-services__card { flex-basis: min(86%, 340px); min-height: 470px; }
+  .kzd-services__ring { top: 168px; }
+}
+
+/* --------------------------------------------------------------------------
+   6. Reduced motion
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .kzd-services__row { scroll-behavior: auto; }
+
+  .kzd-services__card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .kzd-services__icon .kzd-draw {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+
+  .kzd-services__arrow:hover:not(:disabled) { transform: none; }
+}

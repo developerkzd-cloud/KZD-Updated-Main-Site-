@@ -1,0 +1,59 @@
+{
+  "_README": "HOW TO ADD MORE REVIEWS — Google's API only ever returns 5 reviews, so the other 15 must be copied by hand from your Google Business Profile dashboard (Business Profile > Reviews) or the public Maps listing. Copy the reviewer's name and review text into a new object in the reviews array below and it appears automatically. No code change needed. Entries marked NEEDS_NAME are real reviews whose author Google did not return — fill those in and they start rendering.",
+
+  "placeId": "ChIJ037KIV5FUEkRv9AGavvN_es",
+  "businessName": "KZD Solutions",
+  "rating": 4.9,
+  "totalReviews": 20,
+  "reviewUrl": "https://search.google.com/local/writereview?placeid=ChIJ037KIV5FUEkRv9AGavvN_es",
+  "readAllUrl": "https://www.google.com/maps/place/?q=place_id:ChIJ037KIV5FUEkRv9AGavvN_es",
+  "lastUpdated": "2026-08-23",
+
+  "_template": {
+    "_comment": "Copy this shape for each new review, then delete this _template key.",
+    "author": "Name exactly as it appears on Google",
+    "initials": "TW",
+    "rating": 5,
+    "text": "The review text, verbatim."
+  },
+
+  "reviews": [
+    {
+      "author": "Computer Garden",
+      "authorVerified": false,
+      "initials": "CG",
+      "rating": 5,
+      "text": "We highly recommend KZD Solutions for professional web development and IT solutions. As a computer sales and repair company, we value efficiency, and their team delivers fast, reliable, and high-quality digital services."
+    },
+    {
+      "author": "Umkhumbi Tyres",
+      "authorVerified": false,
+      "initials": "UT",
+      "rating": 5,
+      "text": "We received an excellent IT support from KZD Solutions at Umkhumbi Tyres"
+    },
+    {
+      "author": "Adventist Education",
+      "authorVerified": false,
+      "initials": "AE",
+      "rating": 5,
+      "text": "Our church in Durban highly recommends KZD Solutions for web design and technical support. They helped us create a modern, user-friendly website that connects with our community. Excellent service and dependable IT support. 5 stars are not enough!"
+    },
+    {
+      "author": "NEEDS_NAME",
+      "authorVerified": false,
+      "initials": "",
+      "rating": 5,
+      "text": "We recommend KZD Solutions for web development, IT support, and ongoing maintenance services. Their team is professional, reliable and always provides prompt assistance. Excellent service and outstanding digital solutions.",
+      "_note": "Real review, text verbatim from Google. The API did not return the author. Find it in your Business Profile dashboard and replace NEEDS_NAME."
+    },
+    {
+      "author": "NEEDS_NAME",
+      "authorVerified": false,
+      "initials": "",
+      "rating": 5,
+      "text": "My internship at KZD Solutions as a Business Analyst Intern was a valuable learning experience that exposed me to a professional work environment and helped me develop important workplace skills.",
+      "_note": "Real review, but written by an INTERN about a work placement rather than by a client about a service. Consider leaving it out of a client testimonials carousel even once you have the name."
+    }
+  ]
+}

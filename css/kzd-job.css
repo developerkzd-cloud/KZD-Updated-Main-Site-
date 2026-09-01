@@ -1,0 +1,889 @@
+/* ==========================================================================
+   KZD Solutions — job detail page (job.html?job={id})
+
+   SELF-CONTAINED AND SCOPED under .kzd-job, tokens prefixed --kzd-j-.
+   Shared, NOT duplicated: nav (kzd-nav.css), footer (kzd-footer.css), faces
+   (kzd-fonts.css), auth modals (kzd-auth.css).
+
+   Sized against body { zoom: .9 } — a 44px touch target needs ~49 CSS px.
+   No salary appears anywhere in this file or the page it styles.
+   ========================================================================== */
+
+.kzd-job {
+  --kzd-j-paper:  #FFFFFF;
+  --kzd-j-paper2: #F7F9FC;
+  --kzd-j-card:   #F8FAFC;
+  --kzd-j-line:   #E1E4EA;
+  --kzd-j-navy:   #0B2545;
+  --kzd-j-muted:  #717580;
+  --kzd-j-dim:    #9298A4;
+  --kzd-j-blue:   #2F6FED;
+  --kzd-j-ember:  #FF6B35;
+  --kzd-j-red:    #D93025;
+  --kzd-j-info:   #EDF3FE;
+
+  --kzd-j-grad-start: #4A5468;
+  --kzd-j-grad-end:   #232323;
+
+  --kzd-j-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-j-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-j-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --kzd-j-gutter: 100px;
+
+  position: relative;
+  background: var(--kzd-j-paper);
+}
+
+.kzd-job__inner {
+  width: 100%;
+  max-width: calc(1240px + var(--kzd-j-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--kzd-j-gutter);
+}
+
+/* --------------------------------------------------------------------------
+   1. Header
+   -------------------------------------------------------------------------- */
+
+.kzd-job__head {
+  padding-top: 140px;            /* clears the fixed navbar */
+  padding-bottom: 26px;
+  text-align: center;
+}
+
+.kzd-job__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  /* 17px each side of a ~17px line box = 51 CSS px, which is ~46px actual once
+     body { zoom: .9 } is applied. */
+  padding: 17px 0;
+  font-family: var(--kzd-j-body);
+  font-size: 14.5px;
+  color: var(--kzd-j-muted);
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.kzd-job__back:hover,
+.kzd-job__back:focus-visible { color: var(--kzd-j-blue); }
+
+.kzd-job__back svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.kzd-job__head-in { text-align: center; margin-top: 10px; }
+
+.kzd-job__title {
+  margin: 0;
+  font-family: var(--kzd-j-display);
+  font-size: 50px;
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -.03em;
+  color: var(--kzd-j-grad-end);       /* fallback if background-clip fails */
+  background-image: linear-gradient(180deg, var(--kzd-j-grad-start) 0%, var(--kzd-j-grad-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .kzd-job__title {
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+.kzd-job__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 26px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kzd-job__meta li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--kzd-j-body);
+  font-size: 15px;
+  color: var(--kzd-j-muted);
+}
+
+.kzd-job__meta svg,
+.kzd-job__side-meta svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  fill: none;
+  stroke: var(--kzd-j-dim);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* --------------------------------------------------------------------------
+   2. Tab bar
+   -------------------------------------------------------------------------- */
+
+.kzd-job__tabs-wrap {
+  position: relative;
+  border-bottom: 1px solid var(--kzd-j-line);
+}
+
+.kzd-job__tabs {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  width: 100%;
+  max-width: calc(1240px + var(--kzd-j-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--kzd-j-gutter);
+}
+
+.kzd-job__tab {
+  position: relative;
+  border: 0;
+  background: none;
+  padding: 14px 2px;
+  min-height: 49px;              /* ~44px actual under the 0.9 zoom */
+  font-family: var(--kzd-j-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--kzd-j-muted);
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+
+.kzd-job__tab:hover { color: var(--kzd-j-navy); }
+
+.kzd-job__tab[aria-selected="true"] { color: var(--kzd-j-blue); }
+
+.kzd-job__tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--kzd-j-blue);
+}
+
+/* The apply tab is a SOLID NAVY BUTTON while the details tab is active, and
+   becomes a plain text tab once it is itself selected. */
+.kzd-job__tab--apply[aria-selected="false"] {
+  padding: 11px 22px;
+  border-radius: 9px;
+  background: var(--kzd-j-navy);
+  color: #FFFFFF;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.kzd-job__tab--apply[aria-selected="false"]:hover,
+.kzd-job__tab--apply[aria-selected="false"]:focus-visible {
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -10px rgba(11, 37, 69, .55);
+}
+
+.kzd-job__tab--apply[aria-selected="false"]::after { content: none; }
+
+/* --------------------------------------------------------------------------
+   3. Panels
+   -------------------------------------------------------------------------- */
+
+.kzd-job__panel { padding-top: 44px; padding-bottom: 96px; }
+.kzd-job__panel[hidden] { display: none; }
+
+/* Tab switch: fade + 8px shift, never height. */
+.kzd-job__panel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.kzd-job--anim .kzd-job__panel.is-leaving {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+
+.kzd-job--anim .kzd-job__panel.is-entering {
+  opacity: 0;
+}
+
+.kzd-job--anim .kzd-job__panel.is-entered {
+  opacity: 1;
+  transition: opacity 240ms ease;
+}
+
+/* --------------------------------------------------------------------------
+   4. Job details layout
+   -------------------------------------------------------------------------- */
+
+.kzd-job__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 60fr) minmax(0, 34fr);
+  gap: 0 6%;
+  align-items: start;
+}
+
+.kzd-job__h2 {
+  margin: 0;
+  font-family: var(--kzd-j-display);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  color: var(--kzd-j-navy);
+}
+
+/* padding:0 is load-bearing — these are real <section> elements and the theme
+   gives a bare section 110px of block padding (css/style.css). */
+.kzd-job__section { padding: 0; margin-bottom: 44px; }
+.kzd-job__section:last-child { margin-bottom: 0; }
+
+.kzd-job__p {
+  margin: 16px 0 0;
+  font-family: var(--kzd-j-body);
+  font-size: 15.5px;
+  line-height: 1.72;
+  color: var(--kzd-j-muted);
+}
+
+.kzd-job__list {
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kzd-job__list li {
+  position: relative;
+  padding-left: 21px;
+  margin-bottom: 11px;
+  font-family: var(--kzd-j-body);
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--kzd-j-muted);
+}
+
+.kzd-job__list li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: .62em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--kzd-j-blue);
+}
+
+.kzd-job__list--ember li::before { background: var(--kzd-j-ember); }
+
+/* Bold-lead bullets: a bold title line, then its paragraph indented to align. */
+.kzd-job__lead {
+  display: block;
+  margin-bottom: 3px;
+  font-family: var(--kzd-j-display);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  color: var(--kzd-j-navy);
+}
+
+/* Bottom repeat of the primary action ------------------------------------- */
+
+.kzd-job__tail {
+  margin-top: 50px;
+  padding-top: 34px;
+  border-top: 1px solid var(--kzd-j-line);
+}
+
+/* Sidebar ------------------------------------------------------------------ */
+
+.kzd-job__side {
+  position: sticky;
+  top: 100px;
+}
+
+.kzd-job__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 11px;
+  font-family: var(--kzd-j-body);
+  font-size: 15.5px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
+}
+
+.kzd-job__btn--primary {
+  background: var(--kzd-j-navy);
+  color: #FFFFFF;
+}
+
+.kzd-job__btn--primary:hover,
+.kzd-job__btn--primary:focus-visible {
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -10px rgba(11, 37, 69, .55);
+}
+
+.kzd-job__btn--ghost {
+  margin-top: 12px;
+  border: 1px solid var(--kzd-j-line);
+  background: var(--kzd-j-paper);
+  color: var(--kzd-j-navy);
+}
+
+.kzd-job__btn--ghost:hover,
+.kzd-job__btn--ghost:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -14px rgba(38, 52, 78, .38);
+}
+
+.kzd-job__btn--inline { width: auto; min-width: 240px; }
+
+.kzd-job__side-meta {
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kzd-job__side-meta li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-family: var(--kzd-j-body);
+  font-size: 14.5px;
+  color: var(--kzd-j-muted);
+}
+
+/* "Link copied" confirmation */
+.kzd-job__copied {
+  margin: 10px 0 0;
+  font-family: var(--kzd-j-body);
+  font-size: 13.5px;
+  color: #207842;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.kzd-job__copied.is-on { opacity: 1; }
+
+/* --------------------------------------------------------------------------
+   5. Application form
+   -------------------------------------------------------------------------- */
+
+.kzd-job__form { max-width: 660px; }
+
+.kzd-job__fs {
+  margin: 0 0 34px;
+  padding: 0 0 34px;
+  border: 0;
+  border-bottom: 1px solid var(--kzd-j-line);
+}
+
+.kzd-job__fs:last-of-type { border-bottom: 0; }
+
+.kzd-job__legend {
+  padding: 0;
+  font-family: var(--kzd-j-display);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--kzd-j-navy);
+}
+
+.kzd-job__fs-sub {
+  margin: 5px 0 22px;
+  font-family: var(--kzd-j-body);
+  font-size: 14.5px;
+  color: var(--kzd-j-muted);
+}
+
+.kzd-job__field { margin-bottom: 18px; }
+
+.kzd-job__label {
+  display: block;
+  margin-bottom: 7px;
+  font-family: var(--kzd-j-body);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--kzd-j-navy);
+}
+
+.kzd-job__req { color: var(--kzd-j-red); margin-left: 3px; }
+
+.kzd-job__input,
+.kzd-job__textarea,
+.kzd-job__select {
+  width: 100%;
+  padding: 0 15px;
+  border: 1px solid var(--kzd-j-line);
+  border-radius: 10px;
+  background: var(--kzd-j-card);
+  font-family: var(--kzd-j-body);
+  font-size: 15px;
+  color: var(--kzd-j-navy);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.kzd-job__input,
+.kzd-job__select { height: 52px; }
+
+.kzd-job__textarea {
+  min-height: 120px;
+  padding: 14px 15px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.kzd-job__input::placeholder,
+.kzd-job__textarea::placeholder { color: #A7AEBA; }
+
+.kzd-job__input:focus,
+.kzd-job__textarea:focus,
+.kzd-job__select:focus {
+  outline: none;
+  border-color: var(--kzd-j-blue);
+  box-shadow: 0 0 0 3px rgba(47, 111, 237, .16);
+}
+
+.kzd-job__field.has-error .kzd-job__input,
+.kzd-job__field.has-error .kzd-job__textarea,
+.kzd-job__field.has-error .kzd-job__select,
+.kzd-job__field.has-error .kzd-job__drop {
+  border-color: var(--kzd-j-red);
+  box-shadow: 0 0 0 3px rgba(217, 48, 37, .12);
+}
+
+.kzd-job__error {
+  margin: 6px 0 0;
+  font-family: var(--kzd-j-body);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--kzd-j-red);
+}
+
+.kzd-job__error:empty { display: none; }
+
+/* Drop zones --------------------------------------------------------------- */
+
+.kzd-job__drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 104px;
+  padding: 16px;
+  border: 1px dashed var(--kzd-j-line);
+  border-radius: 10px;
+  background: var(--kzd-j-card);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+
+.kzd-job__drop.is-over {
+  border-style: solid;
+  border-color: var(--kzd-j-blue);
+  background: var(--kzd-j-info);
+}
+
+.kzd-job__drop svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--kzd-j-blue);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.kzd-job__drop-main {
+  font-family: var(--kzd-j-body);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--kzd-j-blue);
+}
+
+.kzd-job__drop-hint {
+  font-family: var(--kzd-j-body);
+  font-size: 13px;
+  color: var(--kzd-j-dim);
+}
+
+.kzd-job__file {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 66px;
+  padding: 12px 14px;
+  border: 1px solid var(--kzd-j-line);
+  border-radius: 10px;
+  background: var(--kzd-j-card);
+}
+
+.kzd-job__file-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--kzd-j-body);
+  font-size: 14.5px;
+  color: var(--kzd-j-navy);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kzd-job__file-size {
+  font-family: var(--kzd-j-body);
+  font-size: 13px;
+  color: var(--kzd-j-dim);
+  flex: none;
+}
+
+.kzd-job__file-x {
+  display: grid;
+  place-items: center;
+  width: 49px;                   /* ~44px actual */
+  height: 49px;
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.kzd-job__file-x svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: #6B7280;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Checkbox group ----------------------------------------------------------- */
+
+.kzd-job__checks {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.kzd-job__check-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 40px;
+  font-family: var(--kzd-j-body);
+  font-size: 15px;
+  color: var(--kzd-j-navy);
+  cursor: pointer;
+}
+
+.kzd-job__check {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  accent-color: var(--kzd-j-blue);
+}
+
+/* Callout ------------------------------------------------------------------ */
+
+.kzd-job__callout {
+  display: flex;
+  gap: 12px;
+  margin-top: 26px;
+  padding: 18px 20px;
+  border-left: 3px solid var(--kzd-j-blue);
+  border-radius: 0 10px 10px 0;
+  background: var(--kzd-j-info);
+}
+
+.kzd-job__callout svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin-top: 1px;
+  fill: none;
+  stroke: var(--kzd-j-blue);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.kzd-job__callout-title {
+  margin: 0;
+  font-family: var(--kzd-j-display);
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--kzd-j-navy);
+}
+
+.kzd-job__callout-body {
+  margin: 6px 0 0;
+  font-family: var(--kzd-j-body);
+  font-size: 14px;
+  line-height: 1.62;
+  color: var(--kzd-j-muted);
+}
+
+/* Legal + submit ------------------------------------------------------------ */
+
+.kzd-job__consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  flex-wrap: wrap;
+}
+
+.kzd-job__consent-label {
+  font-family: var(--kzd-j-body);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--kzd-j-navy);
+}
+
+.kzd-job__consent-label a {
+  color: var(--kzd-j-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  /* Inline padding grows the hit box to the touch minimum without changing the
+     line box, so the consent sentence does not reflow. */
+  padding-block: 17px;
+}
+
+.kzd-job__required-note {
+  margin: 22px 0 18px;
+  font-family: var(--kzd-j-body);
+  font-size: 13.5px;
+  color: var(--kzd-j-dim);
+}
+
+.kzd-job__submit {
+  width: 300px;
+  min-height: 52px;
+}
+
+.kzd-job__live {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Success + not-found ------------------------------------------------------- */
+
+.kzd-job__done,
+.kzd-job__missing {
+  max-width: 660px;
+  padding: 46px 34px;
+  border: 1px solid var(--kzd-j-line);
+  border-radius: 16px;
+  background: var(--kzd-j-card);
+  text-align: center;
+}
+
+.kzd-job__tick {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: #E8F6ED;
+}
+
+.kzd-job__tick svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: #22A054;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.kzd-job__done-title,
+.kzd-job__missing-title {
+  margin: 0;
+  font-family: var(--kzd-j-display);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--kzd-j-navy);
+}
+
+.kzd-job__done-body,
+.kzd-job__missing-body {
+  margin: 12px auto 0;
+  max-width: 470px;
+  font-family: var(--kzd-j-body);
+  font-size: 15px;
+  line-height: 1.66;
+  color: var(--kzd-j-muted);
+}
+
+.kzd-job__done-link,
+.kzd-job__missing-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 12px 0;
+  font-family: var(--kzd-j-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--kzd-j-blue);
+  text-decoration: none;
+}
+
+.kzd-job__done-link:hover,
+.kzd-job__missing-link:hover { text-decoration: underline; }
+
+.kzd-job__missing { margin: 60px auto 90px; }
+
+/* --------------------------------------------------------------------------
+   6. Entry animation — sections rise once per tab view.
+   -------------------------------------------------------------------------- */
+
+.kzd-job--anim .kzd-job__rise {
+  opacity: 0;
+  transform: translateY(16px);
+  will-change: transform, opacity;
+}
+
+.kzd-job--anim .kzd-job__rise.is-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 560ms cubic-bezier(.16, 1, .3, 1) var(--kzd-j-delay, 0ms),
+              transform 560ms cubic-bezier(.16, 1, .3, 1) var(--kzd-j-delay, 0ms);
+}
+
+.kzd-job .is-settled { will-change: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .kzd-job--anim .kzd-job__rise,
+  .kzd-job--anim .kzd-job__rise.is-in,
+  .kzd-job--anim .kzd-job__panel,
+  .kzd-job--anim .kzd-job__panel.is-leaving,
+  .kzd-job--anim .kzd-job__panel.is-entering,
+  .kzd-job--anim .kzd-job__panel.is-entered {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+
+  .kzd-job__btn,
+  .kzd-job__tab,
+  .kzd-job__tab--apply,
+  .kzd-job__drop,
+  .kzd-job__input,
+  .kzd-job__textarea,
+  .kzd-job__copied { transition: none !important; }
+
+  .kzd-job__btn:hover,
+  .kzd-job__btn:focus-visible,
+  .kzd-job__tab--apply[aria-selected="false"]:hover { transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   7. Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1200px) {
+  .kzd-job { --kzd-j-gutter: 40px; }
+  .kzd-job__title { font-size: clamp(34px, 4.2vw, 50px); }
+}
+
+@media (max-width: 900px) {
+  .kzd-job__head { padding-top: 120px; }
+  .kzd-job__title { font-size: 34px; }
+  .kzd-job__h2 { font-size: 24px; }
+  .kzd-job__panel { padding-bottom: 72px; }
+
+  /* Sidebar moves ABOVE the content as a horizontal bar. */
+  .kzd-job__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .kzd-job__side {
+    position: static;
+    order: -1;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--kzd-j-line);
+  }
+
+  .kzd-job__side-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .kzd-job__btn--ghost { margin-top: 0; }
+
+  .kzd-job__side-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 26px;
+    margin-top: 20px;
+  }
+
+  .kzd-job__side-meta li { margin-bottom: 0; }
+
+  .kzd-job__form { max-width: none; }
+}
+
+@media (max-width: 560px) {
+  .kzd-job { --kzd-j-gutter: 20px; }
+
+  .kzd-job__title { font-size: 30px; }
+  .kzd-job__h2 { font-size: 21px; }
+  .kzd-job__legend { font-size: 20px; }
+
+  .kzd-job__meta { gap: 8px 18px; }
+
+  .kzd-job__side-actions { grid-template-columns: minmax(0, 1fr); }
+
+  .kzd-job__btn,
+  .kzd-job__btn--inline,
+  .kzd-job__submit { width: 100%; min-width: 0; }
+
+  /* Checkbox and text on line one, the link wraps to line two, and neither
+     runs past the gutter. */
+  .kzd-job__consent-label { flex: 1 1 100%; }
+
+  .kzd-job__done,
+  .kzd-job__missing { padding: 34px 20px; }
+}
+
+@media (max-width: 380px) {
+  .kzd-job { --kzd-j-gutter: 16px; }
+  .kzd-job__title { font-size: 27px; }
+}

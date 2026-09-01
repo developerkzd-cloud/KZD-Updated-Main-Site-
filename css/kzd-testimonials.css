@@ -1,0 +1,813 @@
+/* ==========================================================================
+   KZD Solutions — Testimonials (light)
+   Replaces the old "Why Partner With Us" section outright.
+
+   SELF-CONTAINED AND SCOPED. Every rule is namespaced under .kzd-tst and every
+   custom property is prefixed --kzd-. Nothing here targets a bare element,
+   :root, body, or any existing site class, so it cannot affect the hero, the
+   other sections, or the other 15 pages.
+
+   Fonts: the seven self-hosted faces are declared once in css/kzd-about.css,
+   which index.html loads ahead of this file. Not redeclared here, matching how
+   kzd-services / kzd-problems / kzd-clients / kzd-footer already work.
+
+   Geometry: 1440 x 900 board, 1240 content column, 100 gutters. Like the other
+   kzd-* sections this uses its own centred column rather than Bootstrap's
+   .container (1098 at 1440). Note the site runs body { zoom: .9 } from
+   css/about.css, so these CSS pixels render at 0.9x — the same convention every
+   sibling section already follows.
+   ========================================================================== */
+
+.kzd-tst {
+  --kzd-paper:      #FFFFFF;
+  --kzd-card:       #F8FAFC;   /* summary bar fill        */
+  --kzd-ink:        #232323;
+  --kzd-muted:      #717580;   /* sub-heading             */
+  --kzd-dim:        #9298A4;   /* review count            */
+  --kzd-blue:       #2F6FED;   /* button, links, dots     */
+  --kzd-line:       #E1E4EA;   /* hairlines, borders      */
+  --kzd-navy:       #0B2545;   /* names, "Google Reviews" */
+  --kzd-gold:       #FBBC04;   /* filled stars            */
+  --kzd-star-off:   #DADEE5;   /* empty stars             */
+  --kzd-review:     #5A606C;   /* card review text        */
+  --kzd-review-lg:  #505866;   /* modal review text       */
+  --kzd-dot-off:    #CED4DE;
+  --kzd-close-bg:   #EEF1F6;
+  --kzd-scrim:      rgba(28, 36, 54, .59);
+  --kzd-grad-start: #4A5468;
+  --kzd-grad-end:   #232323;
+
+  --kzd-font-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-font-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --kzd-ease-out:  cubic-bezier(.16, 1, .3, 1);
+  --kzd-ease-move: cubic-bezier(.22, .61, .36, 1);
+
+  --kzd-gutter: 100px;
+  --kzd-per-page: 3;
+  --kzd-gap: 24px;
+
+  position: relative;
+  isolation: isolate;
+  padding-top: 88px;
+  padding-bottom: 94px;
+  background: var(--kzd-paper);
+}
+
+/* Faint blue wash from the upper left, as on the board. */
+.kzd-tst__wash {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    62% 58% at 16% 8%,
+    rgba(47, 111, 237, .075) 0%,
+    rgba(47, 111, 237, 0) 100%
+  );
+}
+
+.kzd-tst__inner {
+  width: 100%;
+  max-width: calc(1240px + var(--kzd-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--kzd-gutter);
+}
+
+/* --------------------------------------------------------------------------
+   1. Header
+   -------------------------------------------------------------------------- */
+
+/* Screen-reader-only text (the rating is conveyed by stars visually). */
+.kzd-tst__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.kzd-tst__head { text-align: center; }
+
+.kzd-tst__title {
+  margin: 0;
+  font-family: var(--kzd-font-display);
+  font-size: 52px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -.03em;
+  color: var(--kzd-grad-end);          /* fallback if background-clip fails */
+  background-image: linear-gradient(180deg, var(--kzd-grad-start) 0%, var(--kzd-grad-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .kzd-tst__title {
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+.kzd-tst__sub {
+  margin: 6px 0 0;
+  font-family: var(--kzd-font-body);
+  font-size: 16.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--kzd-muted);
+}
+
+/* --------------------------------------------------------------------------
+   2. Summary bar
+   -------------------------------------------------------------------------- */
+
+.kzd-tst__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 126px;
+  margin-top: 38px;
+  padding: 20px 52px;
+  border: 1px solid var(--kzd-line);
+  border-radius: 18px;
+  background: var(--kzd-card);
+  box-shadow: 0 8px 18px -10px rgba(38, 52, 78, .20);
+}
+
+.kzd-tst__brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Official four-colour Google G. Never recoloured to our palette. */
+.kzd-tst__glogo {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  display: block;
+}
+
+.kzd-tst__brand-name {
+  font-family: var(--kzd-font-display);
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  color: var(--kzd-navy);
+}
+
+.kzd-tst__rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.kzd-tst__score {
+  font-family: var(--kzd-font-display);
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--kzd-navy);
+}
+
+.kzd-tst__count {
+  font-family: var(--kzd-font-body);
+  font-size: 15.5px;
+  color: var(--kzd-dim);
+}
+
+.kzd-tst__cta {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 212px;
+  min-height: 52px;
+  border-radius: 9px;
+  background: var(--kzd-blue);
+  font-family: var(--kzd-font-body);
+  font-size: 15.5px;
+  font-weight: 500;
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: background-color 180ms ease;
+}
+
+.kzd-tst__cta:hover,
+.kzd-tst__cta:focus-visible {
+  background: #245FD6;
+  color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   3. Stars
+   -------------------------------------------------------------------------- */
+
+.kzd-tst__stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  line-height: 0;
+}
+
+.kzd-tst__stars svg {
+  display: block;
+  width: var(--kzd-star, 20px);
+  height: var(--kzd-star, 20px);
+  fill: var(--kzd-gold);
+}
+
+.kzd-tst__stars svg.is-off { fill: var(--kzd-star-off); }
+
+/* --------------------------------------------------------------------------
+   4. Carousel
+   -------------------------------------------------------------------------- */
+
+.kzd-tst__carousel {
+  position: relative;
+  margin-top: 58px;
+}
+
+/* The viewport clips; the track slides. Nothing else moves. */
+.kzd-tst__viewport {
+  overflow: hidden;
+  /* Vertical page scroll always wins unless the drag is clearly horizontal. */
+  touch-action: pan-y;
+}
+
+.kzd-tst__track {
+  display: flex;
+  gap: var(--kzd-gap);
+  will-change: transform;
+}
+
+.kzd-tst__card {
+  flex: 0 0 calc((100% - (var(--kzd-per-page) - 1) * var(--kzd-gap)) / var(--kzd-per-page));
+  display: flex;
+  flex-direction: column;
+  min-height: 346px;
+  padding: 44px 32px 32px;
+  border: 1px solid var(--kzd-line);
+  border-radius: 18px;
+  background: var(--kzd-paper);
+  box-shadow: 0 8px 20px -10px rgba(38, 52, 78, .22);
+}
+
+/* Stars sit at y+44 and are 20px tall, so 14px lands the text at y+78. */
+.kzd-tst__quote {
+  margin: 14px 0 0;
+  font-family: var(--kzd-font-body);
+  font-size: 15.5px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--kzd-review);
+}
+
+.kzd-tst__more {
+  position: relative;
+  align-self: flex-start;
+  margin-top: 4px;
+  background: none;
+  border: 0;
+  font-family: var(--kzd-font-body);
+  font-size: 15.5px;
+  line-height: 1.8;
+  color: var(--kzd-blue);
+  text-decoration: underline;    /* visible at rest — no hover-only affordance */
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.kzd-tst__more:hover,
+.kzd-tst__more:focus-visible { text-decoration-thickness: 2px; }
+
+/* Grows the hit box to the touch minimum WITHOUT adding layout height — the
+   card's 346px geometry depends on this link staying one line tall. Sized in
+   CSS px against body { zoom: .9 }, so ~50px here lands at ~45px actual. */
+.kzd-tst__more::after {
+  content: "";
+  position: absolute;
+  inset: -11px -10px;
+}
+
+/* Author sits at the row's vertical centre y+290 from the card top. */
+.kzd-tst__author {
+  display: flex;
+  align-items: center;
+  /* The spec's "38px after the avatar" measured from the avatar's CENTRE:
+     38 - 24 (half of the 48px circle) = 14px of actual gap, which is what the
+     reference shows. A literal 38px gap reads visibly loose against it. */
+  gap: 14px;
+  margin-top: auto;
+  /* Just a minimum gap. Keeping it small lets min-height govern the card, so
+     margin-top:auto pins this row's centre at the board's y+290. */
+  padding-top: 8px;
+}
+
+.kzd-tst__avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--kzd-tone, #5B6C9E);
+  font-family: var(--kzd-font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.kzd-tst__name {
+  font-family: var(--kzd-font-display);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--kzd-navy);
+}
+
+/* --------------------------------------------------------------------------
+   4b. The CTA card — last card in the carousel.
+   Same box as a review so the row stays even, but --card fill, a dashed border
+   and no shadow, so it reads as a door rather than a testimonial.
+   -------------------------------------------------------------------------- */
+
+.kzd-tst__door {
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px 28px;
+  border: 1px dashed var(--kzd-line);
+  background: var(--kzd-card);
+  box-shadow: none;
+  text-align: center;
+  text-decoration: none;
+  transition: transform 200ms var(--kzd-ease-out),
+              background-color 200ms var(--kzd-ease-out),
+              border-color 200ms var(--kzd-ease-out);
+}
+
+.kzd-tst__door-logo {
+  width: 34px;
+  height: 34px;
+}
+
+.kzd-tst__door-title {
+  font-family: var(--kzd-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--kzd-navy);
+}
+
+.kzd-tst__door-sub {
+  max-width: 260px;
+  font-family: var(--kzd-font-body);
+  font-size: 14.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--kzd-muted);
+}
+
+.kzd-tst__door-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 12px 22px;
+  border: 1px solid var(--kzd-blue);
+  border-radius: 8px;
+  background: transparent;
+  font-family: var(--kzd-font-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--kzd-blue);
+}
+
+.kzd-tst__door-arrow {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.kzd-tst__door:hover,
+.kzd-tst__door:focus-visible {
+  border-style: solid;
+  border-color: var(--kzd-blue);
+  background: var(--kzd-paper);
+  transform: translateY(-2px);
+}
+
+/* Arrows — outside the content column, overlapping the gutter. */
+.kzd-tst__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  /* 50 CSS px = ~45px actual under body { zoom: .9 }, clearing the 44px touch
+     minimum. The visible circle is sized separately below. */
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.kzd-tst__arrow-face {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--kzd-line);
+  border-radius: 50%;
+  background: var(--kzd-paper);
+  box-shadow: 0 4px 12px -6px rgba(38, 52, 78, .28);
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.kzd-tst__arrow-face svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: #3A404C;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.kzd-tst__arrow:hover .kzd-tst__arrow-face,
+.kzd-tst__arrow:focus-visible .kzd-tst__arrow-face {
+  background: #F4F7FB;
+  border-color: #CBD2DC;
+}
+
+.kzd-tst__arrow--prev { left: -42px; }
+.kzd-tst__arrow--next { right: -42px; }
+
+/* Only one page of cards: no arrows, no dots, no drag. */
+.kzd-tst--single .kzd-tst__arrow,
+.kzd-tst--single .kzd-tst__dots { display: none; }
+
+/* Dots ------------------------------------------------------------------ */
+
+.kzd-tst__dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 52px;
+}
+
+/* The visible dot is 8px; the button carries a taller hit area around it. */
+.kzd-tst__dot {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 50px;                  /* ~45px actual under the 0.9 zoom */
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.kzd-tst__dot::before {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--kzd-dot-off);
+  transition: background-color 180ms ease;
+}
+
+.kzd-tst__dot[aria-current="true"]::before { background: var(--kzd-blue); }
+
+/* --------------------------------------------------------------------------
+   5. Modal
+   -------------------------------------------------------------------------- */
+
+/* The scrim is appended to <body>, not inside .kzd-tst — a fixed overlay must
+   not risk being clipped or re-based by an ancestor. That puts it outside the
+   section's variable scope, so it carries its own copy of the tokens the modal
+   needs. Without this the scrim paints transparent and the stars fall back to
+   black, because var(--kzd-*) resolves to nothing out here. */
+.kzd-tst__scrim {
+  --kzd-paper:      #FFFFFF;
+  --kzd-navy:       #0B2545;
+  --kzd-gold:       #FBBC04;
+  --kzd-star-off:   #DADEE5;
+  --kzd-review-lg:  #505866;
+  --kzd-close-bg:   #EEF1F6;
+  --kzd-scrim:      rgba(28, 36, 54, .59);
+
+  --kzd-font-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-font-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-ease-out:  cubic-bezier(.16, 1, .3, 1);
+
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: var(--kzd-scrim);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.kzd-tst__scrim.is-open { opacity: 1; }
+
+.kzd-tst__modal {
+  position: relative;
+  width: 860px;
+  max-width: 100%;
+  max-height: calc(100vh - 48px);
+  display: flex;
+  flex-direction: column;
+  padding: 44px 48px 44px 44px;
+  border-radius: 20px;
+  background: var(--kzd-paper);
+  box-shadow: 0 40px 90px -20px rgba(12, 20, 38, .45);
+  opacity: 0;
+  transform: scale(.96);
+  transition: opacity 260ms var(--kzd-ease-out), transform 260ms var(--kzd-ease-out);
+}
+
+.kzd-tst__scrim.is-open .kzd-tst__modal {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Closing: same move, faster. */
+.kzd-tst__scrim.is-closing { opacity: 0; transition-duration: 180ms; }
+.kzd-tst__scrim.is-closing .kzd-tst__modal {
+  opacity: 0;
+  transform: scale(.96);
+  transition-duration: 180ms;
+}
+
+.kzd-tst__close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: grid;
+  place-items: center;
+  width: 44px;                   /* 44px hit box around a 38px face */
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.kzd-tst__close-face {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--kzd-close-bg);
+  transition: background-color 160ms ease;
+}
+
+.kzd-tst__close:hover .kzd-tst__close-face,
+.kzd-tst__close:focus-visible .kzd-tst__close-face { background: #E1E6EE; }
+
+.kzd-tst__close-face svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: #3A404C;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.kzd-tst__modal-quote {
+  margin: 30px 0 0;
+  overflow-y: auto;              /* long reviews scroll, the chrome stays put */
+  font-family: var(--kzd-font-body);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.78;
+  color: var(--kzd-review-lg);
+}
+
+.kzd-tst__modal .kzd-tst__author {
+  margin-top: 32px;
+  padding-top: 0;
+  gap: 16px;                     /* matches the modal reference */
+}
+
+.kzd-tst__modal .kzd-tst__avatar {
+  width: 56px;
+  height: 56px;
+  font-size: 17px;
+}
+
+.kzd-tst__modal .kzd-tst__name { font-size: 19px; }
+
+/* --------------------------------------------------------------------------
+   6. Entry animation. Resting state is the FINAL state; .kzd-tst--anim (added
+   by JS only when it is going to animate) pulls elements back to the start, so
+   no JS / blocked JS / reduced motion all render the finished section.
+   -------------------------------------------------------------------------- */
+
+.kzd-tst--anim .kzd-tst__rise {
+  opacity: 0;
+  transform: translateY(16px);
+  will-change: transform, opacity;
+}
+
+.kzd-tst--anim .kzd-tst__rise.is-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 700ms var(--kzd-ease-out), transform 700ms var(--kzd-ease-out);
+  transition-delay: var(--kzd-delay, 0ms);
+}
+
+.kzd-tst .is-settled { will-change: auto; }
+
+/* The entry-rise rule above also transitions transform, and it outranks the
+   door's own rule — which would leave the hover lift running at the rise's
+   700ms instead of 200ms. Once the entry has settled, hand the door back its
+   own timing. */
+.kzd-tst--anim .kzd-tst__door.is-settled {
+  transition: transform 200ms var(--kzd-ease-out),
+              background-color 200ms var(--kzd-ease-out),
+              border-color 200ms var(--kzd-ease-out);
+}
+
+/* Slide + the subtle mid-transition fade on outgoing cards. */
+.kzd-tst--anim .kzd-tst__track.is-moving { transition: transform 420ms var(--kzd-ease-move); }
+.kzd-tst--anim .kzd-tst__card { transition: opacity 420ms var(--kzd-ease-move); }
+.kzd-tst--anim .kzd-tst__card.is-passing { opacity: .4; }
+
+/* --------------------------------------------------------------------------
+   7. Reduced motion — no slide, no fade, instant page changes, no modal scale.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .kzd-tst--anim .kzd-tst__rise,
+  .kzd-tst__rise {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+
+  .kzd-tst__track,
+  .kzd-tst--anim .kzd-tst__track,
+  .kzd-tst--anim .kzd-tst__track.is-moving {
+    transition: none;
+    will-change: auto;
+  }
+
+  .kzd-tst__card,
+  .kzd-tst--anim .kzd-tst__card { transition: none; }
+  .kzd-tst--anim .kzd-tst__card.is-passing { opacity: 1; }
+
+  .kzd-tst__door { transition: none; }
+  .kzd-tst__door:hover,
+  .kzd-tst__door:focus-visible { transform: none; }
+
+  .kzd-tst__scrim,
+  .kzd-tst__modal,
+  .kzd-tst__scrim.is-closing,
+  .kzd-tst__scrim.is-closing .kzd-tst__modal {
+    transition: none;
+  }
+
+  .kzd-tst__modal { transform: none; }
+  .kzd-tst__scrim.is-open .kzd-tst__modal { transform: none; }
+
+  .kzd-tst__cta,
+  .kzd-tst__arrow-face,
+  .kzd-tst__close-face,
+  .kzd-tst__dot::before { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   8. Responsive
+   -------------------------------------------------------------------------- */
+
+/* <= 1200 — fluid column. Arrows come inboard: at a 40px gutter the -42px
+   desktop offset would put them past the viewport edge. */
+@media (max-width: 1200px) {
+  .kzd-tst {
+    --kzd-gutter: 40px;
+    padding-top: 72px;
+    padding-bottom: 78px;
+  }
+
+  .kzd-tst__title { font-size: clamp(40px, 4.2vw, 52px); }
+  .kzd-tst__summary { padding-inline: 32px; }
+  .kzd-tst__arrow--prev { left: -6px; }
+  .kzd-tst__arrow--next { right: -6px; }
+}
+
+/* <= 900 — summary bar stacks, two cards per page. */
+@media (max-width: 900px) {
+  .kzd-tst {
+    --kzd-per-page: 2;
+    padding-top: 64px;
+    padding-bottom: 68px;
+  }
+
+  .kzd-tst__title { font-size: 40px; }
+
+  .kzd-tst__summary {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+    padding: 24px;
+  }
+
+  .kzd-tst__rating { margin-top: 12px; }
+
+  .kzd-tst__cta {
+    width: 100%;
+    margin-top: 18px;
+  }
+
+  .kzd-tst__carousel { margin-top: 40px; }
+  .kzd-tst__dots { margin-top: 36px; }
+}
+
+/* <= 560 — one card per page, arrows sit on the card edges. */
+@media (max-width: 560px) {
+  .kzd-tst {
+    --kzd-per-page: 1;
+    --kzd-gutter: 20px;
+    --kzd-star: 18px;
+    padding-top: 52px;
+    padding-bottom: 56px;
+  }
+
+  .kzd-tst__title { font-size: 32px; }
+  .kzd-tst__sub { font-size: 15px; }
+
+  .kzd-tst__summary {
+    align-items: flex-start;
+    text-align: left;
+    padding: 20px;
+  }
+
+  .kzd-tst__cta { min-height: 54px; }   /* ~48px actual, the spec's minimum */
+
+  .kzd-tst__card {
+    min-height: 300px;           /* one-line reviews must not collapse */
+    padding: 28px 24px 24px;
+  }
+
+  .kzd-tst__quote { font-size: 15px; }
+  .kzd-tst__more { font-size: 15px; }
+
+  /* 40px face inside a 44px hit box, overlapping the card edges. Absolutely
+     positioned, so they can never narrow the card. */
+  .kzd-tst__arrow { width: 50px; height: 50px; }
+  .kzd-tst__arrow-face { width: 40px; height: 40px; }
+  .kzd-tst__arrow--prev { left: -12px; }
+  .kzd-tst__arrow--next { right: -12px; }
+
+  .kzd-tst__dots { gap: 14px; margin-top: 28px; }
+
+  .kzd-tst__modal {
+    width: calc(100% - 32px);
+    max-height: 80vh;
+    padding: 32px 24px 28px;
+  }
+
+  .kzd-tst__close { top: 14px; right: 14px; }
+  .kzd-tst__modal-quote { font-size: 16px; }
+  .kzd-tst__modal .kzd-tst__author { gap: 18px; }
+}
+
+/* <= 380 — tightest supported width. */
+@media (max-width: 380px) {
+  .kzd-tst { --kzd-gutter: 16px; }
+
+  .kzd-tst__title { font-size: 28px; }
+  .kzd-tst__brand-name { font-size: 21px; }
+  .kzd-tst__card { padding: 24px 18px 20px; }
+  .kzd-tst__author { gap: 20px; }
+  .kzd-tst__avatar { width: 40px; height: 40px; font-size: 13px; }
+  .kzd-tst__name { font-size: 15px; }
+  .kzd-tst__arrow--prev { left: -8px; }
+  .kzd-tst__arrow--next { right: -8px; }
+}

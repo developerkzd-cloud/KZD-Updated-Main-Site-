@@ -1,0 +1,11 @@
+/* NOTE: .h2-service styled the "How we help your business" heading on the old
+   four-card grid. That section is gone — replaced by the accordion in
+   css/kzd-accordion.css — and the class is no longer used anywhere. */
+
+/* NOTE: the .products / .product-container / .product-card rules that used to
+   live here styled the old three-card grid. That section is gone — replaced by
+   css/kzd-products.css — and none of those classes are used anywhere now.
+   (.product-image in style.css / responsive.css is a different, theme-owned
+   component and was left alone.) */
+
+/* .client-heading styles and the global scaling/navbar/footer fixes are shared globally via css/about.css (loaded on every page) */

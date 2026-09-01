@@ -1,0 +1,185 @@
+/* Container */
+
+
+
+/* our story*/
+.story-heading {
+  color: dark-gray; /* Dark gray */
+  font-weight: 700; /* Bold text */
+  letter-spacing: -2px; /* Reducing space between letters */
+  margin-bottom: 50px; /* Adds spacing below the heading */
+  text-align: center; /* Centers text horizontally */
+  padding-top: 30px;
+}
+
+
+/* Winning Roadmap */
+.our-team-of-experts,
+.our-team-of-experts * {
+  box-sizing: border-box;
+  width: 100%;
+  
+}
+.our-team-of-experts {
+  padding: 60px 14px 60px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+  width: 100%; /* Ensure responsiveness */
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  /* width: 1076px; */
+  max-width: 90%; /* Use percentage instead of fixed width */
+  position: relative;
+}
+.the-winning-roadmap {
+  color: var(--navy-blue);
+  text-align: center;
+  font-family: "AllertaStencil-Regular", sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  position: relative;
+  align-self: stretch;
+  text-overflow: ellipsis;
+  /* overflow: hidden;
+  white-space: nowrap; */
+  overflow: visible; /* Ensure text is fully shown */
+  white-space: normal; /* Allow wrapping if needed */
+  max-width: 100%; /* Prevent clipping */
+}
+.frame-453 {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: flex-start;
+  /* justify-content: flex-start; */
+  justify-content: center; /* Center image properly */
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  /* height: 539px; */
+  height: auto; /* Adjust height dynamically */
+  position: relative;
+}
+
+/* Clients section*/
+
+.client-heading {
+  text-align: center;
+  padding-top: -100px; /* Adjust as needed */
+  position: relative;
+}
+
+.client-heading h3 {
+  color: gray;
+  font-weight: 700;
+  letter-spacing: -2px;
+  margin-bottom: 1rem;
+  display: inline-block;
+  position: relative;
+  top: -30px; /* Moves the heading higher */
+}
+
+
+
+/* Global Scaling Fix (Keeps Navbar & Content Responsive) */
+html {
+  font-size: 14px; /* Adjusts everything proportionally */
+}
+
+body {
+  transform: none; /* Removes problematic scaling */
+  zoom: 0.9; /* Fixes the enlarged appearance */
+}
+
+/* Navbar Fix (Ensures Visibility on Scroll) */
+.navbar {
+  position: fixed; /* Ensures navbar remains visible */
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Footer Fix (Removes Extra Space Below) */
+footer {
+  margin-bottom: 0; /* Ensures no extra space */
+  padding-bottom: 10px; /* Adjust for proper spacing */
+}
+
+/* --- Mega dropdown (Hosting) styles & animation --- */
+.nav-item.dropdown { position: static; }
+.mega-dropdown { /* keep in DOM for transitions */
+  display: block; /* override bootstrap so we can animate with opacity/transform */
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%) translateY(-10px);
+  visibility: hidden;
+  opacity: 0;
+  min-width: 560px;
+  max-width: 1000px;
+  width: calc(100% - 60px);
+  border: none;
+  background: #fff;
+  box-shadow: var(--shadow-hover-lg);
+  border-radius: var(--radius-sm);
+  transition: opacity .25s ease, transform .25s ease, visibility .25s;
+  z-index: 1050;
+}
+.nav-item.dropdown.show .mega-dropdown,
+.nav-item.dropdown:focus-within .mega-dropdown {
+  transform: translateX(-50%) translateY(0);
+  visibility: visible;
+  opacity: 1;
+}
+.mega-row { display: flex; gap: 28px; align-items: flex-start; }
+.mega-left { flex: 1 1 40%; min-width: 220px; }
+.mega-links { flex: 1 1 60%; display:flex; gap:20px; flex-wrap:wrap; }
+.mega-col { min-width: 150px; flex: 1 1 150px; }
+.mega-col h6 { margin-bottom:6px; font-weight:700; }
+.mega-dropdown h4 { margin-bottom:6px; }
+
+/* Mobile behaviour: inside collapsed menu, make dropdown static and full width */
+@media (max-width: 991px) {
+  .mega-dropdown { position: static; transform: none; left: 0; top: 0; width: 100%; box-shadow: none; border-radius: 0; padding-left: 1rem; padding-right: 1rem; }
+  .mega-row { flex-direction: column; gap: 16px; }
+  .mega-links { display: block; }
+}
+
+/* Small visual polish to match nav */
+.navbar .nav-link.dropdown-toggle::after { margin-left: .35rem; }
+
+/* --- "Get in Touch" header button: fix hover contrast + the sticky/mobile "btn-dark" state --- */
+/* main.js's scroll handler swaps this button's class between btn-transparent-white-light and btn-dark;
+   btn-dark was never defined anywhere, so the sticky/mobile state rendered with no color at all. */
+#getInTouch .btn.btn-transparent-white-light:hover,
+#getInTouch .btn.btn-transparent-white-light:active {
+  color: var(--dark-gray) !important;
+}
+#getInTouch .btn.btn-transparent-white-light:hover i,
+#getInTouch .btn.btn-transparent-white-light:active i {
+  color: var(--dark-gray) !important;
+}
+#getInTouch .btn.btn-dark {
+  background-color: var(--dark-gray);
+  border-color: var(--dark-gray);
+  color: var(--white);
+}
+#getInTouch .btn.btn-dark:hover,
+#getInTouch .btn.btn-dark:active {
+  background-color: transparent;
+  border-color: var(--dark-gray);
+  color: var(--dark-gray);
+}

@@ -1,0 +1,187 @@
+{
+  "_README": "Roles for careers.html (the listing) and job.html?job={id} (the detail page). ADDING A ROLE is a data edit only — append an object to \"roles\": the listing counts, the open-before-closed ordering, the empty state and the whole detail page are all derived. The \"id\" is what job.html reads from ?job=. The \"detail\" block drives the Job details tab; omit any section you do not need and it is skipped.",
+
+  "_template": {
+    "_comment": "Copy this shape for a new role, then delete this _template key.",
+    "id": "kebab-case-id-used-in-the-apply-link",
+    "title": "Role title",
+    "location": "Durban",
+    "type": "Full-time",
+    "department": "Development",
+    "status": "open",
+    "summary": "One or two sentences for the listing row.",
+    "detail": {
+      "description": ["One paragraph per array item."],
+      "why": [{ "title": "Bold lead line", "body": "Explanatory paragraph beneath it." }],
+      "workOn": ["Plain bullet."],
+      "lookingFor": ["Plain bullet."],
+      "niceToHave": ["Plain bullet."],
+      "offer": [{ "title": "Bold lead line", "body": "Explanatory paragraph beneath it." }]
+    }
+  },
+
+  "_placeholder": "THE FOUR ROLES BELOW ARE PLACEHOLDERS — replace them with the real openings before this goes live. The Junior Web Developer copy is the fullest example; the other three carry shorter placeholder detail.",
+
+  "roles": [
+    {
+      "id": "junior-web-developer",
+      "title": "Junior Web Developer",
+      "location": "Durban",
+      "type": "Full-time",
+      "department": "Development",
+      "status": "open",
+      "summary": "Build and maintain client websites in HTML, CSS and JavaScript, with support from the senior team.",
+      "detail": {
+        "description": [
+          "KZD Solutions is a Durban digital innovation company. We build websites, custom software and internal systems for South African businesses, and we look after them once they are live.",
+          "We are looking for a Junior Web Developer to help build and maintain client websites. You will work on live projects from your first week, with a senior developer reviewing your work and explaining the reasoning behind it."
+        ],
+        "why": [
+          { "title": "You will do real work", "body": "Junior does not mean sidelined. You will be building and shipping client sites, not watching someone else do it." },
+          { "title": "Someone will teach you", "body": "Every piece of work you do gets reviewed by a senior developer who explains why, not just what to change." },
+          { "title": "You will see the whole picture", "body": "Design, build, deploy, support. A small team means you follow a project from brief to live site." },
+          { "title": "We are local", "body": "We are based in Durban, we hire in Durban, and the work stays here." }
+        ],
+        "workOn": [
+          "Building client websites in HTML, CSS and JavaScript",
+          "Turning designs from Penpot into working, responsive pages",
+          "WordPress theme and plugin work for client sites",
+          "Fixing bugs and making improvements on sites already live",
+          "Testing your work across browsers and on real phones"
+        ],
+        "lookingFor": [
+          "A qualification in IT, computer science or web development, or equivalent self-taught experience",
+          "Solid HTML and CSS. You can build a responsive layout without a framework",
+          "Working JavaScript. You understand the DOM and can debug your own code",
+          "Familiarity with Git and version control",
+          "Clear written and spoken communication in English",
+          "Based in Durban or willing to relocate. This role is on site"
+        ],
+        "niceToHave": [
+          "WordPress or WooCommerce experience",
+          "Some PHP",
+          "A portfolio, GitHub profile or personal projects we can look at",
+          "Basic understanding of hosting, domains and DNS"
+        ],
+        "offer": [
+          { "title": "Mentorship", "body": "A senior developer reviewing your work and available for questions." },
+          { "title": "Range of work", "body": "Client websites, internal tools and our own products." },
+          { "title": "Room to grow", "body": "We would rather promote from inside than hire above you." },
+          { "title": "A clear answer", "body": "You hear back from us within 30 days, either way." }
+        ]
+      }
+    },
+    {
+      "id": "business-analyst-intern",
+      "title": "Business Analyst Intern",
+      "location": "Durban",
+      "type": "Internship",
+      "department": "Consulting",
+      "status": "open",
+      "summary": "Six-month placement working alongside our consulting team on real client process-improvement projects.",
+      "detail": {
+        "description": [
+          "KZD Solutions is a Durban digital innovation company. We help businesses find waste, fix process and scale what already works.",
+          "This is a six-month placement on our consulting team. You will sit in on real client work, map how things currently run, and help propose what should change."
+        ],
+        "why": [
+          { "title": "Real clients, not exercises", "body": "You will be in actual engagements, with your work forming part of what the client receives." },
+          { "title": "Someone senior on hand", "body": "A consultant reviews your analysis and talks you through how they reached their own conclusions." },
+          { "title": "You will see the whole picture", "body": "From first interview to final recommendation, on projects small enough to follow end to end." }
+        ],
+        "workOn": [
+          "Documenting how a client's process runs today",
+          "Sitting in on client interviews and writing them up",
+          "Building simple process maps and flow diagrams",
+          "Helping put together findings and recommendations"
+        ],
+        "lookingFor": [
+          "Studying towards, or recently finished, a business, IT or industrial engineering qualification",
+          "Comfortable writing clearly in English",
+          "Organised, and able to keep notes someone else can read",
+          "Based in Durban. This placement is on site"
+        ],
+        "niceToHave": [
+          "Any exposure to process mapping or Lean",
+          "Confident with spreadsheets",
+          "An interest in how businesses actually operate"
+        ],
+        "offer": [
+          { "title": "Mentorship", "body": "A consultant who reviews your work and explains the reasoning." },
+          { "title": "A real reference", "body": "Six months of named project work you can point to afterwards." },
+          { "title": "A clear answer", "body": "You hear back from us within 30 days, either way." }
+        ]
+      }
+    },
+    {
+      "id": "it-support-technician",
+      "title": "IT Support Technician",
+      "location": "Durban",
+      "type": "Full-time",
+      "department": "Support",
+      "status": "open",
+      "summary": "First-line support for our hosting and maintenance clients, on the phone and on site.",
+      "detail": {
+        "description": [
+          "KZD Solutions is a Durban digital innovation company. As well as building systems, we look after them — hosting, maintenance and support for clients across South Africa.",
+          "We are looking for an IT Support Technician to be the first person a client speaks to when something is not working, and to see it through to a fix."
+        ],
+        "why": [
+          { "title": "You own the problem", "body": "You are not passing tickets along. You see an issue from the first call to the resolution." },
+          { "title": "Someone senior on hand", "body": "Anything beyond first line gets escalated, and you sit with whoever picks it up." },
+          { "title": "We are local", "body": "Our clients are here, so you meet the people you help." }
+        ],
+        "workOn": [
+          "Answering support calls and email from hosting and maintenance clients",
+          "Diagnosing website, email and connectivity problems",
+          "On-site visits to client offices around Durban",
+          "Basic server, DNS and mailbox administration",
+          "Keeping a clear record of what was wrong and what fixed it"
+        ],
+        "lookingFor": [
+          "An IT qualification, A+/N+ or equivalent hands-on experience",
+          "Patient and clear with people who are not technical",
+          "Comfortable with Windows, basic networking and email configuration",
+          "A valid driver's licence for on-site work",
+          "Based in Durban. This role is on site"
+        ],
+        "niceToHave": [
+          "cPanel or WHM experience",
+          "Some exposure to DNS and hosting",
+          "Any scripting at all"
+        ],
+        "offer": [
+          { "title": "Breadth", "body": "Hosting, email, networks and websites, rather than one narrow queue." },
+          { "title": "Room to grow", "body": "Support is how several of our team started. We promote from inside." },
+          { "title": "A clear answer", "body": "You hear back from us within 30 days, either way." }
+        ]
+      }
+    },
+    {
+      "id": "graphic-designer",
+      "title": "Graphic Designer",
+      "location": "Durban",
+      "type": "Contract",
+      "department": "Design",
+      "status": "closed",
+      "summary": "Brand and marketing collateral for KZD and our clients. This role has been filled.",
+      "detail": {
+        "description": [
+          "This role has been filled. It is listed here so you can see the kind of work we take on.",
+          "The brief covered brand and marketing collateral for KZD Solutions and for our clients — identity work, social assets and print."
+        ],
+        "workOn": [
+          "Brand identity and logo work",
+          "Social and campaign assets",
+          "Print collateral and pitch documents",
+          "Supporting the web team with design assets"
+        ],
+        "lookingFor": [
+          "A design qualification or a portfolio that speaks for itself",
+          "Confident in the Adobe suite or Figma",
+          "Able to work to a brand guideline and to help write one"
+        ]
+      }
+    }
+  ]
+}

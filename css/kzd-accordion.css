@@ -1,0 +1,506 @@
+/* ==========================================================================
+   KZD Solutions — Services accordion (Services page)
+   Two panels; hovering one expands it and collapses the other.
+
+   SELF-CONTAINED AND SCOPED. Every rule is namespaced under .kzd-acc and every
+   custom property is prefixed --kzd-a-. Nothing here targets a bare element,
+   :root, body, or any existing site class, so it cannot affect the rest of the
+   Services page or any other page.
+
+   Fonts come from css/kzd-fonts.css, which this page already loads.
+
+   Note the site runs body { zoom: .9 } from css/about.css, so these CSS pixels
+   render at 0.9x — the same convention every kzd-* section follows. Touch
+   targets are sized against that (a 44px target needs ~49 CSS px).
+
+   THE KEY IDEA: both panels are fully in the DOM at all times, with all their
+   content. Nothing mounts or unmounts on hover. The inner content also carries
+   a FIXED width, so as a panel narrows the text is clipped by overflow:hidden
+   rather than re-wrapping — text reflowing mid-collapse is the single thing
+   that makes this effect look cheap.
+   ========================================================================== */
+
+.kzd-acc {
+  --kzd-a-paper:   #FFFFFF;
+  --kzd-a-paper2:  #F7F9FC;   /* section ground            */
+  --kzd-a-navy:    #0B2545;   /* Development panel         */
+  --kzd-a-ink:     #232323;   /* light panel text          */
+  --kzd-a-muted:   #717580;   /* light panel secondary     */
+  --kzd-a-dusk:    #96ACCC;   /* navy panel secondary      */
+  --kzd-a-line:    #E1E4EA;   /* hairlines, borders        */
+  --kzd-a-rule-d:  rgba(255, 255, 255, .14);  /* navy hairlines */
+  --kzd-a-blue:    #2F6FED;   /* eyebrow text              */
+  --kzd-a-ember:   #FF6B35;   /* CTA + eyebrow dot         */
+  --kzd-a-grad-start: #4A5468;
+  --kzd-a-grad-end:   #232323;
+
+  --kzd-a-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-a-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-a-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  /* Slow-in / fast-out. A linear or ease-out curve makes a width transition
+     feel rubbery, which is why this is not the section's usual ease. */
+  --kzd-a-ease: cubic-bezier(.65, 0, .35, 1);
+  --kzd-a-dur: 560ms;
+
+  --kzd-a-gutter: 100px;
+  --kzd-a-open: 820px;
+  --kzd-a-shut: 396px;
+  --kzd-a-pad: 48px;
+
+  position: relative;
+  isolation: isolate;
+  padding-top: 96px;
+  padding-bottom: 82px;
+  background: var(--kzd-a-paper2);
+}
+
+/* Faint radial blue behind the header, ~7% at its strongest. */
+.kzd-acc__wash {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    56% 46% at 50% 6%,
+    rgba(47, 111, 237, .07) 0%,
+    rgba(47, 111, 237, 0) 100%
+  );
+}
+
+.kzd-acc__inner {
+  width: 100%;
+  max-width: calc(1240px + var(--kzd-a-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--kzd-a-gutter);
+}
+
+/* --------------------------------------------------------------------------
+   1. Header
+   -------------------------------------------------------------------------- */
+
+.kzd-acc__head { text-align: center; }
+
+.kzd-acc__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 16px;
+  border: 1px solid var(--kzd-a-line);
+  border-radius: 999px;
+  background: var(--kzd-a-paper);
+  font-family: var(--kzd-a-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--kzd-a-blue);
+}
+
+.kzd-acc__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--kzd-a-ember);
+  flex: none;
+}
+
+.kzd-acc__title {
+  margin: 24px 0 0;
+  font-family: var(--kzd-a-display);
+  font-size: 52px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -.03em;
+  color: var(--kzd-a-grad-end);        /* fallback if background-clip fails */
+  background-image: linear-gradient(180deg, var(--kzd-a-grad-start) 0%, var(--kzd-a-grad-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .kzd-acc__title {
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+/* Two break points in one accessible string: only one <br> is ever shown, so
+   the heading still reads as "Everything you need to optimise and scale". */
+.kzd-acc__br--a { display: none; }   /* after "need"  — narrow only */
+.kzd-acc__br--b { display: inline; } /* after "to"    — wide only   */
+
+.kzd-acc__sub {
+  margin: 14px 0 0;
+  font-family: var(--kzd-a-body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--kzd-a-muted);
+}
+
+/* --------------------------------------------------------------------------
+   2. The panels
+   -------------------------------------------------------------------------- */
+
+.kzd-acc__panels {
+  display: flex;
+  gap: 24px;
+  margin-top: 64px;
+  align-items: stretch;          /* both panels share the taller height */
+}
+
+.kzd-acc__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;       /* children keep their fixed width */
+  flex: 0 0 var(--kzd-a-shut);
+  min-height: 660px;
+  padding: 52px var(--kzd-a-pad);
+  border-radius: 26px;
+  overflow: hidden;              /* clips the fixed-width content when narrow */
+  transition: flex-basis var(--kzd-a-dur) var(--kzd-a-ease);
+}
+
+.kzd-acc__panel.is-open { flex-basis: var(--kzd-a-open); }
+
+.kzd-acc__panel--light {
+  background: var(--kzd-a-paper);
+  border: 1px solid var(--kzd-a-line);
+  box-shadow: 0 18px 44px -26px rgba(38, 52, 78, .28);
+}
+
+.kzd-acc__panel--navy {
+  background: var(--kzd-a-navy);
+  border: 0;
+  box-shadow: 0 22px 52px -24px rgba(11, 37, 69, .48);
+}
+
+/* Collapsed title — centred in the collapsed width. Pinned to that width so it
+   does not drift sideways while the panel animates; it is only ever visible at
+   that width anyway. */
+.kzd-acc__mini {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--kzd-a-shut);
+  display: grid;
+  place-items: center;
+  padding: 0 24px;
+  text-align: center;
+  font-family: var(--kzd-a-display);
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -.03em;
+  line-height: 1.1;
+  pointer-events: none;
+}
+
+.kzd-acc__panel--light .kzd-acc__mini { color: var(--kzd-a-ink); }
+.kzd-acc__panel--navy  .kzd-acc__mini { color: #FFFFFF; }
+
+/* Expanded title. Also the accessible control: it is a real <button>, and it
+   holds no interactive content, so the CTA link below stays valid. */
+.kzd-acc__toggle {
+  width: calc(var(--kzd-a-open) - var(--kzd-a-pad) * 2);
+  flex: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-family: var(--kzd-a-display);
+  font-size: 46px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -.03em;
+  cursor: pointer;
+}
+
+.kzd-acc__panel--light .kzd-acc__toggle { color: var(--kzd-a-ink); }
+.kzd-acc__panel--navy  .kzd-acc__toggle { color: #FFFFFF; }
+
+/* Expanded: the button covers only its own line, so everything below it — the
+   CTA especially — stays clickable. Collapsed: it stretches over the whole
+   panel so the entire collapsed panel is the hit area. */
+.kzd-acc__panel:not(.is-open) .kzd-acc__toggle {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  font-size: 0;                  /* the visible label is .kzd-acc__mini */
+  z-index: 2;
+}
+
+.kzd-acc__body {
+  width: calc(var(--kzd-a-open) - var(--kzd-a-pad) * 2);
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.kzd-acc__desc {
+  margin: 15px 0 0;              /* title ends ~y+103, description at y+118 */
+  font-family: var(--kzd-a-body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.kzd-acc__panel--light .kzd-acc__desc { color: var(--kzd-a-muted); }
+.kzd-acc__panel--navy  .kzd-acc__desc { color: var(--kzd-a-dusk); }
+
+/* The board's numbers do not all fit the 6-row panel: a 660px panel with the
+   list starting at y+230, 58px rows and a 56px CTA pinned 52px from the bottom
+   needs 230 + 6x58 + 56 + 52 = 686px. Left at 660 the CTA lands flush against
+   the last hairline. min-height stays 660 (correct for the 5-row panel) and the
+   24px floor below guarantees breathing room; the 6-row panel then settles at
+   710 and flex-stretch matches its neighbour. */
+.kzd-acc__list {
+  margin: 85px 0 24px;           /* first row lands at y+230 */
+  padding: 0;
+  list-style: none;
+}
+
+.kzd-acc__row {
+  display: flex;
+  align-items: center;
+  height: 58px;
+  font-family: var(--kzd-a-body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.kzd-acc__panel--light .kzd-acc__row {
+  color: var(--kzd-a-ink);
+  border-bottom: 1px solid var(--kzd-a-line);
+}
+
+.kzd-acc__panel--navy .kzd-acc__row {
+  color: #FFFFFF;
+  border-bottom: 1px solid var(--kzd-a-rule-d);
+}
+
+.kzd-acc__cta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;              /* pinned to the bottom padding (52px) */
+  min-height: 56px;
+  padding: 0 32px;
+  border-radius: 999px;
+  background: var(--kzd-a-ember);
+  font-family: var(--kzd-a-body);
+  font-size: 16px;
+  font-weight: 500;
+  color: #FFFFFF;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 200ms ease;
+}
+
+.kzd-acc__cta:hover,
+.kzd-acc__cta:focus-visible {
+  background: #F0561F;
+  color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   3. The cross-fade
+
+   Collapsing content clears in 180ms, well before the panel is narrow enough
+   to matter. Expanding content waits 220ms — until there is room for it — then
+   takes 300ms. The two titles cross-fade; neither moves into the other.
+   -------------------------------------------------------------------------- */
+
+.kzd-acc__toggle,
+.kzd-acc__body {
+  opacity: 0;
+  transition: opacity 180ms linear;
+}
+
+.kzd-acc__panel.is-open .kzd-acc__toggle,
+.kzd-acc__panel.is-open .kzd-acc__body {
+  opacity: 1;
+  transition: opacity 300ms linear 220ms;
+}
+
+.kzd-acc__mini {
+  opacity: 1;
+  transition: opacity 300ms linear 220ms;
+}
+
+.kzd-acc__panel.is-open .kzd-acc__mini {
+  opacity: 0;
+  transition: opacity 180ms linear;
+}
+
+/* List rows rise 8px into place, 40ms apart, once the expand delay has run. */
+.kzd-acc__row {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 180ms linear, transform 180ms linear;
+}
+
+.kzd-acc__panel.is-open .kzd-acc__row {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms linear var(--kzd-a-delay),
+              transform 300ms var(--kzd-a-ease) var(--kzd-a-delay);
+}
+
+/* --------------------------------------------------------------------------
+   4. Focus
+   -------------------------------------------------------------------------- */
+
+.kzd-acc__toggle:focus-visible {
+  outline: 3px solid var(--kzd-a-blue);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.kzd-acc__panel--navy .kzd-acc__toggle:focus-visible { outline-color: #7FA9FF; }
+
+/* --------------------------------------------------------------------------
+   5. Reduced motion — hover still switches panels, it just happens at once.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .kzd-acc__panel,
+  .kzd-acc__toggle,
+  .kzd-acc__body,
+  .kzd-acc__mini,
+  .kzd-acc__row,
+  .kzd-acc__panel.is-open .kzd-acc__toggle,
+  .kzd-acc__panel.is-open .kzd-acc__body,
+  .kzd-acc__panel.is-open .kzd-acc__mini,
+  .kzd-acc__panel.is-open .kzd-acc__row,
+  .kzd-acc__cta {
+    transition: none !important;
+  }
+
+  .kzd-acc__row { transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   6. Responsive
+
+   At <= 900 the accordion is switched OFF, not merely restyled: both panels
+   render fully expanded and stacked, and kzd-accordion.js detaches its hover
+   handlers at the same breakpoint. There is no hover on a phone, so an
+   accordion there is just a control that does not work.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1200px) {
+  .kzd-acc {
+    --kzd-a-gutter: 40px;
+    padding-top: 76px;
+    padding-bottom: 68px;
+  }
+
+  /* Fluid split that keeps the board's 820:396 ratio. */
+  .kzd-acc__panel { flex: 0 0 calc((100% - 24px) * .3193); }
+  .kzd-acc__panel.is-open { flex-basis: calc((100% - 24px) * .6807); }
+
+  .kzd-acc__mini { width: calc((100% - 24px) * .3193); }
+  .kzd-acc__toggle,
+  .kzd-acc__body { width: calc(100% - 0px); }
+  .kzd-acc__panel:not(.is-open) .kzd-acc__toggle { width: 100%; }
+
+  .kzd-acc__title { font-size: clamp(36px, 3.9vw, 52px); }
+}
+
+@media (max-width: 900px) {
+  .kzd-acc { padding-top: 64px; padding-bottom: 60px; }
+
+  .kzd-acc__title { font-size: 36px; }
+
+  .kzd-acc__panels {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    margin-top: 44px;
+  }
+
+  /* Everything open, nothing collapsible. */
+  .kzd-acc__panel,
+  .kzd-acc__panel.is-open {
+    flex: none;
+    width: 100%;
+    min-height: 0;
+    transition: none;
+  }
+
+  .kzd-acc__mini { display: none; }
+
+  .kzd-acc__panel:not(.is-open) .kzd-acc__toggle {
+    position: static;
+    inset: auto;
+    font-size: 46px;
+    z-index: auto;
+  }
+
+  .kzd-acc__toggle,
+  .kzd-acc__body,
+  .kzd-acc__panel:not(.is-open) .kzd-acc__toggle {
+    width: 100%;
+    opacity: 1;
+    transition: none;
+    cursor: default;
+  }
+
+  .kzd-acc__row,
+  .kzd-acc__panel:not(.is-open) .kzd-acc__row {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .kzd-acc__list { margin-top: 40px; }
+}
+
+@media (max-width: 560px) {
+  .kzd-acc {
+    --kzd-a-gutter: 20px;
+    --kzd-a-pad: 28px;
+  }
+
+  .kzd-acc__title { font-size: 32px; }
+  .kzd-acc__br--a { display: inline; }   /* break after "need" */
+  .kzd-acc__br--b { display: none; }
+  .kzd-acc__sub { font-size: 15.5px; }
+
+  .kzd-acc__panel { border-radius: 22px; padding: 32px var(--kzd-a-pad); }
+
+  .kzd-acc__panel:not(.is-open) .kzd-acc__toggle,
+  .kzd-acc__toggle { font-size: 34px; }
+
+  .kzd-acc__desc { font-size: 16px; }
+  .kzd-acc__row { font-size: 16px; height: 54px; }
+  .kzd-acc__list { margin-top: 32px; }
+
+  /* Full width of the panel's inner area, and tall enough to clear the 44px
+     touch minimum once body { zoom: .9 } is applied (54 x .9 = ~49). */
+  .kzd-acc__cta {
+    align-self: stretch;
+    width: 100%;
+    min-height: 54px;
+    padding: 0 20px;
+    font-size: 15.5px;
+    margin-top: 36px;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 380px) {
+  .kzd-acc { --kzd-a-gutter: 16px; }
+
+  .kzd-acc__panel:not(.is-open) .kzd-acc__toggle,
+  .kzd-acc__toggle { font-size: 30px; }
+
+  .kzd-acc__row { font-size: 15px; }
+  .kzd-acc__desc { font-size: 15.5px; }
+}

@@ -1,0 +1,864 @@
+/* ==========================================================================
+   KZD Solutions — Client showcase (homepage)
+   A marquee of live client sites on desktop; a swipeable carousel on mobile.
+
+   SELF-CONTAINED AND SCOPED. Everything is namespaced under .kzd-sc and every
+   custom property is prefixed --kzd-s-. Nothing targets a bare element, :root,
+   body, or any existing site class.
+
+   Fonts come from css/kzd-fonts.css, which index.html already loads.
+   The site runs body { zoom: .9 }, so touch targets are sized against that —
+   a 44px target needs ~49 CSS px here.
+
+   NOTE: this REPLACES the old logo marquee on the homepage only. The old
+   .kzd-clients section is still live on services.html, so css/kzd-clients.css,
+   js/kzd-clients.js and images/clients/*.png all remain in use — see the note
+   in index.html where the old link tags were removed.
+   ========================================================================== */
+
+.kzd-sc {
+  --kzd-s-paper:  #FFFFFF;
+  --kzd-s-paper2: #F7F9FC;   /* section ground        */
+  --kzd-s-chrome: #F0F2F6;   /* browser chrome strip  */
+  --kzd-s-line:   #E1E4EA;
+  --kzd-s-navy:   #0B2545;
+  --kzd-s-muted:  #717580;
+  --kzd-s-dim:    #9298A4;
+  --kzd-s-blue:   #2F6FED;
+  --kzd-s-ember:  #FF6B35;
+  --kzd-s-domain: #68707E;
+  --kzd-s-badge:  #565E6A;
+  --kzd-s-live:   #22A054;
+  --kzd-s-veil:   rgba(16, 26, 46, .36);
+  --kzd-s-grad-start: #4A5468;
+  --kzd-s-grad-end:   #232323;
+
+  --kzd-s-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-s-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-s-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --kzd-s-gutter: 100px;
+  --kzd-s-card: 378px;
+  --kzd-s-gap: 26px;
+
+  position: relative;
+  isolation: isolate;
+  padding-top: 96px;
+  padding-bottom: 96px;
+  background: var(--kzd-s-paper2);
+  overflow: hidden;              /* the track is deliberately wider than the page */
+}
+
+.kzd-sc__wash {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    56% 46% at 50% 6%,
+    rgba(47, 111, 237, .07) 0%,
+    rgba(47, 111, 237, 0) 100%
+  );
+}
+
+/* --------------------------------------------------------------------------
+   1. Header
+   -------------------------------------------------------------------------- */
+
+.kzd-sc__head {
+  width: 100%;
+  max-width: calc(1240px + var(--kzd-s-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--kzd-s-gutter);
+  text-align: center;
+}
+
+.kzd-sc__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 16px;
+  border: 1px solid var(--kzd-s-line);
+  border-radius: 999px;
+  background: var(--kzd-s-paper);
+  font-family: var(--kzd-s-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--kzd-s-blue);
+}
+
+.kzd-sc__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--kzd-s-ember);
+  flex: none;
+}
+
+.kzd-sc__title {
+  margin: 24px 0 0;
+  font-family: var(--kzd-s-display);
+  font-size: 50px;
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -.03em;
+  color: var(--kzd-s-grad-end);        /* fallback if background-clip fails */
+  background-image: linear-gradient(180deg, var(--kzd-s-grad-start) 0%, var(--kzd-s-grad-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .kzd-sc__title {
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+.kzd-sc__sub {
+  max-width: 660px;              /* holds the copy to two centred lines */
+  margin: 14px auto 0;
+  font-family: var(--kzd-s-body);
+  font-size: 16.5px;
+  font-weight: 400;
+  line-height: 1.62;
+  color: var(--kzd-s-muted);
+}
+
+/* --------------------------------------------------------------------------
+   2. The rail
+   -------------------------------------------------------------------------- */
+
+.kzd-sc__rail {
+  position: relative;
+  margin-top: 64px;
+}
+
+.kzd-sc__viewport {
+  overflow: hidden;
+  touch-action: pan-y;           /* vertical page scroll always wins */
+}
+
+/* Two identical sets sit in the track; translating -50% lands exactly one
+   period, so the loop has no seam. The duration is set inline by the script
+   from a fixed px/second, so adding a seventh client keeps the same speed. */
+.kzd-sc__track {
+  display: flex;
+  gap: var(--kzd-s-gap);
+  width: max-content;
+  /* A flex `gap` sits only BETWEEN items, so 12 cards give 11 gaps and the
+     track is one gap short of two whole periods — translateX(-50%) then lands
+     13px off and the loop visibly drifts. The trailing pad restores the 12th
+     gap so -50% is exactly one period. */
+  padding-right: var(--kzd-s-gap);
+  animation-name: kzd-sc-scroll;
+  animation-timing-function: linear;   /* linear only — easing makes it pulse */
+  animation-iteration-count: infinite;
+  animation-duration: 45s;             /* overridden inline, derived from width */
+  animation-play-state: paused;        /* released after the entry fade */
+  will-change: transform;
+}
+
+@keyframes kzd-sc-scroll {
+  to { transform: translateX(-50%); }
+}
+
+.kzd-sc.is-rolling .kzd-sc__track { animation-play-state: running; }
+
+/* Paused: drop the compositor hint. */
+.kzd-sc.is-held .kzd-sc__track { will-change: auto; }
+
+/* --------------------------------------------------------------------------
+   3. Card
+   -------------------------------------------------------------------------- */
+
+.kzd-sc__item {
+  flex: 0 0 var(--kzd-s-card);
+  width: var(--kzd-s-card);
+}
+
+.kzd-sc__card {
+  display: block;
+  width: 100%;
+  height: 252px;
+  padding: 0;
+  border: 1px solid var(--kzd-s-line);
+  border-radius: 16px;
+  background: var(--kzd-s-paper);
+  box-shadow: 0 8px 22px -10px rgba(38, 52, 78, .24);
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  transition: box-shadow 240ms ease;
+}
+
+.kzd-sc__card:hover,
+.kzd-sc__card:focus-visible {
+  box-shadow: 0 14px 30px -12px rgba(38, 52, 78, .40);
+}
+
+.kzd-sc__card:focus-visible {
+  outline: 3px solid var(--kzd-s-blue);
+  outline-offset: 3px;
+}
+
+/* Browser chrome ---------------------------------------------------------- */
+
+.kzd-sc__chrome {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding-left: 20px;
+  background: var(--kzd-s-chrome);
+  border-radius: 15px 15px 0 0;  /* top corners only */
+}
+
+.kzd-sc__lights {
+  display: flex;
+  gap: 5px;                      /* 11px dot + 5px gap = 16px pitch */
+  flex: none;
+}
+
+.kzd-sc__light {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.kzd-sc__light--r { background: #FF5F56; }
+.kzd-sc__light--y { background: #FFBD2E; }
+.kzd-sc__light--g { background: #27C93F; }
+
+.kzd-sc__domain {
+  margin-left: 16px;             /* dots end at x=68, domain starts at x=84 */
+  font-family: var(--kzd-s-body);
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--kzd-s-domain);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Screenshot -------------------------------------------------------------- */
+
+.kzd-sc__shot {
+  position: relative;
+  height: 212px;                 /* 252 card - 40 chrome */
+  overflow: hidden;
+  border-radius: 0 0 15px 15px;  /* bottom corners only */
+}
+
+.kzd-sc__shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;               /* beats the theme's global img rule */
+  object-fit: cover;
+  object-position: top center;   /* the top of a hero capture identifies it */
+}
+
+/* Hover veil */
+.kzd-sc__veil {
+  position: absolute;
+  inset: 0;
+  background: var(--kzd-s-veil);
+  opacity: 0;
+  transition: opacity 240ms ease-out;
+  pointer-events: none;
+}
+
+.kzd-sc__card:hover .kzd-sc__veil,
+.kzd-sc__card:focus-visible .kzd-sc__veil { opacity: 1; }
+
+/* Preview pill — a discrete element appearing, so a little overshoot reads as
+   responsive rather than wobbly. */
+.kzd-sc__preview {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: var(--kzd-s-paper);
+  font-family: var(--kzd-s-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--kzd-s-navy);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.88);
+  transition: opacity 280ms cubic-bezier(.34, 1.4, .64, 1),
+              transform 280ms cubic-bezier(.34, 1.4, .64, 1);
+  pointer-events: none;
+}
+
+.kzd-sc__card:hover .kzd-sc__preview,
+.kzd-sc__card:focus-visible .kzd-sc__preview {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.kzd-sc__preview svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Status badge ------------------------------------------------------------ */
+
+.kzd-sc__status {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 25px;
+  padding: 0 10px;
+  border: 1px solid var(--kzd-s-line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .94);
+  font-family: var(--kzd-s-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--kzd-s-badge);
+  white-space: nowrap;
+}
+
+/* COMING SOON takes dark navy for BOTH the dot and the label. Not ember. */
+.kzd-sc__status--soon { color: var(--kzd-s-navy); }
+
+.kzd-sc__beacon {
+  position: relative;
+  display: inline-flex;
+  width: 7px;
+  height: 7px;
+  flex: none;
+}
+
+.kzd-sc__dotlive,
+.kzd-sc__halo {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--kzd-s-live);
+}
+
+.kzd-sc__status--soon .kzd-sc__dotlive,
+.kzd-sc__status--soon .kzd-sc__halo { background: var(--kzd-s-navy); }
+
+/* A permanent live signal — never hover-triggered. The per-card delay is set
+   inline from a random 0-800ms so the six never blink in unison, which would
+   read as a rendering fault. */
+.kzd-sc__dotlive { animation: kzd-sc-pulse 1.6s ease-in-out infinite; }
+.kzd-sc__halo    { animation: kzd-sc-halo  1.6s ease-in-out infinite; }
+
+@keyframes kzd-sc-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%      { opacity: .35; transform: scale(.82); }
+}
+
+@keyframes kzd-sc-halo {
+  0%        { transform: scale(1);   opacity: .45; }
+  70%, 100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* Caption, outside the card ------------------------------------------------ */
+
+.kzd-sc__cat {
+  margin: 24px 0 0;
+  font-family: var(--kzd-s-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--kzd-s-dim);
+}
+
+.kzd-sc__name {
+  margin: 22px 0 0;
+  font-family: var(--kzd-s-display);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  color: var(--kzd-s-navy);
+}
+
+/* --------------------------------------------------------------------------
+   4. Carousel chrome — only used below the marquee breakpoint
+   -------------------------------------------------------------------------- */
+
+.kzd-sc__arrow,
+.kzd-sc__dots { display: none; }
+
+.kzd-sc__arrow {
+  position: absolute;
+  top: 126px;                    /* centred on the card, not the caption */
+  z-index: 2;
+  place-items: center;
+  width: 50px;                   /* ~45px actual under the 0.9 zoom */
+  height: 50px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.kzd-sc__arrow-face {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--kzd-s-line);
+  border-radius: 50%;
+  background: var(--kzd-s-paper);
+  box-shadow: 0 4px 12px -6px rgba(38, 52, 78, .30);
+}
+
+.kzd-sc__arrow-face svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: #3A404C;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.kzd-sc__dots {
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.kzd-sc__pip {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 50px;                  /* ~45px actual */
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.kzd-sc__pip::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #CED4DE;
+  transition: background-color 180ms ease;
+}
+
+.kzd-sc__pip[aria-current="true"]::before { background: var(--kzd-s-blue); }
+
+/* --------------------------------------------------------------------------
+   5. Modal
+   -------------------------------------------------------------------------- */
+
+/* Appended to <body>, so outside .kzd-sc — it carries its own tokens. */
+.kzd-sc-scrim {
+  --kzd-s-paper:  #FFFFFF;
+  --kzd-s-chrome: #F0F2F6;
+  --kzd-s-line:   #E1E4EA;
+  --kzd-s-navy:   #0B2545;
+  --kzd-s-muted:  #717580;
+  --kzd-s-dim:    #9298A4;
+  --kzd-s-domain: #68707E;
+  --kzd-s-badge:  #565E6A;
+  --kzd-s-live:   #22A054;
+  --kzd-s-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-s-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-s-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  /* Fallback first: a heavier flat scrim where backdrop-filter is unsupported. */
+  background: rgba(22, 30, 48, .72);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+@supports ((backdrop-filter: blur(9px)) or (-webkit-backdrop-filter: blur(9px))) {
+  .kzd-sc-scrim {
+    /* The blur is what makes this read as a layer over the page rather than a
+       new page, so the flat scrim lightens once it is available. */
+    background: rgba(22, 30, 48, .47);
+    -webkit-backdrop-filter: blur(9px);
+    backdrop-filter: blur(9px);
+  }
+}
+
+.kzd-sc-scrim.is-open { opacity: 1; }
+
+.kzd-sc-modal {
+  position: relative;
+  width: 880px;
+  max-width: 100%;
+  max-height: calc(100vh - 48px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 22px;
+  background: var(--kzd-s-paper);
+  box-shadow: 0 40px 90px -20px rgba(12, 20, 38, .48);
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(.95);
+  transition: opacity 280ms cubic-bezier(.16, 1, .3, 1),
+              transform 280ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.kzd-sc-scrim.is-open .kzd-sc-modal { opacity: 1; transform: scale(1); }
+
+.kzd-sc-scrim.is-closing,
+.kzd-sc-scrim.is-closing .kzd-sc-modal { transition-duration: 190ms; }
+.kzd-sc-scrim.is-closing { opacity: 0; }
+.kzd-sc-scrim.is-closing .kzd-sc-modal { opacity: 0; transform: scale(.95); }
+
+.kzd-sc-modal__chrome {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  padding: 0 18px 0 20px;
+  background: var(--kzd-s-chrome);
+  flex: none;
+}
+
+.kzd-sc-modal__globe {
+  margin-left: auto;
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: var(--kzd-s-domain);
+  stroke-width: 1.6;
+}
+
+.kzd-sc-modal__shot {
+  height: 392px;
+  flex: none;
+  overflow: hidden;
+}
+
+.kzd-sc-modal__shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.kzd-sc-modal__foot {
+  position: relative;
+  min-height: 150px;
+  padding: 30px 38px;
+  background: var(--kzd-s-paper);
+}
+
+.kzd-sc-modal__cat {
+  margin: 0;
+  font-family: var(--kzd-s-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--kzd-s-dim);
+}
+
+.kzd-sc-modal__name {
+  margin: 12px 0 0;
+  font-family: var(--kzd-s-display);
+  font-size: 27px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  color: var(--kzd-s-navy);
+}
+
+.kzd-sc-modal__desc {
+  margin: 14px 0 0;
+  max-width: 520px;
+  font-family: var(--kzd-s-body);
+  font-size: 15.5px;
+  font-weight: 400;
+  line-height: 1.62;
+  color: var(--kzd-s-muted);
+}
+
+.kzd-sc-modal__go {
+  position: absolute;
+  top: 50%;
+  right: 38px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 54px;
+  padding: 0 26px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--kzd-s-navy);
+  font-family: var(--kzd-s-body);
+  font-size: 15.5px;
+  font-weight: 500;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+
+.kzd-sc-modal__go:hover,
+.kzd-sc-modal__go:focus-visible { background: #143257; }
+
+.kzd-sc-modal__go svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.kzd-sc-modal__close {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-left: 14px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(11, 37, 69, .07);
+  cursor: pointer;
+}
+
+.kzd-sc-modal__close svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: #3A404C;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* --------------------------------------------------------------------------
+   6. Entry — header rises, the track fades in 120ms later, then the marquee
+   is released. Fires once. Resting state is the FINAL state.
+   -------------------------------------------------------------------------- */
+
+.kzd-sc--anim .kzd-sc__head,
+.kzd-sc--anim .kzd-sc__rail {
+  opacity: 0;
+  transform: translateY(16px);
+  will-change: transform, opacity;
+}
+
+.kzd-sc--anim.is-in .kzd-sc__head,
+.kzd-sc--anim.is-in .kzd-sc__rail {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 620ms cubic-bezier(.16, 1, .3, 1),
+              transform 620ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.kzd-sc--anim.is-in .kzd-sc__rail { transition-delay: 120ms; }
+
+.kzd-sc .is-settled { will-change: auto; }
+
+/* --------------------------------------------------------------------------
+   7. Reduced motion — the marquee stops and the row becomes manually
+   scrollable, and the permanently-pulsing dots go static. A forever-animating
+   element is exactly what this setting exists to stop.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .kzd-sc__track {
+    animation: none !important;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  .kzd-sc__viewport {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .kzd-sc__dotlive,
+  .kzd-sc__halo {
+    animation: none !important;
+  }
+
+  .kzd-sc__halo { opacity: 0; }
+  .kzd-sc__dotlive { opacity: 1; transform: none; }
+
+  .kzd-sc--anim .kzd-sc__head,
+  .kzd-sc--anim .kzd-sc__rail {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+
+  .kzd-sc__card,
+  .kzd-sc__veil,
+  .kzd-sc__preview,
+  .kzd-sc-scrim,
+  .kzd-sc-modal,
+  .kzd-sc-modal__go { transition: none !important; }
+
+  .kzd-sc-modal { transform: none; }
+  .kzd-sc-scrim.is-open .kzd-sc-modal { transform: none; }
+
+  .kzd-sc__card:hover .kzd-sc__preview,
+  .kzd-sc__card:focus-visible .kzd-sc__preview {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1200px) {
+  .kzd-sc {
+    --kzd-s-gutter: 40px;
+    padding-top: 76px;
+    padding-bottom: 76px;
+  }
+  .kzd-sc__title { font-size: clamp(36px, 3.8vw, 50px); }
+}
+
+/* Marquee off. Paged carousel, two cards at a time. */
+@media (max-width: 900px) {
+  .kzd-sc {
+    padding-top: 64px;
+    padding-bottom: 64px;
+    --kzd-s-per: 2;
+  }
+
+  .kzd-sc__title { font-size: 36px; }
+
+  .kzd-sc__rail {
+    width: 100%;
+    max-width: calc(1240px + var(--kzd-s-gutter) * 2);
+    margin-inline: auto;
+    padding-inline: var(--kzd-s-gutter);
+    margin-top: 44px;
+  }
+
+  .kzd-sc__track {
+    width: 100%;
+    padding-right: 0;            /* no loop to close in carousel mode */
+    animation: none !important;
+    will-change: auto;
+  }
+
+  /* The duplicate set exists only for the seamless marquee loop. */
+  .kzd-sc__item--dup { display: none; }
+
+  .kzd-sc__item {
+    flex: 0 0 calc((100% - var(--kzd-s-gap) * (var(--kzd-s-per) - 1)) / var(--kzd-s-per));
+    width: auto;
+  }
+
+  .kzd-sc__arrow { display: grid; }
+  .kzd-sc__dots  { display: flex; }
+
+  /* Flush with the rail's border box, which is the viewport edge once the
+     gutter is accounted for: the 40px face then overlaps the card without any
+     part of the control being clipped off-screen. */
+  .kzd-sc__arrow--prev { left: 0; }
+  .kzd-sc__arrow--next { right: 0; }
+}
+
+/* One card at a time. No hover exists, so the affordance becomes permanent. */
+@media (max-width: 560px) {
+  .kzd-sc {
+    --kzd-s-gutter: 20px;
+    --kzd-s-per: 1;
+    --kzd-s-card: 330px;
+  }
+
+  .kzd-sc__card { height: auto; }
+  .kzd-sc__shot { height: 200px; }
+
+  /* Arrows overlap the card edges; absolutely positioned, so they can never
+     narrow it, and flush with the rail so none of the control is clipped. */
+  .kzd-sc__arrow--prev { left: 0; }
+  .kzd-sc__arrow--next { right: 0; }
+  .kzd-sc__arrow { top: 100px; }
+
+  /* No veil on touch, and the Preview pill sits permanently in the corner. */
+  .kzd-sc__veil,
+  .kzd-sc__card:hover .kzd-sc__veil { opacity: 0; }
+
+  .kzd-sc__preview,
+  .kzd-sc__card:hover .kzd-sc__preview,
+  .kzd-sc__card:focus-visible .kzd-sc__preview {
+    top: auto;
+    left: auto;
+    right: 12px;
+    bottom: 12px;
+    height: 36px;
+    padding: 0 14px;
+    font-size: 13.5px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .kzd-sc__card:hover,
+  .kzd-sc__card:focus-visible {
+    box-shadow: 0 8px 22px -10px rgba(38, 52, 78, .24);
+  }
+
+  /* Modal stacks; the button goes full width beneath the copy. */
+  .kzd-sc-modal {
+    width: calc(100% - 32px);
+    max-height: 86vh;
+  }
+
+  .kzd-sc-modal__shot { height: 240px; }
+
+  .kzd-sc-modal__foot {
+    min-height: 0;
+    padding: 24px 20px;
+    overflow-y: auto;
+  }
+
+  .kzd-sc-modal__name { font-size: 22px; }
+
+  .kzd-sc-modal__go {
+    position: static;
+    transform: none;
+    width: 100%;
+    justify-content: center;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 380px) {
+  .kzd-sc {
+    --kzd-s-gutter: 16px;
+    --kzd-s-card: 300px;
+  }
+  .kzd-sc__title { font-size: 30px; }
+  .kzd-sc__shot { height: 182px; }
+}

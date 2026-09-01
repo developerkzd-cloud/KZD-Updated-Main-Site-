@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+         <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-TT3MT2SC');</script>
+        <!-- End Google Tag Manager -->  
+
+
+    <title>Accounting | Innovative Business Experts in Durban</title>
+    <!-- META tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="KZD Solutions">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta name="description" content="KZD Solutions provides expert accounting services in Durban. Contact us for all your accounting needs.">
+
+    <!-- favicon & preconnects -->
+    <link rel="shortcut icon" href="images/logo-black.png">
+    <link rel="apple-touch-icon" href="images/logo-black.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/logo-black.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/logo-black.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- style sheets and font icons -->
+    <link rel="stylesheet" href="css/vendors.min.css" />
+    <link rel="stylesheet" href="css/icon.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/responsive.css"/>
+        <!-- Shared navigation — one copy for every page -->
+        <link rel="stylesheet" href="css/kzd-nav.css" />
+        <!-- Auth modals + signed-in nav state (prototype) -->
+        <link rel="stylesheet" href="css/kzd-auth.css" />
+        <link rel="stylesheet" href="css/kzd-fonts.css" />
+    <link rel="stylesheet" href="css/about.css" />
+    <link rel="stylesheet" href="css/hosting.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+
+    <style>
+        /* original styles */
+        .tooltip-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-left: 6px;
+        }
+        .tooltip-icon {
+            width: 16px; height: 16px; font-size: 12px; border-radius: 50%;
+            background: #000; color: #fff; text-align: center; line-height: 16px;
+            cursor: pointer; display: inline-block;
+        }
+        .tooltip-box {
+            position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%);
+            background: #000; color: #fff; padding: 8px 10px; font-size: 12px;
+            border-radius: 6px; white-space: nowrap; opacity: 0; visibility: hidden;
+            transition: all 0.2s ease; z-index: 10;
+        }
+        /* accounting page enhancements */
+        .bg-soft-primary { background-color: rgba(90, 106, 255, 0.04); }
+        .bg-gradient-dark-gray-transparent { background: linear-gradient(135deg, #2b2b3a, #1e1e2c); }
+        .badge-pill-custom { padding: 6px 18px; border-radius: 30px; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; }
+        .checklist-card { border-radius: var(--radius-lg); background: #fff; box-shadow: var(--shadow-md); transition: all 0.2s; border: 1px solid #f0f0f0; }
+        .checklist-card:hover { box-shadow: var(--shadow-hover-md); border-color: #e0e0e0; }
+        .checklist-item { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px dashed #edf2f7; }
+        .checklist-item:last-child { border-bottom: 0; }
+        .checklist-item input[type="checkbox"] { width: 1.2em; height: 1.2em; margin-right: 16px; accent-color: #252840; }
+        .score-badge { padding: 10px 24px; border-radius: 40px; font-weight: 600; display: inline-block; }
+        .bg-score-high { background: #e1f7e3; color: #0b4f1b; }
+        .bg-score-medium { background: #fff3d1; color: #8f5700; }
+        .bg-score-low { background: #ffe2de; color: #aa3020; }
+        .package-card { border-radius: var(--radius-xl); background: white; border: 1px solid rgba(0,0,0,0.03); padding: 2rem; height: 100%; transition: all 0.2s; display: flex; flex-direction: column; }
+        .package-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover-lg); }
+        .package-card .btn-wrapper {
+            margin-top: auto;
+            padding-top: 1.5rem;
+        }
+        .package-card .btn {
+            width: 100%;
+        }
+        .package-icon { font-size: 2.5rem; margin-bottom: 1.2rem; display: inline-block; }
+        .text-dark-gray { color: #252840 !important; }
+        .btn-dark-custom { background: var(--base-color); border-color: var(--base-color); color: white; border-radius: var(--radius-pill); padding: 12px 36px; font-weight: 500; transition: all 0.25s ease; }
+        .btn-dark-custom:hover { background: transparent; color: var(--base-color); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(41,70,243,0.2); }
+        .btn-outline-dark-custom { border: 2px solid var(--base-color); color: var(--base-color); border-radius: var(--radius-pill); padding: 10px 32px; font-weight: 500; background: transparent; transition: all 0.25s ease; }
+        .btn-outline-dark-custom:hover { background: var(--base-color); color: white; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(41,70,243,0.15); }
+        .btn-recommend { background: var(--base-color); border: 2px solid var(--base-color); color: white; border-radius: var(--radius-pill); padding: 14px 42px; font-weight: 600; letter-spacing: 0.3px; transition: all 0.25s ease; }
+        .btn-recommend:hover { background: transparent; color: var(--base-color); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(41,70,243,0.2); }
+        hr { opacity: 0.2; }
+        .lead-form { background: white; border-radius: 48px; padding: 3rem; box-shadow: 0 40px 80px rgba(0,0,0,0.04); }
+        .form-select, .form-control { border-radius: 50px; padding: 12px 22px; border: 1px solid #e2e8f0; background: #fafbfc; transition: all 0.2s; }
+        .form-select:focus, .form-control:focus { border-color: #252840; box-shadow: 0 0 0 3px rgba(37,40,64,0.1); }
+        .glass-effect-light { background: rgba(255,255,255,0.8); backdrop-filter: blur(8px); }
+        .bg-gradient-very-light-gray { background: #f8f9fc; }
+        .progress-container { width: 100%; background-color: #eaeef2; border-radius: 100px; height: 10px; margin: 20px 0 10px; }
+        .progress-fill { height: 10px; border-radius: 100px; background: #252840; width: 0%; transition: width 0.3s ease; }
+        .tick-counter { font-weight: 600; color: #252840; }
+        .package-card.recommended { border: 3px solid var(--accent-purple); background: var(--light-majorelle-blue); transform: scale(1.02); box-shadow: 0 25px 50px rgba(107,33,168,0.15); }
+
+        a, button, .btn, .btn-dark-custom, .btn-outline-dark-custom, .btn-recommend {
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1) !important;
+        }
+        a:hover, button:hover {
+            transform: translateY(-2px);
+        }
+        .header-button .btn:hover {
+            transform: translateY(-2px);
+        }
+        .navbar-nav .nav-link {
+            transition: all 0.2s ease;
+        }
+        .navbar-nav .nav-link:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+        .social-icon-style-02 li a:hover {
+            transform: translateY(-3px);
+        }
+        .btn-hero-primary {
+            background: var(--base-color) !important;
+            color: white !important;
+            border: 2px solid var(--base-color) !important;
+            padding: 14px 42px !important;
+            font-weight: 600 !important;
+            border-radius: var(--radius-pill) !important;
+            text-decoration: none !important;
+            display: inline-block !important;
+            transition: all 0.3s ease !important;
+            cursor: pointer !important;
+            font-size: 16px !important;
+            position: relative !important;
+            z-index: 100 !important;
+            box-shadow: 0 4px 15px rgba(41,70,243,0.25) !important;
+        }
+        .btn-hero-primary:hover {
+            background: transparent !important;
+            color: var(--base-color) !important;
+            transform: translateY(-3px) !important;
+            box-shadow: 0 8px 25px rgba(41,70,243,0.3) !important;
+        }
+        .btn-hero-outline {
+            border: 2px solid white !important;
+            color: white !important;
+            padding: 14px 42px !important;
+            font-weight: 600 !important;
+            border-radius: var(--radius-pill) !important;
+            text-decoration: none !important;
+            display: inline-block !important;
+            background: transparent !important;
+            transition: all 0.3s ease !important;
+            cursor: pointer !important;
+            font-size: 16px !important;
+            position: relative !important;
+            z-index: 100 !important;
+        }
+        .btn-hero-outline:hover {
+            background: white !important;
+            color: var(--base-color) !important;
+            transform: translateY(-3px) !important;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+        }
+        .cover-background {
+            position: relative;
+            z-index: 1;
+        }
+        .cover-background .container {
+            position: relative;
+            z-index: 10;
+        }
+        .shape-image-animation {
+            pointer-events: none !important;
+            position: absolute !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            z-index: 1 !important;
+        }
+        .alert-fixed { position: fixed; top: 90px; right: 20px; z-index: 9999; min-width: 260px; border-radius: var(--radius-pill); box-shadow: var(--shadow-hover-sm); }
+        
+        /* Package dropdown styling */
+        .package-dropdown { background-color: #f8f9fc; border-radius: 50px; }
+            /* Nav rules moved to css/kzd-nav.css — one shared copy. */
+
+    </style>
+
+ 
+
+   <script type="text/javascript">
+       (function(c,l,a,r,i,t,y){
+         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+       })(window, document, "clarity", "script", "x5si5rn1u3");
+     </script> 
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JNYDW84W44"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-JNYDW84W44');
+    </script>
+
+</head>
+<body data-mobile-nav-style="full-screen-menu" data-mobile-nav-bg-color="#252840">
+    <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT3MT2SC"
+        height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+
+<!-- HEADER -->
+<header>
+        <!-- start navigation -->
+        <nav class="navbar navbar-expand-lg header-transparent bg-transparent header-reverse glass-effect fixed-top"
+            data-header-hover="light">
+            <div class="container-fluid">
+                <div class="col-auto col-xxl-3 col-lg-2 me-lg-0 me-auto">
+                    <a class="navbar-brand d-flex align-items-center me-2" href="index.html">
+                        <img id="logo" src="images/logo-white.png" alt="Logo" style="height: 40px; margin-right: 10px;">
+                        <span id="company-name" class="fs-5 fs-md-4 fs-lg-3" style="color: white;">KZD Solutions</span>
+                    </a>
+                </div>
+
+                <div class="col-auto col-xxl-6 col-lg-8 menu-order position-static">
+                    <button class="navbar-toggler float-start" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-line"></span>
+                        <span class="navbar-toggler-line"></span>
+                        <span class="navbar-toggler-line"></span>
+                        <span class="navbar-toggler-line"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-center" id="navbarNav"> 
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                            <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+
+                            <li class="nav-item kzd-nav-item">
+                                <button class="nav-link kzd-nav-trigger" type="button" aria-expanded="false" aria-haspopup="true">
+                                    Services
+                                    <svg class="kzd-nav-caret" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg>
+                                </button>
+                                <ul class="kzd-nav-mega">
+                                    <li class="kzd-nav-group">
+                                        <p class="kzd-nav-head">What we do</p>
+                                        <ul>
+                                            <li><a href="services.html#consulting">Consulting</a></li>
+                                            <li><a href="services.html#development">Development</a></li>
+                                            <li><a href="accounting.html">Accounting</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="kzd-nav-group">
+                                        <p class="kzd-nav-head">Web hosting</p>
+                                        <ul>
+                                            <li><a href="hosting.html">Web Hosting</a></li>
+                                            <li><a href="cloud.html">Cloud Hosting</a></li>
+                                            <li><a href="VpsHosting.html">VPS Hosting</a></li>
+                                            <li><a href="wordpress.html">WordPress Hosting</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="kzd-nav-group">
+                                        <p class="kzd-nav-head">Domains</p>
+                                        <ul>
+                                            <li><a href="domain-register.html">Register Domain</a></li>
+                                            <li><a href="domain-transfer.html">Transfer Domain</a></li>
+                                            <li><a href="domain-pricing.html">Domain Pricing</a></li>
+                                            <li><a href="tld-extensions.html">TLD Extensions</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item"><a href="careers.html" class="nav-link">Careers</a></li>
+                            <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                            <li class="nav-item d-lg-none"><a href="https://my.kzdsolutions.co.za/login" class="nav-link">Login</a></li>
+                            <li class="nav-item d-lg-none"><a href="https://my.kzdsolutions.co.za/signup" class="nav-link">Register</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-auto col-xxl-3 col-lg-2 text-end d-none d-lg-flex justify-content-end">
+                    <ul class="navbar-nav flex-row">
+                        <li class="nav-item"><a href="https://my.kzdsolutions.co.za/login" class="nav-link">Login</a></li>
+                        <li class="nav-item"><a href="https://my.kzdsolutions.co.za/signup" class="nav-link">Register</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- end navigation -->
+</header>
+
+<!-- HERO -->
+<section class="pt-0 cover-background ipad-top-space-margin sm-pb-0" style="background-image:url('./images/finance-consulting-discussing-executive-people-plan.jpg'); position: relative; z-index: 1;">
+    <div class="shape-image-animation p-0 w-100 d-none d-md-block" style="position: absolute; bottom: 0; left: 0; z-index: 1; pointer-events: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="3000" height="400" viewBox="0 180 2500 200" fill="#ffffff">
+            <path class="st1" d="M 0 250 C 1200 400 1200 50 3000 250 L 3000 550 L 0 550 L 0 250">
+                <animate attributeName="d" dur="5s" values="M 0 250 C 1200 400 1200 50 3000 250 L 3000 550 L 0 550 L 0 250; M 0 250 C 400 50 400 400 3000 250 L 3000 550 L 0 550 L 0 250; M 0 250 C 1200 400 1200 50 3000 250 L 3000 550 L 0 550 L 0 250" repeatCount="indefinite"/>
+            </path>
+        </svg>
+    </div>
+    <div class="container" style="position: relative; z-index: 10;">
+        <div class="row align-items-center justify-content-center h-500px sm-h-300px">
+            <div class="col-12 col-lg-6 col-md-10 position-relative text-center page-title-extra-large d-flex flex-wrap flex-column align-items-center justify-content-center">
+                <span class="ps-25px pe-25px pt-5px pb-5px mb-15px text-uppercase text-white fs-12 ls-1px fw-600 border-radius-100px bg-gradient-dark-gray-transparent d-flex"><i class="bi bi-megaphone text-white icon-small me-10px"></i>Grow your business with us</span>
+                <h1 class="mb-20px text-white fw-600 ls-minus-1px">Accounting</h1>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
+                    <a href="#checklist" class="btn btn-hero-primary">Start My 2-Minute Business Health Check</a>
+                    <a href="https://kzdsolutions.setmore.com" target="_blank" class="btn btn-hero-outline">Book a Strategy Call</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<main class="bg-white">
+    <section class="pt-5 pb-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="fw-600 text-dark-gray">Trusted by Many Businesses Across Durban.</h2>
+                    <p class="text-muted fs-14"><i class="bi bi-shield-check me-1"></i>Digital-first advisory. Video & voice consultations available.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-soft-primary">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col">
+                    <h2 class="fw-600 text-dark-gray">Most Businesses Don't Have a Revenue Problem.<br> They Have a Structure Problem.</h2>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3"><div class="checklist-card p-4 h-100"><span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2 mb-3"><i class="bi bi-exclamation-triangle me-1"></i> Financial Chaos</span><ul class="list-unstyled text-muted"><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>No management accounts</li><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>No annual financial statements</li><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>Unsure if you're profitable</li><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>Poor bookkeeping</li></ul><p class="fw-500 mt-2">You're running your business blind.</p></div></div>
+                <div class="col-md-6 col-lg-3"><div class="checklist-card p-4 h-100"><span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 mb-3"><i class="bi bi-file-earmark-spreadsheet me-1"></i> Tax & Compliance Stress</span><ul class="list-unstyled text-muted"><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>Late submissions</li><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>EMP201 / PAYE confusion</li><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>SARS penalties</li><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>Unsure about VAT</li></ul><p class="fw-500 mt-2">You're reacting instead of preventing.</p></div></div>
+                <div class="col-md-6 col-lg-3"><div class="checklist-card p-4 h-100"><span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 mb-3"><i class="bi bi-shield-slash me-1"></i> Weak Internal Controls</span><ul class="list-unstyled text-muted"><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>No supplier vetting</li><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>No segregation of duties</li><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>No documented processes</li><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>No risk register</li></ul><p class="fw-500 mt-2">Fraud and errors become expensive.</p></div></div>
+                <div class="col-md-6 col-lg-3"><div class="checklist-card p-4 h-100"><span class="badge bg-info bg-opacity-10 text-info px-3 py-2 mb-3"><i class="bi bi-graph-up-arrow me-1"></i> Growth Without Systems</span><ul class="list-unstyled text-muted"><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>No performance tracking</li><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>No asset register</li><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>No governance structure</li><li><i class="bi bi-x-circle-fill text-danger me-2 small"></i>No financial planning</li></ul><p class="fw-500 mt-2">Growth without structure creates risk.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="checklist" class="py-6">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center mb-4">
+                    <span class="badge-pill-custom bg-dark text-white">SME Financial Check-Up</span>
+                    <h2 class="fw-600 text-dark-gray mt-3">Is Your Business Financially Healthy?</h2>
+                    <p class="fs-18">Tick the statements that apply. If you cannot confidently tick most, you may be at risk.</p>
+                    <div class="progress-container mx-auto" style="max-width: 400px;"><div id="progressFill" class="progress-fill" style="width: 0%;"></div></div>
+                    <div class="d-flex justify-content-between align-items-center mt-2" style="max-width:400px; margin:0 auto;"><span class="small">0 ticks</span><span id="tickCounter" class="tick-counter">0/16</span><span class="small">16 ticks</span></div>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-6"><div class="checklist-card p-5"><h5 class="fw-600 mb-3"><i class="bi bi-receipt me-2"></i>Financial Records</h5><div class="checklist-item"><input type="checkbox" id="fin1" class="checkItem"> <label for="fin1">My income and expenses are recorded monthly</label></div><div class="checklist-item"><input type="checkbox" id="fin2" class="checkItem"> <label for="fin2">I have up-to-date management accounts</label></div><div class="checklist-item"><input type="checkbox" id="fin3" class="checkItem"> <label for="fin3">I have annual financial statements</label></div><div class="checklist-item"><input type="checkbox" id="fin4" class="checkItem"> <label for="fin4">My records are updated within the last 30 days</label></div></div></div>
+                <div class="col-lg-6"><div class="checklist-card p-5"><h5 class="fw-600 mb-3"><i class="bi bi-building me-2"></i> Tax & Compliance</h5><div class="checklist-item"><input type="checkbox" id="tax1" class="checkItem"> <label for="tax1">All tax returns are submitted on time</label></div><div class="checklist-item"><input type="checkbox" id="tax2" class="checkItem"> <label for="tax2">EMP201 / PAYE is filed monthly</label></div><div class="checklist-item"><input type="checkbox" id="tax3" class="checkItem"> <label for="tax3">My company is correctly registered (CIPC, VAT if applicable)</label></div><div class="checklist-item"><input type="checkbox" id="tax4" class="checkItem"> <label for="tax4">I understand my tax obligations</label></div></div></div>
+                <div class="col-lg-6"><div class="checklist-card p-5"><h5 class="fw-600 mb-3"><i class="bi bi-shield-lock me-2"></i> Controls & Risk</h5><div class="checklist-item"><input type="checkbox" id="ctrl1" class="checkItem"> <label for="ctrl1">Duties are properly segregated</label></div><div class="checklist-item"><input type="checkbox" id="ctrl2" class="checkItem"> <label for="ctrl2">Suppliers are vetted before approval</label></div><div class="checklist-item"><input type="checkbox" id="ctrl3" class="checkItem"> <label for="ctrl3">We have documented internal processes</label></div><div class="checklist-item"><input type="checkbox" id="ctrl4" class="checkItem"> <label for="ctrl4">A risk register is maintained</label></div></div></div>
+                <div class="col-lg-6"><div class="checklist-card p-5"><h5 class="fw-600 mb-3"><i class="bi bi-people me-2"></i> Assets & People</h5><div class="checklist-item"><input type="checkbox" id="asset1" class="checkItem"> <label for="asset1">We maintain a fixed asset register</label></div><div class="checklist-item"><input type="checkbox" id="asset2" class="checkItem"> <label for="asset2">Payroll is reviewed and reconciled</label></div><div class="checklist-item"><input type="checkbox" id="asset3" class="checkItem"> <label for="asset3">Staff performance is tracked</label></div><div class="checklist-item"><input type="checkbox" id="asset4" class="checkItem"> <label for="asset4">There is a structured incentive or bonus system</label></div></div></div>
+            </div>
+            <div class="row mt-5 justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <button id="viewRecommendationBtn" class="btn-recommend mt-3 mb-3">View My Recommended Package</button>
+                    <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
+                        <a href="#leadForm" class="btn btn-dark-custom btn-rounded">Get My Business Health Review</a>
+                        <a href="https://kzdsolutions.setmore.com" target="_blank" class="btn btn-outline-dark-custom btn-rounded">Book a Strategy Call</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PACKAGE SECTION -->
+    <section id="packageSection" class="py-5 bg-gradient-very-light-gray">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col"><h3 class="fw-600 text-dark-gray">What Your Results Mean</h3></div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3"><div class="package-card p-4 text-center h-100" id="pkgHigh"><span class="package-icon"></span><h6 class="fw-600">Governance & Growth Package</h6><p class="text-muted">Your foundation is strong — but governance and strategic refinement may still be needed.</p><p class="fw-500">We help you optimise, protect and scale safely.</p><div class="btn-wrapper"><a href="#leadForm" class="package-select-btn btn btn-sm btn-outline-dark-custom w-100" data-package="Governance & Growth Package">Strengthen Governance</a></div></div></div>
+                <div class="col-md-6 col-lg-3"><div class="package-card p-4 text-center h-100" id="pkgMid"><span class="package-icon"></span><h6 class="fw-600">Compliance + Control Package</h6><p class="text-muted">You likely have compliance or internal control gaps.</p><p class="fw-500">We make your business audit‑ready and structured.</p><div class="btn-wrapper"><a href="#leadForm" class="package-select-btn btn btn-sm btn-outline-dark-custom w-100" data-package="Compliance + Control Package">Make Audit‑Ready</a></div></div></div>
+                <div class="col-md-6 col-lg-3"><div class="package-card p-4 text-center h-100" id="pkgLow"><span class="package-icon"></span><h6 class="fw-600">Compliance Starter</h6><p class="text-muted">Your business may be exposed to financial, tax or audit risk.</p><p class="fw-500">We stabilise records and bring you back into compliance.</p><div class="btn-wrapper"><a href="#leadForm" class="package-select-btn btn btn-sm btn-outline-dark-custom w-100" data-package="Compliance Starter">Stabilise Now</a></div></div></div>
+                <div class="col-md-6 col-lg-3"><div class="package-card p-4 text-center h-100" id="pkgCustom"><span class="package-icon"></span><h6 class="fw-600">Custom Projects</h6><p class="text-muted">Funded projects, internal clean‑ups, or specialised needs.</p><p class="fw-500">Tailored assessment for unique requirements.</p><div class="btn-wrapper"><a href="#leadForm" class="package-select-btn btn btn-sm btn-outline-dark-custom w-100" data-package="Custom Projects">Request Custom Assessment →</a></div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-6">
+        <div class="container text-center">
+            <h2 class="fw-600 text-dark-gray">We Don't Just Do Accounting. We Structure Businesses.</h2>
+            <hr class="w-25 mx-auto my-5">
+            <h4 class="fw-600">Don't Wait For SARS Or An Auditor To Tell You Something Is Wrong.</h4>
+            <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
+                <a href="#checklist" class="btn btn-dark-custom">Start My Business Health Check</a>
+                <a href="https://kzdsolutions.setmore.com" target="_blank" class="btn btn-outline-dark-custom">Book a Strategy Call</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- LEAD FORM WITH PACKAGE DROPDOWN -->
+    <section id="leadForm" class="py-6 bg-soft-primary">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="lead-form">
+                        <h3 class="fw-600 text-dark-gray">Get Your Business Health Review</h3>
+                        <p class="text-muted mb-4">Tell us a little about your business and we'll recommend the right solution.</p>
+                        <form id="healthForm" method="post" action="email-templates/accounting-contact.php">
+                            <input type="hidden" name="checklist_score" id="checklistScoreInput" value="0">
+                            <input type="hidden" name="recommended_package" id="recommendedPackageInput" value="">
+                            <input type="hidden" name="checklist_answers" id="checklistAnswersInput" value="">
+                            
+                            <div class="mb-4">
+                                <label class="form-label fw-500">Select Package <span class="text-danger">*</span></label>
+                                <select name="selected_package" id="packageSelect" class="form-select package-dropdown" required>
+                                    <option value="">-- Please select a package --</option>
+                                    <option value="Governance & Growth Package">Governance & Growth Package</option>
+                                    <option value="Compliance + Control Package">Compliance + Control Package</option>
+                                    <option value="Compliance Starter">Compliance Starter</option>
+                                    <option value="Custom Projects">Custom Projects</option>
+                                </select>
+                                <small class="text-muted">Click on any package above to auto-select it here</small>
+                            </div>
+                            
+                            <div class="mb-4"><label class="form-label fw-500">Full Name <span class="text-danger">*</span></label><input type="text" name="name" class="form-control" placeholder="Full Name" required></div>
+                            <div class="mb-4"><label class="form-label fw-500">Email Address <span class="text-danger">*</span></label><input type="email" name="email" class="form-control" placeholder="you@example.com" required></div>
+                            <div class="mb-4"><label class="form-label fw-500">Phone Number <span class="text-danger">*</span></label><input type="tel" name="phone" class="form-control" placeholder="+27 ..." required></div>
+                            <div class="mb-4"><label class="form-label fw-500">Business Type</label><select name="business_type" class="form-select"><option>Individual / Sole Trader</option><option>Startup</option><option>Registered Company</option><option>Non-Profit</option></select></div>
+                            <div class="mb-4"><label class="form-label fw-500">Business Size</label><select name="business_size" class="form-select"><option>Just me (1 person)</option><option>2–5 employees</option><option>6–20 employees</option><option>20+ employees</option></select></div>
+                            <div class="mb-4"><label class="form-label fw-500">Monthly Revenue (optional)</label><select name="monthly_revenue" class="form-select"><option>Pre-revenue</option><option>Under R50k</option><option>R50k – R250k</option><option>R250k – R1M</option><option>R1M+</option></select></div>
+                            <div class="mb-4"><label class="form-label fw-500">Checklist Result (from earlier)</label><select name="checklist_result_display" class="form-select"><option>0–5 ticks</option><option>6–10 ticks</option><option>11–16 ticks</option></select></div>
+                            
+                            <button type="submit" class="btn btn-dark-custom w-100">Get My Business Health Recommendation</button>
+                        </form>
+                        <div id="formStatus" class="mt-3 text-center small"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- start footer -->
+        <footer class="p-0 footer-light position-relative bg-gradient-very-light-gray ">
+            <div class="container position-relative"> 
+                <div class="row justify-content-center pt-5 sm-pt-40px">
+                    <!-- start footer column -->
+                    <div class="col-12 col-xl-3 col-lg-3 col-md-6 col-sm-12 last-paragraph-no-margin text-lg-start text-center text-sm-center order-sm-1 lg-mb-50px sm-mb-30px">
+                        <a class="navbar-brand d-flex align-items-center justify-content-lg-start justify-content-center" href="index.html">
+                            <img src="images/logo-black.png" alt="Logo" style="height: 40px; margin-right: 10px;">
+                            <span style="font-size: 20px; color: black;">KZD Solutions</span>
+                        </a>
+                        <p class="lh-28 w-90 xl-w-100 mx-lg-auto mx-xl-0">Gearing your company through an innovative strategy.</p>
+                        <div class="elements-social social-icon-style-02 mt-15px">
+                            <ul class="medium-icon dark d-flex justify-content-lg-start justify-content-center">
+                                <li class="my-0"><a class="facebook" aria-label="Facebook" href="https://web.facebook.com/profile.php?id=61572728398709" target="_blank"><i class="fa-brands fa-facebook-f"></i></a></li>
+                                <li class="my-0"><a class="linkedin" aria-label="LinkedIn" href="https://www.linkedin.com/company/kzd-solutions/?viewAsMember=true" target="_blank"><i class="fa-brands fa-linkedin"></i></a></li> 
+                                <li class="my-0"><a class="whatsapp" aria-label="WhatsApp" href="https://wa.me/27704563015" target="_blank"><i class="fa-brands fa-whatsapp"></i></a></li>
+                                <li class="my-0"><a class="instagram" aria-label="Instagram" href="https://www.instagram.com/kzdsolutions96?igsh=MThydXd1MndtbDh5eQ==&utm_source=ig_contact_invite" target="_blank"><i class="fa-brands fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- end footer column -->
+
+                    <!-- start footer column -->
+                    <div class="col-12 col-xl-3 col-lg-3 col-md-6 col-sm-12 xs-mb-30px order-sm-2 text-lg-start text-center text-sm-center">
+                        <span class="fw-600 d-block text-dark-gray mb-5px">Company</span>
+                        <ul class="list-unstyled">
+                                <li><a href="careers.html">Careers</a></li>
+                            <li><a href="about.html">Who we are</a></li>
+                            <li><a href="services.html">Our services</a><div class="bg-dark-gray fw-600 text-white lh-22 text-uppercase border-radius-30px ps-10px pe-10px fs-10 ms-10px d-inline-block align-middle">Hot</div></li>
+                            <li><a href="services.html">Our products</a></li>
+                            <li><a href="contact.html">Contact us</a></li>
+                        </ul>
+                    </div>
+                    <!-- end footer column -->
+
+                    <!-- start footer column -->
+                    <div class="col-12 col-xl-3 col-lg-3 col-md-6 col-sm-12 xs-mb-30px order-sm-3 text-lg-start text-center text-sm-center">
+                        <span class="fw-600 d-block text-dark-gray mb-5px">Services</span>
+                        <ul class="list-unstyled">
+                            <li><a href="services.html">Consulting</a></li>
+                            <li><a href="services.html">Development</a></li>
+                            <li><a href="services.html">Automation</a></li>
+                            <li><a href="services.html">Web Design</a></li>
+                        </ul>
+                    </div>
+                    <!-- end footer column -->
+
+                    <!-- start footer column -->
+                    <div class="col-12 col-xl-3 col-lg-3 col-md-6 col-sm-12 xs-mb-30px order-sm-4 text-lg-start text-center text-sm-center">
+                        <span class="fw-600 d-block text-dark-gray mb-5px">Need help?</span>
+                        <span>Call us directly?</span>
+                        <span class="d-block mb-10px"><a class="text-dark-gray fw-600" href="tel:0310053129">(031) 005 3129</a></span>
+                        <span>Need support?</span>
+                        <a href="mailto:info@kzdsolutions.co.za" class="text-dark-gray fw-600">info@kzdsolutions.co.za</a>
+                    </div>
+                    <!-- end footer column -->                    
+                </div>
+                <div class="row justify-content-center align-items-center pt-7">
+                    <!-- start divider -->
+                    <div class="col-12">
+                        <div class="divider-style-03 divider-style-03-01 border-color-extra-medium-gray"></div>
+                    </div>
+                    <!-- end divider -->
+
+                    <!-- start copyright -->
+                    <div class="col-lg-5 pt-20px pb-20px md-pt-0 order-2 order-lg-1 text-center text-lg-center last-paragraph-no-margin fs-14"><p>&copy; Copyright KZD Solutions 2025.</p></div>
+                    <!-- end copyright -->
+                </div>
+            </div> 
+        </footer>
+        <!-- end footer -->
+
+
+        <!-- start scroll progress -->
+        <div class="scroll-progress d-none d-xxl-block">
+            <a href="#" class="scroll-top" aria-label="scroll">
+                <span class="scroll-text">Scroll</span><span class="scroll-line"><span class="scroll-point"></span></span>
+            </a>
+        </div>
+        <!-- end scroll progress -->
+        <!-- javascript libraries -->
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/vendors.min.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+
+        <!-- Shared navigation behaviour — one copy for every page -->
+        <script src="js/kzd-nav.js" defer></script>
+        <!-- Auth modals + signed-in nav state (prototype) -->
+        <script src="js/kzd-auth.js" defer></script>
+        <!-- navbar logo color change start -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+            const logo = document.getElementById("logo");
+            const companyName = document.getElementById("company-name");
+
+                function updateNavbar() {
+                    const isScrolled = window.scrollY > 50;
+                    const isMobile = window.innerWidth < 992; // Bootstrap's `lg` breakpoint
+
+                    if (isMobile) {
+                        // Always black on mobile
+                        logo.src = "images/logo-black.png";
+                        companyName.style.color = "black";
+                    } else {
+                        // Change based on scroll on larger screens
+                        if (isScrolled) {
+                            logo.src = "images/logo-black.png";
+                            companyName.style.color = "black";
+                        } else {
+                            logo.src = "images/logo-white.png";
+                            companyName.style.color = "white";
+                        }
+                    }
+                }
+
+                // Run on page load and resize
+                updateNavbar();
+                window.addEventListener("scroll", updateNavbar);
+                window.addEventListener("resize", updateNavbar);
+            });
+        </script>
+        <!-- navbar logo color change end -->
+
+<script>
+(function() {
+    const checkboxes = document.querySelectorAll('#checklist input[type="checkbox"].checkItem');
+    const progressFill = document.getElementById('progressFill');
+    const tickCounter = document.getElementById('tickCounter');
+    const viewBtn = document.getElementById('viewRecommendationBtn');
+    const total = 16;
+    const pkgHigh = document.getElementById('pkgHigh');
+    const pkgMid = document.getElementById('pkgMid');
+    const pkgLow = document.getElementById('pkgLow');
+    const packageSection = document.getElementById('packageSection');
+    const packageSelect = document.getElementById('packageSelect');
+
+    function removeHighlights() {
+        [pkgHigh, pkgMid, pkgLow].forEach(p => { if(p) p.classList.remove('recommended'); });
+    }
+    
+    function getRecommendedPackageByScore(checked) {
+        if(checked >= 12) return { element: pkgHigh, name: 'Governance & Growth Package' };
+        else if(checked >= 6) return { element: pkgMid, name: 'Compliance + Control Package' };
+        else return { element: pkgLow, name: 'Compliance Starter' };
+    }
+    
+    function updateScoreAndProgress() {
+        let checked = 0; let answers = [];
+        checkboxes.forEach(cb => { if(cb.checked) { checked++; answers.push(cb.id); } });
+        if(progressFill) progressFill.style.width = (checked/total)*100+'%';
+        if(tickCounter) tickCounter.innerText = checked+'/16';
+        document.getElementById('checklistScoreInput').value = checked;
+        document.getElementById('checklistAnswersInput').value = answers.join(', ');
+        let rec = getRecommendedPackageByScore(checked);
+        document.getElementById('recommendedPackageInput').value = rec.name;
+    }
+    
+    if(checkboxes.length) checkboxes.forEach(cb => cb.addEventListener('change', updateScoreAndProgress));
+    
+    if(viewBtn) {
+        viewBtn.addEventListener('click', function() {
+            let checked = 0; 
+            if(checkboxes.length) checkboxes.forEach(cb => { if(cb.checked) checked++; });
+            removeHighlights();
+            const rec = getRecommendedPackageByScore(checked);
+            if(rec.element) rec.element.classList.add('recommended');
+            if(packageSelect) packageSelect.value = rec.name;
+            packageSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    }
+    
+    // Package selection buttons - update the dropdown and scroll to form
+    const packageBtns = document.querySelectorAll('.package-select-btn');
+    packageBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const packageName = this.getAttribute('data-package');
+            if(packageSelect) {
+                packageSelect.value = packageName;
+                const event = new Event('change', { bubbles: true });
+                packageSelect.dispatchEvent(event);
+            }
+            document.getElementById('leadForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+    
+    if(packageSelect) {
+        packageSelect.addEventListener('change', function() {
+            console.log('Package selected:', this.value);
+        });
+    }
+
+    const healthForm = document.getElementById('healthForm');
+    const formStatus = document.getElementById('formStatus');
+    
+    if(healthForm) {
+        healthForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if(!packageSelect.value) {
+                formStatus.innerHTML = '<span class="text-danger">✗ Please select a package before submitting.</span>';
+                return;
+            }
+            updateScoreAndProgress();
+            const formData = new FormData(healthForm);
+            formStatus.innerHTML = '<span class="text-muted">Sending your health review...</span>';
+            
+            fetch('email-templates/accounting-contact.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    formStatus.innerHTML = '<span class="text-success">✓ ' + data.message + '</span>';
+                    healthForm.reset();
+                    checkboxes.forEach(cb => cb.checked = false);
+                    updateScoreAndProgress();
+                    if(packageSelect) packageSelect.value = '';
+                } else {
+                    formStatus.innerHTML = '<span class="text-danger">✗ ' + data.message + '</span>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                formStatus.innerHTML = '<span class="text-danger">✗ Network error. Please try again.</span>';
+            });
+        });
+    }
+
+    updateScoreAndProgress();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "kzd-website-updates",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000K\u0000Z\u0000D\u0000-\u0000W\u0000e\u0000b\u0000s\u0000i\u0000t\u0000e\u0000-\u0000U\u0000p\u0000d\u0000a\u0000t\u0000e\u0000s\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+  "validate": "html-validate *.html",
+  "test": "npm run validate"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/developerkzd-cloud/KZD-Website-Updates.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/developerkzd-cloud/KZD-Website-Updates/issues"
+  },
+  "homepage": "https://github.com/developerkzd-cloud/KZD-Website-Updates#readme",
+  "devDependencies": {
+    "html-validate": "^10.15.0"
+  }
+}
