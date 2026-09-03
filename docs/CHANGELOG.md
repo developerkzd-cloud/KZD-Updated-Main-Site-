@@ -71,6 +71,12 @@ Fresh FOSSBilling 0.8.5 install (`40cd0ba`).
   config setting that could never be enabled, then a jQuery dependency this
   theme doesn't have) — see `PAYSTACK.md` (`e51f0ad`, `bf09eb4`).
 - Added a step indicator to the order flow (`f34d4fd`).
+- Fixed the admin "Create New Order" page crashing on any recurring-priced
+  product — `Box_Period` defines 9 billing periods (up to 5Y) but
+  `Product\Service`'s pricing builder only ever produces 7 (up to 3Y), and
+  the period dropdown indexed straight into the shorter list. Found while
+  importing an existing HostAfrica/DirectAdmin client into FOSSBilling
+  (`78b93fb`).
 
 ## Pricing strategy update
 
