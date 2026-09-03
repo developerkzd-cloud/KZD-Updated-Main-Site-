@@ -60,7 +60,9 @@
                             <label class="form-label" for="period">{{ 'Period'|trans }}</label>
                             <select class="form-select" name="period" id="period" required>
                                 {% for val,label in guest.system_periods %}
+                                {% if product.pricing.recurrent[val] is defined %}
                                 <option value="{{ val }}" label="{{ label|e }}" data-price="{{ product.pricing.recurrent[val].price }}" data-status="{{ product.pricing.recurrent[val].enabled }}" {% if request.period == val %}selected="selected"{% endif %}>{{ label|e }}</option>
+                                {% endif %}
                                 {% endfor %}
                             </select>
                             <div id="period-info" class="form-hint mt-2"></div>
