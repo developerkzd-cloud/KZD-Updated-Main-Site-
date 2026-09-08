@@ -504,7 +504,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for i, addon in addons %}
+                                {% for i, addon in addons|default([]) %}
                                 <tr>
                                     <td>{{ addon.title }}</td>
                                     <td>{{ addon.period|period_title }}</td>
