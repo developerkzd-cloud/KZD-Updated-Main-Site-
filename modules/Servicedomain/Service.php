@@ -869,14 +869,26 @@ class Service implements \FOSSBilling\InjectionAwareInterface
         $email = empty($model->contact_email) ? $client->email : $model->contact_email;
         $first_name = empty($model->contact_first_name) ? $client->first_name : $model->contact_first_name;
         $last_name = empty($model->contact_last_name) ? $client->last_name : $model->contact_last_name;
-        $city = empty($model->contact_city) ? $client->city : $model->contact_city;
-        $zip = empty($model->contact_postcode) ? $client->postcode : $model->contact_postcode;
-        $country = empty($model->contact_country) ? $client->country : $model->contact_country;
-        $state = empty($model->contact_state) ? $client->state : $model->contact_state;
-        $phone = empty($model->contact_phone) ? $client->phone : $model->contact_phone;
-        $phone_cc = empty($model->contact_phone_cc) ? $client->phone_cc : $model->contact_phone_cc;
+
+        // Client signup only requires email/name/password (see
+        // Client\Api\Guest::create()'s RequiredParams) -- a postal address
+        // was never collected for many existing clients. The registrar's EPP
+        // contact schema rejects blank address/city/country/phone outright,
+        // which used to fail domain registration silently after the client
+        // had already paid. Fall back to KZD's own registered business
+        // address as the registrant contact of last resort so registration
+        // always succeeds automatically, rather than requiring a manual fix
+        // per client.
+        $companyDefaults = $this->_getCompanyContactDefaults();
+
+        $city = $model->contact_city ?: ($client->city ?: $companyDefaults['city']);
+        $zip = $model->contact_postcode ?: ($client->postcode ?: $companyDefaults['postcode']);
+        $country = $model->contact_country ?: ($client->country ?: $companyDefaults['country']);
+        $state = $model->contact_state ?: ($client->state ?: $companyDefaults['state']);
+        $phone = $model->contact_phone ?: ($client->phone ?: $companyDefaults['phone']);
+        $phone_cc = $model->contact_phone_cc ?: ($client->phone_cc ?: $companyDefaults['phone_cc']);
         $company = empty($model->contact_company) ? $client->company : $model->contact_company;
-        $address1 = empty($model->contact_address1) ? $client->address_1 : $model->contact_address1;
+        $address1 = $model->contact_address1 ?: ($client->address_1 ?: $companyDefaults['address1']);
         $address2 = empty($model->contact_address2) ? $client->address_2 : $model->contact_address2;
         $birthday = !empty($client->birthday) ? $client->birthday : '';
         $company_number = !empty($client->company_number) ? $client->company_number : '';
@@ -919,6 +931,39 @@ class Service implements \FOSSBilling\InjectionAwareInterface
         }
 
         return [$d, $adapter];
+    }
+
+    /**
+     * KZD's own registered business address, used as the registrant contact
+     * of last resort when neither the domain service record nor the
+     * client's profile has a usable postal address/phone on file -- see the
+     * comment in _getD() above. Configured via the same `setting` table
+     * every other company_* field lives in (Admin -> System Settings ->
+     * Company), so it stays editable without a code change if the business
+     * address ever changes.
+     *
+     * @return array{address1: string, city: string, state: string, postcode: string, country: string, phone: string, phone_cc: string}
+     */
+    private function _getCompanyContactDefaults(): array
+    {
+        $params = ['company_address_1', 'company_city', 'company_state', 'company_postcode', 'company_country', 'company_tel', 'company_phone_cc'];
+        $placeholders = implode(',', array_fill(0, count($params), '?'));
+        $rows = $this->di['db']->getAll("SELECT param, value FROM setting WHERE param IN ({$placeholders})", $params);
+
+        $settings = [];
+        foreach ($rows as $row) {
+            $settings[$row['param']] = $row['value'];
+        }
+
+        return [
+            'address1' => $settings['company_address_1'] ?? '',
+            'city' => $settings['company_city'] ?? '',
+            'state' => $settings['company_state'] ?? '',
+            'postcode' => $settings['company_postcode'] ?? '',
+            'country' => $settings['company_country'] ?? '',
+            'phone' => $settings['company_tel'] ?? '',
+            'phone_cc' => $settings['company_phone_cc'] ?? '',
+        ];
     }
 
     public static function onBeforeAdminCronRun(\Box_Event $event): bool
