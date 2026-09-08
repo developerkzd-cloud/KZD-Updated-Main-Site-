@@ -862,3 +862,14 @@
   .kzd-sc__title { font-size: 30px; }
   .kzd-sc__shot { height: 182px; }
 }
+
+/* Hit area only — see the note in css/kzd-testimonials.css. */
+.kzd-sc__pip { position: relative; }
+
+.kzd-sc__pip::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 49px; height: 49px;
+  transform: translate(-50%, -50%);
+}

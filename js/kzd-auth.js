@@ -29,27 +29,29 @@
   /* Storage                                                                */
   /* --------------------------------------------------------------------- */
 
-  function read(key, fallback) {
-    try {
-      var raw = localStorage.getItem(key);
-      return raw ? JSON.parse(raw) : fallback;
-    } catch (e) {
-      return fallback;
-    }
-  }
+  /* Storage goes through js/kzd-store.js — it is the only module in the
+     project allowed to touch localStorage. These stay synchronous because the
+     auth UI is synchronous; the store exposes sync twins for exactly this. */
+  function S() { return global.KZDStore || null; }
 
-  function write(key, value) {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-      return true;
-    } catch (e) {
+  function users() { var s = S(); return s ? s.getUsersSync() : []; }
+  function session() { var s = S(); return s ? s.getSessionSync() : null; }
+
+  function writeUsers(list) {
+    var s = S();
+    if (!s) return false;
+    try { s.setUsersSync(list); return true; }
+    catch (e) {
       if (global.console) console.warn("[kzd-auth] storage write failed", e);
       return false;
     }
   }
 
-  function users() { return read(USERS_KEY, []); }
-  function session() { return read(SESSION_KEY, null); }
+  function writeSession(value) {
+    var s = S();
+    if (!s) return false;
+    try { s.setSessionSync(value); return true; } catch (e) { return false; }
+  }
 
   /**
    * TODO(backend): replace with POST /api/auth/register. The server should hash
@@ -57,6 +59,9 @@
    * user without any credential material.
    */
   function register(data) {
+    if (!S()) {
+      return { ok: false, message: "The account store did not load. Refresh the page (Ctrl+Shift+R) and try again." };
+    }
     var list = users();
     var email = String(data.email || "").trim().toLowerCase();
 
@@ -74,10 +79,10 @@
     };
 
     list.push(user);
-    if (!write(USERS_KEY, list)) {
+    if (!writeUsers(list)) {
       return { ok: false, message: "Could not save your account in this browser." };
     }
-    write(SESSION_KEY, { email: user.email, firstName: user.firstName });
+    writeSession({ email: user.email, firstName: user.firstName });
     return { ok: true, user: user };
   }
 
@@ -86,6 +91,12 @@
    * in the browser.
    */
   function signIn(email, password) {
+    // Without the store there are no accounts to check against, and reporting
+    // that as a wrong password sends people hunting for a typo that is not
+    // there. Say what actually happened instead.
+    if (!S()) {
+      return { ok: false, message: "The account store did not load. Refresh the page (Ctrl+Shift+R) and try again." };
+    }
     var e = String(email || "").trim().toLowerCase();
     var list = users();
     var user = list.filter(function (u) { return u.email === e; })[0];
@@ -93,13 +104,14 @@
     if (!user || user.password !== String(password || "")) {
       return { ok: false, message: "That email and password do not match an account." };
     }
-    write(SESSION_KEY, { email: user.email, firstName: user.firstName });
+    writeSession({ email: user.email, firstName: user.firstName });
     return { ok: true, user: user };
   }
 
   /** TODO(backend): replace with POST /api/auth/logout. */
   function signOut() {
-    try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+    var st = S();
+    if (st) st.clearSessionSync();
     paintNav();
   }
 
@@ -132,15 +144,24 @@
       if (loginLi) loginLi.hidden = true;
       if (regLi) regLi.hidden = true;
 
+      // A page carries TWO .navbar-nav lists: the collapsing one (whose
+      // Login/Register are d-lg-none, mobile only) and the desktop-right one.
+      // Without mirroring that visibility class the signed-in slot appears in
+      // both at once, so the name and Sign out render twice on desktop.
+      var vis = loginLi && /\bd-lg-none\b/.test(loginLi.className) ? " d-lg-none" : "";
+
       var nameLi = document.createElement("li");
-      nameLi.className = "nav-item kzd-auth-slot";
-      var name = document.createElement("span");
+      nameLi.className = "nav-item kzd-auth-slot" + vis;
+      // The name is the way in to profile.html — without this the page has no
+      // entry point anywhere in the nav.
+      var name = document.createElement("a");
       name.className = "nav-link kzd-auth-who";
+      name.href = "profile.html";
       name.textContent = s.firstName || s.email;
       nameLi.appendChild(name);
 
       var outLi = document.createElement("li");
-      outLi.className = "nav-item kzd-auth-slot";
+      outLi.className = "nav-item kzd-auth-slot" + vis;
       var out = document.createElement("button");
       out.type = "button";
       out.className = "nav-link kzd-auth-out";
@@ -555,7 +576,43 @@
     isSignedIn: function () { return !!session(); }
   };
 
-  function boot() { paintNav(); }
+  /**
+   * Lets any page hand a signed-out visitor straight to the sign-in modal:
+   *     somewhere.html?signin=1&next=profile.html
+   * profile.html redirects here when there is no session. `next` is followed
+   * only if it is a same-origin relative path, so the parameter cannot be used
+   * to bounce someone to another site after they sign in.
+   */
+  /** Only a relative, same-origin .html path, at most one directory deep, with
+   *  ".." rejected outright. Without this, ?next= could be used to bounce
+   *  someone to another site immediately after they sign in. */
+  function safeNext(next) {
+    if (!next) return null;
+    if (/^[a-z][a-z0-9+.-]*:/i.test(next)) return null;      // no scheme
+    if (next.indexOf("//") === 0) return null;               // no protocol-relative
+    var pathPart = next.split(/[?#]/)[0];
+    if (pathPart.split("/").indexOf("..") !== -1) return null;
+    return /^(?:[A-Za-z0-9._-]+\/)?[A-Za-z0-9._-]+\.html(?:[?#][^\s]*)?$/.test(next) ? next : null;
+  }
+
+  function openFromQuery() {
+    var params;
+    try { params = new URLSearchParams(location.search); } catch (e) { return; }
+    if (params.get("signin") !== "1" || session()) return;
+
+    var next = params.get("next") || "";
+    var safe = safeNext(next);
+
+    open({
+      mode: "signin",
+      onDone: function () { if (safe) location.replace(safe); }
+    });
+  }
+
+  function boot() {
+    paintNav();
+    openFromQuery();
+  }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot, { once: true });

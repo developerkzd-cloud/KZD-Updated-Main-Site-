@@ -406,3 +406,36 @@
   .kzd-footer__social:hover { transform: none; }
   .kzd-footer__list a:hover { transform: none; }
 }
+
+/* ==========================================================================
+   TAP TARGETS
+
+   These links are deliberately small text — enlarging them would change the
+   design. The hit area is expanded instead, so the target clears 44px while
+   the visible link stays exactly as drawn. The site runs body { zoom: .9 },
+   so 49px of hit area is what lands at ~44 real pixels.
+   ========================================================================== */
+
+.kzd-footer__email,
+.kzd-footer__phone,
+.kzd-footer__brand,
+.kzd-footer__list a,
+.kzd-footer__social { position: relative; }
+
+.kzd-footer__email::after,
+.kzd-footer__phone::after,
+.kzd-footer__brand::after,
+.kzd-footer__list a::after,
+.kzd-footer__social::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  min-height: 49px;
+  height: 100%;
+  transform: translateY(-50%);
+}
+
+/* The social icons are square, so they need width as well as height. */
+.kzd-footer__social::after { left: 50%; width: 49px; transform: translate(-50%, -50%); }

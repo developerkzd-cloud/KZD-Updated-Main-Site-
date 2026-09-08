@@ -1,9 +1,9 @@
 /* ==========================================================================
    KZD Solutions — job detail page (job.html?job={id})
 
-   Reads the id from the query string and renders that role out of
-   careers.json. One page for every job; an unknown or missing id renders the
-   not-found state.
+   Reads the id from the query string and renders that role out of the store
+   (js/kzd-store.js), which is also what the admin dashboard writes to. One page
+   for every job; an unknown or missing id renders the not-found state.
 
    FRONTEND ONLY. There is no server. Applications are written to localStorage
    and nothing is emailed. Every place a real API call belongs is marked
@@ -14,7 +14,6 @@
 (function () {
   "use strict";
 
-  var SRC = "careers.json";
   var DRAFT_KEY = "kzd_application_draft";
   var APPS_KEY = "kzd_applications";
   var SVG_NS = "http://www.w3.org/2000/svg";
@@ -640,16 +639,16 @@
   function submitNow(form) {
     var record = collect();
 
-    // TODO(backend): POST this to /api/applications along with the real files,
-    // and let the server send the confirmation email. Today it only goes into
-    // localStorage on this device — nothing is transmitted and no email is sent.
-    var all = [];
-    try { all = JSON.parse(localStorage.getItem(APPS_KEY) || "[]"); } catch (e) {}
-    all.push(record);
-    try { localStorage.setItem(APPS_KEY, JSON.stringify(all)); } catch (e) {
-      if (window.console) console.warn("[kzd-job] could not save application", e);
+    // TODO(backend): the store's addApplication() becomes POST /api/applications
+    // with the real files attached, and the server sends the confirmation email.
+    // Today it lands in this browser only — nothing is transmitted, no email is
+    // sent. It DOES reach the admin dashboard, which reads the same store.
+    if (window.KZDStore) {
+      window.KZDStore.addApplication(record).catch(function (err) {
+        if (window.console) console.warn("[kzd-job] could not save application", err);
+      });
+      window.KZDStore.clearDraftSync();
     }
-    try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
 
     var done = el("div", "kzd-job__done");
     var tick = el("div", "kzd-job__tick");
@@ -673,13 +672,11 @@
   /* --- draft persistence ------------------------------------------------ */
 
   function saveDraft() {
-    var d = collect();
-    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(d)); } catch (e) {}
+    if (window.KZDStore) window.KZDStore.setDraftSync(collect());
   }
 
   function restoreDraft() {
-    var d = null;
-    try { d = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); } catch (e) {}
+    var d = window.KZDStore ? window.KZDStore.getDraftSync() : null;
     if (!d || d.jobId !== job.id) return;
 
     ["fullName", "email", "phone", "location", "portfolio", "source", "why", "built", "startDate"]
@@ -791,14 +788,14 @@
 
     var id = new URLSearchParams(window.location.search).get("job");
 
-    fetch(SRC, { cache: "no-cache" })
-      .then(function (r) {
-        if (!r.ok) throw new Error("careers.json " + r.status);
-        return r.json();
-      })
-      .then(function (data) {
-        var roles = data.roles || [];
-        job = roles.filter(function (r) { return r && r.id === id; })[0] || null;
+    // Reads the store, not careers.json — a job created or edited in the admin
+    // dashboard has to show up here, and a browser cannot write a static file.
+    Promise.resolve(window.KZDStoreReady)
+      .then(function () { return window.KZDStore.getJobs(); })
+      .then(function (roles) {
+        job = roles.filter(function (r) {
+          return r && (r.id === id || r.slug === id) && r.status !== "draft";
+        })[0] || null;
 
         if (!job) { renderMissing(id); section.removeAttribute("aria-busy"); return; }
 

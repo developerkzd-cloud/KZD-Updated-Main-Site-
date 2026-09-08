@@ -166,7 +166,6 @@
                     <div class="collapse navbar-collapse justify-content-center" id="navbarNav"> 
                         <ul class="navbar-nav">
                             <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-                            <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
 
                             <li class="nav-item kzd-nav-item">
                                 <button class="nav-link kzd-nav-trigger" type="button" aria-expanded="false" aria-haspopup="true">
@@ -232,7 +231,7 @@
                 <div class="kzd-car__inner">
                     <span class="kzd-car__eyebrow">
                         <span class="kzd-car__dot" aria-hidden="true"></span>
-                        Careers
+                        <span class="kzd-car__eyebrow-text">Careers</span>
                     </span>
                     <h1 class="kzd-car__h1">Work at<br class="kzd-car__br"> KZD Solutions</h1>
                     <p class="kzd-car__intro">We are a small Durban team building websites, software and systems for South African businesses. If you want to do real work early and learn from people who will actually explain things, we would like to meet you.</p>
@@ -240,7 +239,7 @@
             </section>
 
             <!-- 2. Current openings. Rows, counts and the empty state are all
-                 built by js/kzd-careers.js from careers.json. -->
+                 built by js/kzd-careers.js from the store (js/kzd-store.js). -->
             <section class="kzd-car__jobs" aria-labelledby="kzd-car-openings">
                 <div class="kzd-car__inner">
                     <h2 class="kzd-car__h2" id="kzd-car-openings">Current openings</h2>
@@ -419,10 +418,10 @@
         <div class="kzd-footer__col">
         <p class="kzd-footer__col-head">Company</p>
         <ul class="kzd-footer__list">
-        <li><a href="about.html">Who we are</a></li>
         <li><a href="services.html">Our services</a><span class="kzd-footer__hot">Hot</span></li>
         <li><a href="services.html">Our products</a></li>
         <li><a href="careers.html">Careers</a></li>
+                                    <li><a href="blog.html">Blog</a></li>
                                     <li><a href="contact.html">Contact us</a></li>
         </ul>
         </div>
@@ -467,6 +466,9 @@
         <!-- Shared navigation behaviour — one copy for every page -->
         <script src="js/kzd-nav.js" defer></script>
         <!-- Auth modals + signed-in nav state (prototype) -->
+        <!-- Data store — the ONLY module that touches localStorage. Must come
+             before every script that reads through it. -->
+        <script type="module" src="js/kzd-store.js"></script>
         <script src="js/kzd-auth.js" defer></script>
         <!-- Footer interactions — likewise shared -->
         <script src="js/kzd-footer.js" defer></script>
@@ -497,7 +499,7 @@
         </script>
         <!-- navbar logo color change end -->
 
-            <!-- Careers listing — reads careers.json -->
+            <!-- Careers listing — reads the store, so admin-created roles appear -->
         <script src="js/kzd-careers.js" defer></script>
     </body>
 </html>

@@ -1,10 +1,10 @@
 /* ==========================================================================
    KZD Solutions — Careers listing
 
-   Self-contained: no jQuery, no theme dependency. Reads careers.json at
+   Self-contained: no jQuery, no theme dependency. Reads the roles from
    runtime, the same pattern as reviews.json — no key, no backend.
 
-   ADDING A ROLE is a data edit: append to "roles" in careers.json. The counts,
+   ADDING A ROLE is done in the admin dashboard, not by editing a file. The counts,
    the open-before-closed ordering and the empty state are all derived here.
 
    Animates transform and opacity only. Every observer unobserves on first fire.
@@ -13,7 +13,6 @@
 (function () {
   "use strict";
 
-  var SRC = "careers.json";
   var SVG_NS = "http://www.w3.org/2000/svg";
 
   function reduced() {
@@ -164,6 +163,25 @@
     });
   }
 
+  /* Swaps in whatever Page content holds. Every selector here is optional:
+     a page that does not carry the element simply keeps its markup. */
+  function applyContent(c) {
+    if (!c) return;
+    var map = [
+      [".kzd-car__eyebrow-text", c.eyebrow],
+      [".kzd-car__h1", c.h1],
+      [".kzd-car__intro", c.intro],
+      ["#kzd-car-openings", c.openingsHeading],
+      ["#kzd-car-why", c.whyHeading],
+      ["#kzd-car-how", c.howHeading],
+      ["#kzd-car-people", c.peopleHeading]
+    ];
+    map.forEach(function (pair) {
+      var node = document.querySelector(pair[0]);
+      if (node && typeof pair[1] === "string" && pair[1].trim()) node.textContent = pair[1];
+    });
+  }
+
   function init() {
     var section = document.querySelector(".kzd-car");
     if (!section) return;
@@ -172,13 +190,17 @@
     var count = section.querySelector(".kzd-car__count");
     var jobsSection = section.querySelector(".kzd-car__jobs");
 
-    fetch(SRC, { cache: "no-cache" })
-      .then(function (r) {
-        if (!r.ok) throw new Error("careers.json " + r.status);
-        return r.json();
+    // Roles and copy both come from js/kzd-store.js, so a posting created in
+    // the admin dashboard appears here and an edit in Page content changes the
+    // wording. A static careers.json could do neither — a browser cannot write
+    // a file on disk.
+    Promise.resolve(window.KZDStoreReady)
+      .then(function () {
+        return Promise.all([window.KZDStore.getJobs(), window.KZDStore.getPageContent("careers")]);
       })
-      .then(function (data) {
-        var roles = (data.roles || []).filter(usable);
+      .then(function (pair) {
+        var roles = pair[0].filter(function (r) { return usable(r) && r.status !== "draft"; });
+        applyContent(pair[1]);
 
         // Open first, closed last; original order preserved within each group.
         var open = roles.filter(isOpen);

@@ -504,3 +504,16 @@
   .kzd-acc__row { font-size: 15px; }
   .kzd-acc__desc { font-size: 15.5px; }
 }
+
+/* Hit area only — the toggle's drawn height is part of the panel rhythm, so it
+   is expanded rather than resized. 49 CSS px lands at ~44 real px under the
+   site's body { zoom: .9 }. */
+.kzd-acc__toggle { position: relative; }
+
+.kzd-acc__toggle::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  min-height: 49px;
+  transform: translateY(-50%);
+}

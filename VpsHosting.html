@@ -112,7 +112,6 @@
                     <div class="collapse navbar-collapse justify-content-center" id="navbarNav"> 
                         <ul class="navbar-nav">
                             <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-                            <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
 
                             <li class="nav-item kzd-nav-item">
                                 <button class="nav-link kzd-nav-trigger" type="button" aria-expanded="false" aria-haspopup="true">
@@ -273,13 +272,13 @@
                     <span class="fw-600 d-block text-dark-gray mb-5px">Company</span>
                     <ul class="list-unstyled">
                                 <li><a href="careers.html">Careers</a></li>
-                        <li><a href="about.html">Who we are</a></li>
                         <li><a href="services.html">Our services</a>
                             <div
                                 class="bg-dark-gray fw-600 text-white lh-22 text-uppercase border-radius-30px ps-10px pe-10px fs-10 ms-10px d-inline-block align-middle">
                                 Hot</div>
                         </li>
                         <li><a href="services.html">Our products</a></li>
+                        <li><a href="blog.html">Blog</a></li>
                         <li><a href="contact.html">Contact us</a></li>
                     </ul>
                 </div>
@@ -346,6 +345,9 @@
         <!-- Shared navigation behaviour — one copy for every page -->
         <script src="js/kzd-nav.js" defer></script>
         <!-- Auth modals + signed-in nav state (prototype) -->
+        <!-- Data store — the ONLY module that touches localStorage. Must come
+             before every script that reads through it. -->
+        <script type="module" src="js/kzd-store.js"></script>
         <script src="js/kzd-auth.js" defer></script>
     <!-- navbar logo color change start -->
     <script>

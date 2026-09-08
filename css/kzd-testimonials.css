@@ -811,3 +811,24 @@
   .kzd-tst__arrow--prev { left: -8px; }
   .kzd-tst__arrow--next { right: -8px; }
 }
+
+/* Hit area only — the visible control keeps its drawn size. 49 CSS px lands at
+   ~44 real px under the site's body { zoom: .9 }. */
+.kzd-tst__more,
+.kzd-tst__dot { position: relative; }
+
+.kzd-tst__more::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  min-height: 49px;
+  transform: translateY(-50%);
+}
+
+.kzd-tst__dot::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 49px; height: 49px;
+  transform: translate(-50%, -50%);
+}

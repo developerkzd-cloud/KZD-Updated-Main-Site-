@@ -658,3 +658,15 @@
   .kzd-car__score { font-size: 32px; }
   .kzd-car__stars svg { width: 18px; height: 18px; }
 }
+
+/* The job title is a link inside a card; its text height is well under the
+   touch minimum, so the hit area is expanded without moving the text. */
+.kzd-car__title-link { position: relative; }
+
+.kzd-car__title-link::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  min-height: 49px;
+  transform: translateY(-50%);
+}

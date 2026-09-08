@@ -1,3 +1,5 @@
 node_modules/
 .env
 .htmlvalidate-cache/
+# Prerendered articles are build output of tools/build-blog.js
+blog/

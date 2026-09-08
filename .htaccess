@@ -1,5 +1,10 @@
 RewriteEngine On
 
+# about.html was removed — the About Us section on the homepage replaces it.
+# This MUST come before the .html-stripping rules below, or /about.html gets
+# rewritten to /about first and falls through to a 404. NE keeps the # literal.
+RewriteRule ^about(\.html)?$ /#about [R=301,L,NE]
+
 # Redirect index.html to root domain
 RewriteCond %{THE_REQUEST} /index\.html [NC]
 RewriteRule ^index\.html$ / [R=301,L]
