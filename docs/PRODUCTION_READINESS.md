@@ -98,6 +98,49 @@ needs checking directly.
   not verifiable from local dev at all (see Known Issues)
 - [ ] Confirm which registrar is authoritative for which TLDs in current
   admin configuration — not audited in this review
+- [x] **Domain registration silently failing after payment: found and
+  fixed (2026-09-08).** Two live signups (`sktradingstore.co.za`,
+  `stylesbycebs.co.za`) hit `failed_setup` for two separate reasons: the
+  HostAfrica reseller balance ran dry (unrelated to code — top up the
+  balance and retry via the order's "Activate" button), and the registrant
+  contact's `city`/`address`/`country`/`phone` were blank (client profiles
+  never required them), which HostAfrica's EPP contact-create rejects
+  outright. `Servicedomain::_getD()` now always defaults the registrant
+  contact to KZD's own business address instead of depending on the client
+  profile — see `CUSTOMIZATIONS.md`'s "Domain registrant contact defaults"
+  entry. Should not recur for future signups regardless of what a client's
+  profile contains; reseller balance running out is still an operational
+  risk worth a low-balance alert with HostAfrica if they offer one (not
+  set up).
+
+## Hosting (DirectAdmin) checklist
+
+- [x] Real DirectAdmin account creation, suspend/unsuspend/cancel, and SSO
+  "Login to Control Panel" confirmed working in production (Phase 11 of
+  `CHANGELOG.md`).
+- [x] **"Log in to Dashboard" timeout incident (2026-09-06 to 2026-09-08):
+  investigated, resolved on its own, no code change needed.** An existing
+  DirectAdmin client (`philfabu`, imported into FOSSBilling after already
+  having a DirectAdmin account) got a timeout clicking "Log in to
+  Dashboard." Root cause was **not** FOSSBilling code, package
+  configuration, or the stored username (all verified correct) — it was a
+  transient network-level block between the production server and
+  `da26.host-ww.net` (TCP connections timing out with no response on both
+  port 443 and 2222, while the same host responded normally from every
+  other network tested). Most likely a brute-force/failed-auth auto-block,
+  consistent with the SMTP/CSF-LFD incident below, though never
+  conclusively confirmed on HostAfrica's end. Resolved on its own within
+  about a day. See `CHANGELOG.md`'s "Existing-client onboarding incident"
+  entry for the full investigation. **If this recurs**: test plain TCP
+  connectivity to `da26.host-ww.net:2222`/`:443` from the production
+  server directly (`curl`/raw TCP) before assuming it's a FOSSBilling bug —
+  if that times out too, it's a network/HostAfrica issue, not this app.
+- [ ] Existing-DirectAdmin-account import workflow (`config[import]` +
+  explicit username in the admin "Create New Order" form) is functional
+  and was exercised for `philfabu`, but is easy to get wrong (leaving
+  Username blank silently auto-generates one that won't match the real
+  DirectAdmin account) — worth a clearer UI warning or server-side
+  validation as a follow-up, not done in this pass.
 
 ## Cron jobs
 

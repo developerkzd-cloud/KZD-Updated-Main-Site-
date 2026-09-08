@@ -121,6 +121,44 @@ touch stock code. **[core edit]** = a stock file was directly modified.
   (spec Parts 9-12 of the original request) is a separate feature,
   planned as a follow-up once this one is verified live.
 
+## Domain registrant contact defaults to KZD's own address
+
+- **`modules/Servicedomain/Service.php::_getD()`** **[core edit]** — the
+  registrant/tech/billing/admin contact sent to HostAfrica for domain
+  register/transfer now defaults to KZD's own registered business address
+  rather than the client's profile. Priority order: an explicit per-order
+  contact override (`service_domain.contact_*`, set directly on that one
+  domain's record, not the client's) wins if staff ever set one; otherwise
+  KZD's company address (`_getCompanyContactDefaults()`, new private
+  method); the client's own profile address is consulted only as a
+  last-resort fallback below that.
+- **Why**: domains are deliberately registered under KZD's own reseller
+  account (nameservers repointed to the reseller, DirectAdmin account
+  created and connected — KZD retains operational control throughout the
+  hosting relationship, not the client), so the registrant contact should
+  be consistent regardless of whether a given client happened to fill in
+  their own address. Client signup never required a postal address in the
+  first place (`Client\Api\Guest::create()`'s `RequiredParams` is just
+  email/name/password), so relying on the client's profile meant domain
+  registration could fail outright — HostAfrica's EPP contact-create call
+  rejects blank `city`/`address`/`country`/`phone` — silently, after the
+  client had already paid, discovered only when staff happened to check.
+  See `CHANGELOG.md`'s "Existing-client onboarding incident" entry for the
+  two live signups (`sktradingstore.co.za`, `stylesbycebs.co.za`) this was
+  found and fixed for.
+- **Schema**: five new rows in the existing `setting` table (no new
+  columns) — `company_city`, `company_state`, `company_postcode`,
+  `company_country`, `company_phone_cc` — alongside the pre-existing
+  `company_address_1` and `company_tel`. Not exposed in the admin System
+  Settings UI (Admin → System Settings → Company only has a form for the
+  original fields); set directly via SQL for now. Edit these rows in the
+  `setting` table if the business address ever changes.
+- **Not done in this pass**: no admin UI to edit the five new
+  `company_*` settings (direct SQL only); no enforcement of a client-facing
+  "required address" flow at signup or checkout — client profile fields
+  remain optional, and now this doesn't matter for domain registration
+  either way since it isn't relied on.
+
 ## Hosting/Business Email ↔ domain association + domain→hosting cross-sell
 
 - **Goal**: non-technical customers buying a domain alone often don't
