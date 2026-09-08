@@ -1,0 +1,695 @@
+{
+  "_README": "Blog content store. Shaped to map onto a Payload CMS collection when this site moves to Next.js + Payload: every post is one document, and `body` is an ARRAY OF BLOCKS rather than an HTML string. Keep it that way — block arrays map straight onto Payload block fields, survive a CMS migration, and cannot inject markup into the page. js/kzd-blog.js renders each block type explicitly and ignores any type it does not recognise. There is deliberately NO readingMinutes field: it is computed from the body every time it is displayed, because a stored copy drifts the moment anyone edits the text and a wrong number is worse than none.",
+  "_blockTypes": [
+    "paragraph",
+    "heading",
+    "list",
+    "quote"
+  ],
+  "posts": [
+    {
+      "slug": "healthcare-durban-operational-waste",
+      "category": "Operations",
+      "title": "How Healthcare Companies in Durban Can Reduce Operational Waste",
+      "excerpt": "Where clinical admin time actually goes, and the three process changes that recover the most hours.",
+      "publishedAt": "2026-02-12",
+      "author": "KZD Solutions",
+      "seo": {
+        "metaTitle": "Reducing Operational Waste in Durban Healthcare Practices | KZD Solutions",
+        "metaDescription": "Clinical admin quietly eats staff hours. Here is where those hours go in a typical Durban practice, and the three process changes that recover the most of them.",
+        "keywords": [
+          "healthcare operations Durban",
+          "reduce operational waste",
+          "clinical admin time",
+          "practice management South Africa",
+          "process optimisation"
+        ]
+      },
+      "cover": {
+        "type": "generated",
+        "seed": "healthcare-durban-operational-waste"
+      },
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Most healthcare businesses in Durban are not short of staff hours. They are short of the hours those staff actually spend on patients. The gap between the two is operational waste, and it is usually hiding in plain sight."
+        },
+        {
+          "type": "paragraph",
+          "text": "We looked at where admin time goes across several practices. The pattern was consistent enough to be worth writing down."
+        },
+        {
+          "type": "heading",
+          "text": "Where the hours actually go"
+        },
+        {
+          "type": "paragraph",
+          "text": "Three activities accounted for most of the lost time: re-capturing information that already existed somewhere else, chasing paperwork between rooms, and rebuilding reports by hand every month."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Patient details typed twice, once at reception and again into the billing system",
+            "Paper files physically walked between consulting rooms and admin",
+            "Monthly claim summaries rebuilt from scratch in a spreadsheet"
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What to fix first"
+        },
+        {
+          "type": "paragraph",
+          "text": "Start with double capture. It is the least visible of the three and usually the cheapest to remove, because the data is already being entered correctly the first time. The problem is that the second system cannot see it."
+        },
+        {
+          "type": "quote",
+          "text": "If a number is typed twice, one of those two times is waste. The only question is which one is easier to remove."
+        },
+        {
+          "type": "paragraph",
+          "text": "Once capture is single-source, the reporting problem often solves itself. Reports get slow to build when the underlying data lives in three places and has to be reconciled before anyone can trust it."
+        },
+        {
+          "type": "heading",
+          "text": "What this looks like in practice"
+        },
+        {
+          "type": "paragraph",
+          "text": "A practice we worked with was spending roughly a day a month rebuilding a claims summary. The fix was not a new system. It was making the existing booking system the single place patient details were entered, then reading the summary straight off it."
+        },
+        {
+          "type": "paragraph",
+          "text": "The work took under a fortnight. The day a month came back permanently, and the error rate on claims dropped as a side effect, because there was no longer a second copy to fall out of step."
+        },
+        {
+          "type": "heading",
+          "text": "Measuring it without a consultant"
+        },
+        {
+          "type": "paragraph",
+          "text": "You do not need a time-and-motion study to find this. Pick one week and ask three staff members to note, in a single line each time, what they were doing whenever they were not with a patient. No categories, no forms, just a line. At the end of the week the categories write themselves, and they are usually the same three."
+        },
+        {
+          "type": "paragraph",
+          "text": "The reason this works better than a formal audit is that it costs almost nothing and nobody games it. A study announced a month in advance changes the behaviour it is trying to measure. A scrap of paper on a desk does not."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Count how many systems a single patient detail is typed into",
+            "Time one month-end report from first spreadsheet to sent email",
+            "Note how often somebody walks somewhere to fetch something"
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What not to do first"
+        },
+        {
+          "type": "paragraph",
+          "text": "The temptation is to buy a practice management system that promises to solve all three problems at once. That is usually the most expensive route and the slowest to show anything. Large systems take months to configure, require the existing data to be clean before migration, and change every workflow simultaneously, which means when something goes wrong you cannot tell which change caused it."
+        },
+        {
+          "type": "paragraph",
+          "text": "Fix one loop, prove the hours came back, then decide whether the bigger system is still necessary. Often it is, but you go into that decision knowing what you actually need from it rather than what a demo suggested."
+        },
+        {
+          "type": "heading",
+          "text": "The compounding effect"
+        },
+        {
+          "type": "paragraph",
+          "text": "Removing double capture does more than save the typing time. It removes an entire class of error, because two copies of a number can disagree and one copy cannot. Reconciliation work disappears, claim rejections drop, and the monthly report stops needing a human to adjudicate between sources."
+        },
+        {
+          "type": "paragraph",
+          "text": "That second-order saving is usually larger than the first, and it is the reason we suggest starting with capture rather than with reporting even though reporting is the more visible complaint."
+        },
+        {
+          "type": "paragraph",
+          "text": "None of this requires new clinical software or a change to how anyone treats patients. It is administrative plumbing, and administrative plumbing is where the recoverable hours in a practice almost always are."
+        }
+      ]
+    },
+    {
+      "slug": "logistics-delivery-tracking-technology",
+      "category": "Logistics",
+      "title": "How Logistics Businesses Can Improve Delivery Tracking with Technology",
+      "excerpt": "Why customers ask “where is my order”, and what to build so they stop.",
+      "publishedAt": "2026-02-09",
+      "author": "KZD Solutions",
+      "seo": {
+        "metaTitle": "Improving Delivery Tracking for South African Logistics Businesses | KZD Solutions",
+        "metaDescription": "Every “where is my order” call is a tracking failure you are paying for twice. What to build so customers stop needing to ask.",
+        "keywords": [
+          "delivery tracking software",
+          "logistics technology South Africa",
+          "proof of delivery",
+          "fleet visibility",
+          "last mile tracking"
+        ]
+      },
+      "cover": {
+        "type": "generated",
+        "seed": "logistics-delivery-tracking-technology"
+      },
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Every “where is my order” call costs you twice: once for the driver interrupted to answer it, and once for the office staff member who took it. Neither of those costs appears on any invoice."
+        },
+        {
+          "type": "heading",
+          "text": "The question behind the question"
+        },
+        {
+          "type": "paragraph",
+          "text": "Customers rarely want a GPS coordinate. They want to know whether to keep waiting. Those are different questions, and the second one is far cheaper to answer."
+        },
+        {
+          "type": "list",
+          "items": [
+            "A status that updates without anyone typing it",
+            "An expected window rather than a precise time",
+            "A notification when that window changes"
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Start with status, not maps"
+        },
+        {
+          "type": "paragraph",
+          "text": "Live vehicle maps are the most expensive thing to build and the least useful to most customers. A reliable status that changes on its own answers the real question at a fraction of the cost."
+        },
+        {
+          "type": "quote",
+          "text": "Customers do not want to watch the van. They want to stop wondering about it."
+        },
+        {
+          "type": "paragraph",
+          "text": "Once status is trustworthy, the call volume drops far enough that the map stops feeling necessary. Build it later if the data says you still need it."
+        },
+        {
+          "type": "heading",
+          "text": "What to capture, and where"
+        },
+        {
+          "type": "paragraph",
+          "text": "Status only updates itself if something in the real world generates the update. In practice that means the driver, and the driver is busy. Any system that relies on a driver stopping to type will produce accurate data for two weeks and then quietly stop."
+        },
+        {
+          "type": "list",
+          "items": [
+            "One tap at pickup and one at drop-off, nothing more",
+            "A photo as proof of delivery, because it doubles as the dispute record",
+            "Automatic timestamps, never typed ones"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If capturing a status takes longer than about three seconds it will be batched at the end of the day, and a status batched at the end of the day is not tracking. It is a log."
+        },
+        {
+          "type": "heading",
+          "text": "Setting expectations beats precision"
+        },
+        {
+          "type": "paragraph",
+          "text": "A two-hour window that holds is worth more to a customer than a fifteen-minute estimate that slips. Precision you cannot sustain trains people to distrust the number, and once they distrust it they call, which is the cost you were trying to remove."
+        },
+        {
+          "type": "paragraph",
+          "text": "Start wider than feels comfortable and narrow the window only once the underlying data supports it. The measure of success is not how tight the estimate is. It is how often it is right."
+        },
+        {
+          "type": "heading",
+          "text": "The internal benefit nobody mentions"
+        },
+        {
+          "type": "paragraph",
+          "text": "Delivery tracking is usually sold as a customer feature, but the operational payoff is often bigger. Once every job carries reliable timestamps you can see which routes consistently overrun, which customers take longest to receive, and where the day actually goes."
+        },
+        {
+          "type": "paragraph",
+          "text": "That data is the basis for every scheduling improvement afterwards, and you cannot get it from a spreadsheet of planned times. You need what happened, not what was intended."
+        }
+      ]
+    },
+    {
+      "slug": "retail-digitise-manual-inventory",
+      "category": "Retail",
+      "title": "How Retail SMEs Can Digitise Manual Inventory Processes",
+      "excerpt": "From clipboard to live stock count without replacing your whole system.",
+      "publishedAt": "2026-02-05",
+      "author": "KZD Solutions",
+      "seo": {
+        "metaTitle": "Digitising Manual Inventory for South African Retail SMEs | KZD Solutions",
+        "metaDescription": "You do not need to replace your point of sale to get a live stock count. A staged path from clipboard to real numbers, for small retailers.",
+        "keywords": [
+          "inventory management SME",
+          "stock count digitisation",
+          "retail systems South Africa",
+          "barcode stocktake",
+          "point of sale integration"
+        ]
+      },
+      "cover": {
+        "type": "generated",
+        "seed": "retail-digitise-manual-inventory"
+      },
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "The usual advice to a small retailer with a stock problem is to buy a bigger system. That advice is expensive, disruptive, and often unnecessary."
+        },
+        {
+          "type": "heading",
+          "text": "Why clipboards persist"
+        },
+        {
+          "type": "paragraph",
+          "text": "Paper stock counts survive because they are fast to start and nobody has to be trained. The cost only shows up later, when the count is three days old and two people disagree about it."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Counts that are accurate on the day and wrong by the weekend",
+            "Two versions of the truth between the floor and the office",
+            "Reorders placed on a number nobody fully trusts"
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "A staged path"
+        },
+        {
+          "type": "paragraph",
+          "text": "Digitise the count before you digitise the catalogue. A phone-based count that writes to one shared list removes the disagreement immediately, and it does not require your product data to be clean first."
+        },
+        {
+          "type": "quote",
+          "text": "Fix the count before you fix the catalogue. One of those blocks trading today; the other does not."
+        },
+        {
+          "type": "paragraph",
+          "text": "Once counts are trustworthy, the catalogue cleanup becomes a background job rather than a blocking project, and you can do it in the order that matters commercially."
+        },
+        {
+          "type": "heading",
+          "text": "Counting on a phone"
+        },
+        {
+          "type": "paragraph",
+          "text": "The cheapest useful change in most small retailers is a shared count that two people can add to at once. Not an app, necessarily. A shared sheet on a phone will do, provided everyone is writing to the same one."
+        },
+        {
+          "type": "paragraph",
+          "text": "The moment the count is shared rather than copied, the argument about which number is right disappears, because there is only one number. That single change often removes more friction than any software purchase that follows it."
+        },
+        {
+          "type": "list",
+          "items": [
+            "One list, edited live, visible to the floor and the office",
+            "Counts attributed to a person and a time, so queries are answerable",
+            "Variances recorded rather than corrected silently"
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Barcodes when they earn their place"
+        },
+        {
+          "type": "paragraph",
+          "text": "Scanning is worth it once the catalogue is stable and the volume is high enough that typing is the bottleneck. Before that, barcodes add a data-quality project on top of a counting problem, and the counting problem is the one costing you money this week."
+        },
+        {
+          "type": "paragraph",
+          "text": "A useful rule: if staff can find an item in the list faster than they can scan it, the list is not the constraint yet."
+        },
+        {
+          "type": "heading",
+          "text": "What good looks like"
+        },
+        {
+          "type": "paragraph",
+          "text": "You have arrived when the reorder decision is made from the system rather than from a walk through the stockroom, and when nobody feels the need to double-check it. That is a lower bar than a full inventory management implementation, and it captures most of the commercial benefit."
+        },
+        {
+          "type": "paragraph",
+          "text": "Everything after that — automated reorder points, supplier integration, demand forecasting — is genuinely useful, but it is optimisation. The step that changes the business is trusting the count."
+        }
+      ]
+    },
+    {
+      "slug": "manufacturing-automate-quality-control-reporting",
+      "category": "Manufacturing",
+      "title": "How Manufacturing Companies Can Automate Quality Control Reporting",
+      "excerpt": "Paper QC sheets are slow and easy to lose. Here is the practical alternative.",
+      "publishedAt": "2026-02-01",
+      "author": "KZD Solutions",
+      "seo": {
+        "metaTitle": "Automating Quality Control Reporting in Manufacturing | KZD Solutions",
+        "metaDescription": "Paper QC sheets are slow to compile and easy to lose. A practical route to automated quality reporting that does not require replacing the line.",
+        "keywords": [
+          "quality control automation",
+          "QC reporting manufacturing",
+          "digital inspection sheets",
+          "manufacturing systems South Africa",
+          "traceability"
+        ]
+      },
+      "cover": {
+        "type": "generated",
+        "seed": "manufacturing-automate-quality-control-reporting"
+      },
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "A quality control sheet that lives on a clipboard is doing two jobs badly: recording what happened, and proving it later. Paper is acceptable at the first and poor at the second."
+        },
+        {
+          "type": "heading",
+          "text": "The compile cost"
+        },
+        {
+          "type": "paragraph",
+          "text": "The expensive part is rarely the inspection. It is the person who collects the sheets at month end and turns them into a report somebody will actually read."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Sheets that go missing between the line and the office",
+            "Handwriting that has to be interpreted before it can be typed",
+            "A month of data that only becomes visible after the month has ended"
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Capture once, report continuously"
+        },
+        {
+          "type": "paragraph",
+          "text": "If the inspection is captured digitally at the point it happens, the report is a query rather than a project. That single change usually matters more than any specific tool choice."
+        },
+        {
+          "type": "quote",
+          "text": "A report you can only run once a month is not a control. It is a post-mortem."
+        },
+        {
+          "type": "paragraph",
+          "text": "Start with the one inspection that causes the most rework when it goes wrong. Prove the loop there before you take it to the whole line."
+        },
+        {
+          "type": "heading",
+          "text": "Capture where the work happens"
+        },
+        {
+          "type": "paragraph",
+          "text": "The inspection has to be recorded at the machine, by the person doing it, in the moment. Anything else introduces a transcription step, and transcription is where both the time and the errors accumulate."
+        },
+        {
+          "type": "list",
+          "items": [
+            "A tablet or rugged phone at the station, not a terminal in the office",
+            "Fields that match the existing sheet exactly, at first",
+            "Photographs attached to failures, because a photo settles arguments"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Resist redesigning the inspection at the same time as digitising it. Change one thing. If the form changes and the medium changes together and quality data gets worse, you will not know which decision caused it."
+        },
+        {
+          "type": "heading",
+          "text": "Traceability as a by-product"
+        },
+        {
+          "type": "paragraph",
+          "text": "Once inspections are captured digitally against a batch, traceability stops being a separate project. A customer query about a specific delivery becomes a query rather than an afternoon in a filing cabinet, and recalls narrow from a production run to a batch."
+        },
+        {
+          "type": "paragraph",
+          "text": "For manufacturers supplying regulated sectors this is often the argument that pays for the work on its own, independent of the reporting time saved."
+        },
+        {
+          "type": "heading",
+          "text": "Reporting becomes continuous"
+        },
+        {
+          "type": "paragraph",
+          "text": "The month-end compile disappears, but the more important change is that quality data becomes visible while it can still be acted on. A drift that shows up on the fourth of the month is a process adjustment. The same drift discovered on the first of the following month is scrap."
+        },
+        {
+          "type": "quote",
+          "text": "The value is not the report. It is the days you get back between the problem starting and somebody noticing."
+        },
+        {
+          "type": "paragraph",
+          "text": "Start with one inspection point, run both the paper and the digital version in parallel for two weeks, and compare. That parallel period is what earns trust from the people who have to use it every day."
+        }
+      ]
+    },
+    {
+      "slug": "lean-systems-healthcare-kwazulu-natal",
+      "category": "Healthcare",
+      "title": "Lean Systems for Healthcare Businesses in KwaZulu-Natal",
+      "excerpt": "What lean actually means outside a factory, applied to a Durban practice.",
+      "publishedAt": "2026-01-28",
+      "author": "KZD Solutions",
+      "seo": {
+        "metaTitle": "Lean Systems for Healthcare Businesses in KwaZulu-Natal | KZD Solutions",
+        "metaDescription": "Lean is not a factory technique. Applied to a KwaZulu-Natal healthcare practice, it means removing the waiting, not rushing the people.",
+        "keywords": [
+          "lean healthcare",
+          "KwaZulu-Natal practice management",
+          "patient flow",
+          "process improvement Durban",
+          "healthcare operations"
+        ]
+      },
+      "cover": {
+        "type": "generated",
+        "seed": "lean-systems-healthcare-kwazulu-natal"
+      },
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Lean has a factory reputation it has never fully shaken, which is a pity, because most of its useful ideas are about waiting rather than manufacturing."
+        },
+        {
+          "type": "heading",
+          "text": "Waiting is the waste"
+        },
+        {
+          "type": "paragraph",
+          "text": "In a practice, almost nothing that frustrates a patient is caused by someone working too slowly. It is caused by a handover that has not happened yet."
+        },
+        {
+          "type": "list",
+          "items": [
+            "A file that is ready but has not been walked to the right room",
+            "A result that arrived but has not been looked at",
+            "An authorisation that nobody has been asked for"
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Make the queue visible"
+        },
+        {
+          "type": "paragraph",
+          "text": "The cheapest lean intervention is usually a board. Not software, a board. Once everybody can see what is waiting and on whom, most of the coordination happens without a meeting."
+        },
+        {
+          "type": "quote",
+          "text": "You cannot manage a queue you cannot see. Most practices are managing three they have never drawn."
+        },
+        {
+          "type": "paragraph",
+          "text": "Software helps once the queue is understood. Introduced before that, it usually digitises the confusion rather than removing it."
+        },
+        {
+          "type": "heading",
+          "text": "Drawing the queue"
+        },
+        {
+          "type": "paragraph",
+          "text": "Start by writing down every point at which something waits for a person. Not tasks, waits. Most practices find between six and ten, and are surprised by at least three of them."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Patient waiting for a room",
+            "Room waiting for a file",
+            "File waiting for a result",
+            "Result waiting for a clinician to read it",
+            "Claim waiting for a code"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Each of those is a queue with a length you can count. Counting them for one week is usually enough to identify which one is actually setting the pace of the practice, and it is rarely the one people complain about."
+        },
+        {
+          "type": "heading",
+          "text": "Standard work is not rigidity"
+        },
+        {
+          "type": "paragraph",
+          "text": "The phrase puts clinicians off, understandably, because it sounds like a script for patient care. It is not. It applies to the administrative steps around care, where variation adds no value and costs time: how a file is prepared, where results are placed, who is responsible for chasing an authorisation."
+        },
+        {
+          "type": "paragraph",
+          "text": "Clinical judgement stays exactly where it is. What gets standardised is everything that should never have depended on judgement in the first place."
+        },
+        {
+          "type": "heading",
+          "text": "Why improvements decay"
+        },
+        {
+          "type": "paragraph",
+          "text": "Most practices have improved something before and watched it slide back. That is almost always because the improvement lived in one person’s habit rather than in the layout of the work. If the new way requires more discipline than the old way, it will lose."
+        },
+        {
+          "type": "quote",
+          "text": "A change that needs willpower to sustain has not been designed properly yet."
+        },
+        {
+          "type": "paragraph",
+          "text": "The durable version makes the right action the easy one: the form is already where the person stands, the board is already in the room they walk through, the default is already correct."
+        },
+        {
+          "type": "heading",
+          "text": "Where to start in a small practice"
+        },
+        {
+          "type": "paragraph",
+          "text": "Pick the queue with the most patients in it, make it visible, and meet for ten minutes a day in front of it for two weeks. That is the entire intervention. It costs nothing, and in most practices it removes enough noise to show clearly what the real constraint is."
+        },
+        {
+          "type": "paragraph",
+          "text": "Only then is it worth talking about software, because only then do you know what the software would have to do."
+        }
+      ]
+    },
+    {
+      "slug": "automotive-job-card-turnaround",
+      "category": "Automotive",
+      "title": "How Automotive Workshops Can Cut Job-Card Turnaround Time",
+      "excerpt": "The bottleneck is rarely the mechanics. It is usually the paperwork around them.",
+      "publishedAt": "2026-01-24",
+      "author": "KZD Solutions",
+      "seo": {
+        "metaTitle": "Cutting Job-Card Turnaround Time in Automotive Workshops | KZD Solutions",
+        "metaDescription": "Vehicles usually wait on paperwork, not on mechanics. Where job-card time actually goes in a workshop, and what to change first.",
+        "keywords": [
+          "job card system",
+          "automotive workshop efficiency",
+          "workshop management software",
+          "vehicle turnaround time",
+          "service department operations"
+        ]
+      },
+      "cover": {
+        "type": "generated",
+        "seed": "automotive-job-card-turnaround"
+      },
+      "body": [
+        {
+          "type": "paragraph",
+          "text": "Ask a workshop where the time goes and you will hear about the technicians. Measure it and you will usually find the vehicle spent longer waiting for a decision than waiting for a spanner."
+        },
+        {
+          "type": "heading",
+          "text": "Three common stalls"
+        },
+        {
+          "type": "paragraph",
+          "text": "Authorisation, parts confirmation, and the final invoice check account for most of the standing time in a typical service department."
+        },
+        {
+          "type": "list",
+          "items": [
+            "A quote sitting unapproved because the customer was called once and missed it",
+            "A part assumed to be in stock and not checked until the job started",
+            "An invoice waiting on a signature from someone who is off site"
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Shorten the approval loop"
+        },
+        {
+          "type": "paragraph",
+          "text": "Approval is usually the biggest single win, because it happens early and everything downstream waits behind it. Anything that turns one phone call into a message the customer can answer at their convenience will move the number."
+        },
+        {
+          "type": "quote",
+          "text": "A bay occupied by a vehicle nobody is working on is the most expensive thing in the workshop."
+        },
+        {
+          "type": "paragraph",
+          "text": "Measure standing time before and after. If it does not move, the bottleneck was somewhere else and you have learned that cheaply."
+        },
+        {
+          "type": "heading",
+          "text": "Measure standing time, not labour time"
+        },
+        {
+          "type": "paragraph",
+          "text": "Most workshop systems record how long a technician spent on a job. Very few record how long the vehicle sat between the technician stopping and starting again. That gap is where turnaround time is lost, and it is invisible in the labour report."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Time from booking in to work commencing",
+            "Time from quote sent to quote approved",
+            "Time from work complete to vehicle collected"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Record those three for two weeks. In almost every workshop the middle one dominates, and it is also the cheapest to attack."
+        },
+        {
+          "type": "heading",
+          "text": "Make approval asynchronous"
+        },
+        {
+          "type": "paragraph",
+          "text": "A phone call requires both parties to be free at the same moment. A message with a clear breakdown and a single approve action does not. Customers approve in a lunch break, and the bay stops waiting for a coincidence of availability."
+        },
+        {
+          "type": "paragraph",
+          "text": "The quality of the quote matters as much as the channel. An itemised quote with a photograph of the fault approves faster than a total with a description, because the customer does not have to phone back to understand what they are agreeing to."
+        },
+        {
+          "type": "heading",
+          "text": "Parts confirmation before the bay is committed"
+        },
+        {
+          "type": "paragraph",
+          "text": "The second common stall is a part everyone assumed was in stock. Checking availability before the vehicle occupies a bay costs a minute and routinely saves half a day, because a bay with a half-disassembled vehicle in it cannot be used for anything else."
+        },
+        {
+          "type": "paragraph",
+          "text": "This is a sequencing change rather than a systems change, and it usually needs nothing more than moving one step earlier in the job card."
+        },
+        {
+          "type": "heading",
+          "text": "What the numbers usually show"
+        },
+        {
+          "type": "paragraph",
+          "text": "Workshops that shorten the approval loop typically find turnaround improves before throughput does, and that customer complaints fall faster than either. People tolerate a repair taking time. They do not tolerate not knowing."
+        },
+        {
+          "type": "paragraph",
+          "text": "Measure before and after, and hold the measurement for a month. Turnaround is seasonal enough that a fortnight of good numbers proves very little."
+        }
+      ]
+    }
+  ]
+}
