@@ -870,25 +870,27 @@ class Service implements \FOSSBilling\InjectionAwareInterface
         $first_name = empty($model->contact_first_name) ? $client->first_name : $model->contact_first_name;
         $last_name = empty($model->contact_last_name) ? $client->last_name : $model->contact_last_name;
 
-        // Client signup only requires email/name/password (see
-        // Client\Api\Guest::create()'s RequiredParams) -- a postal address
-        // was never collected for many existing clients. The registrar's EPP
-        // contact schema rejects blank address/city/country/phone outright,
-        // which used to fail domain registration silently after the client
-        // had already paid. Fall back to KZD's own registered business
-        // address as the registrant contact of last resort so registration
-        // always succeeds automatically, rather than requiring a manual fix
-        // per client.
+        // Domains are deliberately registered under KZD's own reseller
+        // account, not the client's -- KZD retains nameserver/account
+        // control throughout the hosting relationship (see docs/HOSTAFRICA.md
+        // and docs/ARCHITECTURE.md), so the registrant contact should
+        // consistently be KZD's own registered business address rather than
+        // depend on whether a given client happened to fill in their
+        // profile. A per-order contact override (set explicitly on the
+        // domain service record, not from the client's profile) still wins
+        // if staff ever deliberately set one for a specific domain; the
+        // client's own profile is only consulted as a last-resort fallback
+        // in case a company setting is ever left blank.
         $companyDefaults = $this->_getCompanyContactDefaults();
 
-        $city = $model->contact_city ?: ($client->city ?: $companyDefaults['city']);
-        $zip = $model->contact_postcode ?: ($client->postcode ?: $companyDefaults['postcode']);
-        $country = $model->contact_country ?: ($client->country ?: $companyDefaults['country']);
-        $state = $model->contact_state ?: ($client->state ?: $companyDefaults['state']);
-        $phone = $model->contact_phone ?: ($client->phone ?: $companyDefaults['phone']);
-        $phone_cc = $model->contact_phone_cc ?: ($client->phone_cc ?: $companyDefaults['phone_cc']);
+        $city = $model->contact_city ?: ($companyDefaults['city'] ?: $client->city);
+        $zip = $model->contact_postcode ?: ($companyDefaults['postcode'] ?: $client->postcode);
+        $country = $model->contact_country ?: ($companyDefaults['country'] ?: $client->country);
+        $state = $model->contact_state ?: ($companyDefaults['state'] ?: $client->state);
+        $phone = $model->contact_phone ?: ($companyDefaults['phone'] ?: $client->phone);
+        $phone_cc = $model->contact_phone_cc ?: ($companyDefaults['phone_cc'] ?: $client->phone_cc);
         $company = empty($model->contact_company) ? $client->company : $model->contact_company;
-        $address1 = $model->contact_address1 ?: ($client->address_1 ?: $companyDefaults['address1']);
+        $address1 = $model->contact_address1 ?: ($companyDefaults['address1'] ?: $client->address_1);
         $address2 = empty($model->contact_address2) ? $client->address_2 : $model->contact_address2;
         $birthday = !empty($client->birthday) ? $client->birthday : '';
         $company_number = !empty($client->company_number) ? $client->company_number : '';
@@ -934,13 +936,11 @@ class Service implements \FOSSBilling\InjectionAwareInterface
     }
 
     /**
-     * KZD's own registered business address, used as the registrant contact
-     * of last resort when neither the domain service record nor the
-     * client's profile has a usable postal address/phone on file -- see the
-     * comment in _getD() above. Configured via the same `setting` table
-     * every other company_* field lives in (Admin -> System Settings ->
-     * Company), so it stays editable without a code change if the business
-     * address ever changes.
+     * KZD's own registered business address, used as the default registrant
+     * contact for domain registrations -- see the comment in _getD() above.
+     * Configured via the same `setting` table every other company_* field
+     * lives in (Admin -> System Settings -> Company), so it stays editable
+     * without a code change if the business address ever changes.
      *
      * @return array{address1: string, city: string, state: string, postcode: string, country: string, phone: string, phone_cc: string}
      */
