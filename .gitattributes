@@ -1,0 +1,39 @@
+# Normalise line endings so the tree stays clean and a second developer does not
+# get whole-file diffs just from checking out on a different OS.
+#
+# * text=auto  — Git stores LF in the repository and converts to the platform's
+# native endings on checkout. Without it, every commit from Windows warns
+# "LF will be replaced by CRLF" and any file touched on both platforms shows as
+# entirely rewritten.
+
+# eol=lf keeps LF in the working tree too. "text=auto" alone still converts to
+# CRLF on checkout under Windows, which is what emits the warning on every add.
+* text=auto eol=lf
+
+# Explicitly text, so diffs stay readable regardless of content sniffing.
+*.html   text
+*.css    text
+*.js     text
+*.mjs    text
+*.ts     text
+*.tsx    text
+*.json   text
+*.md     text
+*.xml    text
+*.svg    text
+*.htaccess text
+
+# Binary — never touch these.
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.webp   binary
+*.ico    binary
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+*.otf    binary
+*.eot    binary
+*.mp4    binary
+*.pdf    binary
