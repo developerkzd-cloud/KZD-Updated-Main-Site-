@@ -1,0 +1,153 @@
+/* ==========================================================================
+   Footer — ported from css/kzd-footer.css.
+
+   ONE component replaces BOTH variants the static site carried: the new
+   .kzd-footer on 7 pages and the purchased theme's footer on the other 11.
+   Those two had drifted apart — different markup, different link sets, and the
+   Blog link had to be added to each separately.
+
+   Tap targets are expanded with a pseudo-element rather than by growing the
+   text, so the visible design is unchanged while the hit area clears 44px.
+   ========================================================================== */
+
+.footer {
+  position: relative;
+  padding: 72px 0 0;
+  background: var(--kzd-paper-2);
+  border-top: 1px solid var(--kzd-line);
+}
+
+.inner { max-width: calc(1240px + var(--kzd-gutter) * 2); margin-inline: auto; padding-inline: var(--kzd-gutter); }
+
+/* Band 1 — contact ---------------------------------------------------------- */
+
+.band1 { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; flex-wrap: wrap; }
+
+.label {
+  margin: 0 0 6px;
+  font-family: var(--kzd-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--kzd-dim);
+}
+
+.email, .phone {
+  position: relative;
+  display: inline-block;
+  font-family: var(--kzd-display);
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--kzd-ink);
+}
+
+.email { border-bottom: 2px solid var(--kzd-ember); }
+.email:hover, .phone:hover { color: var(--kzd-blue); }
+
+/* Hit area only — the text keeps its drawn size. */
+.email::after, .phone::after, .brand::after, .list a::after, .social::after {
+  content: "";
+  position: absolute;
+  /* Centred with a min-width, not left:0/right:0 — the latter inherits the
+     element's own width, so a short label like "Blog" was only 31.6px wide. */
+  left: 50%;
+  top: 50%;
+  min-width: 44px;
+  width: 100%;
+  min-height: 44px;
+  height: 100%;
+  transform: translate(-50%, -50%);
+}
+
+.rule { margin: 44px 0; border: 0; border-top: 1px solid var(--kzd-line); }
+
+/* Band 2 — brand + columns -------------------------------------------------- */
+
+.band2 { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(2, minmax(0, 1fr)); gap: 40px; }
+
+.brand { position: relative; display: inline-flex; align-items: center; gap: 11px; min-height: 44px; }
+/* The source PNG is white-on-transparent; blacken it against the light footer. */
+.mark { width: 34px; height: 34px; object-fit: contain; filter: brightness(0) opacity(0.88); }
+.wordmark { font-family: var(--kzd-display); font-size: 21px; font-weight: 600; color: var(--kzd-navy); }
+
+.tagline { margin: 14px 0 0; max-width: 30ch; font-size: 15px; line-height: 1.6; color: var(--kzd-muted); }
+
+.socials { display: flex; gap: 12px; margin-top: 26px; list-style: none; }
+
+.social {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid var(--kzd-line);
+  color: var(--kzd-navy);
+  transition: background-color 200ms ease-out, border-color 200ms ease-out, color 200ms ease-out;
+}
+.social::after { width: 44px; height: 44px; }
+.social svg { width: 18px; height: 18px; fill: currentColor; }
+.social:hover { color: var(--kzd-blue); }
+
+.colHead {
+  margin: 0 0 16px;
+  font-family: var(--kzd-mono);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--kzd-dim);
+}
+
+.list { list-style: none; }
+.list li { margin-bottom: 11px; }
+.list a { position: relative; display: inline-block; font-size: 15px; color: var(--kzd-muted); }
+.list a:hover { color: var(--kzd-blue); }
+
+.hot {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 30px;
+  background: var(--kzd-ember);
+  font-family: var(--kzd-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  vertical-align: middle;
+}
+
+/* Band 3 — bottom ----------------------------------------------------------- */
+
+.band3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 22px 0 28px;
+  font-family: var(--kzd-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  color: var(--kzd-dim);
+}
+.loc { text-transform: uppercase; }
+
+@media (max-width: 900px) {
+  .band2 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 34px; }
+  .email, .phone { font-size: 28px; }
+}
+
+@media (max-width: 560px) {
+  .footer { padding-top: 52px; }
+  .band1 { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .band2 { grid-template-columns: minmax(0, 1fr); }
+  .email, .phone { font-size: 23px; }
+  .band3 { flex-direction: column; align-items: flex-start; gap: 6px; }
+}

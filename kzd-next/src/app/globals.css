@@ -162,3 +162,13 @@ button { font: inherit; color: inherit; }
     scroll-behavior: auto !important;
   }
 }
+
+/* --------------------------------------------------------------------------
+   The nav is fixed. Declared once here so no page has to repeat a magic
+   padding value — the static site had 140px hardcoded in several stylesheets
+   and they drifted.
+   -------------------------------------------------------------------------- */
+
+.kzd-below-nav { padding-top: 84px; }
+
+@media (max-width: 560px) { .kzd-below-nav { padding-top: 72px; } }
