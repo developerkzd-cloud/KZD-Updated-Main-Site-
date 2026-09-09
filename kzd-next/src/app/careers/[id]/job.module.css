@@ -1,0 +1,276 @@
+/* ==========================================================================
+   JOB DETAIL — ported from css/kzd-job.css.
+
+   The 49-51px targets in the original were sized against body { zoom: .9 };
+   with the zoom gone they are true 44px here. The 140px head padding drops to
+   56px because .kzd-below-nav already clears the nav.
+   ========================================================================== */
+
+.job {
+  --j-paper: #ffffff;
+  --j-paper2: #f7f9fc;
+  --j-card: #f8fafc;
+  --j-line: #e1e4ea;
+  --j-navy: #0b2545;
+  --j-muted: #717580;
+  --j-dim: #9298a4;
+  --j-blue: #2f6fed;
+  --j-ember: #ff6b35;
+  --j-grad-start: #4a5468;
+  --j-grad-end: #232323;
+  --j-gutter: 100px;
+
+  background: var(--j-paper2);
+}
+
+.inner {
+  width: 100%;
+  max-width: calc(1240px + var(--j-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--j-gutter);
+}
+
+.head { padding-top: 56px; padding-bottom: 26px; text-align: center; }
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 0; /* ~44px hit height without moving the line */
+  font-size: 14.5px;
+  color: var(--j-muted);
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.back:hover, .back:focus-visible { color: var(--j-blue); }
+
+.back svg {
+  width: 15px; height: 15px;
+  fill: none; stroke: currentColor;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.headIn { text-align: center; margin-top: 10px; }
+
+.title {
+  margin: 0;
+  font-family: var(--kzd-font-display);
+  font-size: 50px;
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--j-grad-end); /* fallback if background-clip fails */
+  background-image: linear-gradient(180deg, var(--j-grad-start) 0%, var(--j-grad-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .title { -webkit-text-fill-color: transparent; color: transparent; }
+}
+
+.metaLine {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14.5px;
+  color: var(--j-dim);
+}
+
+.metaLine li { display: inline-flex; align-items: center; gap: 7px; }
+.metaLine svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Tabs --------------------------------------------------------------------- */
+
+.tabsWrap { position: relative; border-bottom: 1px solid var(--j-line); }
+
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  width: 100%;
+  max-width: calc(1240px + var(--j-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--j-gutter);
+}
+
+.tab {
+  position: relative;
+  border: 0;
+  background: none;
+  padding: 14px 2px;
+  min-height: 44px;
+  font-family: var(--kzd-font-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--j-muted);
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+
+.tab:hover { color: var(--j-navy); }
+.tab[aria-selected="true"] { color: var(--j-blue); }
+
+.tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 2px;
+  background: var(--j-blue);
+}
+
+.panel { padding-top: 44px; padding-bottom: 96px; }
+.panel[hidden] { display: none; }
+
+/* Body --------------------------------------------------------------------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 60fr) minmax(0, 34fr);
+  gap: 0 6%;
+  align-items: start;
+}
+
+.section { padding: 0; margin-bottom: 44px; }
+.section:last-child { margin-bottom: 0; }
+
+.h2 {
+  margin: 0;
+  font-family: var(--kzd-font-display);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--j-navy);
+}
+
+.p { margin: 16px 0 0; font-size: 15.5px; line-height: 1.72; color: var(--j-muted); }
+
+.list { margin: 18px 0 0; padding: 0; list-style: none; }
+
+.list li {
+  position: relative;
+  padding-left: 21px;
+  margin-bottom: 11px;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--j-muted);
+}
+
+.list li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.62em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--j-blue);
+}
+
+.listEmber li::before { background: var(--j-ember); }
+
+/* Bold-lead bullets: a bold title line, then its paragraph aligned under it. */
+.lead {
+  display: block;
+  margin-bottom: 3px;
+  font-family: var(--kzd-font-display);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--j-navy);
+}
+
+/* Sidebar ------------------------------------------------------------------ */
+
+.side {
+  position: sticky;
+  top: 104px;
+  padding: 26px 24px;
+  border: 1px solid var(--j-line);
+  border-radius: 16px;
+  background: var(--j-paper);
+  box-shadow: 0 8px 20px -12px rgba(38, 52, 78, 0.18);
+}
+
+.sideActions { display: flex; flex-direction: column; gap: 10px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 10px;
+  font-family: var(--kzd-font-body);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.btnPrimary { background: var(--j-navy); color: #ffffff; }
+.btnPrimary:hover, .btnPrimary:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px -10px rgba(11, 37, 69, 0.55);
+  color: #ffffff;
+}
+
+.btnGhost { background: var(--j-paper); border: 1px solid var(--j-line); color: var(--j-navy); }
+.btnGhost:hover { border-color: #c9cfd9; }
+
+.btnDone { color: #147645; border-color: #b7e3c6; }
+
+.sideMeta { margin: 22px 0 0; padding: 22px 0 0; border-top: 1px solid var(--j-line); list-style: none; }
+.sideMeta li { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; font-size: 14.5px; color: var(--j-muted); }
+.sideMeta li:last-child { margin-bottom: 0; }
+.sideMeta svg { width: 17px; height: 17px; flex: none; fill: none; stroke: var(--j-dim); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.tail { margin-top: 44px; }
+
+/* The apply panel is a placeholder until the form is ported. */
+.notice {
+  padding: 30px 28px;
+  border: 1px dashed var(--j-line);
+  border-radius: 16px;
+  background: var(--j-card);
+  text-align: center;
+}
+
+.noticeTitle { margin: 0; font-family: var(--kzd-font-display); font-size: 20px; font-weight: 600; color: var(--j-navy); }
+.noticeBody { margin: 10px auto 0; max-width: 56ch; font-size: 15px; line-height: 1.65; color: var(--j-muted); }
+.noticeBody a { color: var(--j-blue); }
+
+/* Responsive --------------------------------------------------------------- */
+
+@media (max-width: 1200px) {
+  .job { --j-gutter: 40px; }
+  .title { font-size: clamp(34px, 4vw, 50px); }
+}
+
+@media (max-width: 900px) {
+  .head { padding-top: 36px; }
+  .title { font-size: 34px; }
+  .grid { grid-template-columns: minmax(0, 1fr); gap: 44px 0; }
+  .side { position: static; }
+  .panel { padding-bottom: 72px; }
+}
+
+@media (max-width: 560px) {
+  .job { --j-gutter: 20px; }
+  .title { font-size: 28px; }
+  .h2 { font-size: 22px; }
+  .tabs { gap: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .back, .tab { transition: none !important; }
+  .btnPrimary:hover, .btnPrimary:focus-visible { transform: none; }
+}
