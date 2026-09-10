@@ -62,28 +62,28 @@ class Service implements \FOSSBilling\InjectionAwareInterface
 
     public function getCartProductTitle(Product $product, array $data): ?string
     {
-        // Deliberately just the domain name, no "registration"/"transfer"
-        // action word -- matches generateOrderTitle(), which is what every
-        // invoice after this one will show. Pairing an action verb directly
-        // against the recurring "(Every Year)" cadence shown next to it in
-        // the cart (see mod_orderbutton_checkout.html.twig) read to clients
-        // as if the transfer/registration action itself repeats annually,
-        // rather than just the domain's normal yearly renewal cost -- which
-        // made an already-nervous, already-paying client more nervous, not
-        // less. The domain still genuinely needs to renew every year (that
-        // part is true and stays visible); only the confusing verb is gone.
+        // Keeps the "registration"/"transfer" action word here (cart only,
+        // this one screen) so a non-technical client can tell what they're
+        // actually paying for right now. This word never appears again --
+        // generateOrderTitle() (used for the persisted order and every
+        // invoice after this one) only ever returns the bare domain name,
+        // so a transfer's renewal next year is never labelled "transfer"
+        // again, just the domain name at the normal renewal price. See the
+        // explanatory note next to the cart total
+        // (mod_orderbutton_checkout.html.twig) for where that distinction
+        // is spelled out to the client.
         if (
             isset($data['action']) && $data['action'] == 'register'
             && isset($data['register_tld']) && isset($data['register_sld'])
         ) {
-            return $data['register_sld'] . $data['register_tld'];
+            return __trans('Domain :domain registration', [':domain' => $data['register_sld'] . $data['register_tld']]);
         }
 
         if (
             isset($data['action']) && $data['action'] == 'transfer'
             && isset($data['transfer_tld']) && isset($data['transfer_sld'])
         ) {
-            return $data['transfer_sld'] . $data['transfer_tld'];
+            return __trans('Domain :domain transfer', [':domain' => $data['transfer_sld'] . $data['transfer_tld']]);
         }
 
         return $product->getTitle();

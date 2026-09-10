@@ -50,7 +50,7 @@ test('gets cart product title', function (array $data, string $expected): void {
             'register_tld' => '.com',
             'register_sld' => 'example',
         ],
-        'example.com',
+        'Domain example.com registration',
     ],
     [
         [
@@ -58,7 +58,7 @@ test('gets cart product title', function (array $data, string $expected): void {
             'transfer_tld' => '.com',
             'transfer_sld' => 'example',
         ],
-        'example.com',
+        'Domain example.com transfer',
     ],
     [
         [],
