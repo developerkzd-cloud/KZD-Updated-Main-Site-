@@ -62,18 +62,28 @@ class Service implements \FOSSBilling\InjectionAwareInterface
 
     public function getCartProductTitle(Product $product, array $data): ?string
     {
+        // Deliberately just the domain name, no "registration"/"transfer"
+        // action word -- matches generateOrderTitle(), which is what every
+        // invoice after this one will show. Pairing an action verb directly
+        // against the recurring "(Every Year)" cadence shown next to it in
+        // the cart (see mod_orderbutton_checkout.html.twig) read to clients
+        // as if the transfer/registration action itself repeats annually,
+        // rather than just the domain's normal yearly renewal cost -- which
+        // made an already-nervous, already-paying client more nervous, not
+        // less. The domain still genuinely needs to renew every year (that
+        // part is true and stays visible); only the confusing verb is gone.
         if (
             isset($data['action']) && $data['action'] == 'register'
             && isset($data['register_tld']) && isset($data['register_sld'])
         ) {
-            return __trans('Domain :domain registration', [':domain' => $data['register_sld'] . $data['register_tld']]);
+            return $data['register_sld'] . $data['register_tld'];
         }
 
         if (
             isset($data['action']) && $data['action'] == 'transfer'
             && isset($data['transfer_tld']) && isset($data['transfer_sld'])
         ) {
-            return __trans('Domain :domain transfer', [':domain' => $data['transfer_sld'] . $data['transfer_tld']]);
+            return $data['transfer_sld'] . $data['transfer_tld'];
         }
 
         return $product->getTitle();
