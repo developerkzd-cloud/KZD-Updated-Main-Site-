@@ -26,7 +26,7 @@ export default function ShareButton({ url }: { url: string }) {
       className={`${styles.share} ${done ? styles.shareDone : ""}`}
       onClick={share}
     >
-      {done ? "Link copied" : "Copy link"}
+      {done ? "Link copied" : "Share"}
     </button>
   );
 }

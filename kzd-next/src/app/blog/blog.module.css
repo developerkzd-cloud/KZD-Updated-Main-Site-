@@ -515,3 +515,10 @@
   .card:hover, .more:hover, .ctaBtn:hover { transform: none; }
   .card:hover .coverSvg, .featured:hover .coverSvg { transform: none; }
 }
+
+/* The article category sits under the back link, which carries a 44px hit
+   box — without this the two labels read as one crowded block. */
+.catTop {
+  composes: cat;
+  margin-top: 18px;
+}

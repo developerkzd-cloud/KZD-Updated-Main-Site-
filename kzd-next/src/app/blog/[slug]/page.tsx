@@ -138,7 +138,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
             ← All articles
           </Link>
 
-          <p className={styles.cat}>{post.category}</p>
+          <p className={styles.catTop}>{post.category}</p>
           <h1 className={styles.title}>{post.title}</h1>
           <p className={styles.excerpt}>{post.excerpt}</p>
 
@@ -166,6 +166,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
                 priority
               />
             </div>
+            <figcaption className={styles.caption}>Illustration generated for this article</figcaption>
           </figure>
 
           <div className={styles.body}>
