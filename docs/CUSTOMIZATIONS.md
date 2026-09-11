@@ -455,6 +455,90 @@ touch stock code. **[core edit]** = a stock file was directly modified.
   instance actually observed/reported; same fix (an equivalent partial
   included in `admin_default`'s own layout) would close it.
 
+## Mobile UI fixes (domain configuration + wider audit)
+
+- **Root cause pattern, found in the domain/hosting order forms first**:
+  `mod_servicedomain_order_form.html.twig` and
+  `mod_servicehosting_order_form.html.twig` **[both html_custom overrides,
+  edited]** laid out the Register/Transfer/Own domain/Subdomain picker as
+  a permanent sidebar (`nav nav-pills flex-column border-end me-3`) next
+  to a search row (`d-flex gap-2` wrapping an `.input-group` with inline
+  `style="max-width:...; width:...;"` on the TLD select) — no mobile
+  breakpoint anywhere. Below ~500px combined width this clipped the TLD
+  select, crowded the Check button, and squeezed the sidebar pills. Never
+  built responsively in the first place, not a regression.
+- **Fix approach**: `nav-pills` is Bootstrap's normal *horizontal* pill
+  component — `flex-column` was the only thing forcing it vertical, so
+  making that `flex-md-column`/`flex-md-row` (Bootstrap's own responsive
+  utilities, confirmed present in the compiled bundle) mostly solves the
+  switcher on its own. Inline `max-width`/`width` styles moved into new
+  `.kzd-domain-*` classes in `themes/kzd/assets/build/css/kzd-overrides.css`
+  so mobile media queries can actually override them (inline styles beat
+  external CSS regardless of source order — `!important` was deliberately
+  avoided). One real bug found mid-fix: `.kzd-domain-tld-select` alone
+  lost to Bootstrap's own `.input-group > .form-select` rule on
+  specificity (a compound selector beats a single class regardless of
+  cascade order) — fixed by matching that same `.input-group > .x` shape.
+  Desktop field widths were intentionally *not* flattened to one value —
+  the hosting form's fields (320px) were already narrower than the
+  standalone domain form's (500px) before this fix; preserved via a
+  `--compact` modifier class rather than widened to match.
+- **Extended via a follow-up audit** (same session, explicitly requested)
+  to every other unresponsive pattern found across the client area and
+  admin panel:
+  - `mod_orderbutton_checkout.html.twig`, `mod_invoice_invoice.html.twig`
+    (×2 tables) **[html_custom, edited]** — bare `<table>` elements with no
+    `.table-responsive` wrapper, overflowing/clipping columns (confirmed
+    live on production via screenshot: the invoice line-items table's
+    "Total" column cut off at 360px).
+  - `mod_invoice_invoice.html.twig` payment-gateway row — unwrapped
+    `d-flex gap-3` of DB-configured, arbitrary-pixel-dimension logo
+    buttons; added `flex-wrap` plus a `.kzd-gateway-logo` max-width/
+    max-height cap (doesn't fight the existing inline `height`/`width` —
+    different properties, no specificity conflict).
+  - `mod_invoice_invoice.html.twig` card header, `mod_support_ticket.html.twig`
+    (×2 rows) — unwrapped title+buttons / avatar+name+badge+date+button
+    rows; added `flex-wrap`/responsive stacking classes.
+  - `modules/Servicedomain/templates/client/mod_servicedomain_manage.html.twig`
+    **[core edit, surgical]** — the domain "manage" page's Name/Expires/
+    Registered stat row (`justify-content-around`, `fs-4` domain name, no
+    wrap). Edited directly rather than copied into `html_custom` — this is
+    a 300+ line stock file and the actual change is ~14 lines; same
+    documented exception already used elsewhere in this file for exactly
+    this tradeoff (see the styled-confirmation-modals entry above and the
+    `html_custom`-override-mechanism note in `ARCHITECTURE.md`).
+  - `themes/admin_default/html/mod_index_dashboard.html.twig`
+    **[core edit, surgical]** — same reasoning (500+ line stock file, ~10
+    line change): the dashboard income-graph date-range input had an
+    inline `style="width: 16rem"` inside an unwrapped flex row; moved to a
+    `.kzd-admin-graph-range` class (`max-width` instead of a fixed
+    `width`) in `themes/admin_default/assets/build/css/kzd-admin-overrides.css`
+    — remember this whole `assets/build/` directory is gitignored except
+    this one force-added file (see `BRANDING.md`), so `git add -f` is
+    needed for any future edit here too.
+  - `themes/admin_default/html_custom/partial_admin_summary_card.html.twig`
+    **[new override]** — small enough (31 lines) to properly override
+    rather than surgically edit the stock file. Its header row (title/
+    subtitle + optional aside) had no wrap; the Client detail page's
+    112px avatar in that aside slot was the concrete instance found, but
+    this is a shared partial so any future page adding an aside inherits
+    the fix too.
+- **Verified via a real Twig parser**, not just "the page returned 200" —
+  every touched file was parsed with FOSSBilling's actual Twig library
+  (custom filters/functions stubbed) to catch structural syntax errors
+  that a stateless page load wouldn't necessarily reach (e.g. an error
+  deep in a conditional branch). `php -l` does **not** validate `.twig`
+  files (they're not PHP) despite superficially looking like it might —
+  worth remembering next time a template needs a quick correctness check
+  without a full authenticated page load.
+- **Not done in this pass**: no visual/screenshot tool was available in
+  the environment this work was done in — every fix was verified
+  structurally (parses correctly, classes render, no page errors) and
+  then confirmed visually by the client afterward via their own browser,
+  not by the implementer directly. Worth keeping in mind for any future
+  UI work done the same way — structural verification is necessary but
+  not sufficient on its own.
+
 ## Product catalog / pricing
 
 - **4 Shared Hosting products** (Starter/Basic/Standard/Business) — seeded

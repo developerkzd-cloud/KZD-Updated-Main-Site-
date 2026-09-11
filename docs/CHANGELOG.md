@@ -193,3 +193,26 @@ identified as untestable from local dev (registrar IP whitelist).
   `CUSTOMIZATIONS.md` for why this was stock behaviour, not a KZD bug.
 - See `CUSTOMIZATIONS.md`'s "Checkout UX" and "Styled confirmation
   modals" sections for the full detail on all of the above.
+
+## Mobile UI fixes (2026-09-11)
+
+- Investigated and fixed the mobile layout of the domain/hosting order
+  forms' Register/Transfer/Own domain/Subdomain picker — a permanent
+  desktop sidebar layout with inline pixel widths on the TLD select, never
+  built responsively, clipping/overflowing below ~500px. Root cause: the
+  sidebar's `nav-pills` component is horizontal by default in Bootstrap —
+  an unconditional `flex-column` was the only thing forcing it vertical at
+  every width.
+- Extended the same pass to every other unresponsive pattern found in a
+  follow-up audit of the client area and admin panel: missing
+  `.table-responsive` wraps (cart/checkout table, both invoice tables —
+  the latter confirmed broken live on production via a client screenshot
+  showing the invoice's "Total" column cut off at 360px), unwrapped flex
+  rows on the invoice payment-gateway picker and header, support ticket
+  page/message headers, the domain "manage" page's stat row, and two
+  admin-only issues (client detail page's avatar header, dashboard
+  graph's fixed-width date picker).
+- See `CUSTOMIZATIONS.md`'s "Mobile UI fixes" entry for the full file
+  list, the `.input-group > .form-select` specificity gotcha hit partway
+  through, and which files got a proper `html_custom`/override copy vs. a
+  surgical direct edit (and why, per file size).
