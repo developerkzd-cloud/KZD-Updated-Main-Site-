@@ -24,7 +24,19 @@
             <div class="card-body tab-pane active" id="details-tab-pane" role="tabpanel" tabindex="0">
                 <div class="tab-pane container active" id="details">
                     <h5 class="mb-3 mt-1">{{ 'Domain Details'|trans }}</h5>
-                    <div class="d-flex justify-content-around py-3">
+                    {#
+                      KZD Solutions: surgical edit directly in this stock file rather
+                      than a full html_custom copy -- this template is 300+ lines and
+                      only this one row needed a mobile fix, so duplicating the whole
+                      file would create a large, drift-prone copy for a small change
+                      (same reasoning documented in docs/ARCHITECTURE.md for other
+                      small exceptions to the html_custom-first rule). kzd-domain-stats
+                      (themes/kzd/assets/build/css/kzd-overrides.css) stacks this row
+                      below sm instead of leaving it as an unwrapped
+                      justify-content-around row, which could overflow a narrow
+                      screen with a long domain name at fs-4.
+                    #}
+                    <div class="d-flex kzd-domain-stats justify-content-around py-3">
                         <div class="d-flex flex-column">
                             <span class="fs-6 text-muted">{{ 'Name'|trans }}</span>
                             <a class="fs-4" target="_blank" href="http://{{ service.domain }}">{{ service.domain }}</a>

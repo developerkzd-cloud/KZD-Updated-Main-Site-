@@ -66,3 +66,14 @@
 .kzd-admin-brand-name {
   color: var(--kzd-admin-brand-name-color);
 }
+
+/* Dashboard income-graph date-range input
+   (themes/admin_default/html/mod_index_dashboard.html.twig). Replaces an
+   inline style="width: 16rem" that, combined with an unwrapped flex row
+   (date input + "Update Graphs" button + info icon), overflowed the admin
+   content area on narrow screens. max-width instead of a fixed width lets
+   it shrink below 16rem when the row wraps/narrows. */
+.kzd-admin-graph-range {
+  max-width: 16rem;
+  width: 100%;
+}

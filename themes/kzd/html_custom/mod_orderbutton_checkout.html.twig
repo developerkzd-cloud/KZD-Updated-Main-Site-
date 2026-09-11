@@ -34,6 +34,7 @@
     <div id="checkout" class="accordion-collapse collapse {% if request.checkout and client %}show{%endif%}" data-bs-parent="#orderManager">
         <div class="accordion-body">
             <div class="accordion-inner" id="checkout-inner">
+                <div class="table-responsive">
                 <table class="table table-striped table-bordered table-sm">
                     <thead>
                     <tr>
@@ -133,6 +134,7 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                </div>
 
                 {% set cross_sell_domain_item = null %}
                 {% set has_hosting_item = false %}

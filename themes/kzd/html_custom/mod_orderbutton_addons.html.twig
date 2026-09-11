@@ -22,7 +22,7 @@
 <div class="addons">
   {% for addon in product.addons %}
   <div class="border rounded-3 p-3 mb-2">
-    <div class="d-flex align-items-start gap-2">
+    <div class="d-flex flex-column flex-sm-row align-items-start gap-2">
       <div class="form-check mt-1">
         <input type="hidden" name="addons[{{ addon.id }}][selected]" value="0">
         <input class="form-check-input" type="checkbox" value="1"
@@ -40,7 +40,7 @@
         {% endif %}
       </label>
 
-      <div class="text-end text-nowrap">
+      <div class="kzd-addon-price text-nowrap">
         {% set cart_currency = guest.cart_get_currency %}
         {% if addon.pricing.type is same as('recurrent') %}
           {% set periods = guest.system_periods %}
