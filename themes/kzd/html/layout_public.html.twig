@@ -43,6 +43,7 @@
     {{ 'js/api.js' | public_asset_url | script_tag }}
     <script type="module" src="{{ 'build/js/huraga.js' | asset_url }}"></script>
     {{ include('partials/kzd_modals.html.twig') }}
+    {{ include('partials/kzd_password_toggle.html.twig') }}
     {% block head %}{% endblock %}
     {% block js %}{% endblock %}
 </head>

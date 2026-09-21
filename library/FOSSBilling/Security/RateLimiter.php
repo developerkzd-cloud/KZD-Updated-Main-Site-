@@ -75,6 +75,9 @@ class RateLimiter implements InjectionAwareInterface
                 'client_email_resend_account' => ['policy' => 'fixed_window', 'limit' => 5, 'interval' => '1 hour'],
                 'profile_password_change_ip' => ['policy' => 'fixed_window', 'limit' => 30, 'interval' => '1 hour'],
                 'profile_password_change_account' => ['policy' => 'fixed_window', 'limit' => 5, 'interval' => '1 hour'],
+                'client_oauth_google_start_ip' => ['policy' => 'fixed_window', 'limit' => 30, 'interval' => '1 hour'],
+                'client_oauth_google_callback_ip' => ['policy' => 'fixed_window', 'limit' => 30, 'interval' => '1 hour'],
+                'client_oauth_google_link_confirm_ip' => ['policy' => 'fixed_window', 'limit' => 10, 'interval' => '1 hour'],
             ],
         ];
     }

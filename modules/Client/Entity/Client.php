@@ -34,6 +34,9 @@ class Client implements ApiArrayInterface
     protected ?string $auth_type = null;
 
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    protected ?string $google_sub = null;
+
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
     protected ?string $email = null;
 
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
@@ -222,6 +225,7 @@ class Client implements ApiArrayInterface
             $details += [
                 'aid' => $this->aid,
                 'auth_type' => $this->auth_type,
+                'google_linked' => $this->google_sub !== null,
                 'created_at' => $this->createdAt?->format('Y-m-d H:i:s'),
                 'group_id' => $this->client_group_id,
                 'ip' => $this->ip,
