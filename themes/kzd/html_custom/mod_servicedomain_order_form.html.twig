@@ -2,35 +2,35 @@
 {% set pricing = product.pricing %}
 {% set transfer_tlds = guest.serviceDomain_tlds({ "allow_transfer": 1 }) %}
 {% set tlds = guest.serviceDomain_tlds({"allow_register":1}) %}
-<div class="d-flex mb-3">
-    <nav class="nav nav-pills flex-column border-end me-3 gap-2">
+<div class="d-flex flex-column flex-md-row mb-3">
+    <nav class="nav nav-pills flex-md-column kzd-domain-picker-nav gap-2 mb-3 mb-md-0 me-md-3">
         {% if tlds is not empty %}
-            <a class="nav-link me-3 py-1 px-2 fs-7 active" href="#" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-tab-pane"
+            <a class="nav-link py-1 px-2 fs-7 active" href="#" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-tab-pane"
                 role="tab" aria-controls="register-tab-pane">{{ 'Register'|trans }}</a>
         {% endif %}
         {% if transfer_tlds is not empty %}
-        <a class="nav-link me-3 py-1 px-2 fs-7 {% if tlds is empty %} active {% endif %}" href="#" id="transfer-tab" data-bs-toggle="tab" data-bs-target="#transfer-tab-pane"
+        <a class="nav-link py-1 px-2 fs-7 {% if tlds is empty %} active {% endif %}" href="#" id="transfer-tab" data-bs-toggle="tab" data-bs-target="#transfer-tab-pane"
                role="tab" aria-controls="transfer-tab-pane">{{ 'Transfer'|trans }}</a>
         {% endif %}
     </nav>
-    <div class="tab-content">
+    <div class="tab-content kzd-domain-picker-content">
         {% if tlds is not empty %}
             <div class="tab-pane show active" id="register-tab-pane" role="tabpanel" aria-labelledby="register-tab" tabindex="0">
                 <div class="row">
                     <div class="col-sm-12">
                         <label class="form-label">{{ 'Register a new domain'|trans }}</label>
-                        <div class="d-flex gap-2">
-                            <div class="input-group" style="max-width: 500px;">
+                        <div class="d-flex flex-column flex-sm-row gap-2">
+                            <div class="input-group kzd-domain-input-group">
                                 <input class="form-control form-control-sm" type="text" name="register_sld"
                                     value="{{ request.register_sld }}"
                                     placeholder="{{ 'Enter new domain name to register'|trans }}">
-                                <select class="form-select form-select-sm" name="register_tld" style="width: 30%; max-width: 120px;">
+                                <select class="form-select form-select-sm kzd-domain-tld-select" name="register_tld">
                                     {% for tld in tlds %}
                                         <option value="{{ tld.tld }}" label="{{ tld.tld }}">{{ tld.tld }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
-                            <button class="btn btn-sm btn-dark" type="button" id="domain-check">{{ 'Check'|trans }}</button>
+                            <button class="btn btn-sm btn-dark kzd-domain-check-btn" type="button" id="domain-check">{{ 'Check'|trans }}</button>
                         </div>
                         <div id="domain-check-error" class="alert alert-warning mt-2" style="display:none;"></div>
                     </div>
@@ -70,18 +70,18 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <label class="form-label">{{ 'Transfer a new domain'|trans }}</label>
-                        <div class="d-flex gap-2">
-                            <div class="input-group" style="max-width: 500px;">
+                        <div class="d-flex flex-column flex-sm-row gap-2">
+                            <div class="input-group kzd-domain-input-group">
                                 <input class="form-control form-control-sm" type="text" name="transfer_sld"
                                        value="{{ request.transfer_sld }}"
                                        placeholder="{{ 'Enter your domain name to transfer'|trans }}">
-                                <select class="form-select form-select-sm" name="transfer_tld" style="width: 30%; max-width: 120px;">
+                                <select class="form-select form-select-sm kzd-domain-tld-select" name="transfer_tld">
                                     {% for tld in transfer_tlds %}
                                         <option value="{{ tld.tld }}" label="{{ tld.tld }}">{{ tld.tld }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
-                            <button class="btn btn-sm btn-dark" type="button" id="transfer-check">{{ 'Check'|trans }}</button>
+                            <button class="btn btn-sm btn-dark kzd-domain-check-btn" type="button" id="transfer-check">{{ 'Check'|trans }}</button>
                         </div>
                     </div>
                     <div id="domain-transfer-config" style="display:none;">

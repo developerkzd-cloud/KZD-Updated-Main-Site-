@@ -51,13 +51,13 @@
                     <form method="post" action="{{ 'invoice/payment'|api_url(role: 'guest') }}"
                         {{ fb_api_form({ redirect: ("invoice/#{invoice.hash}")|url(query: { 'auto_redirect': 1 }) }) }}>
                         <input type="hidden" name="hash" value="{{ invoice.hash }}"/>
-                        <div class="d-flex gap-3">
+                        <div class="d-flex flex-wrap gap-3">
                             {% for gtw in guest.invoice_gateways %}
                                 {% if invoice.currency in gtw.accepted_currencies and (gtw.allow_single or (invoice.subscribable and gtw.allow_recurrent)) %}
                                 {% set banklink = 'invoice/banklink'|url %}
                                 <div class="invoice-gateway rounded-2 p-2">
                                     <input type="radio" class="btn-check border-0" name="gateway_id" gateway_id="{{ gtw.id }}" id="{{ gtw.id }}" autocomplete="off">
-                                    <label class="btn" for="{{ gtw.id }}"
+                                    <label class="btn kzd-gateway-logo" for="{{ gtw.id }}"
                                         style="background: transparent url('{{gtw.logo.logo}}') no-repeat center center; background-size: contain; height:{{gtw.logo.height}}; width:{{gtw.logo.width}};"
                                         onclick="paymentPrompt('{{ gtw.id }}', {{ gtw.allow_recurrent ? 'true' : 'false' }}, {{ gtw.allow_single ? 'true' : 'false' }}, `{{ gtw.title }}`)"
                                         data-bs-toggle="tooltip" data-bs-title="{{ gtw.title }}"></label>
@@ -76,7 +76,7 @@
         <div class="col-md-12">
             <div class="card mb-4">
                 <div class="card-header py-3 py-3">
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between gap-2">
                         <div class="d-flex flex-column">
                             <h5 class="mb-1 d-flex align-items-center">{{ 'Invoice'|trans }}</h5>
                             <span class="small text-muted">{{ 'You can print this invoice or export it to a PDF file by clicking on the corresponding button.'|trans }}</span>
@@ -212,6 +212,7 @@
                             </div>
                         {% endif %}
 
+                        <div class="table-responsive">
                         <table class="table table-hover mt-3 mb-0">
                             <thead>
                             <tr>
@@ -241,9 +242,11 @@
                             {% endfor %}
                             </tbody>
                         </table>
+                        </div>
 
                         <div class="row">
                             <div class="col-md-4 offset-md-8">
+                                <div class="table-responsive">
                                 <table class="table table-striped">
                                     {% if invoice.tax > 0 %}
                                         <tr class="text-end">
@@ -262,6 +265,7 @@
                                         <td><strong>{{ invoice.total|format_currency(invoice.currency ?? default_currency) }}</strong></td>
                                     </tr>
                                 </table>
+                                </div>
                             </div>
                         </div>
 

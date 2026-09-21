@@ -34,6 +34,7 @@
     <div id="checkout" class="accordion-collapse collapse {% if request.checkout and client %}show{%endif%}" data-bs-parent="#orderManager">
         <div class="accordion-body">
             <div class="accordion-inner" id="checkout-inner">
+                <div class="table-responsive">
                 <table class="table table-striped table-bordered table-sm">
                     <thead>
                     <tr>
@@ -133,6 +134,7 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                </div>
 
                 {% set cross_sell_domain_item = null %}
                 {% set has_hosting_item = false %}
@@ -182,6 +184,18 @@
                             {% endfor %}
                         </div>
                     </div>
+                {% endif %}
+
+                {% set has_domain_billing_item = false %}
+                {% for item in cart.items %}
+                    {% if item.type == 'domain' and item.action in ['register', 'transfer'] %}
+                        {% set has_domain_billing_item = true %}
+                    {% endif %}
+                {% endfor %}
+                {% if has_domain_billing_item %}
+                    <p class="fs-7 text-muted mb-3">
+                        {{ 'Domains need an annual payment to stay registered -- that\'s true whether a domain is transferred to us or registered new, not something specific to this order. The amount shown covers the first year; every year after, you\'ll simply see a normal annual renewal charge for the domain (never billed as a "transfer" again).'|trans }}
+                    </p>
                 {% endif %}
 
                 <div class="row">

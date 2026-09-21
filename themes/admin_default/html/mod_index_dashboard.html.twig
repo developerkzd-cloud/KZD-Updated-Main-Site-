@@ -270,11 +270,24 @@
             <div class="card-header">
                 <h3 class="card-title">{{ 'Income'|trans }}</h3>
                 <div class="card-actions">
+                    {#
+                      KZD Solutions: surgical edit directly in this stock file rather
+                      than a full html_custom copy -- this template is 500+ lines and
+                      only this one date-range control needed a mobile fix (same
+                      reasoning documented in docs/ARCHITECTURE.md for other small
+                      exceptions to the html_custom-first rule). The inline
+                      style="width: 16rem" plus an unwrapped flex row (date input +
+                      "Update Graphs" button + info icon) overflowed the admin
+                      content area well before a narrow viewport. kzd-admin-graph-range
+                      (themes/admin_default/assets/build/css/kzd-admin-overrides.css)
+                      caps the same width via a class instead of an inline style, and
+                      flex-wrap here lets the row stack instead of overflow.
+                    #}
                     <form method="get" action="">
-                        <div class="d-flex align-items-center gap-1">
+                        <div class="d-flex flex-wrap align-items-center gap-1">
                             <div class="input-group">
                                 <div class="input-icon">
-                                    <input class="form-control datepicker" style="width: 16rem" id="graph_interval"
+                                    <input class="form-control datepicker kzd-admin-graph-range" id="graph_interval"
                                         value="{% if request.date_from %}{{ request.date_from|date('Y-m-d') }}{% endif %}{% if request.date_to %} to {{ request.date_to|date('Y-m-d') }}{% endif %}"
                                         data-name-from="date_from" data-name-to="date_to">
                                     <span class="input-icon-addon">

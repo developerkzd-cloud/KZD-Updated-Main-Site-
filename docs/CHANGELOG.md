@@ -78,6 +78,70 @@ Fresh FOSSBilling 0.8.5 install (`40cd0ba`).
   importing an existing HostAfrica/DirectAdmin client into FOSSBilling
   (`78b93fb`).
 
+## Existing-client onboarding incident (2026-09-06 to 2026-09-08)
+
+Full investigation and fixes triggered by trying to bring `philfabu`
+(philfabulous.co.za, a client who already had a DirectAdmin account before
+being added to FOSSBilling) into the system, plus two live signups
+(`sktradingstore.co.za`, `stylesbycebs.co.za`) whose domains silently failed
+to register. Three separate, unrelated root causes, not one bug:
+
+- **DirectAdmin "Log in to Dashboard" timing out for `philfabu`**: not a
+  FOSSBilling bug. The service record's `username` was correct (verified
+  against the real DirectAdmin account), and `library/Server/Manager/Directadmin.php`
+  was sending a correctly-formed `CMD_API_LOGIN_KEYS` request the whole time
+  (the DirectAdmin username is passed via HTTP Basic Auth impersonation,
+  `reseller|user`, not a URL parameter — easy to mistake for "missing" from
+  the request log, it isn't). Root cause was a transient network-level block
+  between the production server (Contabo, `164.68.121.94`) and
+  `da26.host-ww.net` — TCP connections timed out with no SYN-ACK on both
+  port 443 and 2222, while the same host responded normally from every other
+  network tested. Most likely a brute-force/failed-auth auto-block
+  (consistent with the CSF/LFD SMTP incident documented in
+  `PRODUCTION_READINESS.md`), though never conclusively confirmed on
+  HostAfrica's end — it resolved on its own within about a day. **No code
+  change** — if this recurs, retest plain TCP connectivity to
+  `da26.host-ww.net:2222`/`:443` from the production server before assuming
+  it's FOSSBilling's fault.
+- **Admin order-manage page crashing for any non-group-master order**
+  (`6cb114f`, `df4a803`) — real, previously-undiscovered stock bug, not
+  specific to any one client. `mod_order_manage.html.twig` only sets the
+  `addons` variable `{% if order.group_master == 1 %}`, but references it
+  unconditionally in two places (the Addons nav-tab visibility check, and
+  the tab content's `{% for addon in addons %}` loop). With this install's
+  `strict_variables: true` Twig config, that's a hard "Variable does not
+  exist" fatal for *any* order that isn't a group master — i.e. most single
+  orders. Guarded both references (`is defined`, `|default([])`).
+- **Domain registration ("Failed Setup") for two live signups** — two
+  independent causes, not a code bug either:
+  1. HostAfrica's reseller account was temporarily out of credit at the
+     moment each order activated (`{"error":"Reseller does not have enough
+     credits on his account"}`, found in `activity_system`). Resolved by
+     topping up the reseller balance and re-running `Order::activate()` via
+     the admin order's "Activate" button (works because
+     `Order\Api\Admin::renew()`/`activate()` already retries a
+     `failed_setup` order correctly — no manual DB surgery needed).
+  2. Even after the balance was fixed, registration failed again on a
+     *different* error: HostAfrica's EPP contact-create call rejects blank
+     `city`/`address`/`country`/`phone` fields, and neither of these
+     clients' profiles had a postal address on file — unsurprising, since
+     client signup never required one
+     (`Client\Api\Guest::create()`'s `RequiredParams` is just
+     email/name/password). `Servicedomain::_getD()` **[core edit]**
+     (`514ef11`, `ed5082b`) now defaults the registrant contact to KZD's own
+     registered business address (new `company_city`/`company_state`/
+     `company_postcode`/`company_country`/`company_phone_cc` rows in the
+     `setting` table, alongside the existing `company_address_1`/
+     `company_tel`), consistent with domains already being registered under
+     KZD's own reseller account rather than the client's. A client's own
+     profile address (if they fill one in) is still consulted, but only as
+     a last-resort fallback below the company default and any explicit
+     per-order contact override.
+  Both affected orders (`#2`, `#6`) were manually retried once each root
+  cause was fixed; the underlying data fix (company `setting` rows,
+  `service_domain.contact_*` for these two existing rows) is not
+  automated/scripted anywhere else.
+
 ## Pricing strategy update
 
 - Reduced hosting storage allocations (5/10/20/50 GB → 2/4/7/15 GB) to
@@ -129,3 +193,26 @@ identified as untestable from local dev (registrar IP whitelist).
   `CUSTOMIZATIONS.md` for why this was stock behaviour, not a KZD bug.
 - See `CUSTOMIZATIONS.md`'s "Checkout UX" and "Styled confirmation
   modals" sections for the full detail on all of the above.
+
+## Mobile UI fixes (2026-09-11)
+
+- Investigated and fixed the mobile layout of the domain/hosting order
+  forms' Register/Transfer/Own domain/Subdomain picker — a permanent
+  desktop sidebar layout with inline pixel widths on the TLD select, never
+  built responsively, clipping/overflowing below ~500px. Root cause: the
+  sidebar's `nav-pills` component is horizontal by default in Bootstrap —
+  an unconditional `flex-column` was the only thing forcing it vertical at
+  every width.
+- Extended the same pass to every other unresponsive pattern found in a
+  follow-up audit of the client area and admin panel: missing
+  `.table-responsive` wraps (cart/checkout table, both invoice tables —
+  the latter confirmed broken live on production via a client screenshot
+  showing the invoice's "Total" column cut off at 360px), unwrapped flex
+  rows on the invoice payment-gateway picker and header, support ticket
+  page/message headers, the domain "manage" page's stat row, and two
+  admin-only issues (client detail page's avatar header, dashboard
+  graph's fixed-width date picker).
+- See `CUSTOMIZATIONS.md`'s "Mobile UI fixes" entry for the full file
+  list, the `.input-group > .form-select` specificity gotcha hit partway
+  through, and which files got a proper `html_custom`/override copy vs. a
+  surgical direct edit (and why, per file size).
