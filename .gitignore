@@ -1,5 +1,8 @@
 /config.php
 /config.old.php
+
+# Local design-capture tooling (screenshots + credentials for Penpot work, never deployed)
+/_design-capture/
 /data/cache/*
 /data/log/*
 /data/uploads/*
