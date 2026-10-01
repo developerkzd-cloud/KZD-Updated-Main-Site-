@@ -216,3 +216,17 @@ identified as untestable from local dev (registrar IP whitelist).
   list, the `.input-group > .form-select` specificity gotcha hit partway
   through, and which files got a proper `html_custom`/override copy vs. a
   surgical direct edit (and why, per file size).
+
+## Admin hosting order-manage page crashing on a missing service record (2026-10-01)
+
+Reported live: `/admin/order/manage/10` fataled with "Impossible to access
+an attribute (\"server\") on a null variable ... at line 3". Same shape as
+the earlier `group_master` admin order-manage bug (see above) — the
+hosting order's linked `service_hosting` row was missing, so
+`admin.order_service()` returned `null`, and
+`mod_servicehosting_manage.html.twig` dereferenced it unguarded. Wrapped
+the template in a null-service check instead (`8db58b5`) — see
+`CUSTOMIZATIONS.md`'s "Hosting DirectAdmin automation" section for detail.
+Also added `/_design-capture/` (local Penpot screenshot tooling, has live
+credentials in its own `.env`) to `.gitignore` — it was never meant to be
+tracked or deployed.

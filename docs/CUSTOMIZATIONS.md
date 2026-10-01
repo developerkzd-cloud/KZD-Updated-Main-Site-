@@ -282,8 +282,23 @@ touch stock code. **[core edit]** = a stock file was directly modified.
 - **Not done yet**: hosting plan upgrade/downgrade between tiers (stock
   supports it, not specifically tested); general UI/UX polish,
   deliberately deferred to a later session.
-
-## Business Email DirectAdmin automation (type=hosting)
+- **`modules/Servicehosting/templates/admin/mod_servicehosting_manage.html.twig`**
+  **[core edit, surgical]** — reported live as a fatal error on
+  `/admin/order/manage/<id>` for a `type=hosting` order: `Impossible to
+  access an attribute ("server") on a null variable ... at line 3`
+  (`{% set server = service.server %}`). `Order\Service::getOrderServiceData()`
+  returns `null` whenever the order's linked `service_hosting` row is
+  missing (account never provisioned, or the row was otherwise removed)
+  — stock behaviour, same null-service shape as the `group_master`
+  admin order-manage bug further up this file. The stock template never
+  guarded against that, so this install's `strict_variables: true` Twig
+  config turned it into a hard crash instead of a blank field. Wrapped
+  the whole template body in `{% if not service %}` (shows a status
+  badge + a plain warning that the account couldn't be found) `{% else
+  %}` (original markup, unchanged) `{% endif %}`. Doesn't explain *why*
+  order #10's service row is missing in the first place — that's a data
+  question for whoever provisioned it, not a code bug — this only stops
+  the page from fatally erroring when it happens (`8db58b5`).
 
 - **Follow-up to the section above, using the same mechanism as the
   hosting automation section**: the 2 Business Email products (Business
