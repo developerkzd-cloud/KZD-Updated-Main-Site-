@@ -54,20 +54,20 @@
         }
 
         .tld-item:hover {
-            background-color: #f8f9fa;
-            border-radius: 0.25rem;
+            background-color: var(--kzd-surface-50);
+            border-radius: var(--kzd-radius-8);
         }
 
         .tld-extension {
-            font-size: 1rem;
+            font-size:  var(--kzd-text-body);
         }
 
         .tld-description {
-            font-size: 0.85rem;
+            font-size:  var(--kzd-text-label-lg);
         }
 
         .tld-price {
-            font-size: 0.95rem;
+            font-size:  var(--kzd-text-body);
         }
         #allTlds tbody tr {
             height: 50px; /* reduce row height */
@@ -79,7 +79,7 @@
         }
 
         #allTlds tbody tr:hover {
-            background-color: #f8f9fa;
+            background-color: var(--kzd-surface-50);
         }
 
         </style>
@@ -132,7 +132,7 @@
             <div class="container-fluid">
                 <div class="col-auto col-xxl-3 col-lg-2 me-lg-0 me-auto">
                     <a class="navbar-brand d-flex align-items-center me-2" href="index.html">
-                        <img id="logo" src="images/logo-white.png" alt="Logo" style="height: 40px; margin-right: 10px;">
+                        <img id="logo" src="images/logo-white.png" alt="Logo" style="height: 40px; margin-right: var(--kzd-space-8);">
                         <span id="company-name" class="fs-5 fs-md-4 fs-lg-3" style="color: white;">KZD Solutions</span>
                     </a>
                 </div>
@@ -308,24 +308,24 @@
 
 
 <div class="container mt-5" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-    <h3 class="mb-4" data-aos="fade-right" style="font-weight: 600; color: #111;">All Domain Extensions</h3>
+    <h3 class="mb-4" data-aos="fade-right" style="font-weight: 600; color: var(--kzd-black);">All Domain Extensions</h3>
 
     <div class="table-responsive" data-aos="fade-up" data-aos-delay="200">
         <table
-            style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-            <thead style="background-color: #f5f5f5;">
+            style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: var(--kzd-radius-8); overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+            <thead style="background-color: var(--kzd-surface-100);">
                 <tr>
                     <th
-                        style="text-align: left; padding: 0.75rem 1rem; font-weight: 600; font-size: 0.98rem; color: #333;">
+                        style="text-align: left; padding: 0.75rem 1rem; font-weight: 600; font-size:  var(--kzd-text-body); color: var(--kzd-charcoal);">
                         Domain</th>
                     <th
-                        style="text-align: left; padding: 0.85rem 1rem; font-weight: 600; font-size: 0.98rem; color: #333;">
+                        style="text-align: left; padding: 0.85rem 1rem; font-weight: 600; font-size:  var(--kzd-text-body); color: var(--kzd-charcoal);">
                         Description</th>
                     <th
-                        style="text-align: right; padding: 0.75rem 1rem; font-weight: 600; font-size: 0.98rem; color: #333;">
+                        style="text-align: right; padding: 0.75rem 1rem; font-weight: 600; font-size:  var(--kzd-text-body); color: var(--kzd-charcoal);">
                         Price</th>
                     <th
-                        style="text-align: right; padding: 0.75rem 1rem; font-weight: 600; font-size: 0.98rem; color: #333;">
+                        style="text-align: right; padding: 0.75rem 1rem; font-weight: 600; font-size:  var(--kzd-text-body); color: var(--kzd-charcoal);">
                         Action</th>
                 </tr>
             </thead>
@@ -349,8 +349,8 @@
                     <!-- start footer column -->
                     <div class="col-12 col-xl-3 col-lg-3 col-md-6 col-sm-12 last-paragraph-no-margin text-lg-start text-center text-sm-center order-sm-1 lg-mb-50px sm-mb-30px">
                         <a class="navbar-brand d-flex align-items-center justify-content-lg-start justify-content-center" href="index.html">
-                            <img src="images/logo-black.png" alt="Logo" style="height: 40px; margin-right: 10px;">
-                            <span style="font-size: 20px; color: black;">KZD Solutions</span>
+                            <img src="images/logo-black.png" alt="Logo" style="height: 40px; margin-right: var(--kzd-space-8);">
+                            <span style="font-size:  var(--kzd-text-title); color: black;">KZD Solutions</span>
                         </a>
                         <p class="lh-28 w-90 xl-w-100 mx-lg-auto mx-xl-0">Gearing your company through an innovative strategy.</p>
                         <div class="elements-social social-icon-style-02 mt-15px">
@@ -495,11 +495,11 @@
                 if (!tbody) return;
                 tbody.innerHTML = KZD.tlds.map((tld, index) => `
                     <tr data-tld-row="${tld.ext}" class="${index % 2 === 0 ? '' : 'table-light'}">
-                        <td style="padding: 0.6rem 1rem; font-weight: 600; color: #111;">${tld.ext}</td>
-                        <td style="padding: 0.6rem 1rem; color: #555; font-size: 1rem;">${categoryLabels[tld.category] || ''}</td>
-                        <td style="padding: 0.6rem 1rem; text-align: right; font-weight: 500; color: #111;">${KZD.formatPrice(tld.register)}/yr</td>
+                        <td style="padding: 0.6rem 1rem; font-weight: 600; color: var(--kzd-black);">${tld.ext}</td>
+                        <td style="padding: 0.6rem 1rem; color: var(--kzd-gray); font-size:  var(--kzd-text-body);">${categoryLabels[tld.category] || ''}</td>
+                        <td style="padding: 0.6rem 1rem; text-align: right; font-weight: 500; color: var(--kzd-black);">${KZD.formatPrice(tld.register)}/yr</td>
                         <td style="padding: 0.6rem 1rem; text-align: right;">
-                            <button class="pricing-btn" style="padding: 6px 20px; font-size: 0.85rem; display: inline-block; width: auto;" onclick="KZD.goToDomainOrder('${tld.ext}')">Register</button>
+                            <button class="pricing-btn" style="padding: var(--kzd-space-4) var(--kzd-space-16); font-size:  var(--kzd-text-label-lg); display: inline-block; width: auto;" onclick="KZD.goToDomainOrder('${tld.ext}')">Register</button>
                         </td>
                     </tr>
                 `).join('');

@@ -4,17 +4,17 @@
   background-position: center center;
   background-size: cover;
   padding-top: 120px;
-  padding-bottom: 80px;
+  padding-bottom: var(--kzd-space-80);
 }
 
 .pricing-card { transition: transform .25s ease, box-shadow .25s ease; }
 .pricing-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover-md); }
-.pricing-card .price { font-size: 36px; font-weight: 800; color: #1f1f1f; }
-.pricing-card .currency { font-size: 18px; margin-right: 4px; }
-.pricing-card .period { font-size: 14px; color: #6b7280; margin-left:6px; }
+.pricing-card .price { font-size:  var(--kzd-text-headline); font-weight: 800; color: var(--kzd-black); }
+.pricing-card .currency { font-size:  var(--kzd-text-body); margin-right: var(--kzd-space-4); }
+.pricing-card .period { font-size:  var(--kzd-text-label-lg); color: var(--kzd-gray); margin-left:var(--kzd-space-4); }
 
-.pricing-card.featured { border: 1px solid rgba(107,33,168,.2); }
-.pricing-card .ribbon { position: absolute; top: -10px; right: 16px; background: var(--accent-purple); color: #fff; padding: 6px 10px; border-radius: var(--radius-xs); font-size: 12px; }
+.pricing-card.featured { border: 1px solid color-mix(in srgb, var(--kzd-navy-400) 20%, transparent); }
+.pricing-card .ribbon { position: absolute; top: -10px; right: 16px; background: var(--accent-purple); color: var(--kzd-white); padding: var(--kzd-space-4) var(--kzd-space-8); border-radius: var(--radius-xs); font-size:  var(--kzd-text-label-sm); }
 
 /* adjust layout */
 /* Target the correct Bootstrap gap class (gx) and ensure plan rows stretch */
@@ -22,14 +22,14 @@
 
 /* small screens */
 @media (max-width: 767px) {
-  .hosting-hero { padding-top: 100px; padding-bottom: 40px; }
-  .pricing-card { padding: 20px !important; }
+  .hosting-hero { padding-top: 100px; padding-bottom: var(--kzd-space-40); }
+  .pricing-card { padding: var(--kzd-space-16) !important; }
 }
 
 /* Styles for detailed plan grid copied from prototype */
 .section-section { max-width: 1100px; margin: 0 auto; }
 .section-section .input { width: 64px; height: 28px; background: linear-gradient(90deg,var(--accent-purple),var(--accent-purple-light)); border-radius: var(--radius-pill); position: relative; cursor: pointer; }
-.section-section .div-2 { position: absolute; width: 26px; height: 26px; background: #fff; border-radius: var(--radius-circle); top: 1px; left: 1px; transition: transform .25s ease; }
+.section-section .div-2 { position: absolute; width: 26px; height: 26px; background: var(--kzd-white); border-radius: var(--radius-circle); top: 1px; left: 1px; transition: transform .25s ease; }
 .section-section.toggle-on .div-2 { transform: translateX(36px); }
 .overlay-border { display: block; }
 .overlay-border .background-border,
@@ -52,14 +52,14 @@
   width: 100%;
   max-width: none; /* allow card to fill column width so columns align on x-axis */
 }
-.background-border .heading-start-up, .background-border-2 .heading-business, .background-border-3 .heading-premium, .div-3 .heading-enterprise { font-size: 20px; }
-.text-3xl { font-size: 32px; }
+.background-border .heading-start-up, .background-border-2 .heading-business, .background-border-3 .heading-premium, .div-3 .heading-enterprise { font-size:  var(--kzd-text-title); }
+.text-3xl { font-size:  var(--kzd-text-title); }
 .btn-block { display: inline-block; width: 100%; text-align: center; }
 
 /* Card spacing, animation and reverse-hover */
 .overlay-border .p-4 {
   margin: 0 !important; /* override any inline margins */
-  padding: 24px;
+  padding: var(--kzd-space-24);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   transition: transform .28s ease, box-shadow .28s ease;
@@ -99,12 +99,12 @@
 }
 
 @media (max-width: 767px) {
-  .section-section .input { margin: 0 10px; }
-  .overlay-border .col-12 { margin-bottom: 12px; }
+  .section-section .input { margin: 0 var(--kzd-space-8); }
+  .overlay-border .col-12 { margin-bottom: var(--kzd-space-12); }
 }
 
 @media (max-width: 767px) {
-  .overlay-border .p-4, .row.gx-4 .p-4 { padding: 18px; min-height: auto; }
+  .overlay-border .p-4, .row.gx-4 .p-4 { padding: var(--kzd-space-16); min-height: auto; }
 }
 
 /* On small screens let cards expand to full width */

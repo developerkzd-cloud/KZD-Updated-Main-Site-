@@ -63,8 +63,8 @@
             /* Nav rules moved to css/kzd-nav.css — one shared copy. */
 
                 .domain-table-wrapper {
-                    background: #ffffff;
-                    border-radius: 12px;
+                    background: var(--kzd-white);
+                    border-radius: var(--kzd-radius-12);
                     overflow: hidden;
                     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
                 }
@@ -72,23 +72,23 @@
                 .domain-table {
                     width: 100%;
                     border-collapse: collapse;
-                    font-size: 15px;
+                    font-size:  var(--kzd-text-body);
                 }
 
                 .domain-table thead {
-                    background: #f8fafc;
+                    background: var(--kzd-surface-50);
                 }
 
                 .domain-table th {
                     text-align: left;
-                    padding: 16px 20px;
+                    padding: var(--kzd-space-16) var(--kzd-space-16);
                     /* font-weight: 600; */
-                    color: #475569;
+                    color: var(--kzd-gray);
                 }
 
                 .domain-table td {
-                    padding: 18px 20px;
-                    color: #0f172a;
+                    padding: var(--kzd-space-16) var(--kzd-space-16);
+                    color: var(--kzd-black);
                 }
 
                 .domain-table tbody tr {
@@ -96,41 +96,41 @@
                 }
 
                 .domain-table tbody tr:nth-child(even) {
-                    background: #fafafa;
+                    background: var(--kzd-surface-50);
                 }
 
                 .domain-table tbody tr:hover {
-                    background: #f1f5f9;
+                    background: var(--kzd-surface-100);
                 }
 
                 .domain-table tbody tr.highlight {
-                    background: #eaf2ff;
+                    background: var(--kzd-surface-100);
                 }
 
                 .domain-table .price-col,
                 .domain-table .price {
                     text-align: right;
                     /* font-weight: 600; */
-                    color: #475569;
+                    color: var(--kzd-gray);
                 }
 
                 /* Mobile friendly */
                 @media (max-width: 768px) {
                     .domain-table th,
                     .domain-table td {
-                        padding: 14px 14px;
-                        font-size: 14px;
+                        padding: var(--kzd-space-12) var(--kzd-space-12);
+                        font-size:  var(--kzd-text-label-lg);
                     }
                 }
 
                 .tld-badge-inline {
-                    margin-left: 10px;
-                    background: #000;
-                    color: #ffffff;
-                    font-size: 11px;
+                    margin-left: var(--kzd-space-8);
+                    background: var(--kzd-black);
+                    color: var(--kzd-white);
+                    font-size:  var(--kzd-text-label-sm);
                     /* font-weight: 600; */
-                    padding: 4px 10px;
-                    border-radius: 999px;
+                    padding: var(--kzd-space-4) var(--kzd-space-8);
+                    border-radius: var(--kzd-radius-full);
                     vertical-align: middle;
                 }
 
@@ -173,7 +173,7 @@
             <div class="container-fluid">
                 <div class="col-auto col-xxl-3 col-lg-2 me-lg-0 me-auto">
                     <a class="navbar-brand d-flex align-items-center me-2" href="index.html">
-                        <img id="logo" src="images/logo-white.png" alt="Logo" style="height: 40px; margin-right: 10px;">
+                        <img id="logo" src="images/logo-white.png" alt="Logo" style="height: 40px; margin-right: var(--kzd-space-8);">
                         <span id="company-name" class="fs-5 fs-md-4 fs-lg-3" style="color: white;">KZD Solutions</span>
                     </a>
                 </div>
@@ -431,8 +431,8 @@
                     <!-- start footer column -->
                     <div class="col-12 col-xl-3 col-lg-3 col-md-6 col-sm-12 last-paragraph-no-margin text-lg-start text-center text-sm-center order-sm-1 lg-mb-50px sm-mb-30px">
                         <a class="navbar-brand d-flex align-items-center justify-content-lg-start justify-content-center" href="index.html">
-                            <img src="images/logo-black.png" alt="Logo" style="height: 40px; margin-right: 10px;">
-                            <span style="font-size: 20px; color: black;">KZD Solutions</span>
+                            <img src="images/logo-black.png" alt="Logo" style="height: 40px; margin-right: var(--kzd-space-8);">
+                            <span style="font-size:  var(--kzd-text-title); color: black;">KZD Solutions</span>
                         </a>
                         <p class="lh-28 w-90 xl-w-100 mx-lg-auto mx-xl-0">Gearing your company through an innovative strategy.</p>
                         <div class="elements-social social-icon-style-02 mt-15px">
@@ -592,7 +592,7 @@
                             <td>${tld.ext}</td>
                             <td>${descriptions[tld.ext] || ''}</td>
                             <td class="price">${KZD.formatPrice(tld.register)}/yr</td>
-                            <td><button class="pricing-btn" style="width:auto;padding:6px 20px;font-size:0.85rem;" onclick="KZD.goToDomainOrder('${tld.ext}')">Register</button></td>
+                            <td><button class="pricing-btn" style="width:auto;padding:var(--kzd-space-4) var(--kzd-space-16);font-size: var(--kzd-text-label-lg);" onclick="KZD.goToDomainOrder('${tld.ext}')">Register</button></td>
                         </tr>
                     `).join('');
                 }
