@@ -49,7 +49,7 @@
 }
 
 .brand { display: flex; align-items: center; gap: 9px; min-height: 44px; }
-.mark { width: 28px; height: 28px; object-fit: contain; }
+.mark { width: var(--kzd-logo-40); height: var(--kzd-logo-40); object-fit: contain; }
 .word { font-family: var(--kzd-type-display); font-size: 17px; font-weight: 700; color: #fff; }
 
 .close {

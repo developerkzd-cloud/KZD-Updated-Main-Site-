@@ -98,7 +98,7 @@ body.kzd-ad {
   text-decoration: none;
 }
 
-.kzd-ad__brand img { width: 30px; height: 30px; object-fit: contain; }
+.kzd-ad__brand img { width: var(--kzd-logo-24); height: var(--kzd-logo-24); object-fit: contain; }
 
 .kzd-ad__brand-word {
   font-family: var(--ad-display);

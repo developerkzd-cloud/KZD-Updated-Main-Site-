@@ -185,8 +185,8 @@ function BrandRow() {
     <div className={styles.brand}>
       <Image
         src="/Assets/logos/kzd-mark.png"
-        width={26}
-        height={26}
+        width={24}
+        height={24}
         alt=""
         className={styles.mark}
       />

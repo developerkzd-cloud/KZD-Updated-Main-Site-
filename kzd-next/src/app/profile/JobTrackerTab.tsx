@@ -53,7 +53,7 @@ export default function JobTrackerTab({ apps }: { apps: KzdApplication[] }) {
                       <article className={styles.appCard} key={a.id ?? `${a.jobId}-${i}`}>
                         <div className={styles.appTop}>
                           <span className={styles.appMark}>
-                            <Image src="/Assets/logos/kzd-mark.png" alt="" width={32} height={32} />
+                            <Image src="/Assets/logos/kzd-mark.png" alt="" width={20} height={20} />
                           </span>
                           <div>
                             <p className={styles.appTitle}>{a.jobTitle || a.jobId || "Application"}</p>

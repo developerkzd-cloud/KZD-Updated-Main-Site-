@@ -69,7 +69,7 @@
 
 .brand { position: relative; display: inline-flex; align-items: center; gap: 11px; min-height: 44px; }
 /* The source PNG is white-on-transparent; blacken it against the light footer. */
-.mark { width: 34px; height: 34px; object-fit: contain; filter: brightness(0) opacity(0.88); }
+.mark { width: var(--kzd-logo-40); height: var(--kzd-logo-40); object-fit: contain; filter: brightness(0) opacity(0.88); }
 .wordmark { font-family: var(--kzd-type-display); font-size: 21px; font-weight: 600; color: var(--kzd-navy-500); }
 
 .tagline { margin: 14px 0 0; max-width: 30ch; font-size: 15px; line-height: 1.6; color: var(--kzd-text-muted); }

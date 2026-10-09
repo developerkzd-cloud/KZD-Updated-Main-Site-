@@ -402,7 +402,7 @@
   background: var(--kzd-navy-500);
 }
 
-.aboutPlateMark { flex: none; width: 44px; height: 44px; object-fit: contain; }
+.aboutPlateMark { flex: none; width: var(--kzd-logo-48); height: var(--kzd-logo-48); object-fit: contain; }
 
 .aboutPlateWord { font-size: 21px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; color: #fff; white-space: nowrap; }
 
@@ -470,7 +470,7 @@
   .aboutBrandMask { --kzd-brand-travel: -28; --kzd-brand-fade: 0.55; }
   .aboutBrand { padding: 18px; }
   .aboutPlate { height: 96px; gap: 12px; }
-  .aboutPlateMark { width: 36px; height: 36px; }
+  .aboutPlateMark { width: var(--kzd-logo-40); height: var(--kzd-logo-40); }
   .aboutPlateWord { font-size: 18px; }
   .aboutQuote { font-size: 16px; }
   .aboutAttrib { text-align: center; }

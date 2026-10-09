@@ -114,8 +114,8 @@
    .kzd-mark.is-dark from kzd-about.css — the modal ships on pages that never
    link that file, and there the mark would be white on white. */
 .kzd-auth__mark {
-  width: 26px;
-  height: 26px;
+  width: var(--kzd-logo-24);
+  height: var(--kzd-logo-24);
   object-fit: contain;
   filter: brightness(0) opacity(.88);
 }

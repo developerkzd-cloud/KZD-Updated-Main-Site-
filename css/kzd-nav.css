@@ -325,7 +325,7 @@
 
 /* The source PNG is already the white-on-dark mark, so no filter here — unlike
    the auth modal, which sits on white and has to blacken it. */
-.kzd-mnav__mark { width: 28px; height: 28px; object-fit: contain; }
+.kzd-mnav__mark { width: var(--kzd-logo-40); height: var(--kzd-logo-40); object-fit: contain; }
 
 .kzd-mnav__word {
   font-family: var(--kzd-m-display);

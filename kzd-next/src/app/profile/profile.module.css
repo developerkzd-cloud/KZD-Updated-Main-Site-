@@ -676,3 +676,6 @@ a.link:hover { border-color: rgba(47, 111, 237, 0.35); background: var(--kzd-nav
   line-height: 1;
   border-radius: var(--kzd-radius-8);
 }
+
+/* Logo, mark-only in dense UI: 20px (design system logo sizes 20/24/40/48). */
+.appMark img { width: var(--kzd-logo-20); height: var(--kzd-logo-20); object-fit: contain; }

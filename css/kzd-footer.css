@@ -205,8 +205,8 @@
    above ~40px. It IS dark-on-transparent (#010101), so it reads correctly on
    this theme; the white variant would be invisible here. */
 .kzd-footer__mark {
-  width: 28px;
-  height: 28px;
+  width: var(--kzd-logo-40);
+  height: var(--kzd-logo-40);
   object-fit: contain;
   flex: 0 0 auto;
 }

@@ -746,7 +746,7 @@ a.kzd-pro__link:focus-visible { outline: 2px solid var(--kzd-p-blue); outline-of
   background: var(--kzd-p-navy);
 }
 
-.kzd-pro__app-mark img { width: 20px; height: 20px; object-fit: contain; }
+.kzd-pro__app-mark img { width: var(--kzd-logo-20); height: var(--kzd-logo-20); object-fit: contain; }
 
 .kzd-pro__app-title {
   margin: 0;

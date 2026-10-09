@@ -503,8 +503,8 @@
 
 .kzd-about__plate-mark {
   flex: none;
-  width: 44px;
-  height: 44px;
+  width: var(--kzd-logo-48);
+  height: var(--kzd-logo-48);
   object-fit: contain;
 }
 
@@ -815,7 +815,7 @@
   .kzd-about { --kzd-brand-travel: -28; --kzd-brand-fade: .55; }
   .kzd-about__brand { padding: 18px; }
   .kzd-about__plate { height: 96px; gap: 12px; }
-  .kzd-about__plate-mark { width: 36px; height: 36px; }
+  .kzd-about__plate-mark { width: var(--kzd-logo-40); height: var(--kzd-logo-40); }
   .kzd-about__plate-word { font-size: 18px; }
   .kzd-about__quote { font-size: 16px; }
   .kzd-about__attrib { text-align: center; }

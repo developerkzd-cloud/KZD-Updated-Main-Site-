@@ -55,7 +55,7 @@
 
 .brand { display: flex; align-items: center; gap: 9px; }
 
-.mark { object-fit: contain; filter: brightness(0) opacity(0.88); }
+.mark { width: var(--kzd-logo-24); height: var(--kzd-logo-24); object-fit: contain; filter: brightness(0) opacity(0.88); }
 
 .word {
   font-family: var(--kzd-type-display);
