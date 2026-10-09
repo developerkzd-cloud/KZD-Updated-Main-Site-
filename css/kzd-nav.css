@@ -14,7 +14,7 @@
 
 /* Restores the old per-page inline rule — it was copied into all 16 pages. */
 @media (max-width: 991px) {
-  .dropdown-with-icon-style02 .dropdown-toggle { margin-right: 30px; }
+  .dropdown-with-icon-style02 .dropdown-toggle { margin-right: var(--kzd-space-32); }
 }
 
 /* --------------------------------------------------------------------------
@@ -27,22 +27,22 @@
    -------------------------------------------------------------------------- */
 
 .navbar.kzd-nav--solid {
-  background: #FFFFFF;
-  border-bottom: 1px solid #E1E4EA;
+  background: var(--kzd-white);
+  border-bottom: 1px solid var(--kzd-line);
 }
 
 .navbar.kzd-nav--solid .nav-link,
 .navbar.kzd-nav--solid .navbar-brand span {
-  color: #0B2545;
+  color: var(--kzd-navy-700);
 }
 
 .navbar.kzd-nav--solid .nav-link:hover,
 .navbar.kzd-nav--solid .nav-link:focus-visible {
-  color: #2F6FED;
+  color: var(--kzd-navy-400);
 }
 
 .navbar.kzd-nav--solid .navbar-toggler-line {
-  background-color: #0B2545;
+  background-color: var(--kzd-navy-700);
 }
 
 .kzd-nav-item { position: relative; }
@@ -52,7 +52,7 @@
 .kzd-nav-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--kzd-space-4);
   background: none;
   border: 0;
   padding: 0;
@@ -62,8 +62,8 @@
 }
 
 .kzd-nav-caret {
-  width: 10px;
-  height: 10px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   flex: none;
   fill: none;
   stroke: currentColor;
@@ -79,12 +79,12 @@
 /* Mega panel ------------------------------------------------------------- */
 
 .kzd-nav-mega {
-  --kzd-n-paper: #FFFFFF;
-  --kzd-n-line:  #E1E4EA;
-  --kzd-n-navy:  #0B2545;
-  --kzd-n-muted: #717580;
-  --kzd-n-dim:   #9298A4;
-  --kzd-n-blue:  #2F6FED;
+  --kzd-n-paper: var(--kzd-white);
+  --kzd-n-line:  var(--kzd-line);
+  --kzd-n-navy:  var(--kzd-navy-700);
+  --kzd-n-muted: var(--kzd-gray);
+  --kzd-n-dim:   var(--kzd-gray);
+  --kzd-n-blue:  var(--kzd-navy-300);
   --kzd-n-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --kzd-n-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --kzd-n-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
@@ -97,12 +97,12 @@
   /* Three groups — What we do / Web hosting / Domains — so all ten
      destinations stay one click away instead of being dropped. */
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 4px 26px;
+  gap: var(--kzd-space-4) var(--kzd-space-24);
   width: 660px;
   margin: 0;
-  padding: 22px 26px;
+  padding: var(--kzd-space-24) var(--kzd-space-24);
   border: 1px solid var(--kzd-n-line);
-  border-radius: 16px;
+  border-radius: var(--kzd-radius-16);
   background: var(--kzd-n-paper);
   box-shadow: 0 22px 48px -18px rgba(16, 26, 46, .30);
   list-style: none;
@@ -134,10 +134,10 @@
 .kzd-nav-group { min-width: 0; }
 
 .kzd-nav-head {
-  margin: 0 0 8px;
-  padding-left: 12px;
+  margin: 0 0 var(--kzd-space-8);
+  padding-left: var(--kzd-space-12);
   font-family: var(--kzd-n-mono);
-  font-size: 9.5px;
+  font-size:  var(--kzd-text-label-sm);
   font-weight: 500;
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -148,10 +148,10 @@
 
 .kzd-nav-mega a {
   display: block;
-  padding: 9px 12px;
-  border-radius: 9px;
+  padding: var(--kzd-space-8) var(--kzd-space-12);
+  border-radius: var(--kzd-radius-8);
   font-family: var(--kzd-n-body);
-  font-size: 14.5px;
+  font-size:  var(--kzd-text-label-lg);
   line-height: 1.35;
   color: var(--kzd-n-navy);
   text-decoration: none;
@@ -160,7 +160,7 @@
 
 .kzd-nav-mega a:hover,
 .kzd-nav-mega a:focus-visible {
-  background: #F2F6FD;
+  background: var(--kzd-surface-100);
   color: var(--kzd-n-blue);
 }
 
@@ -190,8 +190,8 @@
     width: 100%;
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
-    margin: 2px 0 6px;
-    padding: 6px 0 10px;
+    margin: 2px 0 var(--kzd-space-4);
+    padding: var(--kzd-space-4) 0 var(--kzd-space-8);
     border: 0;
     border-left: 2px solid var(--kzd-n-line);
     border-radius: 0;
@@ -213,12 +213,12 @@
   .kzd-nav-mega::before { content: none; }
 
   .kzd-nav-head {
-    margin-top: 10px;
-    padding-left: 16px;
+    margin-top: var(--kzd-space-8);
+    padding-left: var(--kzd-space-16);
   }
 
   .kzd-nav-mega a {
-    padding: 13px 16px;          /* ~49px tall hit area */
+    padding: var(--kzd-space-12) var(--kzd-space-16);          /* ~49px tall hit area */
     border-radius: 0;
   }
 }
@@ -250,15 +250,15 @@
      1/0.9 = 1.111111. */
   zoom: 1.1111111;
 
-  --kzd-m-navy:   #0B2545;
-  --kzd-m-sub:    #123156;
+  --kzd-m-navy:   var(--kzd-navy-700);
+  --kzd-m-sub:    var(--kzd-navy-500);
   --kzd-m-rule:   rgba(255, 255, 255, .10);
   --kzd-m-rule-2: rgba(255, 255, 255, .12);
-  --kzd-m-ember:  #FF6B35;
-  --kzd-m-label:  #8FA6C6;
-  --kzd-m-link:   #E6ECF6;
-  --kzd-m-edge:   rgba(111, 160, 255, .45);
-  --kzd-m-press:  rgba(111, 160, 255, .12);
+  --kzd-m-ember:  var(--kzd-navy-200);
+  --kzd-m-label:  var(--kzd-navy-400);
+  --kzd-m-link:   var(--kzd-white);
+  --kzd-m-edge:   color-mix(in srgb, var(--kzd-navy-200) 45%, transparent);
+  --kzd-m-press:  color-mix(in srgb, var(--kzd-navy-200) 12%, transparent);
 
   --kzd-m-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --kzd-m-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -310,15 +310,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px 14px 24px;
+  gap: var(--kzd-space-12);
+  padding: var(--kzd-space-12) var(--kzd-space-16) var(--kzd-space-12) var(--kzd-space-24);
   border-bottom: 1px solid var(--kzd-m-rule-2);
 }
 
 .kzd-mnav__brand {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: var(--kzd-space-8);
   min-height: 46px;   /* it is a link, so it needs a real tap target too */
   text-decoration: none;
 }
@@ -329,10 +329,10 @@
 
 .kzd-mnav__word {
   font-family: var(--kzd-m-display);
-  font-size: 17px;
+  font-size:  var(--kzd-text-body);
   font-weight: 700;
   letter-spacing: -.01em;
-  color: #FFFFFF;
+  color: var(--kzd-white);
 }
 
 .kzd-mnav__close {
@@ -344,21 +344,21 @@
   flex: none;
   padding: 0;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--kzd-radius-12);
   background: none;
   cursor: pointer;
 }
 
 .kzd-mnav__close svg {
-  width: 19px;
-  height: 19px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   fill: none;
-  stroke: #FFFFFF;
+  stroke: var(--kzd-white);
   stroke-width: 2;
   stroke-linecap: round;
 }
 
-.kzd-mnav__close:focus-visible { outline: 2px solid #6FA0FF; outline-offset: -2px; }
+.kzd-mnav__close:focus-visible { outline: 2px solid var(--kzd-navy-200); outline-offset: -2px; }
 
 /* Scrolling list ---------------------------------------------------------- */
 
@@ -383,17 +383,17 @@
   width: 100%;
   min-height: 56px;
   margin: 0;
-  padding: 0 24px;
+  padding: 0 var(--kzd-space-24);
   border: 0;
   border-bottom: 1px solid var(--kzd-m-rule);
   border-radius: 0;
   background: none;
   text-align: left;
   font-family: var(--kzd-m-display);
-  font-size: 17px;
+  font-size:  var(--kzd-text-body);
   font-weight: 500;
   line-height: 1.3;
-  color: #FFFFFF;
+  color: var(--kzd-white);
   text-decoration: none;
   cursor: pointer;
   -webkit-appearance: none;
@@ -401,11 +401,11 @@
 }
 
 .kzd-mnav__link:hover,
-.kzd-mnav__link:focus-visible { color: #FFFFFF; background: var(--kzd-m-press); }
-.kzd-mnav__link:focus-visible { outline: 2px solid #6FA0FF; outline-offset: -2px; }
+.kzd-mnav__link:focus-visible { color: var(--kzd-white); background: var(--kzd-m-press); }
+.kzd-mnav__link:focus-visible { outline: 2px solid var(--kzd-navy-200); outline-offset: -2px; }
 
 /* Current page: an ember edge, never a dim — dim reads as disabled. */
-.kzd-mnav__link[aria-current="page"] { color: #FFFFFF; }
+.kzd-mnav__link[aria-current="page"] { color: var(--kzd-white); }
 
 .kzd-mnav__link[aria-current="page"]::before {
   content: "";
@@ -422,8 +422,8 @@
 .kzd-mnav__trigger { justify-content: space-between; }
 
 .kzd-mnav__caret {
-  width: 14px;
-  height: 14px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   flex: none;
   margin-left: auto;   /* far right of the row, not beside the word */
   fill: none;
@@ -448,14 +448,14 @@
 .kzd-mnav__sub {
   border-left: 2px solid var(--kzd-m-edge);
   border-bottom: 1px solid var(--kzd-m-rule);
-  padding-bottom: 8px;
+  padding-bottom: var(--kzd-space-8);
 }
 
 .kzd-mnav__grouphead {
   margin: 0;
-  padding: 20px 24px 8px;
+  padding: var(--kzd-space-16) var(--kzd-space-24) var(--kzd-space-8);
   font-family: var(--kzd-m-mono);
-  font-size: 11px;
+  font-size:  var(--kzd-text-label-sm);
   font-weight: 500;
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -468,12 +468,12 @@
   display: flex;
   align-items: center;
   min-height: 48px;
-  padding: 0 24px 0 40px;
+  padding: 0 var(--kzd-space-24) 0 var(--kzd-space-40);
   font-family: var(--kzd-m-body);
-  font-size: 15.5px;
+  font-size:  var(--kzd-text-body);
   font-weight: 400;
-  /* Near-white, NOT --blue (#2F6FED) — that is what made these unreadable.
-     #E6ECF6 on #123156 measures 11.06:1. */
+  /* Near-white, NOT --blue (--kzd-navy-300) — that is what made these unreadable.
+     --kzd-surface-200 on --kzd-navy-500 measures 11.06:1. */
   color: var(--kzd-m-link);
   text-decoration: none;
 }
@@ -481,11 +481,11 @@
 .kzd-mnav__sublink:hover,
 .kzd-mnav__sublink:active,
 .kzd-mnav__sublink:focus-visible {
-  color: #FFFFFF;
+  color: var(--kzd-white);
   background: var(--kzd-m-press);
 }
 
-.kzd-mnav__sublink:focus-visible { outline: 2px solid #6FA0FF; outline-offset: -2px; }
+.kzd-mnav__sublink:focus-visible { outline: 2px solid var(--kzd-navy-200); outline-offset: -2px; }
 
 /* Actions ----------------------------------------------------------------- */
 
@@ -493,8 +493,8 @@
   flex: none;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 24px;
+  gap: var(--kzd-space-12);
+  padding: var(--kzd-space-24);
   border-top: 1px solid var(--kzd-m-rule-2);
 }
 
@@ -505,9 +505,9 @@
   width: 100%;
   height: 50px;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--kzd-radius-12);
   font-family: var(--kzd-m-body);
-  font-size: 15.5px;
+  font-size:  var(--kzd-text-body);
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
@@ -516,24 +516,24 @@
 .kzd-mnav__btn--ghost {
   border: 1px solid rgba(255, 255, 255, .28);
   background: transparent;
-  color: #FFFFFF;
+  color: var(--kzd-white);
 }
 
 .kzd-mnav__btn--ember {
   background: var(--kzd-m-ember);
-  color: #1A0800;
+  color: var(--kzd-black);
 }
 
-.kzd-mnav__btn:focus-visible { outline: 2px solid #6FA0FF; outline-offset: 2px; }
+.kzd-mnav__btn:focus-visible { outline: 2px solid var(--kzd-navy-200); outline-offset: 2px; }
 
 .kzd-mnav__who {
   margin: 0 0 2px;
   font-family: var(--kzd-m-body);
-  font-size: 14.5px;
+  font-size:  var(--kzd-text-label-lg);
   color: var(--kzd-m-label);
 }
 
-.kzd-mnav__who b { color: #FFFFFF; font-weight: 600; }
+.kzd-mnav__who b { color: var(--kzd-white); font-weight: 600; }
 
 /* Body scroll lock --------------------------------------------------------- */
 
@@ -551,7 +551,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: var(--kzd-space-4);
     width: 51px;
     height: 51px;   /* ~46 real under zoom .9 */
     padding: 0;

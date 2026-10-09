@@ -7,9 +7,9 @@
   color: dark-gray; /* Dark gray */
   font-weight: 700; /* Bold text */
   letter-spacing: -2px; /* Reducing space between letters */
-  margin-bottom: 50px; /* Adds spacing below the heading */
+  margin-bottom: var(--kzd-space-48); /* Adds spacing below the heading */
   text-align: center; /* Centers text horizontally */
-  padding-top: 30px;
+  padding-top: var(--kzd-space-32);
 }
 
 
@@ -21,10 +21,10 @@
   
 }
 .our-team-of-experts {
-  padding: 60px 14px 60px 13px;
+  padding: var(--kzd-space-64) var(--kzd-space-12) var(--kzd-space-64) var(--kzd-space-12);
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: var(--kzd-space-40);
   align-items: center;
   justify-content: flex-start;
   align-self: stretch;
@@ -35,7 +35,7 @@
 .text {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--kzd-space-16);
   align-items: center;
   justify-content: flex-start;
   flex-shrink: 0;
@@ -47,7 +47,7 @@
   color: var(--navy-blue);
   text-align: center;
   font-family: "AllertaStencil-Regular", sans-serif;
-  font-size: 48px;
+  font-size:  var(--kzd-text-headline);
   font-weight: 400;
   position: relative;
   align-self: stretch;
@@ -61,7 +61,7 @@
 .frame-453 {
   display: flex;
   flex-direction: row;
-  gap: 24px;
+  gap: var(--kzd-space-24);
   align-items: flex-start;
   /* justify-content: flex-start; */
   justify-content: center; /* Center image properly */
@@ -113,7 +113,7 @@ body {
 /* Footer Fix (Removes Extra Space Below) */
 footer {
   margin-bottom: 0; /* Ensures no extra space */
-  padding-bottom: 10px; /* Adjust for proper spacing */
+  padding-bottom: var(--kzd-space-8); /* Adjust for proper spacing */
 }
 
 /* --- Mega dropdown (Hosting) styles & animation --- */
@@ -130,7 +130,7 @@ footer {
   max-width: 1000px;
   width: calc(100% - 60px);
   border: none;
-  background: #fff;
+  background: var(--kzd-white);
   box-shadow: var(--shadow-hover-lg);
   border-radius: var(--radius-sm);
   transition: opacity .25s ease, transform .25s ease, visibility .25s;
@@ -142,17 +142,17 @@ footer {
   visibility: visible;
   opacity: 1;
 }
-.mega-row { display: flex; gap: 28px; align-items: flex-start; }
+.mega-row { display: flex; gap: var(--kzd-space-24); align-items: flex-start; }
 .mega-left { flex: 1 1 40%; min-width: 220px; }
-.mega-links { flex: 1 1 60%; display:flex; gap:20px; flex-wrap:wrap; }
+.mega-links { flex: 1 1 60%; display:flex; gap:var(--kzd-space-16); flex-wrap:wrap; }
 .mega-col { min-width: 150px; flex: 1 1 150px; }
-.mega-col h6 { margin-bottom:6px; font-weight:700; }
-.mega-dropdown h4 { margin-bottom:6px; }
+.mega-col h6 { margin-bottom:var(--kzd-space-4); font-weight:700; }
+.mega-dropdown h4 { margin-bottom:var(--kzd-space-4); }
 
 /* Mobile behaviour: inside collapsed menu, make dropdown static and full width */
 @media (max-width: 991px) {
   .mega-dropdown { position: static; transform: none; left: 0; top: 0; width: 100%; box-shadow: none; border-radius: 0; padding-left: 1rem; padding-right: 1rem; }
-  .mega-row { flex-direction: column; gap: 16px; }
+  .mega-row { flex-direction: column; gap: var(--kzd-space-16); }
   .mega-links { display: block; }
 }
 

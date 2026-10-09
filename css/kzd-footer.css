@@ -5,7 +5,7 @@
    prefixed properties. Nothing targets a bare element, :root, body or an
    existing site class.
 
-   THE FOOTER DOES NOT SIT ON PURE WHITE. It takes --paper-2 (#F7F9FC) plus a
+   THE FOOTER DOES NOT SIT ON PURE WHITE. It takes --paper-2 (--kzd-surface-50) plus a
    faint blue wash rising from the bottom-left. On the dark theme this region
    separated itself with a glow; on pure white it would merge into the section
    above with only a hairline to mark the boundary. The tint is what makes it
@@ -18,18 +18,18 @@
    ========================================================================== */
 
 .kzd-footer {
-  --kzd-f-paper-2: #F7F9FC;
-  --kzd-f-card:    #FAFBFD;
-  --kzd-f-ink:     #232323;
-  --kzd-f-muted:   #717580;
-  --kzd-f-dim:     #9298A4;
-  --kzd-f-blue:    #2F6FED;
-  --kzd-f-ember:   #FF6B35;
-  --kzd-f-line:    #E1E4EA;
-  --kzd-f-link:    #4A5468;
-  --kzd-f-glyph:   #5A6470;
-  --kzd-f-grad-from: #232323;
-  --kzd-f-grad-to:   #4A5468;
+  --kzd-f-paper-2: var(--kzd-surface-50);
+  --kzd-f-card:    var(--kzd-surface-50);
+  --kzd-f-ink:     var(--kzd-black);
+  --kzd-f-muted:   var(--kzd-gray);
+  --kzd-f-dim:     var(--kzd-gray);
+  --kzd-f-blue:    var(--kzd-navy-300);
+  --kzd-f-ember:   var(--kzd-navy-200);
+  --kzd-f-line:    var(--kzd-line);
+  --kzd-f-link:    var(--kzd-gray);
+  --kzd-f-glyph:   var(--kzd-gray);
+  --kzd-f-grad-from: var(--kzd-black);
+  --kzd-f-grad-to:   var(--kzd-gray);
 
   --kzd-f-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --kzd-f-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -39,8 +39,8 @@
   position: relative;
   isolation: isolate;
   background: var(--kzd-f-paper-2);
-  padding-top: 96px;
-  padding-bottom: 65px;
+  padding-top: var(--kzd-space-96);
+  padding-bottom: var(--kzd-space-64);
   overflow: hidden;
 }
 
@@ -51,8 +51,8 @@
   pointer-events: none;
   background: radial-gradient(
     62% 58% at 22% 102%,
-    rgba(47, 111, 237, .08) 0%,
-    rgba(47, 111, 237, 0) 100%
+    color-mix(in srgb, var(--kzd-navy-300) 8%, transparent) 0%,
+    color-mix(in srgb, var(--kzd-navy-300) 0%, transparent) 100%
   );
 }
 
@@ -75,7 +75,7 @@
   margin: 0;
   font-family: var(--kzd-f-mono);
   font-weight: 500;
-  font-size: 11px;
+  font-size:  var(--kzd-text-label-sm);
   line-height: 1;
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -97,7 +97,7 @@
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: start;
-  gap: 40px;
+  gap: var(--kzd-space-40);
 }
 
 .kzd-footer__contact-r { text-align: right; }
@@ -105,10 +105,10 @@
 .kzd-footer__email {
   position: relative;
   display: inline-block;      /* so the underline is TEXT width, not container */
-  margin-top: 15px;           /* label ends 107; email box top = 122 */
+  margin-top: var(--kzd-space-16);           /* label ends 107; email box top = 122 */
   font-family: var(--kzd-f-display);
   font-weight: 600;
-  font-size: 52px;
+  font-size:  var(--kzd-text-headline);
   line-height: 1.1;
   letter-spacing: -.03em;
   text-decoration: none;
@@ -126,7 +126,7 @@
 }
 
 /* Text darkens toward --ink on hover. */
-.kzd-footer__email:hover { --kzd-f-grad-to: #232323; }
+.kzd-footer__email:hover { --kzd-f-grad-to: var(--kzd-black); }
 
 /* Resting underline: 2px, ~82% opacity. Slightly heavier and more opaque than
    the dark version — ember loses a little presence on white. */
@@ -160,10 +160,10 @@
 
 .kzd-footer__phone {
   display: inline-block;
-  margin-top: 27px;           /* label ends 107; phone box top = 134 */
+  margin-top: var(--kzd-space-24);           /* label ends 107; phone box top = 134 */
   font-family: var(--kzd-f-display);
   font-weight: 600;
-  font-size: 34px;
+  font-size:  var(--kzd-text-title);
   line-height: 1.2;
   letter-spacing: -.02em;
   color: var(--kzd-f-ink);
@@ -173,7 +173,7 @@
 
 .kzd-footer__phone:hover { color: var(--kzd-f-blue); }
 
-.kzd-footer__rule--1 { margin-top: 73px; }   /* lands the divider on y=252 */
+.kzd-footer__rule--1 { margin-top: var(--kzd-space-80); }   /* lands the divider on y=252 */
 
 /* --------------------------------------------------------------------------
    BAND 2 — brand + columns
@@ -182,7 +182,7 @@
    -------------------------------------------------------------------------- */
 
 .kzd-footer__band2 {
-  margin-top: 47px;           /* divider at 253; band top = 300 */
+  margin-top: var(--kzd-space-48);           /* divider at 253; band top = 300 */
   display: grid;
   grid-template-columns: 540fr 260fr 440fr;
   align-items: start;
@@ -194,7 +194,7 @@
 .kzd-footer__brand {
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: var(--kzd-space-12);
   width: max-content;
   max-width: 100%;
   text-decoration: none;
@@ -202,7 +202,7 @@
 
 /* TODO: still the 96x95 raster placeholder shared with the nav. Replace with
    the original vector before launch — it cannot be recoloured and will soften
-   above ~40px. It IS dark-on-transparent (#010101), so it reads correctly on
+   above ~40px. It IS dark-on-transparent (--kzd-black), so it reads correctly on
    this theme; the white variant would be invisible here. */
 .kzd-footer__mark {
   width: var(--kzd-logo-40);
@@ -214,19 +214,19 @@
 .kzd-footer__wordmark {
   font-family: var(--kzd-f-display);
   font-weight: 700;
-  font-size: 20px;
+  font-size:  var(--kzd-text-title);
   line-height: 1.2;
   letter-spacing: -.02em;
   color: var(--kzd-f-ink);
 }
 
 .kzd-footer__tagline {
-  margin: 22px 0 0;           /* brand row ends 328; tagline top = 350 */
+  margin: var(--kzd-space-24) 0 0;           /* brand row ends 328; tagline top = 350 */
   width: 280px;
   max-width: 100%;
   font-family: var(--kzd-f-body);
   font-weight: 400;
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   line-height: 1.73;
   color: var(--kzd-f-muted);
 }
@@ -234,11 +234,11 @@
 /* Socials — WHITE circles with --line borders. The dark version had pale
    glyphs in translucent-white discs, which inverts to nothing on paper. */
 .kzd-footer__socials {
-  margin: 26px 0 0;           /* tagline ends ~402; socials top = 428 */
+  margin: var(--kzd-space-24) 0 0;           /* tagline ends ~402; socials top = 428 */
   padding: 0;
   list-style: none;
   display: flex;
-  gap: 12px;
+  gap: var(--kzd-space-12);
 }
 
 /* Same global-list margin as the link columns — 5px here pushed band 3 down. */
@@ -247,8 +247,8 @@
 .kzd-footer__social {
   width: 38px;
   height: 38px;
-  border-radius: 50%;
-  background: #FFFFFF;
+  border-radius: var(--kzd-radius-full);
+  background: var(--kzd-white);
   border: 1px solid var(--kzd-f-line);
   display: inline-flex;
   align-items: center;
@@ -261,12 +261,12 @@
     transform 200ms ease-out;
 }
 
-.kzd-footer__social svg { width: 18px; height: 18px; fill: currentColor; }
-.kzd-footer__social--wa svg { width: 19px; height: 19px; }
+.kzd-footer__social svg { width: var(--kzd-icon-dense); height: var(--kzd-icon-dense); fill: currentColor; }
+.kzd-footer__social--wa svg { width: var(--kzd-icon-dense); height: var(--kzd-icon-dense); }
 
 .kzd-footer__social:hover {
   background: var(--kzd-f-card);
-  border-color: rgba(47, 111, 237, .35);
+  border-color: color-mix(in srgb, var(--kzd-navy-300) 35%, transparent);
   color: var(--kzd-f-ink);
   transform: translateY(-2px);
 }
@@ -275,7 +275,7 @@
   margin: 0;
   font-family: var(--kzd-f-mono);
   font-weight: 500;
-  font-size: 11px;
+  font-size:  var(--kzd-text-label-sm);
   line-height: 1;
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -283,7 +283,7 @@
 }
 
 .kzd-footer__list {
-  margin: 25px 0 0;           /* header ends 311; first link box top = 336 */
+  margin: var(--kzd-space-24) 0 0;           /* header ends 311; first link box top = 336 */
   padding: 0;
   list-style: none;
 }
@@ -295,13 +295,13 @@
   height: 30px;               /* links sit 30px apart */
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--kzd-space-8);
 }
 
 .kzd-footer__list a {
   font-family: var(--kzd-f-body);
   font-weight: 400;
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   line-height: 1.2;
   color: var(--kzd-f-link);
   text-decoration: none;
@@ -313,20 +313,20 @@
   transform: translateX(4px);
 }
 
-/* HOT badge — label FLIPS to white here. On dark it was near-black (#1A0800)
+/* HOT badge — label FLIPS to white here. On dark it was near-black (--kzd-black)
    because dark-on-ember won there; on light the badge must read as a solid
    stamp, so white. */
 .kzd-footer__hot {
   display: inline-flex;
   align-items: center;
   height: 17px;
-  padding: 0 7px;
-  border-radius: 9px;
+  padding: 0 var(--kzd-space-8);
+  border-radius: var(--kzd-radius-8);
   background: var(--kzd-f-ember);
-  color: #FFFFFF;
+  color: var(--kzd-white);
   font-family: var(--kzd-f-mono);
   font-weight: 500;
-  font-size: 9px;
+  font-size:  var(--kzd-text-label-sm);
   line-height: 1;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -336,21 +336,21 @@
    BAND 3 — bottom bar
    -------------------------------------------------------------------------- */
 
-.kzd-footer__rule--2 { margin-top: 46px; }   /* band 2 ends 466; divider 512 */
+.kzd-footer__rule--2 { margin-top: var(--kzd-space-48); }   /* band 2 ends 466; divider 512 */
 
 .kzd-footer__band3 {
-  margin-top: 27px;                          /* divider 513; text top = 540 */
+  margin-top: var(--kzd-space-24);                          /* divider 513; text top = 540 */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: var(--kzd-space-24);
 }
 
 .kzd-footer__band3 p {
   margin: 0;
   font-family: var(--kzd-f-mono);
   font-weight: 500;
-  font-size: 11px;
+  font-size:  var(--kzd-text-label-sm);
   line-height: 1;
   letter-spacing: .10em;
   color: var(--kzd-f-dim);
@@ -365,28 +365,28 @@
    -------------------------------------------------------------------------- */
 
 @media (max-width: 1199px) {
-  .kzd-footer { padding-top: 80px; }
-  .kzd-footer__email { font-size: 40px; }
-  .kzd-footer__phone { font-size: 28px; }
+  .kzd-footer { padding-top: var(--kzd-space-80); }
+  .kzd-footer__email { font-size:  var(--kzd-text-headline); }
+  .kzd-footer__phone { font-size:  var(--kzd-text-title); }
   .kzd-footer__band2 { grid-template-columns: 1fr 260fr 300fr; }
 }
 
 @media (max-width: 991px) {
-  .kzd-footer__band1 { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .kzd-footer__band1 { grid-template-columns: minmax(0, 1fr); gap: var(--kzd-space-32); }
   .kzd-footer__contact-r { text-align: left; }
-  .kzd-footer__phone { margin-top: 12px; }
-  .kzd-footer__rule--1 { margin-top: 44px; }
-  .kzd-footer__band2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); row-gap: 44px; margin-top: 40px; }
+  .kzd-footer__phone { margin-top: var(--kzd-space-12); }
+  .kzd-footer__rule--1 { margin-top: var(--kzd-space-40); }
+  .kzd-footer__band2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); row-gap: var(--kzd-space-40); margin-top: var(--kzd-space-40); }
   .kzd-footer__brand-col { grid-column: 1 / -1; }
-  .kzd-footer__rule--2 { margin-top: 40px; }
+  .kzd-footer__rule--2 { margin-top: var(--kzd-space-40); }
 }
 
 @media (max-width: 767px) {
-  .kzd-footer { padding-top: 60px; padding-bottom: 48px; }
-  .kzd-footer__email { font-size: clamp(1.5rem, 6.6vw, 2.25rem); }
-  .kzd-footer__phone { font-size: 24px; }
-  .kzd-footer__band2 { grid-template-columns: minmax(0, 1fr); row-gap: 36px; }
-  .kzd-footer__band3 { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .kzd-footer { padding-top: var(--kzd-space-64); padding-bottom: var(--kzd-space-48); }
+  .kzd-footer__email { font-size:  var(--kzd-text-headline); }
+  .kzd-footer__phone { font-size:  var(--kzd-text-title); }
+  .kzd-footer__band2 { grid-template-columns: minmax(0, 1fr); row-gap: var(--kzd-space-32); }
+  .kzd-footer__band3 { flex-direction: column; align-items: flex-start; gap: var(--kzd-space-12); }
 }
 
 /* --------------------------------------------------------------------------

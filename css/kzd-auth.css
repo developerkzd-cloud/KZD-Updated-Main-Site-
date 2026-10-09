@@ -13,15 +13,15 @@
    ========================================================================== */
 
 .kzd-auth-scrim {
-  --kzd-a-paper: #FFFFFF;
-  --kzd-a-card:  #F8FAFC;
-  --kzd-a-line:  #E1E4EA;
-  --kzd-a-navy:  #0B2545;
-  --kzd-a-muted: #717580;
-  --kzd-a-dim:   #9298A4;
-  --kzd-a-blue:  #2F6FED;
-  --kzd-a-red:   #D93025;
-  --kzd-a-close: #F0F3F8;
+  --kzd-a-paper: var(--kzd-white);
+  --kzd-a-card:  var(--kzd-surface-50);
+  --kzd-a-line:  var(--kzd-line);
+  --kzd-a-navy:  var(--kzd-navy-700);
+  --kzd-a-muted: var(--kzd-gray);
+  --kzd-a-dim:   var(--kzd-gray);
+  --kzd-a-blue:  var(--kzd-navy-300);
+  --kzd-a-red:   var(--kzd-error);
+  --kzd-a-close: var(--kzd-surface-100);
 
   --kzd-a-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --kzd-a-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -31,7 +31,7 @@
   z-index: 2400;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: var(--kzd-space-24);
   /* Fallback first, for engines without backdrop-filter. */
   background: rgba(18, 26, 44, .74);
   opacity: 0;
@@ -54,8 +54,8 @@
   max-width: 100%;
   max-height: calc(100vh - 48px);
   overflow-y: auto;
-  padding: 34px 36px 32px;
-  border-radius: 24px;
+  padding: var(--kzd-space-32) var(--kzd-space-32) var(--kzd-space-32);
+  border-radius: var(--kzd-radius-24);
   background: var(--kzd-a-paper);
   box-shadow: 0 40px 90px -22px rgba(12, 20, 38, .48);
   opacity: 0;
@@ -83,20 +83,20 @@
   height: 32px;
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--kzd-radius-full);
   background: var(--kzd-a-close);
   cursor: pointer;
   transition: background-color 160ms ease;
 }
 
 .kzd-auth__close:hover,
-.kzd-auth__close:focus-visible { background: #E3E8F1; }
+.kzd-auth__close:focus-visible { background: var(--kzd-line); }
 
 .kzd-auth__close svg {
-  width: 13px;
-  height: 13px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   fill: none;
-  stroke: #3A404C;
+  stroke: var(--kzd-charcoal);
   stroke-width: 2;
   stroke-linecap: round;
 }
@@ -106,11 +106,11 @@
 .kzd-auth__brand {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: var(--kzd-space-8);
 }
 
 /* The source PNG is the white-on-dark mark. brightness(0) blackens it while
-   preserving its alpha; the opacity step lands it near #262626. Do NOT rely on
+   preserving its alpha; the opacity step lands it near --kzd-black. Do NOT rely on
    .kzd-mark.is-dark from kzd-about.css — the modal ships on pages that never
    link that file, and there the mark would be white on white. */
 .kzd-auth__mark {
@@ -122,16 +122,16 @@
 
 .kzd-auth__word {
   font-family: var(--kzd-a-display);
-  font-size: 17px;
+  font-size:  var(--kzd-text-body);
   font-weight: 700;
   letter-spacing: -.01em;
   color: var(--kzd-a-navy);
 }
 
 .kzd-auth__title {
-  margin: 24px 0 0;
+  margin: var(--kzd-space-24) 0 0;
   font-family: var(--kzd-a-display);
-  font-size: 27px;
+  font-size:  var(--kzd-text-title);
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -.03em;
@@ -139,63 +139,63 @@
 }
 
 .kzd-auth__sub {
-  margin: 8px 0 0;
+  margin: var(--kzd-space-8) 0 0;
   font-family: var(--kzd-a-body);
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   line-height: 1.55;
   color: var(--kzd-a-muted);
 }
 
 /* Form -------------------------------------------------------------------- */
 
-.kzd-auth__form { margin-top: 22px; }
+.kzd-auth__form { margin-top: var(--kzd-space-24); }
 
 .kzd-auth__row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: var(--kzd-space-12);
 }
 
-.kzd-auth__field { margin-bottom: 16px; }
+.kzd-auth__field { margin-bottom: var(--kzd-space-16); }
 .kzd-auth__field--half { margin-bottom: 0; }
 
 .kzd-auth__label {
   display: block;
-  margin-bottom: 7px;
+  margin-bottom: var(--kzd-space-8);
   font-family: var(--kzd-a-body);
-  font-size: 14.5px;
+  font-size:  var(--kzd-text-label-lg);
   font-weight: 500;
   color: var(--kzd-a-navy);
 }
 
-.kzd-auth__req { color: var(--kzd-a-red); margin-left: 3px; }
+.kzd-auth__req { color: var(--kzd-a-red); margin-left: var(--kzd-space-4); }
 
 .kzd-auth__control { position: relative; }
 
 .kzd-auth__input {
   width: 100%;
   height: 52px;
-  padding: 0 15px;
+  padding: 0 var(--kzd-space-16);
   border: 1px solid var(--kzd-a-line);
-  border-radius: 10px;
+  border-radius: var(--kzd-radius-12);
   background: var(--kzd-a-card);
   font-family: var(--kzd-a-body);
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   color: var(--kzd-a-navy);
   transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
-.kzd-auth__input::placeholder { color: #A7AEBA; }
+.kzd-auth__input::placeholder { color: var(--kzd-gray); }
 
 .kzd-auth__input:focus {
   outline: none;
   border-color: var(--kzd-a-blue);
-  box-shadow: 0 0 0 3px rgba(47, 111, 237, .16);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kzd-navy-300) 16%, transparent);
 }
 
 .kzd-auth__field.has-error .kzd-auth__input {
   border-color: var(--kzd-a-red);
-  box-shadow: 0 0 0 3px rgba(217, 48, 37, .12);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kzd-error) 12%, transparent);
 }
 
 /* Show/hide — 49 CSS px clears the 44px touch minimum under the 0.9 zoom. */
@@ -215,10 +215,10 @@
 }
 
 .kzd-auth__eye-i {
-  width: 19px;
-  height: 19px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   fill: none;
-  stroke: #7B8494;
+  stroke: var(--kzd-gray);
   stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -226,9 +226,9 @@
 
 .kzd-auth__hint,
 .kzd-auth__error {
-  margin: 6px 0 0;
+  margin: var(--kzd-space-4) 0 0;
   font-family: var(--kzd-a-body);
-  font-size: 13px;
+  font-size:  var(--kzd-text-label);
   line-height: 1.45;
 }
 
@@ -237,9 +237,9 @@
 .kzd-auth__error:empty { display: none; }
 
 .kzd-auth__form-error {
-  margin: 0 0 12px;
+  margin: 0 0 var(--kzd-space-12);
   font-family: var(--kzd-a-body);
-  font-size: 13.5px;
+  font-size:  var(--kzd-text-label);
   line-height: 1.5;
   color: var(--kzd-a-red);
 }
@@ -248,10 +248,10 @@
 
 .kzd-auth__forgot {
   display: block;
-  margin: -6px 0 18px;
+  margin: calc(var(--kzd-space-4) * -1) 0 var(--kzd-space-16);
   text-align: right;
   font-family: var(--kzd-a-body);
-  font-size: 13.5px;
+  font-size:  var(--kzd-text-label);
   color: var(--kzd-a-blue);
   text-decoration: none;
 }
@@ -263,8 +263,8 @@
 .kzd-auth__consent {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  margin: 4px 0 0;
+  gap: var(--kzd-space-8);
+  margin: var(--kzd-space-4) 0 0;
 }
 
 .kzd-auth__check {
@@ -277,7 +277,7 @@
 
 .kzd-auth__consent-label {
   font-family: var(--kzd-a-body);
-  font-size: 14.5px;
+  font-size:  var(--kzd-text-label-lg);
   line-height: 1.5;
   color: var(--kzd-a-navy);
 }
@@ -287,7 +287,7 @@
   text-decoration: underline;
   text-underline-offset: 2px;
   /* Hit box only — does not change the line box. */
-  padding-block: 17px;
+  padding-block: var(--kzd-space-16);
 }
 
 /* Buttons ----------------------------------------------------------------- */
@@ -299,10 +299,10 @@
   justify-content: center;
   width: 100%;
   height: 54px;
-  margin-top: 18px;
-  border-radius: 11px;
+  margin-top: var(--kzd-space-16);
+  border-radius: var(--kzd-radius-12);
   font-family: var(--kzd-a-body);
-  font-size: 15.5px;
+  font-size:  var(--kzd-text-body);
   font-weight: 500;
   cursor: pointer;
   transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
@@ -311,13 +311,13 @@
 .kzd-auth__primary {
   border: 0;
   background: var(--kzd-a-navy);
-  color: #FFFFFF;
+  color: var(--kzd-white);
 }
 
 .kzd-auth__primary:hover,
 .kzd-auth__primary:focus-visible {
   transform: translateY(-2px);
-  box-shadow: 0 12px 22px -10px rgba(11, 37, 69, .55);
+  box-shadow: 0 12px 22px -10px color-mix(in srgb, var(--kzd-navy-700) 55%, transparent);
 }
 
 .kzd-auth__secondary {
@@ -330,7 +330,7 @@
 .kzd-auth__secondary:hover,
 .kzd-auth__secondary:focus-visible {
   transform: translateY(-2px);
-  box-shadow: 0 12px 22px -12px rgba(38, 52, 78, .34);
+  box-shadow: 0 12px 22px -12px color-mix(in srgb, var(--kzd-navy-500) 34%, transparent);
 }
 
 /* "New here?" divider ------------------------------------------------------ */
@@ -338,10 +338,10 @@
 .kzd-auth__divider {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin: 22px 0 16px;
+  gap: var(--kzd-space-12);
+  margin: var(--kzd-space-24) 0 var(--kzd-space-16);
   font-family: var(--kzd-a-body);
-  font-size: 13.5px;
+  font-size:  var(--kzd-text-label);
   color: var(--kzd-a-dim);
 }
 
@@ -354,10 +354,10 @@
 }
 
 .kzd-auth__foot {
-  margin: 16px 0 0;
+  margin: var(--kzd-space-16) 0 0;
   text-align: center;
   font-family: var(--kzd-a-body);
-  font-size: 14.5px;
+  font-size:  var(--kzd-text-label-lg);
   color: var(--kzd-a-muted);
 }
 
@@ -393,19 +393,19 @@
 /* Responsive --------------------------------------------------------------- */
 
 @media (max-width: 560px) {
-  .kzd-auth-scrim { padding: 16px; }
+  .kzd-auth-scrim { padding: var(--kzd-space-16); }
 
   .kzd-auth-modal {
     width: calc(100% - 32px);
     max-height: 88vh;
-    padding: 28px 22px 26px;
+    padding: var(--kzd-space-24) var(--kzd-space-24) var(--kzd-space-24);
   }
 
   /* First/last name stack. */
   .kzd-auth__row { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .kzd-auth__field--half { margin-bottom: 16px; }
+  .kzd-auth__field--half { margin-bottom: var(--kzd-space-16); }
 
-  .kzd-auth__title { font-size: 24px; }
+  .kzd-auth__title { font-size:  var(--kzd-text-title); }
   .kzd-auth__close { top: 14px; right: 14px; }
 }
 
