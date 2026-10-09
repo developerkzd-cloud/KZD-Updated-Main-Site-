@@ -96,14 +96,14 @@ function buildStats() {
 
   [
     { label: "Employees", value: total, note: `Across ${deps} department${deps === 1 ? "" : "s"}`,
-      accent: "#2F6FED", tint: "#E0EAFD", icon: ICONS.users, go: "all" },
+      accent: "var(--kzd-navy-400)", tint: "var(--kzd-navy-50)", icon: ICONS.users, go: "all" },
     { label: "On probation", value: probation, note: nextProbationReview(),
-      accent: "#7E56D6", tint: "#F0EBFC", icon: ICONS.badge, go: null },
+      accent: "var(--kzd-status-probation-ink)", tint: "var(--kzd-status-probation-bg)", icon: ICONS.badge, go: null },
     { label: "On leave today", value: onLeave, note: nextReturn(),
-      accent: "#D6961E", tint: "#FDF3DE", icon: ICONS.brief, go: null },
+      accent: "var(--kzd-status-leave-ink)", tint: "var(--kzd-status-leave-bg)", icon: ICONS.brief, go: null },
     { label: "Hired from careers", value: viaCareers,
       note: total ? `${Math.round((viaCareers / total) * 100)}% of the team` : "No employees yet",
-      accent: "#149CA0", tint: "#E0F6F7", icon: ICONS.users, go: null }
+      accent: "var(--kzd-status-hired-ink)", tint: "var(--kzd-status-hired-bg)", icon: ICONS.users, go: null }
   ].forEach((c) => {
     const b = el("button", "kzd-ad__stat");
     b.type = "button";

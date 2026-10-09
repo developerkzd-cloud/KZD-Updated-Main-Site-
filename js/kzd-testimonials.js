@@ -14,8 +14,9 @@
 
   var SRC = "reviews.json";
 
-  /* Muted avatar tones, cycled by index. Deliberately no ember/orange. */
-  var TONES = ["#5B6C9E", "#6C8069", "#9A7B6C", "#7A6E92", "#5F7E8C"];
+  /* Avatar tones, cycled by index: navy and grey tokens, each >= 5.3:1
+     against the white initials. */
+  var TONES = ["var(--kzd-navy-400)", "var(--kzd-gray)", "var(--kzd-navy-500)", "var(--kzd-charcoal)", "var(--kzd-navy-300)"];
 
   var SWIPE_DISTANCE = 40;    // px before a drag commits to a page change
   var SWIPE_VELOCITY = .45;   // px/ms — a flick shorter than the threshold

@@ -23,7 +23,7 @@ const MID = "M 0 250 C 400 50 400 400 3000 250 L 3000 550 L 0 550 L 0 250";
 export default function WaveDivider() {
   return (
     <div className={styles.wave} aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" height="400" viewBox="0 180 2500 200" fill="#ffffff">
+      <svg xmlns="http://www.w3.org/2000/svg" height="400" viewBox="0 180 2500 200" style={{ fill: "var(--kzd-white)" }}>
         <path d={FROM}>
           <animate
             attributeName="d"

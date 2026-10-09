@@ -94,14 +94,19 @@ function buildChart(buckets) {
 
   const mk = (tag, attrs) => {
     const n = document.createElementNS("http://www.w3.org/2000/svg", tag);
-    Object.keys(attrs).forEach((k) => n.setAttribute(k, attrs[k]));
+    // Colours are tokens; SVG presentation attributes cannot take var(), so
+    // fill and stroke go through style instead.
+    Object.keys(attrs).forEach((k) => {
+      if ((k === "fill" || k === "stroke") && String(attrs[k]).startsWith("var(")) n.style[k] = attrs[k];
+      else n.setAttribute(k, attrs[k]);
+    });
     return n;
   };
 
   // Gridlines + Y labels
   for (let v = 0; v <= top; v += step) {
-    s.appendChild(mk("line", { x1: padL, x2: W - padR, y1: y(v), y2: y(v), stroke: "#E7ECF3", "stroke-width": 1 }));
-    const t = mk("text", { x: padL - 10, y: y(v) + 4, "text-anchor": "end", "font-size": 11, fill: "#9298A4" });
+    s.appendChild(mk("line", { x1: padL, x2: W - padR, y1: y(v), y2: y(v), stroke: "var(--kzd-line)", "stroke-width": 1 }));
+    const t = mk("text", { x: padL - 10, y: y(v) + 4, "text-anchor": "end", "font-size": 11, fill: "var(--kzd-gray)" });
     t.textContent = String(v);
     s.appendChild(t);
   }
@@ -111,15 +116,15 @@ function buildChart(buckets) {
 
   s.appendChild(mk("path", {
     d: `${line} L${pts[pts.length - 1][0].toFixed(1)} ${padT + plotH} L${pts[0][0].toFixed(1)} ${padT + plotH} Z`,
-    fill: "#2F6FED", "fill-opacity": ".13"
+    fill: "var(--kzd-navy-400)", "fill-opacity": ".13"
   }));
-  s.appendChild(mk("path", { d: line, fill: "none", stroke: "#2F6FED", "stroke-width": 2.4, "stroke-linejoin": "round", "stroke-linecap": "round" }));
+  s.appendChild(mk("path", { d: line, fill: "none", stroke: "var(--kzd-navy-400)", "stroke-width": 2.4, "stroke-linejoin": "round", "stroke-linecap": "round" }));
 
   // X labels — thinned on narrow viewports.
   const thin = window.matchMedia("(max-width: 900px)").matches;
   buckets.forEach((b, i) => {
     if (thin && i % 2 === 1 && i !== buckets.length - 1) return;
-    const t = mk("text", { x: x(i), y: H - 8, "text-anchor": "middle", "font-size": 11, fill: "#9298A4" });
+    const t = mk("text", { x: x(i), y: H - 8, "text-anchor": "middle", "font-size": 12, fill: "var(--kzd-gray)" });
     t.textContent = b.label;
     s.appendChild(t);
   });
@@ -128,7 +133,7 @@ function buildChart(buckets) {
   tip.hidden = true;
 
   buckets.forEach((b, i) => {
-    const dot = mk("circle", { cx: x(i), cy: y(b.count), r: 5, fill: "#FFFFFF", stroke: "#2F6FED", "stroke-width": 2.4, class: "kzd-ad__chart-dot", tabindex: "0" });
+    const dot = mk("circle", { cx: x(i), cy: y(b.count), r: 5, fill: "var(--kzd-white)", stroke: "var(--kzd-navy-400)", "stroke-width": 2.4, class: "kzd-ad__chart-dot", tabindex: "0" });
     dot.setAttribute("role", "button");
     dot.setAttribute("aria-label", `${b.label}: ${b.count} application${b.count === 1 ? "" : "s"}, ${shortDate(b.from)} to ${shortDate(b.to)}`);
 
@@ -156,7 +161,9 @@ function buildChart(buckets) {
    Page
    -------------------------------------------------------------------------- */
 
-const ROLE_COLOURS = ["#2F6FED", "#7C5CD6", "#D6961E", "#1C9E5E", "#FF6B35"];
+// Categories, not states: steps of the navy ramp and greyscale (no rainbow).
+// Every bar carries its role name and count as text.
+const ROLE_COLOURS = ["var(--kzd-navy-500)", "var(--kzd-navy-300)", "var(--kzd-gray)", "var(--kzd-navy-200)", "var(--kzd-silver)"];
 
 async function render(page, shell) {
   page.textContent = "";
@@ -207,18 +214,18 @@ async function render(page, shell) {
 
   [
     { label: "Applications", value: apps.length, note: `+${thisWeek} this week`,
-      accent: "#2F6FED", tint: "#E0EAFD", icon: ICONS.users, go: "all" },
+      accent: "var(--kzd-navy-400)", tint: "var(--kzd-navy-50)", icon: ICONS.users, go: "all" },
     { label: "Open roles", value: openJobs.length,
       // Derived, like every other note. Jobs carry no closing date, so this
       // reports drafts rather than inventing a "closing soon" count.
       note: drafts ? `${drafts} in draft` : (openJobs.length ? "All accepting applications" : "None published"),
-      accent: "#FF6B35", tint: "#FFEEE6", icon: ICONS.brief, go: null },
+      accent: "var(--kzd-charcoal)", tint: "var(--kzd-surface-100)", icon: ICONS.brief, go: null },
     { label: "Interviews", value: interviews,
       note: interviews ? `${interviews} scheduled` : "None scheduled",
-      accent: "#D6961E", tint: "#FDF3DE", icon: ICONS.users, go: "interviewing" },
+      accent: "var(--kzd-status-leave-ink)", tint: "var(--kzd-status-leave-bg)", icon: ICONS.users, go: "interviewing" },
     { label: "Offers made", value: offers,
       note: offers ? "Awaiting response" : "None yet",
-      accent: "#1C9E5E", tint: "#E4F7ED", icon: ICONS.brief, go: "offer" }
+      accent: "var(--kzd-status-active-ink)", tint: "var(--kzd-status-active-bg)", icon: ICONS.brief, go: "offer" }
   ].forEach((c) => {
     const b = el("button", "kzd-ad__stat");
     b.type = "button";
@@ -296,8 +303,8 @@ async function render(page, shell) {
   head.appendChild(el("h2", "kzd-ad__card-title", "Recent applications"));
   const viewAll = el("a", null, "View all");
   viewAll.href = "applications.html";
-  viewAll.style.color = "#2F6FED";
-  viewAll.style.fontSize = "14.5px";
+  viewAll.style.color = "var(--kzd-link)";
+  viewAll.style.fontSize = "var(--kzd-text-label-lg)";
   viewAll.style.textDecoration = "none";
   head.appendChild(viewAll);
   recentCard.appendChild(head);

@@ -28,13 +28,7 @@ import styles from "./page.module.css";
 import Icon from "@/components/Icon/Icon";
 
 
-const AVATAR_TONES = [
-  "var(--kzd-navy-400)",
-  "var(--kzd-accent-ink)",
-  "var(--kzd-status-hired)",
-  "var(--kzd-status-probation)",
-  "var(--kzd-status-active)",
-];
+const AVATAR_TONES = ["var(--kzd-navy-400)", "var(--kzd-gray)", "var(--kzd-navy-500)", "var(--kzd-charcoal)", "var(--kzd-navy-300)"];
 
 function initialsOf(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);

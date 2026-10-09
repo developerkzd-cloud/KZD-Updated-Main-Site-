@@ -89,9 +89,9 @@ function disabledControl(host, label, why, buttonLabel) {
   const data = card("Data", "Everything lives in this browser only");
 
   const warn = el("div", "kzd-ad__error");
-  warn.style.background = "#FFF8E9";
-  warn.style.borderColor = "#F5DDA8";
-  warn.style.color = "#8A6414";
+  warn.style.background = "var(--kzd-warning-bg)";
+  warn.style.borderColor = "var(--kzd-warning)";
+  warn.style.color = "var(--kzd-warning-ink)";
   warn.appendChild(el("span", null,
     "This prototype stores every application, job posting and content edit in this browser's localStorage. " +
     "Clearing site data deletes all of it, and nothing is shared between devices."));

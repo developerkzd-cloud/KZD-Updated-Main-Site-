@@ -244,7 +244,7 @@ function buildSection(pageKey, model, sec, content) {
     const c = el("span", "kzd-ad__count");
     const paint = () => {
       c.textContent = `${input.value.length}/${limit}`;
-      c.style.color = input.value.length > limit ? "#D93025" : "";
+      c.style.color = input.value.length > limit ? "var(--kzd-error-ink)" : "";
     };
     input.addEventListener("input", paint);
     paint();
