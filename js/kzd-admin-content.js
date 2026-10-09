@@ -9,6 +9,13 @@
    defaults become their initial values. The rest of the admin map is in
    js/kzd-admin.js.
 
+   CAUTION, so nobody plans around behaviour that does not exist: only the
+   "careers" group is read by a public page (js/kzd-careers.js, via
+   getPageContent). The "job", "application" and "auth" groups are editable
+   here, but js/kzd-job.js and js/kzd-auth.js hard-code the same strings, so
+   editing those three changes nothing on the live site. Treat them as
+   defaults still to be wired up, not as working editing.
+
    Every editable string on the careers pages, grouped by the page it belongs
    to and by section. Each section saves on its own — one giant form would mean
    one giant undo.
