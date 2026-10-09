@@ -1,0 +1,266 @@
+/* ==========================================================================
+   KZD Solutions — design tokens (KZD Reusable Design System)
+
+   THE ONLY FILE IN THE PROJECT THAT HOLDS RAW COLOUR, RADIUS, SPACING OR
+   TYPE-SIZE VALUES. Both sites read it:
+     - static site: <link rel="stylesheet" href="css/kzd-tokens.css"> first in <head>
+     - kzd-next:    @import from src/app/globals.css
+   Everything else references these custom properties. If a value is missing,
+   add a token here; do not write a literal in a page stylesheet.
+
+   Colour rule (60 / 30 / 10):
+     60%  neutral and light surfaces, negative space   --kzd-white, --kzd-surface-*
+     30%  navy structure (nav, footer, bands, plates)  --kzd-navy-*
+     10%  one accent per page, never a rainbow          --kzd-accent*
+   Semantic colours are a SEPARATE group and only ever mean a state. Every
+   state also carries a text label; colour is never the only signal.
+   ========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------- BRAND */
+  --kzd-black:        #1A1A1A;  /* Rich Black — primary actions, headings      */
+  --kzd-charcoal:     #3A3A3A;  /* Charcoal Gray — logo, navigation, headings  */
+  --kzd-gray:         #6B6B6B;  /* Medium Gray — secondary actions, support    */
+  --kzd-silver:       #A7A7A7;  /* Silver Gray — cards, subtle highlights      */
+  --kzd-silver-light: #D9D9D9;  /* Light Silver — controlled accent only       */
+
+  --kzd-navy-300: #4A6B8A;
+  --kzd-navy-400: #2F5178;
+  --kzd-navy-500: #203354;      /* Navy — structure */
+  --kzd-navy-600: #1C2E4A;
+  --kzd-navy-700: #152238;
+
+  /* Neutral surfaces: light steps of the greyscale for the 60% layer. */
+  --kzd-white:       #FFFFFF;
+  --kzd-surface-50:  #FAFAFA;
+  --kzd-surface-100: #F4F4F4;
+  --kzd-surface-200: #ECECEC;
+  --kzd-line:        #E4E4E4;
+  /* Navy tints: selected rows, info panels, text on navy. */
+  --kzd-navy-50:  #EEF1F6;
+  --kzd-navy-100: #DCE3EC;
+  --kzd-navy-200: #B6C3D3;
+
+  /* Accent (the 10%). One per page. Silver on light, light silver on dark. */
+  --kzd-accent:        var(--kzd-silver);
+  --kzd-accent-soft:   var(--kzd-silver-light);
+  --kzd-accent-ink:    var(--kzd-navy-400);   /* accent used as text on light */
+
+  /* Roles */
+  --kzd-ink:        var(--kzd-black);      /* headings */
+  --kzd-text:       var(--kzd-charcoal);   /* body copy */
+  --kzd-text-muted: var(--kzd-gray);       /* supporting text, >= 4.5:1 on white and surface-100 */
+  --kzd-text-on-dark:       var(--kzd-white);
+  --kzd-text-on-dark-muted: var(--kzd-navy-200);
+  --kzd-link:       var(--kzd-navy-400);
+  --kzd-scrim:      rgb(21 34 56 / 0.62);
+  --kzd-overlay-dark: rgb(21 34 56 / 0.55);
+  --kzd-shadow-sm: 0 1px 2px rgb(26 26 26 / 0.06), 0 1px 3px rgb(26 26 26 / 0.08);
+  --kzd-shadow-md: 0 8px 24px rgb(26 26 26 / 0.10);
+  --kzd-shadow-lg: 0 24px 64px rgb(21 34 56 / 0.22);
+
+  /* ------------------------------------------------------------- SEMANTIC */
+  /* solid = dot / bar, ink = text, bg = chip fill. ink on bg >= 5.3:1. */
+  --kzd-status-active:        #1C9E5E;  /* Active (green) */
+  --kzd-status-active-ink:    #146B3F;
+  --kzd-status-active-bg:     #E4F7ED;
+  --kzd-status-leave:         #D6961E;  /* On leave (amber) */
+  --kzd-status-leave-ink:     #8A5A0B;
+  --kzd-status-leave-bg:      #FDF3DE;
+  --kzd-status-probation:     #7E56D6;  /* Probation (violet) */
+  --kzd-status-probation-ink: #5B3BAE;
+  --kzd-status-probation-bg:  #F0EBFC;
+  --kzd-status-hired:         #149CA0;  /* Hired from careers (teal) */
+  --kzd-status-hired-ink:     #0E6E71;
+  --kzd-status-hired-bg:      #E0F6F7;
+  --kzd-status-applied:       #2F6FED;  /* Applied (blue) */
+  --kzd-status-applied-ink:   #1D4FB8;
+  --kzd-status-applied-bg:    #E0EAFD;
+  --kzd-error:                #D93025;  /* Error (red) */
+  --kzd-error-ink:            #B3261E;
+  --kzd-error-bg:             #FDECEA;
+  --kzd-success:     var(--kzd-status-active);
+  --kzd-success-ink: var(--kzd-status-active-ink);
+  --kzd-success-bg:  var(--kzd-status-active-bg);
+  --kzd-warning:     var(--kzd-status-leave);
+  --kzd-warning-ink: var(--kzd-status-leave-ink);
+  --kzd-warning-bg:  var(--kzd-status-leave-bg);
+
+  /* ----------------------------------------------------------- TYPOGRAPHY */
+  /* Inter / Inter Tight are one family; JetBrains Mono is for eyebrows,
+     status chips and labels only. Next sets --kzd-font-body etc. through
+     next/font; the static site falls back to the @font-face names. */
+  --kzd-type-sans:    var(--kzd-font-body, "Inter", system-ui, -apple-system, "Segoe UI", sans-serif);
+  --kzd-type-display: var(--kzd-font-display, "Inter Tight", "Inter", system-ui, sans-serif);
+  --kzd-type-label:   var(--kzd-font-mono, "JetBrains Mono", ui-monospace, monospace);
+
+  /* Scale (desktop / mobile): Display 72/40, Headline 48/32, Title 30/22,
+     Body 18/16, Label 12–14. Fluid between 380 and 1440. */
+  --kzd-text-display:  clamp(40px, 24px + 3.4vw, 72px);
+  --kzd-text-headline: clamp(32px, 22.4px + 1.8vw, 48px);
+  --kzd-text-title:    clamp(22px, 17.6px + 0.9vw, 30px);
+  --kzd-text-body:     clamp(16px, 15.2px + 0.2vw, 18px);
+  --kzd-text-body-sm:  16px;           /* body floor: dense UI keeps 16px */
+  --kzd-text-label-lg: 14px;      /* 14 */
+  --kzd-text-label:    13px;      /* 13 */
+  --kzd-text-label-sm: 12px;       /* 12 */
+
+  --kzd-leading-display:  1.05;
+  --kzd-leading-headline: 1.1;
+  --kzd-leading-title:    1.25;
+  --kzd-leading-body:     1.5;
+  --kzd-leading-label:    1.3;
+  --kzd-tracking-display: -0.025em;
+  --kzd-tracking-label:   0.08em;
+
+  /* -------------------------------------------------------------- SPACING */
+  --kzd-space-4:  4px;
+  --kzd-space-8:  8px;
+  --kzd-space-12: 12px;
+  --kzd-space-16: 16px;
+  --kzd-space-24: 24px;
+  --kzd-space-32: 32px;
+  --kzd-space-40: 40px;
+  --kzd-space-48: 48px;
+  --kzd-space-64: 64px;
+  --kzd-space-80: 80px;
+  --kzd-space-96: 96px;
+
+  --kzd-pad-component: var(--kzd-space-24);  /* 16–24 */
+  --kzd-gap-card:      var(--kzd-space-24);  /* 16–24 */
+  --kzd-gap-section:   var(--kzd-space-96);  /* 64–96 desktop, 40–64 mobile */
+  --kzd-pad-page:      var(--kzd-space-80);  /* 48–80 desktop, 20–24 mobile */
+
+  /* Grid: 12 columns desktop, 4 columns mobile. */
+  --kzd-grid-cols: 12;
+  --kzd-grid-gap:  var(--kzd-space-24);
+  --kzd-wrap:      1220px;
+  --kzd-measure:   760px;
+  --kzd-nav-h:     84px;
+
+  /* --------------------------------------------------------------- RADIUS */
+  --kzd-radius-0:    0;      /* tables, strict technical UI */
+  --kzd-radius-8:    8px;    /* small controls */
+  --kzd-radius-12:   12px;   /* cards, inputs */
+  --kzd-radius-16:   16px;   /* primary cards, buttons */
+  --kzd-radius-24:   24px;   /* hero, feature blocks */
+  --kzd-radius-full: 9999px; /* tags, status pills, compact badges ONLY */
+
+  /* -------------------------------------------------------------- BORDERS */
+  --kzd-border:          1px;
+  --kzd-border-selected: 2px;
+  --kzd-border-error:    2px;
+  --kzd-focus-ring:      2px;
+  --kzd-focus-color:     var(--kzd-navy-400);
+  --kzd-focus-color-on-dark: var(--kzd-white);
+
+  /* ------------------------------------------------------------- CONTROLS */
+  --kzd-control: 44px;          /* buttons and inputs: 44–48 */
+  --kzd-control-lg: 48px;
+  --kzd-icon: 24px;             /* default */
+  --kzd-icon-dense: 20px;
+  --kzd-icon-feature: 40px;
+  --kzd-icon-hero: 48px;
+  --kzd-logo-20: 20px;
+  --kzd-logo-24: 24px;
+  --kzd-logo-40: 40px;
+  --kzd-logo-48: 48px;
+
+  /* --------------------------------------------------------------- MOTION */
+  --kzd-dur-micro:   200ms;     /* 150–250 */
+  --kzd-dur-fast:    150ms;
+  --kzd-dur-section: 400ms;     /* 300–500 */
+  --kzd-ease:        cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* Stacking */
+  --kzd-z-nav:   1000;
+  --kzd-z-modal: 2400;
+}
+
+@media (max-width: 1100px) {
+  :root { --kzd-pad-page: var(--kzd-space-48); --kzd-gap-section: var(--kzd-space-80); }
+}
+@media (max-width: 700px) {
+  :root {
+    --kzd-grid-cols: 4;
+    --kzd-grid-gap: var(--kzd-space-16);
+    --kzd-pad-page: var(--kzd-space-24);
+    --kzd-gap-section: var(--kzd-space-64);
+    --kzd-gap-card: var(--kzd-space-16);
+    --kzd-pad-component: var(--kzd-space-16);
+  }
+}
+@media (max-width: 560px) {
+  :root { --kzd-nav-h: 72px; }
+}
+@media (max-width: 380px) {
+  :root { --kzd-pad-page: 20px; --kzd-gap-section: var(--kzd-space-40); }
+}
+
+/* --------------------------------------------------------------------------
+   Shared primitives both sites use. Buttons keep the inline-flex /
+   align-items:center / line-height:1 pattern with NO vertical padding: the
+   height comes from --kzd-control, so the label is centred by flexbox, not by
+   padding arithmetic (that arithmetic caused the mobile label-centring bug).
+   -------------------------------------------------------------------------- */
+.kzd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kzd-space-8);
+  height: var(--kzd-control);
+  padding: 0 var(--kzd-space-24);
+  border: var(--kzd-border) solid transparent;
+  border-radius: var(--kzd-radius-16);
+  font-family: var(--kzd-type-sans);
+  font-size: var(--kzd-text-label-lg);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
+    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+}
+.kzd-btn:active { transform: translateY(1px); }
+.kzd-btn--primary   { background: var(--kzd-black); color: var(--kzd-white); }
+.kzd-btn--primary:hover { background: var(--kzd-charcoal); color: var(--kzd-white); }
+.kzd-btn--secondary { background: var(--kzd-gray); color: var(--kzd-white); }
+.kzd-btn--secondary:hover { background: var(--kzd-charcoal); color: var(--kzd-white); }
+.kzd-btn--accent    { background: var(--kzd-silver); color: var(--kzd-black); }
+.kzd-btn--accent:hover { background: var(--kzd-silver-light); color: var(--kzd-black); }
+.kzd-btn--outline   { background: transparent; color: var(--kzd-black); border-color: currentColor; }
+.kzd-btn--outline:hover { background: var(--kzd-surface-100); color: var(--kzd-black); }
+
+.kzd-icon {
+  width: var(--kzd-icon);
+  height: var(--kzd-icon);
+  flex: none;
+  display: inline-block;
+  vertical-align: middle;
+  fill: currentColor;
+}
+.kzd-icon--dense   { width: var(--kzd-icon-dense);   height: var(--kzd-icon-dense); }
+.kzd-icon--feature { width: var(--kzd-icon-feature); height: var(--kzd-icon-feature); }
+.kzd-icon--hero    { width: var(--kzd-icon-hero);    height: var(--kzd-icon-hero); }
+
+/* Keyboard focus: one ring everywhere, inverted on dark surfaces. */
+:focus-visible {
+  outline: var(--kzd-focus-ring) solid var(--kzd-focus-color);
+  outline-offset: 2px;
+}
+.kzd-on-dark :focus-visible,
+[data-surface="dark"] :focus-visible {
+  outline-color: var(--kzd-focus-color-on-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}

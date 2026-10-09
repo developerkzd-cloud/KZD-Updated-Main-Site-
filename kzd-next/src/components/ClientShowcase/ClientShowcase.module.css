@@ -74,7 +74,7 @@
   padding: 0;
   border: 1px solid var(--kzd-line);
   border-radius: 16px;
-  background: var(--kzd-paper);
+  background: var(--kzd-white);
   box-shadow: 0 8px 22px -10px rgba(38, 52, 78, 0.24);
   overflow: hidden;
   cursor: pointer;
@@ -148,10 +148,10 @@
   height: 46px;
   padding: 0 20px;
   border-radius: 999px;
-  background: var(--kzd-paper);
+  background: var(--kzd-white);
   font-size: 15px;
   font-weight: 500;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
   white-space: nowrap;
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.88);
@@ -188,7 +188,7 @@
   border: 1px solid var(--kzd-line);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.94);
-  font-family: var(--kzd-mono);
+  font-family: var(--kzd-type-label);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.12em;
@@ -198,7 +198,7 @@
 }
 
 /* COMING SOON takes navy for both dot and label. Not ember. */
-.statusSoon { color: var(--kzd-navy); }
+.statusSoon { color: var(--kzd-navy-500); }
 
 .beacon { position: relative; display: inline-flex; width: 7px; height: 7px; flex: none; }
 
@@ -211,7 +211,7 @@
 }
 
 .statusSoon .dotlive,
-.statusSoon .halo { background: var(--kzd-navy); }
+.statusSoon .halo { background: var(--kzd-navy-500); }
 
 /* A permanent live signal, never hover-triggered. */
 .dotlive { animation: pulse 1.6s ease-in-out infinite; }
@@ -231,22 +231,22 @@
 
 .cat {
   margin: 24px 0 0;
-  font-family: var(--kzd-mono);
+  font-family: var(--kzd-type-label);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--kzd-dim);
+  color: var(--kzd-text-muted);
 }
 
 .name {
   margin: 22px 0 0;
-  font-family: var(--kzd-display);
+  font-family: var(--kzd-type-display);
   font-size: 20px;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.02em;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
 }
 
 /* --------------------------------------------------------------------------
@@ -295,7 +295,7 @@
   display: flex;
   flex-direction: column;
   border-radius: 22px;
-  background: var(--kzd-paper);
+  background: var(--kzd-white);
   box-shadow: 0 40px 90px -20px rgba(12, 20, 38, 0.48);
   overflow: hidden;
   animation: modalIn 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -331,27 +331,27 @@
   position: relative;
   min-height: 150px;
   padding: 30px 38px;
-  background: var(--kzd-paper);
+  background: var(--kzd-white);
 }
 
 .modalCat {
   margin: 0;
-  font-family: var(--kzd-mono);
+  font-family: var(--kzd-type-label);
   font-size: 10.5px;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--kzd-dim);
+  color: var(--kzd-text-muted);
 }
 
 .modalName {
   margin: 12px 0 0;
-  font-family: var(--kzd-display);
+  font-family: var(--kzd-type-display);
   font-size: 27px;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.02em;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
 }
 
 .modalDesc {
@@ -359,7 +359,7 @@
   max-width: 520px;
   font-size: 15.5px;
   line-height: 1.62;
-  color: var(--kzd-muted);
+  color: var(--kzd-text-muted);
 }
 
 .modalGo {
@@ -374,7 +374,7 @@
   padding: 0 26px;
   border: 0;
   border-radius: 11px;
-  background: var(--kzd-navy);
+  background: var(--kzd-navy-500);
   font-size: 15.5px;
   font-weight: 500;
   color: #fff;

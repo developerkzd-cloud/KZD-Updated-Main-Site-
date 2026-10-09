@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   min-height: 420px;
-  padding: 90px var(--kzd-gutter);
+  padding: 90px var(--kzd-pad-page);
   overflow: hidden;
   color: #fff;
   text-align: center;
@@ -42,7 +42,7 @@
 }
 
 .soonSection {
-  padding: 90px var(--kzd-gutter);
+  padding: 90px var(--kzd-pad-page);
   display: flex;
   justify-content: center;
 }
@@ -52,8 +52,8 @@
   width: 100%;
   text-align: center;
   padding: 56px 40px;
-  border-radius: var(--kzd-radius-lg);
-  background: var(--kzd-card);
+  border-radius: var(--kzd-radius-16);
+  background: var(--kzd-surface-50);
   border: 1px solid var(--kzd-line);
 }
 
@@ -62,8 +62,8 @@
   padding: 6px 16px;
   margin-bottom: 20px;
   border-radius: 999px;
-  background: var(--kzd-amber-tint);
-  color: var(--kzd-amber);
+  background: var(--kzd-status-leave-bg);
+  color: var(--kzd-status-leave);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -73,7 +73,7 @@
 .soonTitle { font-size: 26px; margin-bottom: 14px; }
 
 .soonBody {
-  color: var(--kzd-muted);
+  color: var(--kzd-text-muted);
   max-width: 480px;
   margin-inline: auto;
 }
@@ -98,7 +98,7 @@
 }
 
 .ctaPrimary {
-  background: var(--kzd-navy);
+  background: var(--kzd-navy-500);
   color: #fff;
 }
 .ctaPrimary:hover { color: #fff; opacity: 0.9; }
@@ -106,6 +106,6 @@
 .ctaSecondary {
   background: #fff;
   border: 1px solid var(--kzd-line);
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
 }
-.ctaSecondary:hover { color: var(--kzd-blue); border-color: var(--kzd-blue); }
+.ctaSecondary:hover { color: var(--kzd-navy-400); border-color: var(--kzd-navy-400); }

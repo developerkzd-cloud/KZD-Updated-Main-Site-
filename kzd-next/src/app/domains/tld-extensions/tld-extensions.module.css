@@ -32,7 +32,7 @@
 
 .h2 {
   margin: 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 28px;
   font-weight: 600;
   line-height: 1.2;
@@ -62,7 +62,7 @@
   border: 1px solid var(--k-line);
   border-radius: 999px;
   background: var(--k-paper);
-  font-family: var(--kzd-font-mono);
+  font-family: var(--kzd-type-label);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.16em;
@@ -74,7 +74,7 @@
 
 .h1 {
   margin: 26px 0 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 54px;
   font-weight: 600;
   line-height: 1.1;
@@ -120,12 +120,12 @@
 
 .popularHead { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 
-.popularExt { font-family: var(--kzd-font-mono); font-size: 20px; font-weight: 600; color: var(--k-navy); }
+.popularExt { font-family: var(--kzd-type-label); font-size: 20px; font-weight: 600; color: var(--k-navy); }
 
 .popularBadge {
   padding: 3px 9px;
   border-radius: 999px;
-  background: var(--kzd-blue-tint);
+  background: var(--kzd-navy-50);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -145,7 +145,7 @@
   border: 0;
   border-radius: 8px;
   background: var(--k-navy);
-  font-family: var(--kzd-font-body);
+  font-family: var(--kzd-type-sans);
   font-size: 13.5px;
   font-weight: 500;
   color: #ffffff;

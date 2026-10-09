@@ -2,7 +2,7 @@
    KZD Solutions — global stylesheet
 
    Only three things belong in here:
-     1. the design tokens, which every component reads
+     1. the import of the shared design tokens (css/kzd-tokens.css)
      2. a minimal reset
      3. base element styling
 
@@ -12,11 +12,10 @@
    inside a module.
 
    NOTE ON THE TOKENS
-   The static site declared these per-section — .kzd-blog defined --kzd-b-navy,
-   .kzd-ad defined --ad-navy, and so on — because each section had to survive
-   being dropped onto a page that might not load the others. That constraint is
-   gone here: there is one layout and one stylesheet, so the tokens are declared
-   once. The VALUES are unchanged, so nothing shifts visually.
+   There are none in this file. Every colour, radius, spacing step and type
+   size lives in css/kzd-tokens.css at the repo root, which the static site
+   links and this file imports, so the two sites cannot drift. Do not add a
+   literal value here or in a module; add a token there.
 
    NOTE ON ZOOM
    The static site runs body { zoom: .9 } from css/about.css, which is why every
@@ -26,60 +25,8 @@
    are true CSS pixels.
    ========================================================================== */
 
-:root {
-  /* Surfaces */
-  --kzd-paper:   #FFFFFF;
-  --kzd-paper-2: #F7F9FC;
-  --kzd-card:    #F8FAFC;
-  --kzd-line:    #E1E4EA;
+@import "../../../css/kzd-tokens.css";
 
-  /* Ink */
-  --kzd-navy:    #0B2545;
-  --kzd-ink:     #181A20;
-  --kzd-body:    #3A3E48;
-  --kzd-muted:   #717580;
-  --kzd-dim:     #9298A4;
-  --kzd-dash:    #BEC4CE;
-
-  /* Accent */
-  --kzd-blue:      #2F6FED;
-  --kzd-blue-tint: #E0EAFD;
-  --kzd-ember:     #FF6B35;
-  --kzd-ember-tint:#FFEEE6;
-  --kzd-amber:     #D6961E;
-  --kzd-amber-tint:#FDF3DE;
-  --kzd-green:     #1C9E5E;
-  --kzd-green-tint:#E4F7ED;
-  --kzd-violet:    #7E56D6;
-  --kzd-violet-tint:#F0EBFC;
-  --kzd-teal:      #149CA0;
-  --kzd-teal-tint: #E0F6F7;
-  --kzd-red:       #D93025;
-
-  /* Type. The variables come from next/font/local (src/lib/fonts.ts), and each
-     already carries its own fallback stack INCLUDING the size-adjusted fallback
-     face Next generates to kill layout shift. Appending the stack again here
-     would just duplicate it in every computed value. */
-  --kzd-display: var(--kzd-font-display);
-  --kzd-sans:    var(--kzd-font-body);
-  --kzd-mono:    var(--kzd-font-mono);
-
-  /* Layout */
-  --kzd-measure: 760px;
-  --kzd-wrap:    1220px;
-  --kzd-gutter:  110px;
-
-  /* One control height, so an action row cannot fall off a shared baseline.
-     This is the lesson from the admin dashboard, promoted to a global. */
-  --kzd-control: 42px;
-
-  --kzd-radius:    14px;
-  --kzd-radius-lg: 18px;
-}
-
-@media (max-width: 1100px) { :root { --kzd-gutter: 56px; } }
-@media (max-width: 560px)  { :root { --kzd-gutter: 20px; } }
-@media (max-width: 380px)  { :root { --kzd-gutter: 16px; } }
 
 /* --------------------------------------------------------------------------
    Reset
@@ -91,41 +38,37 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--kzd-paper);
-  font-family: var(--kzd-sans);
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--kzd-body);
+  background: var(--kzd-white);
+  font-family: var(--kzd-type-sans);
+  font-size: var(--kzd-text-body);
+  line-height: var(--kzd-leading-body);
+  color: var(--kzd-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
-  font-family: var(--kzd-display);
+  font-family: var(--kzd-type-display);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: var(--kzd-leading-title);
   letter-spacing: -0.02em;
-  color: var(--kzd-navy);
+  color: var(--kzd-ink);
 }
 
 p { margin: 0; }
 ul, ol { margin: 0; padding: 0; }
 
 a { color: inherit; text-decoration: none; }
-a:hover { color: var(--kzd-blue); }
+a:hover { color: var(--kzd-navy-400); }
 
 img, svg, video { display: block; max-width: 100%; }
 img { height: auto; }
 
 button { font: inherit; color: inherit; }
 
-/* One visible focus ring for the whole app. The static site had to redeclare
-   this per section; here it is stated once and inherited. */
-:focus-visible {
-  outline: 2px solid var(--kzd-blue);
-  outline-offset: 2px;
-}
+/* The focus ring and the reduced-motion switch live in css/kzd-tokens.css,
+   shared with the static site. */
 
 /* --------------------------------------------------------------------------
    Utilities
@@ -145,22 +88,9 @@ button { font: inherit; color: inherit; }
 
 .kzd-wrap {
   width: 100%;
-  max-width: calc(var(--kzd-wrap) + var(--kzd-gutter) * 2);
+  max-width: calc(var(--kzd-wrap) + var(--kzd-pad-page) * 2);
   margin-inline: auto;
-  padding-inline: var(--kzd-gutter);
-}
-
-/* --------------------------------------------------------------------------
-   Reduced motion — one global switch rather than a block per section.
-   -------------------------------------------------------------------------- */
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+  padding-inline: var(--kzd-pad-page);
 }
 
 /* --------------------------------------------------------------------------
@@ -169,9 +99,7 @@ button { font: inherit; color: inherit; }
    and they drifted.
    -------------------------------------------------------------------------- */
 
-.kzd-below-nav { padding-top: 84px; }
-
-@media (max-width: 560px) { .kzd-below-nav { padding-top: 72px; } }
+.kzd-below-nav { padding-top: var(--kzd-nav-h); }
 
 /* ...except where a page opens on a full-bleed dark hero the bar is meant to
    float over (the homepage). That page marks its hero with data-hero-full and

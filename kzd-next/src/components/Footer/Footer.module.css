@@ -13,11 +13,11 @@
 .footer {
   position: relative;
   padding: 72px 0 0;
-  background: var(--kzd-paper-2);
+  background: var(--kzd-surface-50);
   border-top: 1px solid var(--kzd-line);
 }
 
-.inner { max-width: calc(1240px + var(--kzd-gutter) * 2); margin-inline: auto; padding-inline: var(--kzd-gutter); }
+.inner { max-width: calc(1240px + var(--kzd-pad-page) * 2); margin-inline: auto; padding-inline: var(--kzd-pad-page); }
 
 /* Band 1 — contact ---------------------------------------------------------- */
 
@@ -25,26 +25,26 @@
 
 .label {
   margin: 0 0 6px;
-  font-family: var(--kzd-mono);
+  font-family: var(--kzd-type-label);
   font-size: 10.5px;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--kzd-dim);
+  color: var(--kzd-text-muted);
 }
 
 .email, .phone {
   position: relative;
   display: inline-block;
-  font-family: var(--kzd-display);
+  font-family: var(--kzd-type-display);
   font-size: 38px;
   font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--kzd-ink);
 }
 
-.email { border-bottom: 2px solid var(--kzd-ember); }
-.email:hover, .phone:hover { color: var(--kzd-blue); }
+.email { border-bottom: 2px solid var(--kzd-accent-ink); }
+.email:hover, .phone:hover { color: var(--kzd-navy-400); }
 
 /* Hit area only — the text keeps its drawn size. */
 .email::after, .phone::after, .brand::after, .list a::after, .social::after {
@@ -70,9 +70,9 @@
 .brand { position: relative; display: inline-flex; align-items: center; gap: 11px; min-height: 44px; }
 /* The source PNG is white-on-transparent; blacken it against the light footer. */
 .mark { width: 34px; height: 34px; object-fit: contain; filter: brightness(0) opacity(0.88); }
-.wordmark { font-family: var(--kzd-display); font-size: 21px; font-weight: 600; color: var(--kzd-navy); }
+.wordmark { font-family: var(--kzd-type-display); font-size: 21px; font-weight: 600; color: var(--kzd-navy-500); }
 
-.tagline { margin: 14px 0 0; max-width: 30ch; font-size: 15px; line-height: 1.6; color: var(--kzd-muted); }
+.tagline { margin: 14px 0 0; max-width: 30ch; font-size: 15px; line-height: 1.6; color: var(--kzd-text-muted); }
 
 .socials { display: flex; gap: 12px; margin-top: 26px; list-style: none; }
 
@@ -84,36 +84,36 @@
   border-radius: 50%;
   background: #fff;
   border: 1px solid var(--kzd-line);
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
   transition: background-color 200ms ease-out, border-color 200ms ease-out, color 200ms ease-out;
 }
 .social::after { width: 44px; height: 44px; }
 .social svg { width: 18px; height: 18px; fill: currentColor; }
-.social:hover { color: var(--kzd-blue); }
+.social:hover { color: var(--kzd-navy-400); }
 
 .colHead {
   margin: 0 0 16px;
-  font-family: var(--kzd-mono);
+  font-family: var(--kzd-type-label);
   font-size: 11px;
   font-weight: 500;
   line-height: 1;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--kzd-dim);
+  color: var(--kzd-text-muted);
 }
 
 .list { list-style: none; }
 .list li { margin-bottom: 11px; }
-.list a { position: relative; display: inline-block; font-size: 15px; color: var(--kzd-muted); }
-.list a:hover { color: var(--kzd-blue); }
+.list a { position: relative; display: inline-block; font-size: 15px; color: var(--kzd-text-muted); }
+.list a:hover { color: var(--kzd-navy-400); }
 
 .hot {
   display: inline-block;
   margin-left: 8px;
   padding: 2px 8px;
   border-radius: 30px;
-  background: var(--kzd-ember);
-  font-family: var(--kzd-mono);
+  background: var(--kzd-accent-ink);
+  font-family: var(--kzd-type-label);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.1em;
@@ -131,11 +131,11 @@
   gap: 16px;
   flex-wrap: wrap;
   padding: 22px 0 28px;
-  font-family: var(--kzd-mono);
+  font-family: var(--kzd-type-label);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.10em;
-  color: var(--kzd-dim);
+  color: var(--kzd-text-muted);
 }
 .loc { text-transform: uppercase; }
 

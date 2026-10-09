@@ -51,7 +51,7 @@
   border: 1px solid var(--k-line);
   border-radius: 999px;
   background: var(--k-paper);
-  font-family: var(--kzd-font-mono);
+  font-family: var(--kzd-type-label);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.16em;
@@ -63,7 +63,7 @@
 
 .h1 {
   margin: 26px 0 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 54px;
   font-weight: 600;
   line-height: 1.1;
@@ -107,7 +107,7 @@
 
 .formTitle {
   margin: 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 24px;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -127,7 +127,7 @@
   border: 1px solid var(--k-line);
   border-radius: 10px;
   background: var(--k-card);
-  font-family: var(--kzd-font-body);
+  font-family: var(--kzd-type-sans);
   font-size: 15px;
   color: var(--k-navy);
   transition: border-color 160ms ease, background-color 160ms ease;
@@ -148,7 +148,7 @@
   border: 0;
   border-radius: 10px;
   background: var(--k-navy);
-  font-family: var(--kzd-font-body);
+  font-family: var(--kzd-type-sans);
   font-size: 15px;
   font-weight: 500;
   color: #ffffff;
@@ -163,7 +163,7 @@
 
 .next { margin-top: 32px; padding-top: 26px; border-top: 1px solid var(--k-line); }
 
-.nextTitle { margin: 0; font-family: var(--kzd-font-display); font-size: 16px; font-weight: 600; color: var(--k-navy); }
+.nextTitle { margin: 0; font-family: var(--kzd-type-display); font-size: 16px; font-weight: 600; color: var(--k-navy); }
 
 .nextList {
   margin: 14px 0 0;
@@ -188,7 +188,7 @@
 
 .benefitsTitle {
   margin: 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 24px;
   font-weight: 600;
   letter-spacing: -0.02em;

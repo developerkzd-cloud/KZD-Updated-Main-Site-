@@ -95,13 +95,11 @@
 
 
 /* Global Scaling Fix (Keeps Navbar & Content Responsive) */
-html {
-  font-size: 14px; /* Adjusts everything proportionally */
-}
-
+/* The old html { font-size: 14px } and body { zoom: .9 } overrides were
+   removed in the design-system pass: every size now comes from
+   css/kzd-tokens.css in true CSS pixels, as on the Next site. */
 body {
-  transform: none; /* Removes problematic scaling */
-  zoom: 0.9; /* Fixes the enlarged appearance */
+  transform: none;
 }
 
 /* Navbar Fix (Ensures Visibility on Scroll) */

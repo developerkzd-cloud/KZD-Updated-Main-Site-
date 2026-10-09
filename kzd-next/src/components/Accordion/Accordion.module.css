@@ -25,13 +25,13 @@
   border: 0;
   cursor: pointer;
   text-align: left;
-  font-family: var(--kzd-display);
+  font-family: var(--kzd-type-display);
   font-weight: 600;
   font-size: 18px;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
 }
 
-.trigger:hover { color: var(--kzd-blue); }
+.trigger:hover { color: var(--kzd-navy-400); }
 
 .icon {
   flex: none;
@@ -40,8 +40,8 @@
   display: grid;
   place-items: center;
   border-radius: 999px;
-  background: var(--kzd-blue-tint);
-  color: var(--kzd-blue);
+  background: var(--kzd-navy-50);
+  color: var(--kzd-navy-400);
   font-size: 18px;
   line-height: 1;
 }
@@ -52,11 +52,11 @@
 
 .panelBody {
   padding: 0 4px 22px;
-  color: var(--kzd-body);
+  color: var(--kzd-text);
   max-width: var(--kzd-measure);
 }
 
 .panelBody :global(a) {
-  color: var(--kzd-blue);
+  color: var(--kzd-navy-400);
   text-decoration: underline;
 }

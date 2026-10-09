@@ -20,7 +20,7 @@
 
   position: relative;
   isolation: isolate;
-  background: var(--kzd-paper);
+  background: var(--kzd-white);
 }
 
 .inner {
@@ -37,7 +37,7 @@
   font-weight: 600;
   line-height: 1.22;
   letter-spacing: -0.02em;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
 }
 
 /* 1. Hero -------------------------------------------------------------- */
@@ -79,7 +79,7 @@
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.14);
   backdrop-filter: blur(6px);
-  font-family: var(--kzd-mono);
+  font-family: var(--kzd-type-label);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.14em;
@@ -112,8 +112,8 @@
   min-height: 48px;
   padding: 0 34px;
   border-radius: 999px;
-  border: 2px solid var(--kzd-blue);
-  background: var(--kzd-blue);
+  border: 2px solid var(--kzd-navy-400);
+  background: var(--kzd-navy-400);
   font-size: 16px;
   font-weight: 600;
   color: #fff;
@@ -125,7 +125,7 @@
 .btnHeroPrimary:hover,
 .btnHeroPrimary:focus-visible {
   background: transparent;
-  color: var(--kzd-blue);
+  color: var(--kzd-navy-400);
   transform: translateY(-2px);
 }
 
@@ -148,7 +148,7 @@
 .btnHeroOutline:hover,
 .btnHeroOutline:focus-visible {
   background: #fff;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
   transform: translateY(-2px);
 }
 
@@ -159,12 +159,12 @@
 .trustedSub {
   margin: 14px 0 0;
   font-size: 14.5px;
-  color: var(--kzd-muted);
+  color: var(--kzd-text-muted);
 }
 
 /* 3. Problem cards --------------------------------------------------------- */
 
-.problems { padding: 40px 0 88px; background: var(--kzd-paper-2); }
+.problems { padding: 40px 0 88px; background: var(--kzd-surface-50); }
 .problemsTitle { max-width: 760px; margin: 0 auto 44px; }
 
 .problemGrid {
@@ -178,8 +178,8 @@
   flex-direction: column;
   padding: 28px 24px;
   border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-lg);
-  background: var(--kzd-paper);
+  border-radius: var(--kzd-radius-16);
+  background: var(--kzd-white);
   box-shadow: 0 8px 20px -14px rgba(11, 37, 69, 0.22);
 }
 
@@ -207,7 +207,7 @@
   align-items: flex-start;
   gap: 8px;
   font-size: 14px;
-  color: var(--kzd-muted);
+  color: var(--kzd-text-muted);
 }
 
 .problemItem svg { width: 14px; height: 14px; margin-top: 3px; flex: none; fill: var(--a-danger); }
@@ -216,7 +216,7 @@
   margin: 16px 0 0;
   font-size: 14.5px;
   font-weight: 500;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
 }
 
 /* 4. Checklist ------------------------------------------------------------- */
@@ -229,8 +229,8 @@
   display: inline-flex;
   padding: 6px 16px;
   border-radius: 999px;
-  background: var(--kzd-navy);
-  font-family: var(--kzd-mono);
+  background: var(--kzd-navy-500);
+  font-family: var(--kzd-type-label);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.12em;
@@ -238,7 +238,7 @@
   color: #fff;
 }
 
-.lead { margin: 16px 0 0; font-size: 17px; color: var(--kzd-muted); }
+.lead { margin: 16px 0 0; font-size: 17px; color: var(--kzd-text-muted); }
 
 .progressWrap { max-width: 400px; margin: 28px auto 0; }
 
@@ -253,7 +253,7 @@
 .progressFill {
   height: 100%;
   border-radius: 999px;
-  background: var(--kzd-green);
+  background: var(--kzd-status-active);
   transition: width 300ms ease;
 }
 
@@ -263,10 +263,10 @@
   justify-content: space-between;
   margin-top: 10px;
   font-size: 12.5px;
-  color: var(--kzd-dim);
+  color: var(--kzd-text-muted);
 }
 
-.tickCounter { font-weight: 600; color: var(--kzd-navy); }
+.tickCounter { font-weight: 600; color: var(--kzd-navy-500); }
 
 .checklistGrid {
   display: grid;
@@ -278,8 +278,8 @@
 .checklistCard {
   padding: 34px;
   border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-lg);
-  background: var(--kzd-paper);
+  border-radius: var(--kzd-radius-16);
+  background: var(--kzd-white);
   box-shadow: 0 8px 20px -14px rgba(11, 37, 69, 0.18);
 }
 
@@ -303,10 +303,10 @@
   height: 20px;
   margin-top: 1px;
   flex: none;
-  accent-color: var(--kzd-navy);
+  accent-color: var(--kzd-navy-500);
 }
 
-.checkRow label { font-size: 15px; line-height: 1.5; color: var(--kzd-body); cursor: pointer; }
+.checkRow label { font-size: 15px; line-height: 1.5; color: var(--kzd-text); cursor: pointer; }
 
 .checklistActions { margin-top: 56px; text-align: center; }
 
@@ -316,9 +316,9 @@
   justify-content: center;
   min-height: 50px;
   padding: 0 40px;
-  border: 2px solid var(--kzd-blue);
+  border: 2px solid var(--kzd-navy-400);
   border-radius: 999px;
-  background: var(--kzd-blue);
+  background: var(--kzd-navy-400);
   font-size: 16px;
   font-weight: 600;
   color: #fff;
@@ -327,7 +327,7 @@
 }
 
 .btnRecommend:hover,
-.btnRecommend:focus-visible { background: transparent; color: var(--kzd-blue); transform: translateY(-2px); }
+.btnRecommend:focus-visible { background: transparent; color: var(--kzd-navy-400); transform: translateY(-2px); }
 
 .ctaRow {
   display: flex;
@@ -353,24 +353,24 @@
 }
 
 .btnDark {
-  border: 2px solid var(--kzd-navy);
-  background: var(--kzd-navy);
+  border: 2px solid var(--kzd-navy-500);
+  background: var(--kzd-navy-500);
   color: #fff;
 }
 
-.btnDark:hover, .btnDark:focus-visible { background: transparent; color: var(--kzd-navy); transform: translateY(-2px); }
+.btnDark:hover, .btnDark:focus-visible { background: transparent; color: var(--kzd-navy-500); transform: translateY(-2px); }
 
 .btnOutlineDark {
-  border: 2px solid var(--kzd-navy);
+  border: 2px solid var(--kzd-navy-500);
   background: transparent;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
 }
 
-.btnOutlineDark:hover, .btnOutlineDark:focus-visible { background: var(--kzd-navy); color: #fff; transform: translateY(-2px); }
+.btnOutlineDark:hover, .btnOutlineDark:focus-visible { background: var(--kzd-navy-500); color: #fff; transform: translateY(-2px); }
 
 /* 5. Package recommendation ------------------------------------------------- */
 
-.pkgSection { padding: 88px 0; background: var(--kzd-paper-2); }
+.pkgSection { padding: 88px 0; background: var(--kzd-surface-50); }
 .pkgTitle { margin: 0 0 44px; }
 
 .pkgGrid {
@@ -385,8 +385,8 @@
   height: 100%;
   padding: 30px 26px;
   border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-lg);
-  background: var(--kzd-paper);
+  border-radius: var(--kzd-radius-16);
+  background: var(--kzd-white);
   text-align: center;
   transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease, background-color 200ms ease;
 }
@@ -394,14 +394,14 @@
 .pkgCard:hover { transform: translateY(-6px); box-shadow: 0 20px 34px -18px rgba(11, 37, 69, 0.3); }
 
 .pkgCardRecommended {
-  border: 2px solid var(--kzd-blue);
-  background: var(--kzd-blue-tint);
+  border: 2px solid var(--kzd-navy-400);
+  background: var(--kzd-navy-50);
   box-shadow: 0 20px 40px -16px rgba(47, 111, 237, 0.35);
 }
 
 .pkgName { margin: 0; font-size: 18px; }
-.pkgDesc { margin: 14px 0 0; font-size: 14.5px; color: var(--kzd-muted); }
-.pkgDesc2 { margin: 8px 0 0; font-size: 14.5px; font-weight: 500; color: var(--kzd-navy); }
+.pkgDesc { margin: 14px 0 0; font-size: 14.5px; color: var(--kzd-text-muted); }
+.pkgDesc2 { margin: 8px 0 0; font-size: 14.5px; font-weight: 500; color: var(--kzd-navy-500); }
 
 .pkgBtnWrap { margin-top: auto; padding-top: 24px; }
 
@@ -412,18 +412,18 @@
   width: 100%;
   min-height: 44px;
   padding: 0 16px;
-  border: 2px solid var(--kzd-navy);
+  border: 2px solid var(--kzd-navy-500);
   border-radius: 999px;
   background: transparent;
   font-size: 14px;
   font-weight: 500;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
   cursor: pointer;
   text-align: center;
   transition: background-color 200ms ease, color 200ms ease, transform 200ms ease;
 }
 
-.pkgBtn:hover, .pkgBtn:focus-visible { background: var(--kzd-navy); color: #fff; transform: translateY(-2px); }
+.pkgBtn:hover, .pkgBtn:focus-visible { background: var(--kzd-navy-500); color: #fff; transform: translateY(-2px); }
 
 /* 6. CTA banner -------------------------------------------------------------- */
 
@@ -442,19 +442,19 @@
 
 /* 7. Lead form ---------------------------------------------------------------- */
 
-.leadSection { padding: 88px 0; background: var(--kzd-paper-2); }
+.leadSection { padding: 88px 0; background: var(--kzd-surface-50); }
 .leadWrap { max-width: 680px; margin: 0 auto; }
 
 .card {
   padding: 48px;
   border: 1px solid var(--kzd-line);
   border-radius: 32px;
-  background: var(--kzd-paper);
+  background: var(--kzd-white);
   box-shadow: 0 30px 60px -30px rgba(11, 37, 69, 0.28);
 }
 
 .cardTitle { margin: 0; font-size: 26px; }
-.cardSub { margin: 12px 0 32px; font-size: 15px; color: var(--kzd-muted); }
+.cardSub { margin: 12px 0 32px; font-size: 15px; color: var(--kzd-text-muted); }
 
 .field { margin-bottom: 22px; }
 
@@ -463,7 +463,7 @@
   margin-bottom: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
 }
 
 .required { color: var(--a-danger); }
@@ -475,21 +475,21 @@
   padding: 10px 18px;
   border: 1px solid var(--kzd-line);
   border-radius: 999px;
-  background: var(--kzd-paper-2);
+  background: var(--kzd-surface-50);
   font: inherit;
   font-size: 15px;
-  color: var(--kzd-body);
+  color: var(--kzd-text);
   transition: border-color 200ms ease, box-shadow 200ms ease;
 }
 
 .input:focus,
 .select:focus {
   outline: none;
-  border-color: var(--kzd-navy);
+  border-color: var(--kzd-navy-500);
   box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.12);
 }
 
-.hint { display: block; margin-top: 8px; font-size: 12.5px; color: var(--kzd-dim); }
+.hint { display: block; margin-top: 8px; font-size: 12.5px; color: var(--kzd-text-muted); }
 
 .submitBtn {
   display: flex;
@@ -498,9 +498,9 @@
   width: 100%;
   min-height: 50px;
   margin-top: 8px;
-  border: 2px solid var(--kzd-navy);
+  border: 2px solid var(--kzd-navy-500);
   border-radius: 999px;
-  background: var(--kzd-navy);
+  background: var(--kzd-navy-500);
   font-size: 16px;
   font-weight: 600;
   color: #fff;
@@ -509,13 +509,13 @@
 }
 
 .submitBtn:hover:not(:disabled),
-.submitBtn:focus-visible:not(:disabled) { background: transparent; color: var(--kzd-navy); transform: translateY(-2px); }
+.submitBtn:focus-visible:not(:disabled) { background: transparent; color: var(--kzd-navy-500); transform: translateY(-2px); }
 .submitBtn:disabled { opacity: 0.65; cursor: not-allowed; }
 
 .status { margin-top: 18px; text-align: center; font-size: 14.5px; }
-.statusOk { color: var(--kzd-green); }
+.statusOk { color: var(--kzd-status-active); }
 .statusErr { color: var(--a-danger); }
-.statusMuted { color: var(--kzd-muted); }
+.statusMuted { color: var(--kzd-text-muted); }
 
 /* Responsive ------------------------------------------------------------------ */
 

@@ -27,8 +27,8 @@
   max-height: calc(100vh - 48px);
   overflow-y: auto;
   padding: 32px 28px 28px;
-  border-radius: var(--kzd-radius-lg);
-  background: var(--kzd-paper);
+  border-radius: var(--kzd-radius-16);
+  background: var(--kzd-white);
   box-shadow: 0 24px 60px -20px rgba(11, 20, 38, 0.45);
 }
 
@@ -44,11 +44,11 @@
   border: 0;
   border-radius: 8px;
   background: transparent;
-  color: var(--kzd-muted);
+  color: var(--kzd-text-muted);
   cursor: pointer;
 }
 
-.close:hover { background: var(--kzd-card); color: var(--kzd-navy); }
+.close:hover { background: var(--kzd-surface-50); color: var(--kzd-navy-500); }
 .close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
 
 /* Brand + headings ---------------------------------------------------------- */
@@ -58,21 +58,21 @@
 .mark { object-fit: contain; filter: brightness(0) opacity(0.88); }
 
 .word {
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 15.5px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
 }
 
 .title {
   margin: 20px 0 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 24px;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.03em;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
   padding-right: 28px;
 }
 
@@ -80,7 +80,7 @@
   margin: 8px 0 0;
   font-size: 14px;
   line-height: 1.55;
-  color: var(--kzd-muted);
+  color: var(--kzd-text-muted);
 }
 
 /* Form ------------------------------------------------------------------- */
@@ -101,10 +101,10 @@
   margin-bottom: 6px;
   font-size: 13.5px;
   font-weight: 500;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
 }
 
-.req { color: var(--kzd-red); margin-left: 3px; }
+.req { color: var(--kzd-error); margin-left: 3px; }
 
 .control { position: relative; }
 
@@ -114,9 +114,9 @@
   padding: 0 14px;
   border: 1px solid var(--kzd-line);
   border-radius: 10px;
-  background: var(--kzd-card);
+  background: var(--kzd-surface-50);
   font-size: 14.5px;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
   transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
@@ -124,7 +124,7 @@
 
 .input:focus-visible {
   outline: none;
-  border-color: var(--kzd-blue);
+  border-color: var(--kzd-navy-400);
   box-shadow: 0 0 0 3px rgba(47, 111, 237, 0.16);
 }
 
@@ -163,15 +163,15 @@
   line-height: 1.45;
 }
 
-.hint { color: var(--kzd-dim); }
-.error { color: var(--kzd-red); min-height: 0; }
+.hint { color: var(--kzd-text-muted); }
+.error { color: var(--kzd-error); min-height: 0; }
 .error:empty { display: none; }
 
 .formError {
   margin: 0 0 12px;
   font-size: 13px;
   line-height: 1.5;
-  color: var(--kzd-red);
+  color: var(--kzd-error);
 }
 
 .formError:empty { display: none; }
@@ -181,7 +181,7 @@
   margin: -4px 0 16px;
   text-align: right;
   font-size: 13px;
-  color: var(--kzd-blue);
+  color: var(--kzd-navy-400);
   text-decoration: none;
 }
 
@@ -201,17 +201,17 @@
   height: 18px;
   margin: 2px 0 0;
   flex: none;
-  accent-color: var(--kzd-blue);
+  accent-color: var(--kzd-navy-400);
 }
 
 .consentLabel {
   font-size: 14px;
   line-height: 1.5;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
 }
 
 .consentLabel a {
-  color: var(--kzd-blue);
+  color: var(--kzd-navy-400);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -232,17 +232,17 @@
   cursor: pointer;
 }
 
-.primary { border: 0; background: var(--kzd-navy); color: #fff; }
+.primary { border: 0; background: var(--kzd-navy-500); color: #fff; }
 .primary:hover { background: #143560; }
 
 .secondary {
   margin-top: 0;
   border: 1px solid var(--kzd-line);
-  background: var(--kzd-paper);
-  color: var(--kzd-navy);
+  background: var(--kzd-white);
+  color: var(--kzd-navy-500);
 }
 
-.secondary:hover { background: var(--kzd-card); }
+.secondary:hover { background: var(--kzd-surface-50); }
 
 /* "New here?" divider ------------------------------------------------------ */
 
@@ -252,7 +252,7 @@
   gap: 14px;
   margin: 20px 0 14px;
   font-size: 13px;
-  color: var(--kzd-dim);
+  color: var(--kzd-text-muted);
 }
 
 .divider::before,
@@ -267,7 +267,7 @@
   margin: 14px 0 0;
   text-align: center;
   font-size: 14px;
-  color: var(--kzd-muted);
+  color: var(--kzd-text-muted);
 }
 
 .link {
@@ -275,7 +275,7 @@
   background: none;
   padding: 0;
   font: inherit;
-  color: var(--kzd-blue);
+  color: var(--kzd-navy-400);
   cursor: pointer;
   text-decoration: none;
 }

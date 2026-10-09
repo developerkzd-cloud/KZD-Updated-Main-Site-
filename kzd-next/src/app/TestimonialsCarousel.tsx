@@ -29,11 +29,11 @@ import styles from "./page.module.css";
 const STAR = "M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3-5.8 3 1.1-6.5L2.6 9.4l6.5-.9L12 2.6z";
 
 const AVATAR_TONES = [
-  "var(--kzd-blue)",
-  "var(--kzd-ember)",
-  "var(--kzd-teal)",
-  "var(--kzd-violet)",
-  "var(--kzd-green)",
+  "var(--kzd-navy-400)",
+  "var(--kzd-accent-ink)",
+  "var(--kzd-status-hired)",
+  "var(--kzd-status-probation)",
+  "var(--kzd-status-active)",
 ];
 
 function initialsOf(name: string): string {

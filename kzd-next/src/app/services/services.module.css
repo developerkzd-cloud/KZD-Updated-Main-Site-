@@ -9,11 +9,11 @@
   --s-paper:  #ffffff;
   --s-paper2: #f7f9fc;
   --s-tile:   #eef3f9;
-  --s-navy:   var(--kzd-navy);
-  --s-muted:  var(--kzd-muted);
+  --s-navy:   var(--kzd-navy-500);
+  --s-muted:  var(--kzd-text-muted);
   --s-line:   var(--kzd-line);
-  --s-blue:   var(--kzd-blue);
-  --s-ember:  var(--kzd-ember);
+  --s-blue:   var(--kzd-navy-400);
+  --s-ember:  var(--kzd-accent-ink);
   --s-veil:   rgba(11, 37, 69, 0.24);
   --s-edge:   rgba(47, 111, 237, 0.37);
   --s-grad-start: #4a5468;
@@ -47,7 +47,7 @@
   border: 1px solid var(--s-line);
   border-radius: 999px;
   background: var(--s-paper);
-  font-family: var(--kzd-mono);
+  font-family: var(--kzd-type-label);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.16em;
@@ -93,7 +93,7 @@
 .h1 {
   margin: 0;
   color: #fff;
-  font-family: var(--kzd-display);
+  font-family: var(--kzd-type-display);
   font-size: clamp(38px, 5.4vw, 58px);
   font-weight: 600;
   letter-spacing: -0.03em;
@@ -113,7 +113,7 @@
 
 .storyTitle {
   margin: 0;
-  font-family: var(--kzd-display);
+  font-family: var(--kzd-type-display);
   font-size: 36px;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -148,7 +148,7 @@
 .storyStatNum {
   display: block;
   margin-bottom: 4px;
-  font-family: var(--kzd-display);
+  font-family: var(--kzd-type-display);
   font-size: 52px;
   font-weight: 800;
   line-height: 1;
@@ -177,7 +177,7 @@
 
 .accTitle {
   margin: 24px 0 0;
-  font-family: var(--kzd-display);
+  font-family: var(--kzd-type-display);
   font-size: clamp(30px, 3.6vw, 44px);
   font-weight: 600;
   line-height: 1.18;
@@ -199,7 +199,7 @@
   margin: 56px auto 0;
   padding: 12px 32px;
   border: 1px solid var(--s-line);
-  border-radius: var(--kzd-radius-lg);
+  border-radius: var(--kzd-radius-16);
   background: var(--s-paper);
 }
 
@@ -250,7 +250,7 @@
 
 .prodTitle {
   margin: 24px 0 0;
-  font-family: var(--kzd-display);
+  font-family: var(--kzd-type-display);
   font-size: clamp(30px, 3.6vw, 44px);
   font-weight: 600;
   line-height: 1.18;
@@ -311,7 +311,7 @@
 
 .prodGo svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-.prodName { margin: 18px 0 0; font-family: var(--kzd-display); font-size: 19px; font-weight: 600; color: var(--s-navy); }
+.prodName { margin: 18px 0 0; font-family: var(--kzd-type-display); font-size: 19px; font-weight: 600; color: var(--s-navy); }
 .prodCopy { margin: 8px 0 0; font-size: 14px; line-height: 1.6; color: var(--s-muted); flex: 1; }
 
 /* 5. Client showcase -------------------------------------------------- */
@@ -322,7 +322,7 @@
 
 .clientsTitle {
   margin: 24px 0 0;
-  font-family: var(--kzd-display);
+  font-family: var(--kzd-type-display);
   font-size: clamp(30px, 3.6vw, 44px);
   font-weight: 600;
   line-height: 1.18;

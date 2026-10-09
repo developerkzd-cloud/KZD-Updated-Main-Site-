@@ -5,7 +5,7 @@
    globals.css rather than being redeclared per-section.
    ========================================================================== */
 
-.hosting { display: block; background: var(--kzd-paper); }
+.hosting { display: block; background: var(--kzd-white); }
 
 /* 1. Hero -------------------------------------------------------------- */
 
@@ -15,7 +15,7 @@
   align-items: center;
   justify-content: center;
   min-height: 380px;
-  padding: 90px var(--kzd-gutter);
+  padding: 90px var(--kzd-pad-page);
   overflow: hidden;
   color: #fff;
   text-align: center;
@@ -65,14 +65,14 @@
 .subtitle {
   margin: 10px auto 0;
   max-width: 620px;
-  color: var(--kzd-muted);
+  color: var(--kzd-text-muted);
   font-size: 16px;
   line-height: 1.6;
 }
 
 .service { text-align: center; max-width: 760px; margin-inline: auto; margin-bottom: 44px; }
 .serviceTitle { font-size: 22px; }
-.serviceText { margin-top: 12px; color: var(--kzd-body); line-height: 1.65; }
+.serviceText { margin-top: 12px; color: var(--kzd-text); line-height: 1.65; }
 
 /* 3. Billing toggle -------------------------------------------------------- */
 
@@ -82,7 +82,7 @@
   margin: 0 auto 40px;
   padding: 4px;
   border-radius: 999px;
-  background: var(--kzd-card);
+  background: var(--kzd-surface-50);
   border: 1px solid var(--kzd-line);
 }
 
@@ -97,16 +97,16 @@
   background: transparent;
   font-size: 14px;
   font-weight: 600;
-  color: var(--kzd-muted);
+  color: var(--kzd-text-muted);
   cursor: pointer;
   transition: background-color 160ms ease, color 160ms ease;
 }
 
-.toggleBtn:hover { color: var(--kzd-navy); }
+.toggleBtn:hover { color: var(--kzd-navy-500); }
 
 .toggleBtnActive,
 .toggleBtnActive:hover {
-  background: var(--kzd-navy);
+  background: var(--kzd-navy-500);
   color: #fff;
 }
 
@@ -114,10 +114,10 @@
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: var(--kzd-green);
+  color: var(--kzd-status-active);
 }
 
-.toggleBtnActive .toggleSave { color: var(--kzd-green-tint); }
+.toggleBtnActive .toggleSave { color: var(--kzd-status-active-bg); }
 
 /* Group is centered as a block within kzd-wrap */
 .section > .toggleGroup,
@@ -151,7 +151,7 @@ div > .toggleGroup { display: flex; width: max-content; margin-inline: auto; }
   width: 18px;
   height: 18px;
   fill: none;
-  stroke: var(--kzd-navy);
+  stroke: var(--kzd-navy-500);
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -160,9 +160,9 @@ div > .toggleGroup { display: flex; width: max-content; margin-inline: auto; }
 .swiperPrev { left: 0; }
 .swiperNext { right: 0; }
 .swiperPrev:hover,
-.swiperNext:hover { border-color: var(--kzd-blue); }
+.swiperNext:hover { border-color: var(--kzd-navy-400); }
 .swiperPrev:hover svg,
-.swiperNext:hover svg { stroke: var(--kzd-blue); }
+.swiperNext:hover svg { stroke: var(--kzd-navy-400); }
 
 .card {
   display: flex;
@@ -170,42 +170,42 @@ div > .toggleGroup { display: flex; width: max-content; margin-inline: auto; }
   height: 100%;
   padding: 28px 26px 26px;
   border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-lg);
-  background: var(--kzd-card);
+  border-radius: var(--kzd-radius-16);
+  background: var(--kzd-surface-50);
   box-shadow: 0 8px 20px -14px rgba(11, 37, 69, 0.18);
 }
 
 .cardActive {
-  border-color: var(--kzd-blue);
+  border-color: var(--kzd-navy-400);
   background: #fff;
   box-shadow: 0 16px 34px -16px rgba(47, 111, 237, 0.35);
 }
 
 .cardTitle { font-size: 20px; }
-.cardDesc { margin-top: 8px; font-size: 14px; color: var(--kzd-muted); min-height: 38px; }
+.cardDesc { margin-top: 8px; font-size: 14px; color: var(--kzd-text-muted); min-height: 38px; }
 
 .price {
   margin-top: 18px;
-  font-family: var(--kzd-display);
+  font-family: var(--kzd-type-display);
   font-size: 34px;
   font-weight: 700;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
 }
 
 .priceValue { font-variant-numeric: tabular-nums; }
 
 .priceCycle,
 .priceCycleSmall {
-  font-family: var(--kzd-sans);
+  font-family: var(--kzd-type-sans);
   font-size: 14px;
   font-weight: 500;
-  color: var(--kzd-muted);
+  color: var(--kzd-text-muted);
 }
 
 .priceEffective {
   margin-top: 4px;
   font-size: 12.5px;
-  color: var(--kzd-green);
+  color: var(--kzd-status-active);
   min-height: 1em;
 }
 
@@ -224,7 +224,7 @@ div > .toggleGroup { display: flex; width: max-content; margin-inline: auto; }
   padding-left: 24px;
   font-size: 14px;
   line-height: 1.5;
-  color: var(--kzd-body);
+  color: var(--kzd-text);
 }
 
 .features li::before {
@@ -235,8 +235,8 @@ div > .toggleGroup { display: flex; width: max-content; margin-inline: auto; }
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: var(--kzd-blue-tint);
-  box-shadow: inset 0 0 0 2px var(--kzd-blue);
+  background: var(--kzd-navy-50);
+  box-shadow: inset 0 0 0 2px var(--kzd-navy-400);
 }
 
 .tooltipWrapper { position: relative; display: inline-block; margin-left: 6px; }
@@ -246,7 +246,7 @@ div > .toggleGroup { display: flex; width: max-content; margin-inline: auto; }
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background: var(--kzd-dash);
+  background: var(--kzd-silver);
   color: #fff;
   font-size: 10px;
   line-height: 15px;
@@ -262,7 +262,7 @@ div > .toggleGroup { display: flex; width: max-content; margin-inline: auto; }
   width: 190px;
   padding: 8px 10px;
   border-radius: 6px;
-  background: var(--kzd-navy);
+  background: var(--kzd-navy-500);
   color: #fff;
   font-size: 12px;
   line-height: 1.4;
@@ -284,7 +284,7 @@ div > .toggleGroup { display: flex; width: max-content; margin-inline: auto; }
   height: var(--kzd-control);
   border: 0;
   border-radius: 10px;
-  background: var(--kzd-navy);
+  background: var(--kzd-navy-500);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -296,14 +296,14 @@ div > .toggleGroup { display: flex; width: max-content; margin-inline: auto; }
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 22px -10px rgba(11, 37, 69, 0.5);
-  background: var(--kzd-blue);
+  background: var(--kzd-navy-400);
 }
 
 .domainNote {
   margin-top: 28px;
   text-align: center;
   font-size: 13.5px;
-  color: var(--kzd-dim);
+  color: var(--kzd-text-muted);
 }
 
 /* 5. Email plans ----------------------------------------------------------- */
@@ -321,7 +321,7 @@ div > .toggleGroup { display: flex; width: max-content; margin-inline: auto; }
 
 /* 7. Why choose -------------------------------------------------------------- */
 
-.why { background: var(--kzd-paper-2); }
+.why { background: var(--kzd-surface-50); }
 
 .whyHeader { text-align: center; max-width: 620px; margin: 0 auto 44px; }
 
@@ -337,7 +337,7 @@ div > .toggleGroup { display: flex; width: max-content; margin-inline: auto; }
   align-items: center;
   text-align: center;
   padding: 28px 22px;
-  border-radius: var(--kzd-radius-lg);
+  border-radius: var(--kzd-radius-16);
   background: #fff;
   border: 1px solid var(--kzd-line);
   box-shadow: 0 8px 20px -14px rgba(11, 37, 69, 0.18);
@@ -354,14 +354,14 @@ div > .toggleGroup { display: flex; width: max-content; margin-inline: auto; }
   height: 30px;
   margin-bottom: 14px;
   fill: none;
-  stroke: var(--kzd-blue);
+  stroke: var(--kzd-navy-400);
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .whyTitle { font-size: 17px; }
-.whyBody { margin-top: 8px; font-size: 14px; color: var(--kzd-muted); line-height: 1.6; }
+.whyBody { margin-top: 8px; font-size: 14px; color: var(--kzd-text-muted); line-height: 1.6; }
 
 /* Responsive ----------------------------------------------------------------- */
 

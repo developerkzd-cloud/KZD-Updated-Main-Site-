@@ -5,8 +5,8 @@
 .wrap {
   overflow-x: auto;
   border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-lg);
-  background: var(--kzd-paper);
+  border-radius: var(--kzd-radius-16);
+  background: var(--kzd-white);
   box-shadow: 0 8px 20px -12px rgba(38, 52, 78, 0.18);
 }
 
@@ -16,16 +16,16 @@
   border-collapse: collapse;
 }
 
-.table thead tr { background: var(--kzd-paper-2); }
+.table thead tr { background: var(--kzd-surface-50); }
 
 .table th {
   padding: 14px 18px;
-  font-family: var(--kzd-mono);
+  font-family: var(--kzd-type-label);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--kzd-muted);
+  color: var(--kzd-text-muted);
   text-align: left;
   border-bottom: 1px solid var(--kzd-line);
   white-space: nowrap;
@@ -35,7 +35,7 @@
 
 .row { transition: background-color 160ms ease; }
 .row:not(:last-child) { border-bottom: 1px solid var(--kzd-line); }
-.row:hover { background: var(--kzd-paper-2); }
+.row:hover { background: var(--kzd-surface-50); }
 
 .table td {
   padding: 16px 18px;
@@ -47,30 +47,30 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--kzd-mono);
+  font-family: var(--kzd-type-label);
   font-weight: 600;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
   white-space: nowrap;
 }
 
 .badge {
   padding: 2px 8px;
   border-radius: 999px;
-  background: var(--kzd-blue-tint);
-  font-family: var(--kzd-sans);
+  background: var(--kzd-navy-50);
+  font-family: var(--kzd-type-sans);
   font-size: 10.5px;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: var(--kzd-blue);
+  color: var(--kzd-navy-400);
   white-space: nowrap;
 }
 
-.desc { color: var(--kzd-muted); }
+.desc { color: var(--kzd-text-muted); }
 
 .price {
   text-align: right;
   font-weight: 600;
-  color: var(--kzd-navy);
+  color: var(--kzd-navy-500);
   white-space: nowrap;
 }
 
@@ -84,8 +84,8 @@
   padding: 0 18px;
   border: 0;
   border-radius: 8px;
-  background: var(--kzd-navy);
-  font-family: var(--kzd-sans);
+  background: var(--kzd-navy-500);
+  font-family: var(--kzd-type-sans);
   font-size: 13.5px;
   font-weight: 500;
   color: #ffffff;
@@ -103,11 +103,11 @@
 .empty {
   padding: 48px 24px;
   border: 1px dashed var(--kzd-line);
-  border-radius: var(--kzd-radius-lg);
-  background: var(--kzd-card);
+  border-radius: var(--kzd-radius-16);
+  background: var(--kzd-surface-50);
   text-align: center;
   font-size: 15px;
-  color: var(--kzd-muted);
+  color: var(--kzd-text-muted);
 }
 
 @media (max-width: 560px) {

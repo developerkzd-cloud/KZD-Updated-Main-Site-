@@ -38,7 +38,7 @@
 .h2 {
   margin: 0;
   text-align: center;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 34px;
   font-weight: 600;
   line-height: 1.2;
@@ -66,7 +66,7 @@
   border: 1px solid var(--k-line);
   border-radius: 999px;
   background: var(--k-paper);
-  font-family: var(--kzd-font-mono);
+  font-family: var(--kzd-type-label);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.16em;
@@ -78,7 +78,7 @@
 
 .h1 {
   margin: 26px 0 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 54px;
   font-weight: 600;
   line-height: 1.1;
@@ -109,7 +109,7 @@
   max-width: 720px;
   margin: 0 auto;
   padding: 28px;
-  border-radius: var(--kzd-radius-lg);
+  border-radius: var(--kzd-radius-16);
   border: 1px solid var(--k-line);
   background: var(--k-paper);
   box-shadow: 0 10px 26px -14px rgba(38, 52, 78, 0.22);
@@ -125,7 +125,7 @@
   border: 1px solid var(--k-line);
   border-radius: 10px;
   background: var(--k-card);
-  font-family: var(--kzd-font-body);
+  font-family: var(--kzd-type-sans);
   font-size: 16px;
   color: var(--k-navy);
   transition: border-color 160ms ease, background-color 160ms ease;
@@ -141,7 +141,7 @@
   border: 1px solid var(--k-line);
   border-radius: 10px;
   background: var(--k-card);
-  font-family: var(--kzd-font-body);
+  font-family: var(--kzd-type-sans);
   font-size: 15px;
   font-weight: 500;
   color: var(--k-navy);
@@ -157,7 +157,7 @@
   border: 0;
   border-radius: 10px;
   background: var(--k-navy);
-  font-family: var(--kzd-font-body);
+  font-family: var(--kzd-type-sans);
   font-size: 15px;
   font-weight: 600;
   color: #ffffff;
@@ -193,7 +193,7 @@
   border: 0;
   border-bottom: 1px solid var(--k-line);
   background: transparent;
-  font-family: var(--kzd-font-mono);
+  font-family: var(--kzd-type-label);
   font-size: 14.5px;
   text-align: left;
   color: var(--k-navy);
@@ -232,7 +232,7 @@
   transform: translateY(-2px);
 }
 
-.chipExt { font-family: var(--kzd-font-mono); font-size: 18px; font-weight: 600; color: var(--k-navy); }
+.chipExt { font-family: var(--kzd-type-label); font-size: 18px; font-weight: 600; color: var(--k-navy); }
 .chipDesc { font-size: 12.5px; color: var(--k-dim); }
 .chipPrice { margin-top: 4px; font-size: 13px; font-weight: 600; color: var(--k-blue); }
 
@@ -261,7 +261,7 @@
 
 .featureTitle {
   margin: 20px 0 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 18px;
   font-weight: 600;
   line-height: 1.25;
@@ -288,7 +288,7 @@
 
 .ctaText { max-width: 520px; }
 
-.ctaTitle { margin: 0; font-family: var(--kzd-font-display); font-size: 26px; font-weight: 600; color: #ffffff; }
+.ctaTitle { margin: 0; font-family: var(--kzd-type-display); font-size: 26px; font-weight: 600; color: #ffffff; }
 .ctaBody { margin: 10px 0 0; font-size: 15px; line-height: 1.6; color: rgba(255, 255, 255, 0.78); }
 
 .ctaLinks { display: flex; flex-wrap: wrap; gap: 12px; }

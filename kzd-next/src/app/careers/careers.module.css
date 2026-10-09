@@ -48,7 +48,7 @@
 .h2 {
   margin: 0;
   text-align: center;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 40px;
   font-weight: 600;
   line-height: 1.16;
@@ -76,7 +76,7 @@
   border: 1px solid var(--k-line);
   border-radius: 999px;
   background: var(--k-paper);
-  font-family: var(--kzd-font-mono);
+  font-family: var(--kzd-type-label);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.16em;
@@ -88,7 +88,7 @@
 
 .h1 {
   margin: 26px 0 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 58px;
   font-weight: 600;
   line-height: 1.1;
@@ -173,7 +173,7 @@
   height: 21px;
   padding: 0 9px;
   border-radius: 999px;
-  font-family: var(--kzd-font-mono);
+  font-family: var(--kzd-type-label);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.12em;
@@ -191,7 +191,7 @@
 
 .title {
   margin: 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 24px;
   font-weight: 600;
   line-height: 1.2;
@@ -228,7 +228,7 @@
   border: 0;
   border-radius: 10px;
   background: var(--k-navy);
-  font-family: var(--kzd-font-body);
+  font-family: var(--kzd-type-sans);
   font-size: 15px;
   font-weight: 500;
   color: #ffffff;
@@ -265,7 +265,7 @@
 
 .emptyTitle {
   margin: 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 22px;
   font-weight: 600;
   color: var(--k-navy);
@@ -294,7 +294,7 @@
 
 .whyTitle {
   margin: 22px 0 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 19px;
   font-weight: 600;
   line-height: 1.25;
@@ -311,7 +311,7 @@
 
 .stepNo {
   margin: 0;
-  font-family: var(--kzd-font-mono);
+  font-family: var(--kzd-type-label);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.16em;
@@ -322,7 +322,7 @@
 
 .stepTitle {
   margin: 18px 0 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 20px;
   font-weight: 600;
   line-height: 1.25;
@@ -352,13 +352,13 @@
 .glogo { width: 60px; height: 60px; display: block; }
 .rating { display: flex; align-items: center; gap: 12px; }
 
-.score { font-family: var(--kzd-font-display); font-size: 38px; font-weight: 700; line-height: 1; color: var(--k-navy); }
+.score { font-family: var(--kzd-type-display); font-size: 38px; font-weight: 700; line-height: 1; color: var(--k-navy); }
 .stars { display: inline-flex; gap: 2px; line-height: 0; }
 .stars svg { width: 22px; height: 22px; fill: var(--k-gold); display: block; }
 
 .peopleTitle {
   margin: 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 32px;
   font-weight: 600;
   line-height: 1.2;

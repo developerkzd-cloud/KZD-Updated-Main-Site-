@@ -55,7 +55,7 @@
 
 .title {
   margin: 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 50px;
   font-weight: 600;
   line-height: 1.12;
@@ -105,7 +105,7 @@
   background: none;
   padding: 14px 2px;
   min-height: 44px;
-  font-family: var(--kzd-font-body);
+  font-family: var(--kzd-type-sans);
   font-size: 15px;
   font-weight: 500;
   color: var(--j-muted);
@@ -141,7 +141,7 @@
 
 .h2 {
   margin: 0;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 28px;
   font-weight: 600;
   line-height: 1.2;
@@ -179,7 +179,7 @@
 .lead {
   display: block;
   margin-bottom: 3px;
-  font-family: var(--kzd-font-display);
+  font-family: var(--kzd-type-display);
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -208,7 +208,7 @@
   padding: 0 22px;
   border: 0;
   border-radius: 10px;
-  font-family: var(--kzd-font-body);
+  font-family: var(--kzd-type-sans);
   font-size: 15px;
   font-weight: 500;
   text-decoration: none;
@@ -244,7 +244,7 @@
   text-align: center;
 }
 
-.noticeTitle { margin: 0; font-family: var(--kzd-font-display); font-size: 20px; font-weight: 600; color: var(--j-navy); }
+.noticeTitle { margin: 0; font-family: var(--kzd-type-display); font-size: 20px; font-weight: 600; color: var(--j-navy); }
 .noticeBody { margin: 10px auto 0; max-width: 56ch; font-size: 15px; line-height: 1.65; color: var(--j-muted); }
 .noticeBody a { color: var(--j-blue); }
 
