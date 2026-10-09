@@ -149,15 +149,16 @@
   /* Covers                                                                 */
   /* --------------------------------------------------------------------- */
 
-  /* Six fixed palettes. The slug hash picks one, so a post always gets the
-     same colours. */
+  /* Six fixed palettes, all navy / greyscale tokens (the design system allows
+     one accent per page, never a rainbow). The slug hash picks one, so a post
+     always gets the same cover. */
   var PALETTES = [
-    { name: "deep blue",   from: "#0B2E6B", to: "#2F72D8", ink: "#BBD4F5" },
-    { name: "violet",      from: "#4A1A63", to: "#A855C9", ink: "#E3C4F0" },
-    { name: "teal",        from: "#0B4F46", to: "#2E9E86", ink: "#B8E5D9" },
-    { name: "amber brown", from: "#7A3E10", to: "#D9871F", ink: "#F5D8AC" },
-    { name: "indigo",      from: "#252B63", to: "#5C6BC8", ink: "#C6CBEE" },
-    { name: "crimson",     from: "#6B1030", to: "#C2416A", ink: "#F2C0CF" }
+    { name: "navy deep",     from: "var(--kzd-navy-700)", to: "var(--kzd-navy-400)", ink: "var(--kzd-navy-100)" },
+    { name: "navy mid",      from: "var(--kzd-navy-600)", to: "var(--kzd-navy-300)", ink: "var(--kzd-navy-100)" },
+    { name: "black",         from: "var(--kzd-black)",    to: "var(--kzd-charcoal)", ink: "var(--kzd-silver-light)" },
+    { name: "navy to gray",  from: "var(--kzd-navy-500)", to: "var(--kzd-gray)",     ink: "var(--kzd-silver-light)" },
+    { name: "charcoal navy", from: "var(--kzd-charcoal)", to: "var(--kzd-navy-400)", ink: "var(--kzd-navy-100)" },
+    { name: "navy long",     from: "var(--kzd-navy-700)", to: "var(--kzd-navy-300)", ink: "var(--kzd-navy-100)" }
   ];
 
   function hash(str) {
@@ -215,7 +216,7 @@
     [[0, pal.from], [1, pal.to]].forEach(function (stop) {
       var s = document.createElementNS(SVG_NS, "stop");
       s.setAttribute("offset", stop[0]);
-      s.setAttribute("stop-color", stop[1]);
+      s.style.stopColor = stop[1];
       grad.appendChild(s);
     });
     defs.appendChild(grad);
@@ -234,7 +235,7 @@
       c.setAttribute("cx", (rand() * W).toFixed(1));
       c.setAttribute("cy", (rand() * H).toFixed(1));
       c.setAttribute("r", (110 + rand() * 190).toFixed(1));
-      c.setAttribute("fill", "#FFFFFF");
+      c.style.fill = "var(--kzd-white)";
       c.setAttribute("fill-opacity", (0.04 + rand() * 0.06).toFixed(3));
       svg.appendChild(c);
     }
@@ -250,7 +251,7 @@
       ln.setAttribute("y1", y1.toFixed(1));
       ln.setAttribute("x2", (x1 + len).toFixed(1));
       ln.setAttribute("y2", (y1 + len * slope).toFixed(1));
-      ln.setAttribute("stroke", "#FFFFFF");
+      ln.style.stroke = "var(--kzd-white)";
       ln.setAttribute("stroke-opacity", (0.10 + rand() * 0.18).toFixed(3));
       ln.setAttribute("stroke-width", (0.8 + rand() * 1.1).toFixed(2));
       svg.appendChild(ln);

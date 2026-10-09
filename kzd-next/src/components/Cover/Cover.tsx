@@ -19,12 +19,12 @@
 type Palette = { name: string; from: string; to: string };
 
 const PALETTES: Palette[] = [
-  { name: "deep blue", from: "#0B2E6B", to: "#2F72D8" },
-  { name: "violet", from: "#4A1A63", to: "#A855C9" },
-  { name: "teal", from: "#0B4F46", to: "#2E9E86" },
-  { name: "amber brown", from: "#7A3E10", to: "#D9871F" },
-  { name: "indigo", from: "#252B63", to: "#5C6BC8" },
-  { name: "crimson", from: "#6B1030", to: "#C2416A" },
+  { name: "navy deep", from: "var(--kzd-navy-700)", to: "var(--kzd-navy-400)" },
+  { name: "navy mid", from: "var(--kzd-navy-600)", to: "var(--kzd-navy-300)" },
+  { name: "black", from: "var(--kzd-black)", to: "var(--kzd-charcoal)" },
+  { name: "navy to gray", from: "var(--kzd-navy-500)", to: "var(--kzd-gray)" },
+  { name: "charcoal navy", from: "var(--kzd-charcoal)", to: "var(--kzd-navy-400)" },
+  { name: "navy long", from: "var(--kzd-navy-700)", to: "var(--kzd-navy-300)" },
 ];
 
 /** FNV-1a. */
@@ -102,13 +102,13 @@ export default function Cover({
     >
       <defs>
         <linearGradient id={gid} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor={pal.from} />
-          <stop offset="1" stopColor={pal.to} />
+          <stop offset="0" style={{ stopColor: pal.from }} />
+          <stop offset="1" style={{ stopColor: pal.to }} />
         </linearGradient>
       </defs>
       <rect width={W} height={H} fill={`url(#${gid})`} />
       {circles.map((c, i) => (
-        <circle key={i} cx={c.cx} cy={c.cy} r={c.r} fill="#FFFFFF" fillOpacity={c.o} />
+        <circle key={i} cx={c.cx} cy={c.cy} r={c.r} style={{ fill: "var(--kzd-white)" }} fillOpacity={c.o} />
       ))}
       {lines.map((l, i) => (
         <line
@@ -117,7 +117,7 @@ export default function Cover({
           y1={l.y1}
           x2={l.x2}
           y2={l.y2}
-          stroke="#FFFFFF"
+          style={{ stroke: "var(--kzd-white)" }}
           strokeOpacity={l.o}
           strokeWidth={l.w}
         />
