@@ -7,7 +7,7 @@
   padding-bottom: var(--kzd-space-80);
 }
 
-.pricing-card { transition: transform .25s ease, box-shadow .25s ease; }
+.pricing-card { transition: transform var(--kzd-dur-micro) ease; }
 .pricing-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover-md); }
 .pricing-card .price { font-size:  var(--kzd-text-headline); font-weight: 800; color: var(--kzd-black); }
 .pricing-card .currency { font-size:  var(--kzd-text-body); margin-right: var(--kzd-space-4); }
@@ -29,7 +29,7 @@
 /* Styles for detailed plan grid copied from prototype */
 .section-section { max-width: 1100px; margin: 0 auto; }
 .section-section .input { width: 64px; height: 28px; background: linear-gradient(90deg,var(--accent-purple),var(--accent-purple-light)); border-radius: var(--radius-pill); position: relative; cursor: pointer; }
-.section-section .div-2 { position: absolute; width: 26px; height: 26px; background: var(--kzd-white); border-radius: var(--radius-circle); top: 1px; left: 1px; transition: transform .25s ease; }
+.section-section .div-2 { position: absolute; width: 26px; height: 26px; background: var(--kzd-white); border-radius: var(--radius-circle); top: 1px; left: 1px; transition: transform var(--kzd-dur-micro) ease; }
 .section-section.toggle-on .div-2 { transform: translateX(36px); }
 .overlay-border { display: block; }
 .overlay-border .background-border,
@@ -62,14 +62,14 @@
   padding: var(--kzd-space-24);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
-  transition: transform .28s ease, box-shadow .28s ease;
+  transition: transform var(--kzd-dur-micro) ease;
   transform: translateY(0);
   min-height: 340px; /* give enough room so content doesn't look squeezed */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  animation: fadeUp .6s ease both;
+  animation: fadeUp var(--kzd-dur-section) ease both;
 }
 
 /* reverse hover: move down slightly with stronger shadow */

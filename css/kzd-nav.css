@@ -70,7 +70,7 @@
   stroke-width: 2.2;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition: transform 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .kzd-nav-item.is-open > .nav-link .kzd-nav-caret,
@@ -110,14 +110,14 @@
   opacity: 0;
   visibility: hidden;
   transform: translate(-50%, 6px);
-  transition: opacity 180ms ease, transform 180ms ease, visibility 0s linear 180ms;
+  transition: opacity var(--kzd-dur-micro) ease, transform var(--kzd-dur-micro) ease, visibility 0s linear 180ms;
 }
 
 .kzd-nav-item.is-open > .kzd-nav-mega {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, 0);
-  transition: opacity 180ms ease, transform 180ms ease, visibility 0s;
+  transition: opacity var(--kzd-dur-micro) ease, transform var(--kzd-dur-micro) ease, visibility 0s;
 }
 
 /* A gap between the trigger and the panel would drop the hover; this bridges
@@ -155,7 +155,7 @@
   line-height: 1.35;
   color: var(--kzd-n-navy);
   text-decoration: none;
-  transition: background-color 160ms ease, color 160ms ease;
+  transition: none;
 }
 
 .kzd-nav-mega a:hover,
@@ -272,13 +272,13 @@
   background: rgba(4, 9, 26, .55);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 280ms cubic-bezier(.16, 1, .3, 1), visibility 0s linear 280ms;
+  transition: opacity var(--kzd-dur-micro) cubic-bezier(.16, 1, .3, 1), visibility 0s linear 280ms;
 }
 
 .kzd-mnav-scrim.is-open {
   opacity: 1;
   visibility: visible;
-  transition: opacity 280ms cubic-bezier(.16, 1, .3, 1), visibility 0s;
+  transition: opacity var(--kzd-dur-micro) cubic-bezier(.16, 1, .3, 1), visibility 0s;
 }
 
 .kzd-mnav {
@@ -294,13 +294,13 @@
   background: var(--kzd-m-navy);   /* fully opaque */
   transform: translateX(100%);
   visibility: hidden;
-  transition: transform 280ms cubic-bezier(.16, 1, .3, 1), visibility 0s linear 280ms;
+  transition: transform var(--kzd-dur-micro) cubic-bezier(.16, 1, .3, 1), visibility 0s linear 280ms;
 }
 
 .kzd-mnav.is-open {
   transform: translateX(0);
   visibility: visible;
-  transition: transform 280ms cubic-bezier(.16, 1, .3, 1), visibility 0s;
+  transition: transform var(--kzd-dur-micro) cubic-bezier(.16, 1, .3, 1), visibility 0s;
 }
 
 /* Header ------------------------------------------------------------------ */
@@ -431,7 +431,7 @@
   stroke-width: 2.2;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition: transform 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .kzd-mnav__trigger[aria-expanded="true"] .kzd-mnav__caret { transform: rotate(180deg); }
@@ -442,7 +442,7 @@
   height: 0;
   overflow: hidden;
   background: var(--kzd-m-sub);
-  transition: height 240ms ease;
+  transition: none;
 }
 
 .kzd-mnav__sub {

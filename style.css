@@ -1800,8 +1800,7 @@
 
     .mega-links .mega-col {
         transition:
-            transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-            box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+            transform var(--kzd-dur-section) cubic-bezier(0.4, 0, 0.2, 1);
         padding: 0.5rem;
         border-radius: var(--kzd-radius-12);
         cursor: pointer;
@@ -1810,13 +1809,12 @@
     .mega-links .mega-col h6 a {
         color: var(--kzd-black);
         text-decoration: none;
-        transition: color 0.35s ease;
+        transition: none;
     }
 
     .mega-links .mega-col i {
         transition:
-            color 0.35s ease,
-            transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+            transform var(--kzd-dur-section) cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .mega-links .mega-col:hover {
@@ -2085,7 +2083,7 @@
   border-radius: var(--kzd-radius-full);
   top: 3px;
   left: 3px;
-  transition: 0.3s;
+  transition: transform var(--kzd-dur-section), opacity var(--kzd-dur-section);
 }
 
 .chp-switch input:checked+.chp-slider::before {
@@ -2127,7 +2125,7 @@
   border-radius: var(--radius-lg);
   text-align: center;
   box-shadow: var(--shadow-lg);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform var(--kzd-dur-section) ease;
 }
 
 .chp-card:hover {
@@ -2190,7 +2188,7 @@
   padding: var(--kzd-space-8) var(--kzd-space-16);
   border-radius: var(--radius-pill);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--kzd-dur-micro) ease, opacity var(--kzd-dur-micro) ease;
   display: inline-flex;
   align-items: center;
   gap: var(--kzd-space-4);
@@ -2255,7 +2253,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--kzd-dur-micro) ease, opacity var(--kzd-dur-micro) ease;
   z-index: 2;
 }
 
@@ -2354,7 +2352,7 @@
   font-size:  var(--kzd-text-label);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform var(--kzd-dur-section) ease, opacity var(--kzd-dur-section) ease;
 }
 
 .chp-btn:hover {
@@ -2406,7 +2404,7 @@
 .chp-faq-question span {
   font-size:  var(--kzd-text-title);
   color: var(--kzd-black);
-  transition: transform 0.3s ease;
+  transition: transform var(--kzd-dur-section) ease;
 }
 
 .chp-faq-answer {
@@ -2415,7 +2413,7 @@
   padding: 0 var(--kzd-space-24);
   color: var(--kzd-gray);
   line-height: 1.7;
-  transition: max-height 0.4s ease, padding 0.4s ease;
+  transition: none;
 }
 
 .chp-faq-item.active .chp-faq-answer {
@@ -2431,7 +2429,7 @@
 .chp-animate {
   opacity: 0;
   transform: translateY(35px);
-  transition: all 0.8s ease;
+  transition: transform var(--kzd-dur-section) ease, opacity var(--kzd-dur-section) ease;
 }
 
 .chp-visible {

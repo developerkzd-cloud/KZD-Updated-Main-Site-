@@ -101,7 +101,7 @@
   font-family: var(--kzd-type-sans);
   font-size:  var(--kzd-text-body);
   color: var(--k-navy);
-  transition: border-color 160ms ease, background-color 160ms ease;
+  transition: none;
 }
 
 .searchInput:hover { border-color: var(--k-dim); }

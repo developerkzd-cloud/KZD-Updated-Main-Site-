@@ -275,7 +275,7 @@
   background: var(--s-paper);
   box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--kzd-navy-500) 22%, transparent);
   text-decoration: none;
-  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+  transition: transform var(--kzd-dur-section) ease;
 }
 
 .prodCard:hover,
@@ -383,8 +383,7 @@
   text-transform: none;
   box-shadow: none;
   background-image: none;
-  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
-    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
   background-color: var(--kzd-silver);
   border-color: var(--kzd-silver);
   color: var(--kzd-black);

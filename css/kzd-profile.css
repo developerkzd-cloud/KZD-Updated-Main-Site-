@@ -103,7 +103,7 @@
   background: var(--kzd-p-paper);
   color: var(--kzd-p-muted);
   cursor: pointer;
-  transition: background-color 160ms ease, color 160ms ease, transform 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .kzd-pro__icon-btn::before {
@@ -259,7 +259,7 @@
   color: var(--kzd-p-muted);
   white-space: nowrap;
   cursor: pointer;
-  transition: color 160ms ease;
+  transition: none;
 }
 
 .kzd-pro__tab::before { content: ""; position: absolute; inset: -6px -8px; }
@@ -346,7 +346,7 @@
   height: 100%;
   border-radius: var(--kzd-radius-full);
   background: var(--kzd-p-blue);
-  transition: width 600ms ease-out;
+  transition: none;
 }
 
 .kzd-pro__banner-btn {
@@ -361,7 +361,7 @@
   font-weight: 500;
   color: var(--kzd-white);
   cursor: pointer;
-  transition: transform 200ms ease, box-shadow 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .kzd-pro__banner-btn:hover {
@@ -565,7 +565,7 @@ a.kzd-pro__link:focus-visible { outline: 2px solid var(--kzd-p-blue); outline-of
   color: var(--kzd-p-navy);
 }
 
-.kzd-pro__chip--in { animation: kzd-pro-chip 200ms ease-out; }
+.kzd-pro__chip--in { animation: kzd-pro-chip var(--kzd-dur-micro) ease-out; }
 
 @keyframes kzd-pro-chip {
   from { opacity: 0; transform: scale(.9); }
@@ -640,7 +640,7 @@ a.kzd-pro__link:focus-visible { outline: 2px solid var(--kzd-p-blue); outline-of
   font-family: var(--kzd-p-body);
   font-size:  var(--kzd-text-body);
   color: var(--kzd-p-navy);
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  transition: none;
 }
 
 .kzd-pro__input:focus,
@@ -665,7 +665,7 @@ a.kzd-pro__link:focus-visible { outline: 2px solid var(--kzd-p-blue); outline-of
   font-size:  var(--kzd-text-body);
   font-weight: 500;
   cursor: pointer;
-  transition: transform 200ms ease, box-shadow 200ms ease, background-color 160ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .kzd-pro__btn--primary { background: var(--kzd-p-navy); color: var(--kzd-white); }
@@ -793,21 +793,20 @@ a.kzd-pro__link:focus-visible { outline: 2px solid var(--kzd-p-blue); outline-of
 .kzd-pro--anim .kzd-pro__rise.is-in {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 460ms cubic-bezier(.16, 1, .3, 1) var(--kzd-p-delay, 0ms),
-              transform 460ms cubic-bezier(.16, 1, .3, 1) var(--kzd-p-delay, 0ms);
+  transition: opacity var(--kzd-dur-section) cubic-bezier(.16, 1, .3, 1) var(--kzd-p-delay, 0ms), transform var(--kzd-dur-section) cubic-bezier(.16, 1, .3, 1) var(--kzd-p-delay, 0ms);
 }
 
 .kzd-pro--anim .kzd-pro__panel.is-leaving {
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 240ms ease, transform 240ms ease;
+  transition: opacity var(--kzd-dur-micro) ease, transform var(--kzd-dur-micro) ease;
 }
 
 .kzd-pro--anim .kzd-pro__panel.is-entering { opacity: 0; }
 
 .kzd-pro--anim .kzd-pro__panel.is-entered {
   opacity: 1;
-  transition: opacity 240ms ease;
+  transition: opacity var(--kzd-dur-micro) ease;
 }
 
 /* ==========================================================================

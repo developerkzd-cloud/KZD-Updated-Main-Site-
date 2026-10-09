@@ -35,7 +35,7 @@
   /* Fallback first, for engines without backdrop-filter. */
   background: rgba(18, 26, 44, .74);
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity var(--kzd-dur-micro) ease;
 }
 
 @supports ((backdrop-filter: blur(9px)) or (-webkit-backdrop-filter: blur(9px))) {
@@ -60,14 +60,13 @@
   box-shadow: 0 40px 90px -22px rgba(12, 20, 38, .48);
   opacity: 0;
   transform: scale(.96);
-  transition: opacity 260ms cubic-bezier(.16, 1, .3, 1),
-              transform 260ms cubic-bezier(.16, 1, .3, 1);
+  transition: opacity var(--kzd-dur-micro) cubic-bezier(.16, 1, .3, 1), transform var(--kzd-dur-micro) cubic-bezier(.16, 1, .3, 1);
 }
 
 .kzd-auth-scrim.is-open .kzd-auth-modal { opacity: 1; transform: scale(1); }
 
 .kzd-auth-scrim.is-closing,
-.kzd-auth-scrim.is-closing .kzd-auth-modal { transition-duration: 180ms; }
+.kzd-auth-scrim.is-closing .kzd-auth-modal { transition-duration: var(--kzd-dur-micro); }
 .kzd-auth-scrim.is-closing { opacity: 0; }
 .kzd-auth-scrim.is-closing .kzd-auth-modal { opacity: 0; transform: scale(.96); }
 
@@ -86,7 +85,7 @@
   border-radius: var(--kzd-radius-full);
   background: var(--kzd-a-close);
   cursor: pointer;
-  transition: background-color 160ms ease;
+  transition: none;
 }
 
 .kzd-auth__close:hover,
@@ -182,7 +181,7 @@
   font-family: var(--kzd-a-body);
   font-size:  var(--kzd-text-body);
   color: var(--kzd-a-navy);
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  transition: none;
 }
 
 .kzd-auth__input::placeholder { color: var(--kzd-gray); }
@@ -305,7 +304,7 @@
   font-size:  var(--kzd-text-body);
   font-weight: 500;
   cursor: pointer;
-  transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .kzd-auth__primary {

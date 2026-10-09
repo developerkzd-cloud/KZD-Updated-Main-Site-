@@ -17,7 +17,7 @@
 (function () {
   "use strict";
 
-  var ROLL_MS      = 1400;   // one digit's full roll
+  var ROLL_MS      = 500;    // one digit's full roll: the design-system section ceiling (300-500ms)
   var ROLL_STAGGER = 100;    // settle offset, left -> right (spec: 90-120ms)
   var REEL_LENGTH  = 8;      // 7 random digits + the target as the last char
   var SETTLE_EASE  = "cubic-bezier(.16,1,.3,1)";

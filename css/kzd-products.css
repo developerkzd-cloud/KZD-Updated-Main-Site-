@@ -145,9 +145,7 @@
   background: var(--kzd-p-paper);
   box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--kzd-navy-500) 22%, transparent);
   text-decoration: none;
-  transition: transform 300ms ease,
-              box-shadow 300ms ease,
-              border-color 300ms ease;
+  transition: transform var(--kzd-dur-section) ease;
 }
 
 .kzd-prod__card:hover,
@@ -195,7 +193,7 @@
   transform: scale(1);
   /* Deliberately slower than everything else: the image should still be
      settling as the veil, button and lift land. */
-  transition: transform 700ms cubic-bezier(.22, .61, .36, 1);
+  transition: transform var(--kzd-dur-section) cubic-bezier(.22, .61, .36, 1);
 }
 
 /* The logo needs more air than the phone mockups. */
@@ -217,7 +215,7 @@
   inset: 0;
   background: var(--kzd-p-veil);
   opacity: 0;
-  transition: opacity 260ms ease;
+  transition: opacity var(--kzd-dur-micro) ease;
   pointer-events: none;
 }
 
@@ -240,8 +238,7 @@
   box-shadow: 0 0 0 10px rgba(255, 255, 255, .2);   /* the 96px halo */
   opacity: 0;
   transform: scale(.82);
-  transition: opacity 300ms cubic-bezier(.34, 1.4, .64, 1),
-              transform 300ms cubic-bezier(.34, 1.4, .64, 1);
+  transition: opacity var(--kzd-dur-section) cubic-bezier(.34, 1.4, .64, 1), transform var(--kzd-dur-section) cubic-bezier(.34, 1.4, .64, 1);
   pointer-events: none;
 }
 
@@ -270,7 +267,7 @@
   line-height: 1.2;
   letter-spacing: -.02em;
   color: var(--kzd-p-navy);
-  transition: color 200ms ease;
+  transition: none;
 }
 
 .kzd-prod__card:hover .kzd-prod__name,
@@ -301,16 +298,13 @@
 .kzd-prod--anim .kzd-prod__grid.is-in .kzd-prod__card {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 620ms cubic-bezier(.22, .61, .36, 1) var(--kzd-p-delay, 0ms),
-              transform 620ms cubic-bezier(.22, .61, .36, 1) var(--kzd-p-delay, 0ms);
+  transition: opacity var(--kzd-dur-section) cubic-bezier(.22, .61, .36, 1) var(--kzd-p-delay, 0ms), transform var(--kzd-dur-section) cubic-bezier(.22, .61, .36, 1) var(--kzd-p-delay, 0ms);
 }
 
 /* Once settled, hover owns the transform again. */
 .kzd-prod--anim .kzd-prod__grid.is-in .kzd-prod__card.is-settled {
   will-change: auto;
-  transition: transform 300ms ease,
-              box-shadow 300ms ease,
-              border-color 300ms ease;
+  transition: transform var(--kzd-dur-section) ease;
 }
 
 /* --------------------------------------------------------------------------

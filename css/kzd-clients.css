@@ -111,8 +111,7 @@
   opacity: 0;
   transform: translateY(20px);
   transition:
-    opacity 600ms var(--kzd-c-ease),
-    transform 600ms var(--kzd-c-ease);
+    opacity var(--kzd-dur-section) var(--kzd-c-ease), transform var(--kzd-dur-section) var(--kzd-c-ease);
 }
 
 .kzd-clients.is-in .kzd-clients__rows {
@@ -134,7 +133,7 @@
   display: flex;
   width: max-content;
   will-change: transform;
-  animation-duration: 60s;             /* 40s -> 52s -> 60s */
+  animation-duration: var(--kzd-dur-section);             /* 40s -> 52s -> 60s */
   animation-timing-function: linear;   /* linear ONLY — any easing makes an
                                           infinite loop visibly pulse */
   animation-iteration-count: infinite;
@@ -151,7 +150,7 @@
    change proportional for the same reason. */
 .kzd-clients__marquee--reverse .kzd-clients__track {
   animation-name: kzd-c-scroll-right;
-  animation-duration: 69s;             /* 46s -> 60s -> 69s */
+  animation-duration: var(--kzd-dur-section);             /* 46s -> 60s -> 69s */
 }
 
 .kzd-clients.is-in .kzd-clients__track { animation-play-state: running; }
@@ -188,11 +187,7 @@
   box-shadow: 0 6px 18px -8px color-mix(in srgb, var(--kzd-navy-500) 22%, transparent);
   /* transform/opacity/background/border only — nothing that triggers layout. */
   transition:
-    opacity 200ms ease-out,
-    background-color 200ms ease-out,
-    border-color 200ms ease-out,
-    transform 200ms ease-out,
-    box-shadow 200ms ease-out;
+    opacity var(--kzd-dur-micro) ease-out, transform var(--kzd-dur-micro) ease-out;
 }
 
 .kzd-clients__tile:hover {
@@ -214,7 +209,7 @@
   display: block;
   background-color: var(--kzd-c-logo);
   opacity: .70;
-  transition: opacity 200ms ease-out;
+  transition: opacity var(--kzd-dur-micro) ease-out;
 
   -webkit-mask-repeat: no-repeat;
           mask-repeat: no-repeat;

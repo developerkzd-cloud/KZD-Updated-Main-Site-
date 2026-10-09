@@ -283,7 +283,7 @@
   font-family: var(--kzd-type-sans);
   font-size:  var(--kzd-text-body);
   color: var(--k-navy);
-  transition: border-color 160ms ease, background-color 160ms ease;
+  transition: none;
 }
 
 .textarea { padding: var(--kzd-space-12) var(--kzd-space-12); resize: vertical; min-height: 120px; }
@@ -327,7 +327,7 @@
   color: var(--kzd-white);
   cursor: pointer;
   white-space: nowrap;
-  transition: transform 200ms ease, box-shadow 200ms ease, opacity 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease, opacity var(--kzd-dur-micro) ease;
 }
 
 .submit:hover:not(:disabled),
@@ -479,8 +479,7 @@
   text-transform: none;
   box-shadow: none;
   background-image: none;
-  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
-    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
   background-color: var(--kzd-black);
   border-color: var(--kzd-black);
   color: var(--kzd-white);

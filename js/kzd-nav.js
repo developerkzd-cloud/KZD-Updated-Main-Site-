@@ -369,11 +369,9 @@
           return;
         }
 
-        if (reducedMotion()) {
-          wrapEl.style.height = "auto";
-        } else {
-          wrapEl.style.height = wrapEl.scrollHeight + "px";
-        }
+        // Height is not animated (the design system animates transform and
+        // opacity only), so the sub-list opens straight to its natural height.
+        wrapEl.style.height = "auto";
 
         // The panel scrolls, so make sure the tail of the list is reachable.
         window.setTimeout(function () {

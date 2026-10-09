@@ -160,7 +160,7 @@
   padding: var(--kzd-space-48) var(--kzd-a-pad);
   border-radius: var(--kzd-radius-24);
   overflow: hidden;              /* clips the fixed-width content when narrow */
-  transition: flex-basis var(--kzd-a-dur) var(--kzd-a-ease);
+  transition: none;
 }
 
 .kzd-acc__panel.is-open { flex-basis: var(--kzd-a-open); }
@@ -299,7 +299,7 @@
   color: var(--kzd-white);
   text-decoration: none;
   white-space: nowrap;
-  transition: background-color 200ms ease;
+  transition: none;
 }
 
 .kzd-acc__cta:hover,
@@ -319,37 +319,36 @@
 .kzd-acc__toggle,
 .kzd-acc__body {
   opacity: 0;
-  transition: opacity 180ms linear;
+  transition: opacity var(--kzd-dur-micro) linear;
 }
 
 .kzd-acc__panel.is-open .kzd-acc__toggle,
 .kzd-acc__panel.is-open .kzd-acc__body {
   opacity: 1;
-  transition: opacity 300ms linear 220ms;
+  transition: opacity var(--kzd-dur-section) linear 220ms;
 }
 
 .kzd-acc__mini {
   opacity: 1;
-  transition: opacity 300ms linear 220ms;
+  transition: opacity var(--kzd-dur-section) linear 220ms;
 }
 
 .kzd-acc__panel.is-open .kzd-acc__mini {
   opacity: 0;
-  transition: opacity 180ms linear;
+  transition: opacity var(--kzd-dur-micro) linear;
 }
 
 /* List rows rise 8px into place, 40ms apart, once the expand delay has run. */
 .kzd-acc__row {
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 180ms linear, transform 180ms linear;
+  transition: opacity var(--kzd-dur-micro) linear, transform var(--kzd-dur-micro) linear;
 }
 
 .kzd-acc__panel.is-open .kzd-acc__row {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 300ms linear var(--kzd-a-delay),
-              transform 300ms var(--kzd-a-ease) var(--kzd-a-delay);
+  transition: opacity var(--kzd-dur-section) linear var(--kzd-a-delay), transform var(--kzd-dur-section) var(--kzd-a-ease) var(--kzd-a-delay);
 }
 
 /* --------------------------------------------------------------------------

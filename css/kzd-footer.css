@@ -61,8 +61,7 @@
   opacity: 0;
   transform: translateY(24px);
   transition:
-    opacity 600ms var(--kzd-f-ease),
-    transform 600ms var(--kzd-f-ease);
+    opacity var(--kzd-dur-section) var(--kzd-f-ease), transform var(--kzd-dur-section) var(--kzd-f-ease);
 }
 
 .kzd-footer.is-in .kzd-footer__inner {
@@ -113,7 +112,7 @@
   letter-spacing: -.03em;
   text-decoration: none;
   color: var(--kzd-f-ink);
-  transition: --kzd-f-grad-to 320ms var(--kzd-f-ease);
+  transition: none;
 }
 
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
@@ -152,7 +151,7 @@
   background: var(--kzd-f-ember);
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 320ms var(--kzd-f-ease);
+  transition: transform var(--kzd-dur-section) var(--kzd-f-ease);
   z-index: 1;
 }
 
@@ -168,7 +167,7 @@
   letter-spacing: -.02em;
   color: var(--kzd-f-ink);
   text-decoration: none;
-  transition: color 200ms var(--kzd-f-ease);
+  transition: none;
 }
 
 .kzd-footer__phone:hover { color: var(--kzd-f-blue); }
@@ -255,10 +254,7 @@
   justify-content: center;
   color: var(--kzd-f-glyph);
   transition:
-    background-color 200ms ease-out,
-    border-color 200ms ease-out,
-    color 200ms ease-out,
-    transform 200ms ease-out;
+    transform var(--kzd-dur-micro) ease-out;
 }
 
 .kzd-footer__social svg { width: var(--kzd-icon-dense); height: var(--kzd-icon-dense); fill: currentColor; }
@@ -305,7 +301,7 @@
   line-height: 1.2;
   color: var(--kzd-f-link);
   text-decoration: none;
-  transition: color 180ms ease-out, transform 180ms ease-out;
+  transition: transform var(--kzd-dur-micro) ease-out;
 }
 
 .kzd-footer__list a:hover {

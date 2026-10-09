@@ -63,7 +63,7 @@
   font-size:  var(--kzd-text-label-lg);
   color: var(--kzd-j-muted);
   text-decoration: none;
-  transition: color 160ms ease;
+  transition: none;
 }
 
 .kzd-job__back:hover,
@@ -163,7 +163,7 @@
   font-weight: 500;
   color: var(--kzd-j-muted);
   cursor: pointer;
-  transition: color 200ms ease;
+  transition: none;
 }
 
 .kzd-job__tab:hover { color: var(--kzd-j-navy); }
@@ -187,7 +187,7 @@
   border-radius: var(--kzd-radius-8);
   background: var(--kzd-j-navy);
   color: var(--kzd-white);
-  transition: transform 200ms ease, box-shadow 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .kzd-job__tab--apply[aria-selected="false"]:hover,
@@ -215,7 +215,7 @@
 .kzd-job--anim .kzd-job__panel.is-leaving {
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 240ms ease, transform 240ms ease;
+  transition: opacity var(--kzd-dur-micro) ease, transform var(--kzd-dur-micro) ease;
 }
 
 .kzd-job--anim .kzd-job__panel.is-entering {
@@ -224,7 +224,7 @@
 
 .kzd-job--anim .kzd-job__panel.is-entered {
   opacity: 1;
-  transition: opacity 240ms ease;
+  transition: opacity var(--kzd-dur-micro) ease;
 }
 
 /* --------------------------------------------------------------------------
@@ -330,7 +330,7 @@
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
-  transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .kzd-job__btn--primary {
@@ -383,7 +383,7 @@
   font-size:  var(--kzd-text-label);
   color: var(--kzd-status-active-ink);
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity var(--kzd-dur-micro) ease;
 }
 
 .kzd-job__copied.is-on { opacity: 1; }
@@ -443,7 +443,7 @@
   font-family: var(--kzd-j-body);
   font-size:  var(--kzd-text-body);
   color: var(--kzd-j-navy);
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  transition: none;
 }
 
 .kzd-job__input,
@@ -500,7 +500,7 @@
   background: var(--kzd-j-card);
   text-align: center;
   cursor: pointer;
-  transition: border-color 180ms ease, background-color 180ms ease;
+  transition: none;
 }
 
 .kzd-job__drop.is-over {
@@ -779,8 +779,7 @@
 .kzd-job--anim .kzd-job__rise.is-in {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 560ms cubic-bezier(.16, 1, .3, 1) var(--kzd-j-delay, 0ms),
-              transform 560ms cubic-bezier(.16, 1, .3, 1) var(--kzd-j-delay, 0ms);
+  transition: opacity var(--kzd-dur-section) cubic-bezier(.16, 1, .3, 1) var(--kzd-j-delay, 0ms), transform var(--kzd-dur-section) cubic-bezier(.16, 1, .3, 1) var(--kzd-j-delay, 0ms);
 }
 
 .kzd-job .is-settled { will-change: auto; }

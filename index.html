@@ -168,7 +168,7 @@
             cursor: pointer;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
             z-index: 10000;
-            transition: all 0.3s ease;
+            transition: transform var(--kzd-dur-section) ease, opacity var(--kzd-dur-section) ease;
         }
         
         .kzd-chat-icon:hover {
@@ -260,7 +260,7 @@
             transform: translateY(20px);
             opacity: 0;
             pointer-events: none;
-            transition: all 0.3s ease;
+            transition: transform var(--kzd-dur-section) ease, opacity var(--kzd-dur-section) ease;
             resize: both;
             min-width: 360px;
             min-height: 450px;
@@ -342,7 +342,7 @@
             cursor: pointer;
             font-size:  var(--kzd-text-body);
             opacity: 0.8;
-            transition: opacity 0.2s;
+            transition: opacity var(--kzd-dur-micro);
         }
         
         .kzd-header-btn:hover {
@@ -385,7 +385,7 @@
             border-radius: var(--kzd-radius-16);
             line-height: 1.4;
             position: relative;
-            animation: kzd-fadeIn 0.3s ease;
+            animation: kzd-fadeIn var(--kzd-dur-section) ease;
             font-size:  var(--kzd-text-label-lg);
             margin: var(--kzd-space-4) 0;
         }
@@ -428,7 +428,7 @@
             background: var(--kzd-surface-50);
             border-radius: var(--kzd-radius-12);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: transform var(--kzd-dur-micro) ease, opacity var(--kzd-dur-micro) ease;
             border: 1px solid var(--kzd-surface-200);
         }
         
@@ -480,7 +480,7 @@
             color: var(--kzd-navy-400);
             font-size:  var(--kzd-text-label-sm);
             opacity: 0.7;
-            transition: opacity 0.2s;
+            transition: opacity var(--kzd-dur-micro);
             flex-shrink: 0;
         }
         
@@ -505,7 +505,7 @@
             border-radius: var(--kzd-radius-16);
             outline: none;
             font-size:  var(--kzd-text-label-lg);
-            transition: all 0.2s;
+            transition: transform var(--kzd-dur-micro), opacity var(--kzd-dur-micro);
         }
         
         .kzd-input-container input:focus {
@@ -527,7 +527,7 @@
             border-radius: var(--kzd-radius-full);
             cursor: pointer;
             font-weight: 500;
-            transition: all 0.2s ease;
+            transition: transform var(--kzd-dur-micro) ease, opacity var(--kzd-dur-micro) ease;
             font-size:  var(--kzd-text-label-lg);
             display: flex;
             align-items: center;
@@ -553,7 +553,7 @@
             border: 1px solid var(--kzd-navy-100);
             border-radius: var(--kzd-radius-16);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: transform var(--kzd-dur-micro) ease, opacity var(--kzd-dur-micro) ease;
             font-size:  var(--kzd-text-label-sm);
             color: var(--kzd-navy-400);
             font-weight: 500;
@@ -638,7 +638,7 @@
             border-radius: var(--kzd-radius-16);
             font-size:  var(--kzd-text-label-sm);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: transform var(--kzd-dur-micro), opacity var(--kzd-dur-micro);
         }
         
         .kzd-suggestion-chip:hover {
@@ -659,7 +659,7 @@
             color: var(--kzd-navy-400);
             cursor: pointer;
             opacity: 0.7;
-            transition: opacity 0.2s;
+            transition: opacity var(--kzd-dur-micro);
         }
         
         .kzd-message-action:hover {
@@ -675,7 +675,7 @@
             border-radius: var(--kzd-radius-8);
             text-decoration: none;
             font-size:  var(--kzd-text-label-sm);
-            transition: background 0.2s;
+            transition: none;
         }
         
         .kzd-map-link:hover {
@@ -709,7 +709,7 @@
             border: 1px solid var(--kzd-silver-light);
             border-radius: var(--kzd-radius-8);
             font-size:  var(--kzd-text-label-lg);
-            transition: border-color 0.2s;
+            transition: none;
         }
         
         .kzd-form-group input:focus {
@@ -727,7 +727,7 @@
             font-weight: 500;
             cursor: pointer;
             width: 100%;
-            transition: all 0.2s;
+            transition: transform var(--kzd-dur-micro), opacity var(--kzd-dur-micro);
         }
         
         .kzd-form-submit:hover {
@@ -758,7 +758,7 @@
             display: flex;
             align-items: center;
             gap: var(--kzd-space-4);
-            transition: all 0.2s;
+            transition: transform var(--kzd-dur-micro), opacity var(--kzd-dur-micro);
         }
         
         .kzd-file-label:hover {

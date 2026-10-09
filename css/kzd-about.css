@@ -27,7 +27,7 @@
 
 .kzd-mark {
   object-fit: contain;
-  transition: filter 200ms ease;
+  transition: none;
 }
 
 .kzd-mark.is-dark {
@@ -555,7 +555,7 @@
 .kzd-about--anim .kzd-about__panel.is-in {
   opacity: 1;
   transform: scale(1);
-  transition: opacity 900ms var(--kzd-ease-out), transform 900ms var(--kzd-ease-out);
+  transition: opacity var(--kzd-dur-section) var(--kzd-ease-out), transform var(--kzd-dur-section) var(--kzd-ease-out);
 }
 
 .kzd-about--anim .kzd-about__rise {
@@ -567,7 +567,7 @@
 .kzd-about--anim .kzd-about__rise.is-in {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 800ms var(--kzd-ease-out), transform 800ms var(--kzd-ease-out);
+  transition: opacity var(--kzd-dur-section) var(--kzd-ease-out), transform var(--kzd-dur-section) var(--kzd-ease-out);
   transition-delay: var(--kzd-delay, 0ms);
 }
 
@@ -581,7 +581,7 @@
 .kzd-about--anim .kzd-about__card.is-in {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 800ms var(--kzd-ease-out), transform 800ms var(--kzd-ease-out);
+  transition: opacity var(--kzd-dur-section) var(--kzd-ease-out), transform var(--kzd-dur-section) var(--kzd-ease-out);
   transition-delay: var(--kzd-delay, 0ms);
 }
 
@@ -610,7 +610,7 @@
 /* Bars grow from the left once the stats block is in */
 .kzd-about--anim .kzd-about__stats.is-in .kzd-about__bar {
   transform: scaleX(1);
-  transition: transform 900ms var(--kzd-ease-out);
+  transition: transform var(--kzd-dur-section) var(--kzd-ease-out);
 }
 
 /* Not animating? Bars are simply already there. */

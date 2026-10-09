@@ -119,7 +119,7 @@
   color: var(--kzd-white);
   text-decoration: none;
   box-shadow: 0 10px 24px -8px color-mix(in srgb, var(--kzd-navy-300) 55%, transparent);
-  transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease, color 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .btnHeroPrimary:hover,
@@ -142,7 +142,7 @@
   font-weight: 600;
   color: var(--kzd-white);
   text-decoration: none;
-  transition: transform 200ms ease, background-color 200ms ease, color 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .btnHeroOutline:hover,
@@ -254,7 +254,7 @@
   height: 100%;
   border-radius: var(--kzd-radius-full);
   background: var(--kzd-status-active);
-  transition: width 300ms ease;
+  transition: none;
 }
 
 .progressLabels {
@@ -323,7 +323,7 @@
   font-weight: 600;
   color: var(--kzd-white);
   cursor: pointer;
-  transition: transform 200ms ease, background-color 200ms ease, color 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .btnRecommend:hover,
@@ -349,7 +349,7 @@
   font-size:  var(--kzd-text-body);
   font-weight: 500;
   text-decoration: none;
-  transition: transform 200ms ease, background-color 200ms ease, color 200ms ease, box-shadow 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .btnDark {
@@ -388,7 +388,7 @@
   border-radius: var(--kzd-radius-16);
   background: var(--kzd-white);
   text-align: center;
-  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease, background-color 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .pkgCard:hover { transform: translateY(-6px); box-shadow: 0 20px 34px -18px color-mix(in srgb, var(--kzd-navy-700) 30%, transparent); }
@@ -420,7 +420,7 @@
   color: var(--kzd-navy-500);
   cursor: pointer;
   text-align: center;
-  transition: background-color 200ms ease, color 200ms ease, transform 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .pkgBtn:hover, .pkgBtn:focus-visible { background: var(--kzd-navy-500); color: var(--kzd-white); transform: translateY(-2px); }
@@ -479,7 +479,7 @@
   font: inherit;
   font-size:  var(--kzd-text-body);
   color: var(--kzd-text);
-  transition: border-color 200ms ease, box-shadow 200ms ease;
+  transition: none;
 }
 
 .input:focus,
@@ -505,7 +505,7 @@
   font-weight: 600;
   color: var(--kzd-white);
   cursor: pointer;
-  transition: transform 200ms ease, background-color 200ms ease, color 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .submitBtn:hover:not(:disabled),
@@ -576,8 +576,7 @@
   text-transform: none;
   box-shadow: none;
   background-image: none;
-  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
-    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
   background-color: var(--kzd-white);
   border-color: var(--kzd-white);
   color: var(--kzd-black);
@@ -608,8 +607,7 @@
   text-transform: none;
   box-shadow: none;
   background-image: none;
-  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
-    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
   background-color: transparent;
   border-color: var(--kzd-white);
   color: var(--kzd-white);
@@ -640,8 +638,7 @@
   text-transform: none;
   box-shadow: none;
   background-image: none;
-  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
-    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
   background-color: var(--kzd-black);
   border-color: var(--kzd-black);
   color: var(--kzd-white);
@@ -672,8 +669,7 @@
   text-transform: none;
   box-shadow: none;
   background-image: none;
-  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
-    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
   background-color: var(--kzd-black);
   border-color: var(--kzd-black);
   color: var(--kzd-white);
@@ -704,8 +700,7 @@
   text-transform: none;
   box-shadow: none;
   background-image: none;
-  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
-    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
   background-color: transparent;
   border-color: var(--kzd-black);
   color: var(--kzd-black);
@@ -736,8 +731,7 @@
   text-transform: none;
   box-shadow: none;
   background-image: none;
-  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
-    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
   background-color: transparent;
   border-color: var(--kzd-black);
   color: var(--kzd-black);
@@ -768,8 +762,7 @@
   text-transform: none;
   box-shadow: none;
   background-image: none;
-  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
-    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
   background-color: var(--kzd-black);
   border-color: var(--kzd-black);
   color: var(--kzd-white);

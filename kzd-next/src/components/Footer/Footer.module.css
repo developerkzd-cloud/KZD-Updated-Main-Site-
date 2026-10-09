@@ -85,7 +85,7 @@
   background: var(--kzd-white);
   border: 1px solid var(--kzd-line);
   color: var(--kzd-navy-500);
-  transition: background-color 200ms ease-out, border-color 200ms ease-out, color 200ms ease-out;
+  transition: none;
 }
 .social::after { width: 44px; height: 44px; }
 .social svg { width: var(--kzd-icon-dense); height: var(--kzd-icon-dense); fill: currentColor; }

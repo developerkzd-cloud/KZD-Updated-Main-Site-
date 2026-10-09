@@ -156,7 +156,7 @@
   animation-name: kzd-sc-scroll;
   animation-timing-function: linear;   /* linear only — easing makes it pulse */
   animation-iteration-count: infinite;
-  animation-duration: 45s;             /* overridden inline, derived from width */
+  animation-duration: var(--kzd-dur-section);             /* overridden inline, derived from width */
   animation-play-state: paused;        /* released after the entry fade */
   will-change: transform;
 }
@@ -191,7 +191,7 @@
   overflow: hidden;
   cursor: pointer;
   text-align: left;
-  transition: box-shadow 240ms ease;
+  transition: none;
 }
 
 .kzd-sc__card:hover,
@@ -266,7 +266,7 @@
   inset: 0;
   background: var(--kzd-s-veil);
   opacity: 0;
-  transition: opacity 240ms ease-out;
+  transition: opacity var(--kzd-dur-micro) ease-out;
   pointer-events: none;
 }
 
@@ -293,8 +293,7 @@
   white-space: nowrap;
   opacity: 0;
   transform: translate(-50%, -50%) scale(.88);
-  transition: opacity 280ms cubic-bezier(.34, 1.4, .64, 1),
-              transform 280ms cubic-bezier(.34, 1.4, .64, 1);
+  transition: opacity var(--kzd-dur-micro) cubic-bezier(.34, 1.4, .64, 1), transform var(--kzd-dur-micro) cubic-bezier(.34, 1.4, .64, 1);
   pointer-events: none;
 }
 
@@ -461,7 +460,7 @@
   height: 8px;
   border-radius: var(--kzd-radius-full);
   background: var(--kzd-silver-light);
-  transition: background-color 180ms ease;
+  transition: none;
 }
 
 .kzd-sc__pip[aria-current="true"]::before { background: var(--kzd-s-blue); }
@@ -494,7 +493,7 @@
   /* Fallback first: a heavier flat scrim where backdrop-filter is unsupported. */
   background: rgba(22, 30, 48, .72);
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity var(--kzd-dur-micro) ease;
 }
 
 @supports ((backdrop-filter: blur(9px)) or (-webkit-backdrop-filter: blur(9px))) {
@@ -522,14 +521,13 @@
   overflow: hidden;
   opacity: 0;
   transform: scale(.95);
-  transition: opacity 280ms cubic-bezier(.16, 1, .3, 1),
-              transform 280ms cubic-bezier(.16, 1, .3, 1);
+  transition: opacity var(--kzd-dur-micro) cubic-bezier(.16, 1, .3, 1), transform var(--kzd-dur-micro) cubic-bezier(.16, 1, .3, 1);
 }
 
 .kzd-sc-scrim.is-open .kzd-sc-modal { opacity: 1; transform: scale(1); }
 
 .kzd-sc-scrim.is-closing,
-.kzd-sc-scrim.is-closing .kzd-sc-modal { transition-duration: 190ms; }
+.kzd-sc-scrim.is-closing .kzd-sc-modal { transition-duration: var(--kzd-dur-micro); }
 .kzd-sc-scrim.is-closing { opacity: 0; }
 .kzd-sc-scrim.is-closing .kzd-sc-modal { opacity: 0; transform: scale(.95); }
 
@@ -621,7 +619,7 @@
   font-weight: 500;
   color: var(--kzd-white);
   cursor: pointer;
-  transition: background-color 200ms ease;
+  transition: none;
 }
 
 .kzd-sc-modal__go:hover,
@@ -675,8 +673,7 @@
 .kzd-sc--anim.is-in .kzd-sc__rail {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 620ms cubic-bezier(.16, 1, .3, 1),
-              transform 620ms cubic-bezier(.16, 1, .3, 1);
+  transition: opacity var(--kzd-dur-section) cubic-bezier(.16, 1, .3, 1), transform var(--kzd-dur-section) cubic-bezier(.16, 1, .3, 1);
 }
 
 .kzd-sc--anim.is-in .kzd-sc__rail { transition-delay: 120ms; }

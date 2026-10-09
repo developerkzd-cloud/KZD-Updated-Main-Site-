@@ -139,8 +139,7 @@
   opacity: 0;
   transform: translateY(24px);
   transition:
-    opacity 600ms var(--kzd-s-ease),
-    transform 600ms var(--kzd-s-ease);
+    opacity var(--kzd-dur-section) var(--kzd-s-ease), transform var(--kzd-dur-section) var(--kzd-s-ease);
   transition-delay: calc(var(--kzd-s-i, 0) * 90ms);
 }
 
@@ -231,7 +230,7 @@
 .kzd-services__icon .kzd-draw {
   stroke-dasharray: 100;
   stroke-dashoffset: 100;
-  transition: stroke-dashoffset 900ms var(--kzd-s-ease);
+  transition: none;
   transition-delay: calc(var(--kzd-s-i, 0) * 90ms + 260ms);
 }
 
@@ -275,10 +274,7 @@
   cursor: pointer;
   padding: 0;
   transition:
-    background-color 220ms var(--kzd-s-ease),
-    border-color 220ms var(--kzd-s-ease),
-    opacity 220ms var(--kzd-s-ease),
-    transform 220ms var(--kzd-s-ease);
+    opacity var(--kzd-dur-micro) var(--kzd-s-ease), transform var(--kzd-dur-micro) var(--kzd-s-ease);
 }
 
 .kzd-services__arrow svg { width: var(--kzd-icon-dense); height: var(--kzd-icon-dense); }

@@ -133,7 +133,7 @@ footer {
   background: var(--kzd-white);
   box-shadow: var(--shadow-hover-lg);
   border-radius: var(--radius-sm);
-  transition: opacity .25s ease, transform .25s ease, visibility .25s;
+  transition: opacity var(--kzd-dur-micro) ease, transform var(--kzd-dur-micro) ease, visibility var(--kzd-dur-micro);
   z-index: 1050;
 }
 .nav-item.dropdown.show .mega-dropdown,

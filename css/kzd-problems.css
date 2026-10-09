@@ -158,8 +158,7 @@
   opacity: 0;
   transform: scale(.98);
   transition:
-    opacity 600ms var(--kzd-p-ease),
-    transform 600ms var(--kzd-p-ease);
+    opacity var(--kzd-dur-section) var(--kzd-p-ease), transform var(--kzd-dur-section) var(--kzd-p-ease);
   transition-delay: calc(var(--kzd-p-i, 0) * 90ms);
 }
 
@@ -249,8 +248,7 @@
   opacity: 0;
   transform: translateY(12px);
   transition:
-    opacity 600ms var(--kzd-p-ease),
-    transform 600ms var(--kzd-p-ease);
+    opacity var(--kzd-dur-section) var(--kzd-p-ease), transform var(--kzd-dur-section) var(--kzd-p-ease);
   /* 120ms behind its own cell. */
   transition-delay: calc(var(--kzd-p-i, 0) * 90ms + 120ms);
 }

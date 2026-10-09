@@ -17,7 +17,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const DURATION_MS = 1200;
+const DURATION_MS = 500; // design-system section transition ceiling (300-500ms)
 
 export default function CountUp({
   to,

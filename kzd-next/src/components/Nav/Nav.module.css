@@ -121,7 +121,7 @@
   stroke-width: 2.2;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition: transform 200ms ease;
+  transition: transform var(--kzd-dur-micro) ease;
 }
 
 .trigger[aria-expanded="true"] .caret { transform: rotate(180deg); }
@@ -146,14 +146,14 @@
   opacity: 0;
   visibility: hidden;
   transform: translate(-50%, 6px);
-  transition: opacity 180ms ease, transform 180ms ease, visibility 0s linear 180ms;
+  transition: opacity var(--kzd-dur-micro) ease, transform var(--kzd-dur-micro) ease, visibility 0s linear 180ms;
 }
 
 .item[data-open="true"] .mega {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, 0);
-  transition: opacity 180ms ease, transform 180ms ease, visibility 0s;
+  transition: opacity var(--kzd-dur-micro) ease, transform var(--kzd-dur-micro) ease, visibility 0s;
 }
 
 /* Bridges the gap between the trigger and the panel so hover does not drop. */
@@ -184,7 +184,7 @@
   font-size:  var(--kzd-text-label-lg);
   line-height: 1.35;
   color: var(--kzd-navy-500);
-  transition: background-color 160ms ease, color 160ms ease;
+  transition: none;
 }
 
 .megaLink:hover { background: var(--kzd-surface-100); color: var(--kzd-navy-400); }

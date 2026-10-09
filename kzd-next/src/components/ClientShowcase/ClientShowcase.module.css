@@ -79,7 +79,7 @@
   overflow: hidden;
   cursor: pointer;
   text-align: left;
-  transition: box-shadow 240ms ease;
+  transition: none;
 }
 
 .card:hover,
@@ -129,7 +129,7 @@
   inset: 0;
   background: var(--s-veil);
   opacity: 0;
-  transition: opacity 240ms ease-out;
+  transition: opacity var(--kzd-dur-micro) ease-out;
   pointer-events: none;
 }
 
@@ -155,8 +155,7 @@
   white-space: nowrap;
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.88);
-  transition: opacity 280ms cubic-bezier(0.34, 1.4, 0.64, 1),
-              transform 280ms cubic-bezier(0.34, 1.4, 0.64, 1);
+  transition: opacity var(--kzd-dur-micro) cubic-bezier(0.34, 1.4, 0.64, 1), transform var(--kzd-dur-micro) cubic-bezier(0.34, 1.4, 0.64, 1);
   pointer-events: none;
 }
 
@@ -272,7 +271,7 @@
   /* Fallback first: a heavier flat scrim where backdrop-filter is missing. */
   background: rgba(22, 30, 48, 0.72);
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity var(--kzd-dur-micro) ease;
 }
 
 @supports ((backdrop-filter: blur(9px)) or (-webkit-backdrop-filter: blur(9px))) {
@@ -298,7 +297,7 @@
   background: var(--kzd-white);
   box-shadow: 0 40px 90px -20px rgba(12, 20, 38, 0.48);
   overflow: hidden;
-  animation: modalIn 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: modalIn var(--kzd-dur-micro) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes modalIn {
@@ -379,7 +378,7 @@
   font-weight: 500;
   color: var(--kzd-white);
   cursor: pointer;
-  transition: background-color 200ms ease;
+  transition: none;
 }
 
 .modalGo:hover,

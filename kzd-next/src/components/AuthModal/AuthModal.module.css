@@ -117,7 +117,7 @@
   background: var(--kzd-surface-50);
   font-size:  var(--kzd-text-label-lg);
   color: var(--kzd-navy-500);
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  transition: none;
 }
 
 .input::placeholder { color: var(--kzd-gray); }
@@ -320,8 +320,7 @@
   text-transform: none;
   box-shadow: none;
   background-image: none;
-  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
-    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
   background-color: var(--kzd-black);
   border-color: var(--kzd-black);
   color: var(--kzd-white);
@@ -352,8 +351,7 @@
   text-transform: none;
   box-shadow: none;
   background-image: none;
-  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
-    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
   background-color: transparent;
   border-color: var(--kzd-black);
   color: var(--kzd-black);

@@ -41,7 +41,7 @@
   padding: var(--kzd-space-12);
   box-shadow: 0 14px 40px rgba(17, 24, 39, 0.12);
   margin-bottom: 2rem;
-  animation: fadeUp 0.6s ease both;
+  animation: fadeUp var(--kzd-dur-section) ease both;
 }
 
 .domain-input-group {
@@ -58,7 +58,7 @@
   border: 2px solid var(--kzd-line);
   border-radius: var(--kzd-radius-8);
   font-size:  var(--kzd-text-body);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: none;
 }
 
 #domainInput:focus {
@@ -79,7 +79,7 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23111827' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: none;
 }
 
 .tld-selector select:focus {
@@ -97,7 +97,7 @@
   font-size:  var(--kzd-text-body);
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform var(--kzd-dur-micro) ease;
   white-space: nowrap;
 }
 
@@ -117,7 +117,7 @@
   background: var(--kzd-surface-50);
   border-radius: var(--kzd-radius-8);
   display: none;
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn var(--kzd-dur-section) ease;
 }
 
 .domain-suggestions.active {
@@ -140,7 +140,7 @@
   border-radius: var(--kzd-radius-8);
   margin-bottom: var(--kzd-space-8);
   cursor: pointer;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  transition: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -168,8 +168,8 @@
   padding: var(--kzd-space-24) var(--kzd-space-16);
   text-align: center;
   cursor: pointer;
-  transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
-  animation: fadeUp 0.6s ease both;
+  transition: transform var(--kzd-dur-micro) ease;
+  animation: fadeUp var(--kzd-dur-section) ease both;
 }
 
 .tld-box:hover {
@@ -211,7 +211,7 @@
 .results-section {
   padding: var(--kzd-space-64) 0;
   background: var(--kzd-surface-50);
-  animation: fadeIn 0.4s ease;
+  animation: fadeIn var(--kzd-dur-section) ease;
 }
 
 .results-section h2 {
@@ -236,8 +236,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-  animation: fadeUp 0.4s ease both;
+  transition: transform var(--kzd-dur-micro) ease;
+  animation: fadeUp var(--kzd-dur-section) ease both;
 }
 
 .result-card:hover {
@@ -303,7 +303,7 @@
   font-size:  var(--kzd-text-body);
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform var(--kzd-dur-micro) ease;
   white-space: nowrap;
 }
 
@@ -344,9 +344,9 @@
   border-radius: var(--kzd-radius-12);
   padding: var(--kzd-space-32) var(--kzd-space-24);
   text-align: center;
-  transition: transform 0.28s ease, box-shadow 0.28s ease;
+  transition: transform var(--kzd-dur-micro) ease;
   height: 100%;
-  animation: fadeUp 0.6s ease both;
+  animation: fadeUp var(--kzd-dur-section) ease both;
 }
 
 .feature-card:hover {
