@@ -10,20 +10,20 @@
    ========================================================================== */
 
 .kzd-job {
-  --kzd-j-paper:  #FFFFFF;
-  --kzd-j-paper2: #F7F9FC;
-  --kzd-j-card:   #F8FAFC;
-  --kzd-j-line:   #E1E4EA;
-  --kzd-j-navy:   #0B2545;
-  --kzd-j-muted:  #717580;
-  --kzd-j-dim:    #9298A4;
-  --kzd-j-blue:   #2F6FED;
-  --kzd-j-ember:  #FF6B35;
-  --kzd-j-red:    #D93025;
-  --kzd-j-info:   #EDF3FE;
+  --kzd-j-paper:  var(--kzd-white);
+  --kzd-j-paper2: var(--kzd-surface-50);
+  --kzd-j-card:   var(--kzd-surface-50);
+  --kzd-j-line:   var(--kzd-line);
+  --kzd-j-navy:   var(--kzd-navy-700);
+  --kzd-j-muted:  var(--kzd-gray);
+  --kzd-j-dim:    var(--kzd-gray);
+  --kzd-j-blue:   var(--kzd-navy-300);
+  --kzd-j-ember:  var(--kzd-navy-200);
+  --kzd-j-red:    var(--kzd-error);
+  --kzd-j-info:   var(--kzd-surface-100);
 
-  --kzd-j-grad-start: #4A5468;
-  --kzd-j-grad-end:   #232323;
+  --kzd-j-grad-start: var(--kzd-gray);
+  --kzd-j-grad-end:   var(--kzd-black);
 
   --kzd-j-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --kzd-j-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -48,19 +48,19 @@
 
 .kzd-job__head {
   padding-top: 140px;            /* clears the fixed navbar */
-  padding-bottom: 26px;
+  padding-bottom: var(--kzd-space-24);
   text-align: center;
 }
 
 .kzd-job__back {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--kzd-space-8);
   /* 17px each side of a ~17px line box = 51 CSS px, which is ~46px actual once
      body { zoom: .9 } is applied. */
-  padding: 17px 0;
+  padding: var(--kzd-space-16) 0;
   font-family: var(--kzd-j-body);
-  font-size: 14.5px;
+  font-size:  var(--kzd-text-label-lg);
   color: var(--kzd-j-muted);
   text-decoration: none;
   transition: color 160ms ease;
@@ -70,8 +70,8 @@
 .kzd-job__back:focus-visible { color: var(--kzd-j-blue); }
 
 .kzd-job__back svg {
-  width: 15px;
-  height: 15px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
@@ -79,12 +79,12 @@
   stroke-linejoin: round;
 }
 
-.kzd-job__head-in { text-align: center; margin-top: 10px; }
+.kzd-job__head-in { text-align: center; margin-top: var(--kzd-space-8); }
 
 .kzd-job__title {
   margin: 0;
   font-family: var(--kzd-j-display);
-  font-size: 50px;
+  font-size:  var(--kzd-text-headline);
   font-weight: 600;
   line-height: 1.12;
   letter-spacing: -.03em;
@@ -106,8 +106,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 10px 26px;
-  margin: 18px 0 0;
+  gap: var(--kzd-space-8) var(--kzd-space-24);
+  margin: var(--kzd-space-16) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -115,16 +115,16 @@
 .kzd-job__meta li {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--kzd-space-8);
   font-family: var(--kzd-j-body);
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   color: var(--kzd-j-muted);
 }
 
 .kzd-job__meta svg,
 .kzd-job__side-meta svg {
-  width: 16px;
-  height: 16px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   flex: none;
   fill: none;
   stroke: var(--kzd-j-dim);
@@ -145,7 +145,7 @@
 .kzd-job__tabs {
   display: flex;
   align-items: center;
-  gap: 26px;
+  gap: var(--kzd-space-24);
   width: 100%;
   max-width: calc(1240px + var(--kzd-j-gutter) * 2);
   margin-inline: auto;
@@ -156,10 +156,10 @@
   position: relative;
   border: 0;
   background: none;
-  padding: 14px 2px;
+  padding: var(--kzd-space-12) 2px;
   min-height: var(--kzd-control);              /* 44: --kzd-control */
   font-family: var(--kzd-j-body);
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   font-weight: 500;
   color: var(--kzd-j-muted);
   cursor: pointer;
@@ -183,18 +183,18 @@
 /* The apply tab is a SOLID NAVY BUTTON while the details tab is active, and
    becomes a plain text tab once it is itself selected. */
 .kzd-job__tab--apply[aria-selected="false"] {
-  padding: 11px 22px;
-  border-radius: 9px;
+  padding: var(--kzd-space-12) var(--kzd-space-24);
+  border-radius: var(--kzd-radius-8);
   background: var(--kzd-j-navy);
-  color: #FFFFFF;
+  color: var(--kzd-white);
   transition: transform 200ms ease, box-shadow 200ms ease;
 }
 
 .kzd-job__tab--apply[aria-selected="false"]:hover,
 .kzd-job__tab--apply[aria-selected="false"]:focus-visible {
-  color: #FFFFFF;
+  color: var(--kzd-white);
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px -10px rgba(11, 37, 69, .55);
+  box-shadow: 0 10px 20px -10px color-mix(in srgb, var(--kzd-navy-700) 55%, transparent);
 }
 
 .kzd-job__tab--apply[aria-selected="false"]::after { content: none; }
@@ -203,7 +203,7 @@
    3. Panels
    -------------------------------------------------------------------------- */
 
-.kzd-job__panel { padding-top: 44px; padding-bottom: 96px; }
+.kzd-job__panel { padding-top: var(--kzd-space-40); padding-bottom: var(--kzd-space-96); }
 .kzd-job__panel[hidden] { display: none; }
 
 /* Tab switch: fade + 8px shift, never height. */
@@ -241,7 +241,7 @@
 .kzd-job__h2 {
   margin: 0;
   font-family: var(--kzd-j-display);
-  font-size: 28px;
+  font-size:  var(--kzd-text-title);
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -.02em;
@@ -250,29 +250,29 @@
 
 /* padding:0 is load-bearing — these are real <section> elements and the theme
    gives a bare section 110px of block padding (css/style.css). */
-.kzd-job__section { padding: 0; margin-bottom: 44px; }
+.kzd-job__section { padding: 0; margin-bottom: var(--kzd-space-40); }
 .kzd-job__section:last-child { margin-bottom: 0; }
 
 .kzd-job__p {
-  margin: 16px 0 0;
+  margin: var(--kzd-space-16) 0 0;
   font-family: var(--kzd-j-body);
-  font-size: 15.5px;
+  font-size:  var(--kzd-text-body);
   line-height: 1.72;
   color: var(--kzd-j-muted);
 }
 
 .kzd-job__list {
-  margin: 18px 0 0;
+  margin: var(--kzd-space-16) 0 0;
   padding: 0;
   list-style: none;
 }
 
 .kzd-job__list li {
   position: relative;
-  padding-left: 21px;
-  margin-bottom: 11px;
+  padding-left: var(--kzd-space-24);
+  margin-bottom: var(--kzd-space-12);
   font-family: var(--kzd-j-body);
-  font-size: 15.5px;
+  font-size:  var(--kzd-text-body);
   line-height: 1.65;
   color: var(--kzd-j-muted);
 }
@@ -284,7 +284,7 @@
   top: .62em;
   width: 5px;
   height: 5px;
-  border-radius: 50%;
+  border-radius: var(--kzd-radius-full);
   background: var(--kzd-j-blue);
 }
 
@@ -293,9 +293,9 @@
 /* Bold-lead bullets: a bold title line, then its paragraph indented to align. */
 .kzd-job__lead {
   display: block;
-  margin-bottom: 3px;
+  margin-bottom: var(--kzd-space-4);
   font-family: var(--kzd-j-display);
-  font-size: 16px;
+  font-size:  var(--kzd-text-body);
   font-weight: 600;
   letter-spacing: -.01em;
   color: var(--kzd-j-navy);
@@ -304,8 +304,8 @@
 /* Bottom repeat of the primary action ------------------------------------- */
 
 .kzd-job__tail {
-  margin-top: 50px;
-  padding-top: 34px;
+  margin-top: var(--kzd-space-48);
+  padding-top: var(--kzd-space-32);
   border-top: 1px solid var(--kzd-j-line);
 }
 
@@ -322,11 +322,11 @@
   justify-content: center;
   width: 100%;
   min-height: 52px;
-  padding: 0 22px;
+  padding: 0 var(--kzd-space-24);
   border: 0;
-  border-radius: 11px;
+  border-radius: var(--kzd-radius-12);
   font-family: var(--kzd-j-body);
-  font-size: 15.5px;
+  font-size:  var(--kzd-text-body);
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
@@ -335,18 +335,18 @@
 
 .kzd-job__btn--primary {
   background: var(--kzd-j-navy);
-  color: #FFFFFF;
+  color: var(--kzd-white);
 }
 
 .kzd-job__btn--primary:hover,
 .kzd-job__btn--primary:focus-visible {
-  color: #FFFFFF;
+  color: var(--kzd-white);
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px -10px rgba(11, 37, 69, .55);
+  box-shadow: 0 12px 24px -10px color-mix(in srgb, var(--kzd-navy-700) 55%, transparent);
 }
 
 .kzd-job__btn--ghost {
-  margin-top: 12px;
+  margin-top: var(--kzd-space-12);
   border: 1px solid var(--kzd-j-line);
   background: var(--kzd-j-paper);
   color: var(--kzd-j-navy);
@@ -355,13 +355,13 @@
 .kzd-job__btn--ghost:hover,
 .kzd-job__btn--ghost:focus-visible {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px -14px rgba(38, 52, 78, .38);
+  box-shadow: 0 12px 24px -14px color-mix(in srgb, var(--kzd-navy-500) 38%, transparent);
 }
 
 .kzd-job__btn--inline { width: auto; min-width: 240px; }
 
 .kzd-job__side-meta {
-  margin: 26px 0 0;
+  margin: var(--kzd-space-24) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -369,19 +369,19 @@
 .kzd-job__side-meta li {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
+  gap: var(--kzd-space-8);
+  margin-bottom: var(--kzd-space-12);
   font-family: var(--kzd-j-body);
-  font-size: 14.5px;
+  font-size:  var(--kzd-text-label-lg);
   color: var(--kzd-j-muted);
 }
 
 /* "Link copied" confirmation */
 .kzd-job__copied {
-  margin: 10px 0 0;
+  margin: var(--kzd-space-8) 0 0;
   font-family: var(--kzd-j-body);
-  font-size: 13.5px;
-  color: #207842;
+  font-size:  var(--kzd-text-label);
+  color: var(--kzd-status-active-ink);
   opacity: 0;
   transition: opacity 200ms ease;
 }
@@ -395,8 +395,8 @@
 .kzd-job__form { max-width: 660px; }
 
 .kzd-job__fs {
-  margin: 0 0 34px;
-  padding: 0 0 34px;
+  margin: 0 0 var(--kzd-space-32);
+  padding: 0 0 var(--kzd-space-32);
   border: 0;
   border-bottom: 1px solid var(--kzd-j-line);
 }
@@ -406,42 +406,42 @@
 .kzd-job__legend {
   padding: 0;
   font-family: var(--kzd-j-display);
-  font-size: 24px;
+  font-size:  var(--kzd-text-title);
   font-weight: 600;
   letter-spacing: -.02em;
   color: var(--kzd-j-navy);
 }
 
 .kzd-job__fs-sub {
-  margin: 5px 0 22px;
+  margin: var(--kzd-space-4) 0 var(--kzd-space-24);
   font-family: var(--kzd-j-body);
-  font-size: 14.5px;
+  font-size:  var(--kzd-text-label-lg);
   color: var(--kzd-j-muted);
 }
 
-.kzd-job__field { margin-bottom: 18px; }
+.kzd-job__field { margin-bottom: var(--kzd-space-16); }
 
 .kzd-job__label {
   display: block;
-  margin-bottom: 7px;
+  margin-bottom: var(--kzd-space-8);
   font-family: var(--kzd-j-body);
-  font-size: 14.5px;
+  font-size:  var(--kzd-text-label-lg);
   font-weight: 500;
   color: var(--kzd-j-navy);
 }
 
-.kzd-job__req { color: var(--kzd-j-red); margin-left: 3px; }
+.kzd-job__req { color: var(--kzd-j-red); margin-left: var(--kzd-space-4); }
 
 .kzd-job__input,
 .kzd-job__textarea,
 .kzd-job__select {
   width: 100%;
-  padding: 0 15px;
+  padding: 0 var(--kzd-space-16);
   border: 1px solid var(--kzd-j-line);
-  border-radius: 10px;
+  border-radius: var(--kzd-radius-12);
   background: var(--kzd-j-card);
   font-family: var(--kzd-j-body);
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   color: var(--kzd-j-navy);
   transition: border-color 160ms ease, box-shadow 160ms ease;
 }
@@ -451,20 +451,20 @@
 
 .kzd-job__textarea {
   min-height: 120px;
-  padding: 14px 15px;
+  padding: var(--kzd-space-12) var(--kzd-space-16);
   line-height: 1.6;
   resize: vertical;
 }
 
 .kzd-job__input::placeholder,
-.kzd-job__textarea::placeholder { color: #A7AEBA; }
+.kzd-job__textarea::placeholder { color: var(--kzd-gray); }
 
 .kzd-job__input:focus,
 .kzd-job__textarea:focus,
 .kzd-job__select:focus {
   outline: none;
   border-color: var(--kzd-j-blue);
-  box-shadow: 0 0 0 3px rgba(47, 111, 237, .16);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kzd-navy-300) 16%, transparent);
 }
 
 .kzd-job__field.has-error .kzd-job__input,
@@ -472,13 +472,13 @@
 .kzd-job__field.has-error .kzd-job__select,
 .kzd-job__field.has-error .kzd-job__drop {
   border-color: var(--kzd-j-red);
-  box-shadow: 0 0 0 3px rgba(217, 48, 37, .12);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kzd-error) 12%, transparent);
 }
 
 .kzd-job__error {
-  margin: 6px 0 0;
+  margin: var(--kzd-space-4) 0 0;
   font-family: var(--kzd-j-body);
-  font-size: 13px;
+  font-size:  var(--kzd-text-label);
   line-height: 1.45;
   color: var(--kzd-j-red);
 }
@@ -492,11 +492,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: var(--kzd-space-4);
   min-height: 104px;
-  padding: 16px;
+  padding: var(--kzd-space-16);
   border: 1px dashed var(--kzd-j-line);
-  border-radius: 10px;
+  border-radius: var(--kzd-radius-12);
   background: var(--kzd-j-card);
   text-align: center;
   cursor: pointer;
@@ -510,8 +510,8 @@
 }
 
 .kzd-job__drop svg {
-  width: 20px;
-  height: 20px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   fill: none;
   stroke: var(--kzd-j-blue);
   stroke-width: 2;
@@ -521,25 +521,25 @@
 
 .kzd-job__drop-main {
   font-family: var(--kzd-j-body);
-  font-size: 14.5px;
+  font-size:  var(--kzd-text-label-lg);
   font-weight: 500;
   color: var(--kzd-j-blue);
 }
 
 .kzd-job__drop-hint {
   font-family: var(--kzd-j-body);
-  font-size: 13px;
+  font-size:  var(--kzd-text-label);
   color: var(--kzd-j-dim);
 }
 
 .kzd-job__file {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--kzd-space-12);
   min-height: 66px;
-  padding: 12px 14px;
+  padding: var(--kzd-space-12) var(--kzd-space-12);
   border: 1px solid var(--kzd-j-line);
-  border-radius: 10px;
+  border-radius: var(--kzd-radius-12);
   background: var(--kzd-j-card);
 }
 
@@ -547,7 +547,7 @@
   flex: 1 1 auto;
   min-width: 0;
   font-family: var(--kzd-j-body);
-  font-size: 14.5px;
+  font-size:  var(--kzd-text-label-lg);
   color: var(--kzd-j-navy);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -556,7 +556,7 @@
 
 .kzd-job__file-size {
   font-family: var(--kzd-j-body);
-  font-size: 13px;
+  font-size:  var(--kzd-text-label);
   color: var(--kzd-j-dim);
   flex: none;
 }
@@ -574,10 +574,10 @@
 }
 
 .kzd-job__file-x svg {
-  width: 14px;
-  height: 14px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   fill: none;
-  stroke: #6B7280;
+  stroke: var(--kzd-gray);
   stroke-width: 2;
   stroke-linecap: round;
 }
@@ -588,16 +588,16 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 2px;
-  margin-top: 4px;
+  margin-top: var(--kzd-space-4);
 }
 
 .kzd-job__check-row {
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: var(--kzd-space-12);
   min-height: 40px;
   font-family: var(--kzd-j-body);
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   color: var(--kzd-j-navy);
   cursor: pointer;
 }
@@ -613,17 +613,17 @@
 
 .kzd-job__callout {
   display: flex;
-  gap: 12px;
-  margin-top: 26px;
-  padding: 18px 20px;
+  gap: var(--kzd-space-12);
+  margin-top: var(--kzd-space-24);
+  padding: var(--kzd-space-16) var(--kzd-space-16);
   border-left: 3px solid var(--kzd-j-blue);
-  border-radius: 0 10px 10px 0;
+  border-radius: 0 var(--kzd-radius-12) var(--kzd-radius-12) 0;
   background: var(--kzd-j-info);
 }
 
 .kzd-job__callout svg {
-  width: 18px;
-  height: 18px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   flex: none;
   margin-top: 1px;
   fill: none;
@@ -635,15 +635,15 @@
 .kzd-job__callout-title {
   margin: 0;
   font-family: var(--kzd-j-display);
-  font-size: 15.5px;
+  font-size:  var(--kzd-text-body);
   font-weight: 600;
   color: var(--kzd-j-navy);
 }
 
 .kzd-job__callout-body {
-  margin: 6px 0 0;
+  margin: var(--kzd-space-4) 0 0;
   font-family: var(--kzd-j-body);
-  font-size: 14px;
+  font-size:  var(--kzd-text-label-lg);
   line-height: 1.62;
   color: var(--kzd-j-muted);
 }
@@ -653,13 +653,13 @@
 .kzd-job__consent {
   display: flex;
   align-items: flex-start;
-  gap: 11px;
+  gap: var(--kzd-space-12);
   flex-wrap: wrap;
 }
 
 .kzd-job__consent-label {
   font-family: var(--kzd-j-body);
-  font-size: 14.5px;
+  font-size:  var(--kzd-text-label-lg);
   line-height: 1.55;
   color: var(--kzd-j-navy);
 }
@@ -670,13 +670,13 @@
   text-underline-offset: 2px;
   /* Inline padding grows the hit box to the touch minimum without changing the
      line box, so the consent sentence does not reflow. */
-  padding-block: 17px;
+  padding-block: var(--kzd-space-16);
 }
 
 .kzd-job__required-note {
-  margin: 22px 0 18px;
+  margin: var(--kzd-space-24) 0 var(--kzd-space-16);
   font-family: var(--kzd-j-body);
-  font-size: 13.5px;
+  font-size:  var(--kzd-text-label);
   color: var(--kzd-j-dim);
 }
 
@@ -700,9 +700,9 @@
 .kzd-job__done,
 .kzd-job__missing {
   max-width: 660px;
-  padding: 46px 34px;
+  padding: var(--kzd-space-48) var(--kzd-space-32);
   border: 1px solid var(--kzd-j-line);
-  border-radius: 16px;
+  border-radius: var(--kzd-radius-16);
   background: var(--kzd-j-card);
   text-align: center;
 }
@@ -712,16 +712,16 @@
   place-items: center;
   width: 58px;
   height: 58px;
-  margin: 0 auto 20px;
-  border-radius: 50%;
-  background: #E8F6ED;
+  margin: 0 auto var(--kzd-space-16);
+  border-radius: var(--kzd-radius-full);
+  background: var(--kzd-surface-100);
 }
 
 .kzd-job__tick svg {
-  width: 26px;
-  height: 26px;
+  width: var(--kzd-icon);
+  height: var(--kzd-icon);
   fill: none;
-  stroke: #22A054;
+  stroke: var(--kzd-status-active);
   stroke-width: 2.4;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -731,7 +731,7 @@
 .kzd-job__missing-title {
   margin: 0;
   font-family: var(--kzd-j-display);
-  font-size: 26px;
+  font-size:  var(--kzd-text-title);
   font-weight: 600;
   letter-spacing: -.02em;
   color: var(--kzd-j-navy);
@@ -739,10 +739,10 @@
 
 .kzd-job__done-body,
 .kzd-job__missing-body {
-  margin: 12px auto 0;
+  margin: var(--kzd-space-12) auto 0;
   max-width: 470px;
   font-family: var(--kzd-j-body);
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   line-height: 1.66;
   color: var(--kzd-j-muted);
 }
@@ -751,11 +751,11 @@
 .kzd-job__missing-link {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 20px;
-  padding: 12px 0;
+  gap: var(--kzd-space-8);
+  margin-top: var(--kzd-space-16);
+  padding: var(--kzd-space-12) 0;
   font-family: var(--kzd-j-body);
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   font-weight: 500;
   color: var(--kzd-j-blue);
   text-decoration: none;
@@ -764,7 +764,7 @@
 .kzd-job__done-link:hover,
 .kzd-job__missing-link:hover { text-decoration: underline; }
 
-.kzd-job__missing { margin: 60px auto 90px; }
+.kzd-job__missing { margin: var(--kzd-space-64) auto var(--kzd-space-96); }
 
 /* --------------------------------------------------------------------------
    6. Entry animation — sections rise once per tab view.
@@ -817,14 +817,14 @@
 
 @media (max-width: 1200px) {
   .kzd-job { --kzd-j-gutter: 40px; }
-  .kzd-job__title { font-size: clamp(34px, 4.2vw, 50px); }
+  .kzd-job__title { font-size:  var(--kzd-text-headline); }
 }
 
 @media (max-width: 900px) {
   .kzd-job__head { padding-top: 120px; }
-  .kzd-job__title { font-size: 34px; }
-  .kzd-job__h2 { font-size: 24px; }
-  .kzd-job__panel { padding-bottom: 72px; }
+  .kzd-job__title { font-size:  var(--kzd-text-title); }
+  .kzd-job__h2 { font-size:  var(--kzd-text-title); }
+  .kzd-job__panel { padding-bottom: var(--kzd-space-64); }
 
   /* Sidebar moves ABOVE the content as a horizontal bar. */
   .kzd-job__grid {
@@ -835,15 +835,15 @@
   .kzd-job__side {
     position: static;
     order: -1;
-    margin-bottom: 36px;
-    padding-bottom: 28px;
+    margin-bottom: var(--kzd-space-32);
+    padding-bottom: var(--kzd-space-24);
     border-bottom: 1px solid var(--kzd-j-line);
   }
 
   .kzd-job__side-actions {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+    gap: var(--kzd-space-12);
   }
 
   .kzd-job__btn--ghost { margin-top: 0; }
@@ -851,8 +851,8 @@
   .kzd-job__side-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 26px;
-    margin-top: 20px;
+    gap: var(--kzd-space-8) var(--kzd-space-24);
+    margin-top: var(--kzd-space-16);
   }
 
   .kzd-job__side-meta li { margin-bottom: 0; }
@@ -863,11 +863,11 @@
 @media (max-width: 560px) {
   .kzd-job { --kzd-j-gutter: 20px; }
 
-  .kzd-job__title { font-size: 30px; }
-  .kzd-job__h2 { font-size: 21px; }
-  .kzd-job__legend { font-size: 20px; }
+  .kzd-job__title { font-size:  var(--kzd-text-title); }
+  .kzd-job__h2 { font-size:  var(--kzd-text-title); }
+  .kzd-job__legend { font-size:  var(--kzd-text-title); }
 
-  .kzd-job__meta { gap: 8px 18px; }
+  .kzd-job__meta { gap: var(--kzd-space-8) var(--kzd-space-16); }
 
   .kzd-job__side-actions { grid-template-columns: minmax(0, 1fr); }
 
@@ -880,10 +880,10 @@
   .kzd-job__consent-label { flex: 1 1 100%; }
 
   .kzd-job__done,
-  .kzd-job__missing { padding: 34px 20px; }
+  .kzd-job__missing { padding: var(--kzd-space-32) var(--kzd-space-16); }
 }
 
 @media (max-width: 380px) {
   .kzd-job { --kzd-j-gutter: 16px; }
-  .kzd-job__title { font-size: 27px; }
+  .kzd-job__title { font-size:  var(--kzd-text-title); }
 }
