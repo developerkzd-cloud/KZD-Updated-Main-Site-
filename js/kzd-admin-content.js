@@ -1,6 +1,14 @@
 /* ==========================================================================
    KZD Admin — PAGE CONTENT (the CMS)
 
+   PAYLOAD: LIKELY REPLACED. This screen is a small hand-built CMS, and
+   Payload is a CMS with its own admin panel. Do not invest here. What to
+   carry over is the FIELD MODEL: CONTENT_DEFAULTS in js/kzd-store.js lists
+   every editable string per page (careers landing page, job detail page,
+   application form, auth modals). Those become Payload fields, and the
+   defaults become their initial values. The rest of the admin map is in
+   js/kzd-admin.js.
+
    Every editable string on the careers pages, grouped by the page it belongs
    to and by section. Each section saves on its own — one giant form would mean
    one giant undo.

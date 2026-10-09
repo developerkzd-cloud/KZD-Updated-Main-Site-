@@ -1,6 +1,15 @@
 /* ==========================================================================
    KZD Admin — JOB POSTINGS
 
+   PAYLOAD: LIKELY REPLACED. The site is moving to Payload CMS, and Payload
+   ships its own admin panel; job postings are exactly what it manages. Do not
+   invest in this screen. What to carry over is the DATA MODEL, not the UI:
+   the posting fields in js/kzd-store.js (SEED_JOBS shows the shape: id, slug,
+   title, department, type, location, status open|closed, summary, detail),
+   the six body sections, and the two item shapes below. The Next side already
+   reads jobs through one seam, kzd-next/src/lib/content.ts. The rest of the
+   admin map is in js/kzd-admin.js.
+
    Full CRUD. Every field the public job page renders is editable here, which
    is why the editor mirrors the six body sections exactly.
 

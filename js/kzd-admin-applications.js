@@ -1,6 +1,14 @@
 /* ==========================================================================
    KZD Admin — APPLICATIONS
 
+   PAYLOAD: STAYS CUSTOM. This is not content editing, it is the applicant
+   pipeline: stages (applied, reviewing, interviewing, offer, rejected), a
+   schedule-interview step, CSV export, and stage changes that write through
+   to the applicant's own tracker on /profile. A generic list-and-edit admin
+   does not model that, so these screens stay hand-built even after Payload
+   arrives. Where the records are stored is a separate decision from who
+   draws the screen. The rest of the admin map is in js/kzd-admin.js.
+
    Filter state lives in the URL query (?status=&sort=&dir=&page=) so a view is
    shareable and the back button works.
 

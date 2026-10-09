@@ -12,6 +12,24 @@
 
    Every read and write goes through js/kzd-store.js. There is no localStorage
    call in this file.
+
+   --------------------------------------------------------------------------
+   PAYLOAD MAP. The site is moving to Payload CMS, which ships its own admin
+   panel. Which areas that replaces, and which stay custom:
+
+     Job postings   js/kzd-admin-jobs.js          LIKELY REPLACED by Payload
+     Page content   js/kzd-admin-content.js       LIKELY REPLACED by Payload
+     Applications   js/kzd-admin-applications.js  STAYS CUSTOM (applicant pipeline)
+     Employees      js/kzd-admin-employees.js     STAYS CUSTOM (HR workflow)
+     Overview       js/kzd-admin-overview.js      not classified yet
+     Settings       js/kzd-admin-settings.js      not classified yet
+
+   "Replaced" means: carry the data model across (see each file's note), not
+   the screen. Overview is computed from applications and jobs, so it is
+   coupled to both sides of the split above; that is a note for whoever
+   decides, not a decision. js/kzd-admin-applicant.js is the applicant modal
+   shared by Overview, Applications and Employees, so it stays with the
+   custom side.
    ========================================================================== */
 
 import * as store from "./kzd-store.js";

@@ -1,6 +1,13 @@
 /* ==========================================================================
    KZD Admin — EMPLOYEES
 
+   PAYLOAD: STAYS CUSTOM. This is an HR workflow tied to the applicant
+   pipeline, not site content: details, documents, leave, and the bridge that
+   converts an accepted applicant into an employee record
+   (convertApplicantToEmployee, linked back by fromApplicationId). Payload's
+   admin will not provide that flow, so these screens stay hand-built. The
+   rest of the admin map is in js/kzd-admin.js.
+
    The other half of the careers pipeline: once someone accepts an offer they
    become a record here rather than disappearing at the end of the applicant
    funnel. convertApplicantToEmployee() in js/kzd-store.js is the bridge, and
