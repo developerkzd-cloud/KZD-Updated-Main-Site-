@@ -4,10 +4,10 @@
    it, so only the handful with no global equivalent are kept local. */
 
 .wrap {
-  --s-chrome: #F0F2F6;
-  --s-domain: #68707E;
-  --s-badge:  #565E6A;
-  --s-live:   #22A054;
+  --s-chrome: var(--kzd-surface-100);
+  --s-domain: var(--kzd-gray);
+  --s-badge:  var(--kzd-gray);
+  --s-live:   var(--kzd-navy-300);
   --s-veil:   rgba(16, 26, 46, 0.36);
   --s-gap:    26px;
 
@@ -34,7 +34,7 @@
   display: flex;
   gap: var(--s-gap);
   width: max-content;
-  padding: 6px 0 10px;
+  padding: var(--kzd-space-4) 0 var(--kzd-space-8);
   margin: 0;
   list-style: none;
   will-change: transform;
@@ -73,9 +73,9 @@
   height: 252px;
   padding: 0;
   border: 1px solid var(--kzd-line);
-  border-radius: 16px;
+  border-radius: var(--kzd-radius-16);
   background: var(--kzd-white);
-  box-shadow: 0 8px 22px -10px rgba(38, 52, 78, 0.24);
+  box-shadow: 0 8px 22px -10px color-mix(in srgb, var(--kzd-navy-500) 24%, transparent);
   overflow: hidden;
   cursor: pointer;
   text-align: left;
@@ -83,7 +83,7 @@
 }
 
 .card:hover,
-.card:focus-visible { box-shadow: 0 14px 30px -12px rgba(38, 52, 78, 0.4); }
+.card:focus-visible { box-shadow: 0 14px 30px -12px color-mix(in srgb, var(--kzd-navy-500) 40%, transparent); }
 
 /* Browser chrome ---------------------------------------------------------- */
 
@@ -91,21 +91,21 @@
   display: flex;
   align-items: center;
   height: 40px;
-  padding-left: 20px;
+  padding-left: var(--kzd-space-16);
   background: var(--s-chrome);
-  border-radius: 15px 15px 0 0;
+  border-radius: var(--kzd-radius-16) var(--kzd-radius-16) 0 0;
 }
 
-.lights { display: flex; gap: 5px; flex: none; }
+.lights { display: flex; gap: var(--kzd-space-4); flex: none; }
 
-.light { width: 11px; height: 11px; border-radius: 50%; }
-.lightR { background: #FF5F56; }
-.lightY { background: #FFBD2E; }
-.lightG { background: #27C93F; }
+.light { width: 11px; height: 11px; border-radius: var(--kzd-radius-full); }
+.lightR { background: var(--kzd-error); }
+.lightY { background: var(--kzd-navy-200); }
+.lightG { background: var(--kzd-navy-200); }
 
 .domain {
-  margin-left: 16px;
-  font-size: 12.5px;
+  margin-left: var(--kzd-space-16);
+  font-size:  var(--kzd-text-label-sm);
   color: var(--s-domain);
   white-space: nowrap;
   overflow: hidden;
@@ -118,7 +118,7 @@
   position: relative;
   height: 212px; /* 252 card - 40 chrome */
   overflow: hidden;
-  border-radius: 0 0 15px 15px;
+  border-radius: 0 0 var(--kzd-radius-16) var(--kzd-radius-16);
 }
 
 /* The top of a hero capture is what identifies the site. */
@@ -144,12 +144,12 @@
   left: 50%;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--kzd-space-8);
   height: 46px;
-  padding: 0 20px;
-  border-radius: 999px;
+  padding: 0 var(--kzd-space-16);
+  border-radius: var(--kzd-radius-full);
   background: var(--kzd-white);
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   font-weight: 500;
   color: var(--kzd-navy-500);
   white-space: nowrap;
@@ -165,8 +165,8 @@
 
 .preview svg,
 .modalGo svg {
-  width: 13px;
-  height: 13px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
@@ -182,14 +182,14 @@
   right: 14px;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: var(--kzd-space-8);
   height: 25px;
-  padding: 0 10px;
+  padding: 0 var(--kzd-space-8);
   border: 1px solid var(--kzd-line);
-  border-radius: 999px;
+  border-radius: var(--kzd-radius-full);
   background: rgba(255, 255, 255, 0.94);
   font-family: var(--kzd-type-label);
-  font-size: 9px;
+  font-size:  var(--kzd-text-label-sm);
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -206,7 +206,7 @@
 .halo {
   position: absolute;
   inset: 0;
-  border-radius: 50%;
+  border-radius: var(--kzd-radius-full);
   background: var(--s-live);
 }
 
@@ -230,9 +230,9 @@
 /* Caption, outside the card ------------------------------------------------ */
 
 .cat {
-  margin: 24px 0 0;
+  margin: var(--kzd-space-24) 0 0;
   font-family: var(--kzd-type-label);
-  font-size: 10px;
+  font-size:  var(--kzd-text-label-sm);
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -240,9 +240,9 @@
 }
 
 .name {
-  margin: 22px 0 0;
+  margin: var(--kzd-space-24) 0 0;
   font-family: var(--kzd-type-display);
-  font-size: 20px;
+  font-size:  var(--kzd-text-title);
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -268,7 +268,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: var(--kzd-space-24);
   /* Fallback first: a heavier flat scrim where backdrop-filter is missing. */
   background: rgba(22, 30, 48, 0.72);
   opacity: 0;
@@ -294,7 +294,7 @@
   max-height: calc(100vh - 48px);
   display: flex;
   flex-direction: column;
-  border-radius: 22px;
+  border-radius: var(--kzd-radius-24);
   background: var(--kzd-white);
   box-shadow: 0 40px 90px -20px rgba(12, 20, 38, 0.48);
   overflow: hidden;
@@ -310,15 +310,15 @@
   display: flex;
   align-items: center;
   height: 50px;
-  padding: 0 18px 0 20px;
+  padding: 0 var(--kzd-space-16) 0 var(--kzd-space-16);
   background: var(--s-chrome);
   flex: none;
 }
 
 .globe {
   margin-left: auto;
-  width: 17px;
-  height: 17px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   fill: none;
   stroke: var(--s-domain);
   stroke-width: 1.6;
@@ -330,14 +330,14 @@
 .modalFoot {
   position: relative;
   min-height: 150px;
-  padding: 30px 38px;
+  padding: var(--kzd-space-32) var(--kzd-space-40);
   background: var(--kzd-white);
 }
 
 .modalCat {
   margin: 0;
   font-family: var(--kzd-type-label);
-  font-size: 10.5px;
+  font-size:  var(--kzd-text-label-sm);
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -345,9 +345,9 @@
 }
 
 .modalName {
-  margin: 12px 0 0;
+  margin: var(--kzd-space-12) 0 0;
   font-family: var(--kzd-type-display);
-  font-size: 27px;
+  font-size:  var(--kzd-text-title);
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -355,9 +355,9 @@
 }
 
 .modalDesc {
-  margin: 14px 0 0;
+  margin: var(--kzd-space-12) 0 0;
   max-width: 520px;
-  font-size: 15.5px;
+  font-size:  var(--kzd-text-body);
   line-height: 1.62;
   color: var(--kzd-text-muted);
 }
@@ -369,41 +369,41 @@
   transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: var(--kzd-space-8);
   height: 54px;
-  padding: 0 26px;
+  padding: 0 var(--kzd-space-24);
   border: 0;
-  border-radius: 11px;
+  border-radius: var(--kzd-radius-12);
   background: var(--kzd-navy-500);
-  font-size: 15.5px;
+  font-size:  var(--kzd-text-body);
   font-weight: 500;
-  color: #fff;
+  color: var(--kzd-white);
   cursor: pointer;
   transition: background-color 200ms ease;
 }
 
 .modalGo:hover,
-.modalGo:focus-visible { background: #143257; }
+.modalGo:focus-visible { background: var(--kzd-navy-500); }
 
 .modalClose {
   display: grid;
   place-items: center;
   width: 34px;
   height: 34px;
-  margin-left: 14px;
+  margin-left: var(--kzd-space-12);
   padding: 0;
   border: 0;
-  border-radius: 50%;
-  background: rgba(11, 37, 69, 0.07);
+  border-radius: var(--kzd-radius-full);
+  background: color-mix(in srgb, var(--kzd-navy-700) 7%, transparent);
   cursor: pointer;
   flex: none;
 }
 
 .modalClose svg {
-  width: 13px;
-  height: 13px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   fill: none;
-  stroke: #3A404C;
+  stroke: var(--kzd-charcoal);
   stroke-width: 2;
   stroke-linecap: round;
 }
@@ -421,8 +421,8 @@
 
 @media (max-width: 560px) {
   .modalShot { height: 240px; }
-  .modalFoot { padding: 24px; }
-  .modalGo { position: static; transform: none; margin-top: 20px; }
+  .modalFoot { padding: var(--kzd-space-24); }
+  .modalGo { position: static; transform: none; margin-top: var(--kzd-space-16); }
 }
 
 @media (prefers-reduced-motion: reduce) {

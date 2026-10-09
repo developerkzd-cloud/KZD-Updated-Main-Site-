@@ -32,7 +32,7 @@
 
 .kzd-mark.is-dark {
   /* brightness(0) blackens the mark while preserving its alpha; the opacity
-     step lands it on roughly #262626 rather than a hard pure black. */
+     step lands it on roughly --kzd-black rather than a hard pure black. */
   filter: brightness(0) opacity(.88);
 }
 
@@ -51,19 +51,19 @@
    -------------------------------------------------------------------------- */
 
 .kzd-about {
-  --kzd-paper:      #FFFFFF;
-  --kzd-card:       #F8FAFC;   /* value cards + brand card fill */
-  --kzd-ink:        #232323;   /* headings, numerals      */
-  --kzd-muted:      #717580;   /* body copy, labels       */
-  --kzd-dim:        #9298A4;   /* meta, attribution       */
-  --kzd-blue:       #2F6FED;   /* accent, eyebrow, bars   */
-  --kzd-ember:      #FF6B35;   /* eyebrow dot only        */
-  --kzd-line:       #E1E4EA;   /* hairlines, borders      */
-  --kzd-chip:       #DBE7FD;   /* index chip fill         */
-  --kzd-navy:       #0B2545;   /* brand plate             */
-  --kzd-quote:      #3A404C;   /* brand block quote       */
-  --kzd-grad-start: #4A5468;   /* heading gradient start  */
-  --kzd-grad-end:   #232323;   /* heading gradient end    */
+  --kzd-paper:      var(--kzd-white);
+  --kzd-card:       var(--kzd-surface-50);   /* value cards + brand card fill */
+  --kzd-ink:        var(--kzd-black);   /* headings, numerals      */
+  --kzd-muted:      var(--kzd-gray);   /* body copy, labels       */
+  --kzd-dim:        var(--kzd-gray);   /* meta, attribution       */
+  --kzd-blue:       var(--kzd-navy-300);   /* accent, eyebrow, bars   */
+  --kzd-ember:      var(--kzd-navy-200);   /* eyebrow dot only        */
+  --kzd-line:       var(--kzd-line);   /* hairlines, borders      */
+  --kzd-chip:       var(--kzd-line);   /* index chip fill         */
+  --kzd-navy:       var(--kzd-navy-700);   /* brand plate             */
+  --kzd-quote:      var(--kzd-charcoal);   /* brand block quote       */
+  --kzd-grad-start: var(--kzd-gray);   /* heading gradient start  */
+  --kzd-grad-end:   var(--kzd-black);   /* heading gradient end    */
 
   --kzd-font-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --kzd-font-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -77,7 +77,7 @@
   isolation: isolate;
   overflow: hidden;              /* also guards against any sub-pixel overhang */
   padding-top: 120px;
-  padding-bottom: 90px;
+  padding-bottom: var(--kzd-space-96);
   background: var(--kzd-paper);
 }
 
@@ -90,8 +90,8 @@
   pointer-events: none;
   background: radial-gradient(
     58% 62% at 14% 22%,
-    rgba(47, 111, 237, .085) 0%,
-    rgba(47, 111, 237, 0) 100%
+    color-mix(in srgb, var(--kzd-navy-300) 9%, transparent) 0%,
+    color-mix(in srgb, var(--kzd-navy-300) 0%, transparent) 100%
   );
 }
 
@@ -110,7 +110,7 @@
 .kzd-about__lede {
   display: grid;
   grid-template-columns: minmax(0, 560fr) minmax(0, 600fr);
-  gap: 80px;
+  gap: var(--kzd-space-80);
   align-items: start;
 }
 
@@ -121,11 +121,11 @@
   align-items: center;
   justify-content: center;
   aspect-ratio: 560 / 600;
-  padding: 28px;
+  padding: var(--kzd-space-24);
   border: 1px solid var(--kzd-line);
-  border-radius: 24px;
+  border-radius: var(--kzd-radius-24);
   background: var(--kzd-paper);
-  box-shadow: 0 10px 28px -12px rgba(38, 52, 78, .30);
+  box-shadow: 0 10px 28px -12px color-mix(in srgb, var(--kzd-navy-500) 30%, transparent);
 }
 
 /* 1.75:1 banner inside a 0.93:1 panel — contain, never cover. Cropping would
@@ -139,7 +139,7 @@
 }
 
 .kzd-about__copy {
-  padding-top: 30px;             /* eyebrow lands at board y=150 */
+  padding-top: var(--kzd-space-32);             /* eyebrow lands at board y=150 */
 }
 
 /* Eyebrow --------------------------------------------------------------- */
@@ -147,13 +147,13 @@
 .kzd-about__eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 8px 16px;
+  gap: var(--kzd-space-8);
+  padding: var(--kzd-space-8) var(--kzd-space-16);
   border: 1px solid var(--kzd-line);
-  border-radius: 999px;
+  border-radius: var(--kzd-radius-full);
   background: var(--kzd-paper);
   font-family: var(--kzd-font-mono);
-  font-size: 11px;
+  font-size:  var(--kzd-text-label-sm);
   font-weight: 500;
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -163,7 +163,7 @@
 .kzd-about__dot {
   width: 7px;
   height: 7px;
-  border-radius: 50%;
+  border-radius: var(--kzd-radius-full);
   background: var(--kzd-ember);
   flex: none;
 }
@@ -171,9 +171,9 @@
 /* Heading --------------------------------------------------------------- */
 
 .kzd-about__title {
-  margin: 30px 0 0;
+  margin: var(--kzd-space-32) 0 0;
   font-family: var(--kzd-font-display);
-  font-size: 56px;
+  font-size:  var(--kzd-text-display);
   font-weight: 600;
   line-height: 1.036;
   letter-spacing: -.03em;
@@ -197,10 +197,10 @@
 /* Body ------------------------------------------------------------------ */
 
 .kzd-about__body {
-  margin: 26px 0 0;
+  margin: var(--kzd-space-24) 0 0;
   max-width: 520px;
   font-family: var(--kzd-font-body);
-  font-size: 17px;
+  font-size:  var(--kzd-text-body);
   font-weight: 400;
   line-height: 1.706;
   color: var(--kzd-muted);
@@ -211,8 +211,8 @@
 .kzd-about__stats {
   display: grid;
   grid-template-columns: repeat(2, 260px);
-  gap: 40px;
-  margin-top: 52px;
+  gap: var(--kzd-space-40);
+  margin-top: var(--kzd-space-48);
 }
 
 .kzd-about__stat-value {
@@ -224,7 +224,7 @@
 }
 
 .kzd-about__stat-num {
-  font-size: 64px;
+  font-size:  var(--kzd-text-display);
   font-weight: 600;
   letter-spacing: -.02em;
   color: var(--kzd-ink);
@@ -233,18 +233,18 @@
 }
 
 .kzd-about__stat-pct {
-  margin-left: 4px;
-  margin-top: 26px;
-  font-size: 24px;
+  margin-left: var(--kzd-space-4);
+  margin-top: var(--kzd-space-24);
+  font-size:  var(--kzd-text-title);
   font-weight: 500;
   color: var(--kzd-muted);
 }
 
 .kzd-about__stat-label {
   margin: 0;
-  padding-top: 14px;             /* numeral top +78 */
+  padding-top: var(--kzd-space-12);             /* numeral top +78 */
   font-family: var(--kzd-font-mono);
-  font-size: 11px;
+  font-size:  var(--kzd-text-label-sm);
   font-weight: 500;
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -254,8 +254,8 @@
 .kzd-about__track {
   position: relative;
   height: 2px;
-  margin-top: 12px;              /* numeral top +104 */
-  border-radius: 2px;
+  margin-top: var(--kzd-space-12);              /* numeral top +104 */
+  border-radius: var(--kzd-radius-8);
   background: var(--kzd-line);
   overflow: hidden;
 }
@@ -264,7 +264,7 @@
   position: absolute;
   inset: 0 auto 0 0;
   width: calc(var(--kzd-stat) * 100%);
-  border-radius: 2px;
+  border-radius: var(--kzd-radius-8);
   background: var(--kzd-blue);
   transform: scaleX(0);
   transform-origin: left center;
@@ -276,7 +276,7 @@
 
 .kzd-about__rule {
   height: 1px;
-  margin: 58px 0 0;
+  margin: var(--kzd-space-64) 0 0;
   border: 0;
   background: var(--kzd-line);
 }
@@ -284,13 +284,13 @@
 .kzd-about__metrics {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin-top: 51px;
+  margin-top: var(--kzd-space-48);
 }
 
 .kzd-about__metric-value {
   margin: 0;
   font-family: var(--kzd-font-display);
-  font-size: 58px;
+  font-size:  var(--kzd-text-display);
   font-weight: 600;
   line-height: 1;
   letter-spacing: -.03em;
@@ -304,25 +304,25 @@
    adjacent rules into per-column segments instead of one continuous hairline.
    Below 900px the grid already carries a column-gap, so the margin is dropped. */
 .kzd-about__metric {
-  margin-right: 56px;
-  padding-bottom: 28px;          /* rule sits ~28px below the description */
+  margin-right: var(--kzd-space-48);
+  padding-bottom: var(--kzd-space-24);          /* rule sits ~28px below the description */
   border-bottom: 1px solid var(--kzd-line);
 }
 
 .kzd-about__metric-label {
   margin: 0;
-  padding-top: 18px;             /* numeral top +76 */
+  padding-top: var(--kzd-space-16);             /* numeral top +76 */
   font-family: var(--kzd-font-display);
-  font-size: 16px;
+  font-size:  var(--kzd-text-body);
   font-weight: 600;
   line-height: 1.35;
   color: var(--kzd-ink);
 }
 
 .kzd-about__metric-desc {
-  margin: 8px 0 0;
+  margin: var(--kzd-space-8) 0 0;
   font-family: var(--kzd-font-body);
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   font-weight: 400;
   line-height: 1.6;
   color: var(--kzd-muted);
@@ -392,24 +392,24 @@
 .kzd-about__values {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  margin-top: 84px;
+  gap: var(--kzd-space-16);
+  margin-top: var(--kzd-space-80);
 }
 
 .kzd-about__card {
   position: relative;
   min-height: 148px;
-  padding: 24px 26px 26px;
+  padding: var(--kzd-space-24) var(--kzd-space-24) var(--kzd-space-24);
   border: 1px solid var(--kzd-line);
-  border-radius: 18px;
+  border-radius: var(--kzd-radius-16);
   background: var(--kzd-card);
-  box-shadow: 0 8px 20px -10px rgba(38, 52, 78, .20);
+  box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--kzd-navy-500) 20%, transparent);
 }
 
 .kzd-about__card-head {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: var(--kzd-space-8);
 }
 
 .kzd-about__index {
@@ -420,10 +420,10 @@
   width: 34px;
   height: 20px;
   margin-top: 2px;
-  border-radius: 6px;
+  border-radius: var(--kzd-radius-8);
   background: var(--kzd-chip);
   font-family: var(--kzd-font-mono);
-  font-size: 10px;
+  font-size:  var(--kzd-text-label-sm);
   font-weight: 500;
   letter-spacing: .06em;
   color: var(--kzd-blue);
@@ -432,7 +432,7 @@
 .kzd-about__card-title {
   margin: 0;
   font-family: var(--kzd-font-display);
-  font-size: 21px;
+  font-size:  var(--kzd-text-title);
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -.02em;
@@ -440,10 +440,10 @@
 }
 
 .kzd-about__card-text {
-  margin: 14px 0 0 44px;         /* aligns to the title, board x=70 */
+  margin: var(--kzd-space-12) 0 0 var(--kzd-space-40);         /* aligns to the title, board x=70 */
   max-width: 514px;
   font-family: var(--kzd-font-body);
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   font-weight: 400;
   line-height: 1.67;
   color: var(--kzd-muted);
@@ -456,7 +456,7 @@
   /* Inline padding grows the hit box to the 44px touch minimum without
      changing the line box, so the paragraph does not reflow. Sized in CSS px
      against this site's body { zoom: .9 }, so 50px CSS lands at ~45px actual. */
-  padding-block: 16px;
+  padding-block: var(--kzd-space-16);
 }
 
 .kzd-about__card-text a:hover,
@@ -474,30 +474,30 @@
 .kzd-about__brand-mask {
   position: relative;
   overflow: hidden;
-  margin-top: 94px;
-  padding-bottom: 28px;
+  margin-top: var(--kzd-space-96);
+  padding-bottom: var(--kzd-space-24);
 }
 
 .kzd-about__brand {
   display: grid;
   grid-template-columns: 330px minmax(0, 1fr);
-  column-gap: 46px;
+  column-gap: var(--kzd-space-48);
   align-items: center;
   min-height: 190px;
-  padding: 25px;
+  padding: var(--kzd-space-24);
   border: 1px solid var(--kzd-line);
-  border-radius: 20px;
+  border-radius: var(--kzd-radius-16);
   background: var(--kzd-card);
-  box-shadow: 0 8px 20px -10px rgba(38, 52, 78, .20);
+  box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--kzd-navy-500) 20%, transparent);
 }
 
 .kzd-about__plate {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: var(--kzd-space-12);
   height: 140px;
-  border-radius: 14px;
+  border-radius: var(--kzd-radius-16);
   background: var(--kzd-navy);
 }
 
@@ -510,18 +510,18 @@
 
 .kzd-about__plate-word {
   font-family: var(--kzd-font-display);
-  font-size: 21px;
+  font-size:  var(--kzd-text-title);
   font-weight: 700;
   line-height: 1;
   letter-spacing: -.02em;
-  color: #FFFFFF;
+  color: var(--kzd-white);
   white-space: nowrap;           /* mark + wordmark stay on ONE line */
 }
 
 .kzd-about__quote {
   margin: 0;
   font-family: var(--kzd-font-body);
-  font-size: 19px;
+  font-size:  var(--kzd-text-body);
   font-weight: 400;
   line-height: 1.68;
   color: var(--kzd-quote);
@@ -529,10 +529,10 @@
 
 .kzd-about__attrib {
   display: block;
-  margin-top: 18px;
+  margin-top: var(--kzd-space-16);
   font-style: normal;            /* <cite> defaults to italic; the board is not */
   font-family: var(--kzd-font-mono);
-  font-size: 10.5px;
+  font-size:  var(--kzd-text-label-sm);
   font-weight: 500;
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -663,28 +663,28 @@
 @media (max-width: 1200px) {
   .kzd-about {
     --kzd-gutter: 40px;
-    padding-top: 96px;
-    padding-bottom: 80px;
+    padding-top: var(--kzd-space-96);
+    padding-bottom: var(--kzd-space-80);
   }
 
-  .kzd-about__lede { gap: 56px; }
-  .kzd-about__title { font-size: clamp(40px, 4.4vw, 56px); }
-  .kzd-about__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
-  .kzd-about__metric-value { font-size: clamp(44px, 4.6vw, 58px); }
-  .kzd-about__brand { column-gap: 36px; }
+  .kzd-about__lede { gap: var(--kzd-space-48); }
+  .kzd-about__title { font-size:  var(--kzd-text-display); }
+  .kzd-about__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--kzd-space-32); }
+  .kzd-about__metric-value { font-size:  var(--kzd-text-display); }
+  .kzd-about__brand { column-gap: var(--kzd-space-32); }
 }
 
 /* <= 900 — Block 1 stacks, analytics goes 2x2, cards go single column,
    brand block stacks. */
 @media (max-width: 900px) {
   .kzd-about {
-    padding-top: 80px;
-    padding-bottom: 72px;
+    padding-top: var(--kzd-space-80);
+    padding-bottom: var(--kzd-space-64);
   }
 
   .kzd-about__lede {
     grid-template-columns: minmax(0, 1fr);
-    gap: 36px;
+    gap: var(--kzd-space-32);
   }
 
   /* Panel goes full width, capped height. Graphic still contained. */
@@ -692,13 +692,13 @@
     aspect-ratio: auto;
     height: 340px;
     max-height: 340px;
-    padding: 24px;
+    padding: var(--kzd-space-24);
   }
 
   .kzd-about__copy { padding-top: 0; }
 
   .kzd-about__title {
-    font-size: 40px;
+    font-size:  var(--kzd-text-headline);
     line-height: 1.08;
   }
 
@@ -711,30 +711,30 @@
   /* Two percentage stats side by side, 50% each */
   .kzd-about__stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-    margin-top: 40px;
+    gap: var(--kzd-space-24);
+    margin-top: var(--kzd-space-40);
   }
-  .kzd-about__stat-num { font-size: 44px; }
-  .kzd-about__stat-pct { font-size: 18px; margin-top: 18px; }
-  .kzd-about__stat-label { padding-top: 12px; }
+  .kzd-about__stat-num { font-size:  var(--kzd-text-headline); }
+  .kzd-about__stat-pct { font-size:  var(--kzd-text-body); margin-top: var(--kzd-space-16); }
+  .kzd-about__stat-label { padding-top: var(--kzd-space-12); }
 
-  .kzd-about__rule { margin-top: 48px; }
+  .kzd-about__rule { margin-top: var(--kzd-space-48); }
 
   /* Analytics: 4 columns -> 2x2. The grid's own gap separates the rules here,
      so the desktop right margin is no longer needed. */
   .kzd-about__metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 36px 24px;
-    margin-top: 42px;
+    gap: var(--kzd-space-32) var(--kzd-space-24);
+    margin-top: var(--kzd-space-40);
   }
   .kzd-about__metric { margin-right: 0; }
-  .kzd-about__metric-value { font-size: 44px; }
+  .kzd-about__metric-value { font-size:  var(--kzd-text-headline); }
 
   /* Value cards: 2x2 -> single column, height auto */
   .kzd-about__values {
     grid-template-columns: minmax(0, 1fr);
-    gap: 16px;
-    margin-top: 60px;
+    gap: var(--kzd-space-16);
+    margin-top: var(--kzd-space-64);
   }
   .kzd-about__card { min-height: 0; }
 
@@ -742,14 +742,14 @@
      reads as a glitch rather than a reveal. */
   .kzd-about { --kzd-brand-travel: -45; --kzd-brand-fade: .40; }
 
-  .kzd-about__brand-mask { margin-top: 60px; }
+  .kzd-about__brand-mask { margin-top: var(--kzd-space-64); }
 
   /* Brand block stacks; plate full width, logo + wordmark still one line */
   .kzd-about__brand {
     grid-template-columns: minmax(0, 1fr);
-    row-gap: 26px;
+    row-gap: var(--kzd-space-24);
     min-height: 0;
-    padding: 22px;
+    padding: var(--kzd-space-24);
   }
   .kzd-about__plate {
     height: 110px;
@@ -762,14 +762,14 @@
 @media (max-width: 560px) {
   .kzd-about {
     --kzd-gutter: 20px;
-    padding-top: 64px;
-    padding-bottom: 56px;
+    padding-top: var(--kzd-space-64);
+    padding-bottom: var(--kzd-space-48);
   }
 
   .kzd-about__copy { text-align: center; }
 
   .kzd-about__title {
-    font-size: 32px;
+    font-size:  var(--kzd-text-title);
     line-height: 1.1;
   }
 
@@ -780,43 +780,43 @@
 
   .kzd-about__panel {
     height: 260px;
-    padding: 18px;
+    padding: var(--kzd-space-16);
   }
 
   /* Percentage stats: one per row, full width, centred. Track + bar keep the
      full width of the cell. */
   .kzd-about__stats {
     grid-template-columns: minmax(0, 1fr);
-    gap: 28px;
+    gap: var(--kzd-space-24);
   }
   .kzd-about__stat-value { justify-content: center; }
-  .kzd-about__stat-num { font-size: 36px; }
-  .kzd-about__stat-pct { font-size: 16px; margin-top: 13px; }
+  .kzd-about__stat-num { font-size:  var(--kzd-text-headline); }
+  .kzd-about__stat-pct { font-size:  var(--kzd-text-body); margin-top: var(--kzd-space-12); }
 
   /* Analytics: 2x2 -> single column, each centred */
   .kzd-about__metrics {
     grid-template-columns: minmax(0, 1fr);
-    gap: 30px;
+    gap: var(--kzd-space-32);
     text-align: center;
   }
-  .kzd-about__metric-value { font-size: 38px; }
+  .kzd-about__metric-value { font-size:  var(--kzd-text-headline); }
 
   /* Cards: chip + title stay on one line, description left-aligned */
-  .kzd-about__card { padding: 20px; }
+  .kzd-about__card { padding: var(--kzd-space-16); }
   .kzd-about__card-head { flex-wrap: nowrap; }
-  .kzd-about__card-title { font-size: 19px; }
+  .kzd-about__card-title { font-size:  var(--kzd-text-body); }
   .kzd-about__card-text {
-    margin-left: 44px;
-    font-size: 14px;
+    margin-left: var(--kzd-space-40);
+    font-size:  var(--kzd-text-label-lg);
     text-align: left;
   }
 
   /* Brand block */
   .kzd-about { --kzd-brand-travel: -28; --kzd-brand-fade: .55; }
-  .kzd-about__brand { padding: 18px; }
-  .kzd-about__plate { height: 96px; gap: 12px; }
+  .kzd-about__brand { padding: var(--kzd-space-16); }
+  .kzd-about__plate { height: 96px; gap: var(--kzd-space-12); }
   .kzd-about__plate-mark { width: var(--kzd-logo-40); height: var(--kzd-logo-40); }
-  .kzd-about__plate-word { font-size: 18px; }
-  .kzd-about__quote { font-size: 16px; }
+  .kzd-about__plate-word { font-size:  var(--kzd-text-body); }
+  .kzd-about__quote { font-size:  var(--kzd-text-body); }
   .kzd-about__attrib { text-align: center; }
 }

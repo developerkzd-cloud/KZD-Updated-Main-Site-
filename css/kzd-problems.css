@@ -24,19 +24,19 @@
 
 .kzd-problems {
   /* Light palette — same values as the Creative Approach section. */
-  --kzd-p-paper:      #FFFFFF;
-  --kzd-p-ink:        #232323;
-  --kzd-p-muted:      #717580;
-  --kzd-p-blue:       #2F6FED;
-  --kzd-p-ember:      #FF6B35;
-  --kzd-p-line:       #E1E4EA;
-  --kzd-p-grad-from:  #232323;
-  --kzd-p-grad-to:    #4A5468;
+  --kzd-p-paper:      var(--kzd-white);
+  --kzd-p-ink:        var(--kzd-black);
+  --kzd-p-muted:      var(--kzd-gray);
+  --kzd-p-blue:       var(--kzd-navy-300);
+  --kzd-p-ember:      var(--kzd-navy-200);
+  --kzd-p-line:       var(--kzd-line);
+  --kzd-p-grad-from:  var(--kzd-black);
+  --kzd-p-grad-to:    var(--kzd-gray);
 
   /* Caption tones — unchanged from the dark theme, because the captions still
      sit on a dark scrim. */
-  --kzd-p-cap-lg:     #B9C6DC;
-  --kzd-p-cap-sm:     #93A4C1;
+  --kzd-p-cap-lg:     var(--kzd-silver-light);
+  --kzd-p-cap-sm:     var(--kzd-navy-400);
 
   --kzd-p-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --kzd-p-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -61,18 +61,18 @@
 .kzd-problems__head {
   display: grid;
   grid-template-columns: 660fr 470fr;
-  column-gap: 30px;
+  column-gap: var(--kzd-space-32);
   align-items: start;
 }
 
 .kzd-problems__eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--kzd-space-12);
   height: 34px;
-  padding-left: 20px;
-  padding-right: 22px;
-  border-radius: 17px;
+  padding-left: var(--kzd-space-16);
+  padding-right: var(--kzd-space-24);
+  border-radius: var(--kzd-radius-16);
   background: var(--kzd-p-paper);
   border: 1px solid var(--kzd-p-line);
 }
@@ -81,15 +81,15 @@
   flex: 0 0 auto;
   width: 6px;
   height: 6px;
-  border-radius: 50%;
+  border-radius: var(--kzd-radius-full);
   background: var(--kzd-p-ember);
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, .24);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kzd-navy-200) 24%, transparent);
 }
 
 .kzd-problems__eyebrow-text {
   font-family: var(--kzd-p-mono);
   font-weight: 500;
-  font-size: 11.5px;
+  font-size:  var(--kzd-text-label-sm);
   line-height: 1;
   letter-spacing: .18em;
   text-transform: uppercase;
@@ -97,13 +97,13 @@
   margin-right: -.18em;
 }
 
-/* Heading gradient INVERTS versus the dark board: that ran #FFFFFF → #B9CDF5;
-   this runs #232323 → #4A5468. */
+/* Heading gradient INVERTS versus the dark board: that ran --kzd-white → --kzd-navy-200;
+   this runs --kzd-black → --kzd-gray. */
 .kzd-problems__title {
-  margin: 26px 0 0;
+  margin: var(--kzd-space-24) 0 0;
   font-family: var(--kzd-p-display);
   font-weight: 600;
-  font-size: 52px;
+  font-size:  var(--kzd-text-headline);
   line-height: 1.06;
   letter-spacing: -.03em;
   color: var(--kzd-p-ink);          /* fallback if background-clip:text fails */
@@ -119,10 +119,10 @@
 }
 
 .kzd-problems__intro {
-  margin: 66px 0 0;                 /* board: 186 - 120 = 66 below the eyebrow top */
+  margin: var(--kzd-space-64) 0 0;                 /* board: 186 - 120 = 66 below the eyebrow top */
   font-family: var(--kzd-p-body);
   font-weight: 500;                 /* optical bump, as in Creative Approach */
-  font-size: 17px;
+  font-size:  var(--kzd-text-body);
   line-height: 1.706;
   color: var(--kzd-p-muted);
   text-wrap: wrap;
@@ -133,11 +133,11 @@
    -------------------------------------------------------------------------- */
 
 .kzd-problems__grid {
-  margin-top: 67px;                 /* lands the grid top on the board's y=340 */
+  margin-top: var(--kzd-space-64);                 /* lands the grid top on the board's y=340 */
   display: grid;
   grid-template-columns: 610fr 291fr 291fr;
   grid-template-rows: 1fr 1fr;
-  gap: 24px;
+  gap: var(--kzd-space-24);
   aspect-ratio: 1240 / 520;         /* holds the board proportions at any width */
 }
 
@@ -149,12 +149,12 @@
 .kzd-problems__cell {
   position: relative;
   overflow: hidden;
-  border-radius: 22px;
+  border-radius: var(--kzd-radius-24);
   /* A light edge rather than the dark theme's translucent white — it sits over
      a dark photo, so it reads as a subtle rim, not a line on the paper. */
   border: 1px solid rgba(255, 255, 255, .16);
   /* Lifts the tile off the white paper. */
-  box-shadow: 0 10px 28px -12px rgba(38, 52, 78, .30);
+  box-shadow: 0 10px 28px -12px color-mix(in srgb, var(--kzd-navy-500) 30%, transparent);
   opacity: 0;
   transform: scale(.98);
   transition:
@@ -216,8 +216,8 @@
   pointer-events: none;
   background: linear-gradient(
     90deg,
-    rgba(47, 111, 237, .16) 0%,
-    rgba(47, 111, 237, 0) 80%
+    color-mix(in srgb, var(--kzd-navy-300) 16%, transparent) 0%,
+    color-mix(in srgb, var(--kzd-navy-300) 0%, transparent) 80%
   );
 }
 
@@ -267,7 +267,7 @@
   font-weight: 500;
   line-height: 1;
   text-transform: uppercase;
-  color: #FFFFFF;
+  color: var(--kzd-white);
 }
 
 .kzd-problems__text {
@@ -279,40 +279,40 @@
 
 /* Large cells */
 .kzd-problems__cell--gaps .kzd-problems__cap,
-.kzd-problems__cell--analytics .kzd-problems__cap { padding: 32px; }
+.kzd-problems__cell--analytics .kzd-problems__cap { padding: var(--kzd-space-32); }
 
 .kzd-problems__cell--gaps .kzd-problems__label,
 .kzd-problems__cell--analytics .kzd-problems__label {
-  font-size: 11.5px;
+  font-size:  var(--kzd-text-label-sm);
   letter-spacing: .18em;
   margin-right: -.18em;
 }
 
 .kzd-problems__cell--gaps .kzd-problems__text,
 .kzd-problems__cell--analytics .kzd-problems__text {
-  margin-top: 24px;
+  margin-top: var(--kzd-space-24);
   max-width: 430px;
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   line-height: 1.6;
   color: var(--kzd-p-cap-lg);
 }
 
 /* Small cells */
 .kzd-problems__cell--ineff .kzd-problems__cap,
-.kzd-problems__cell--digital .kzd-problems__cap { padding: 24px; }
+.kzd-problems__cell--digital .kzd-problems__cap { padding: var(--kzd-space-24); }
 
 .kzd-problems__cell--ineff .kzd-problems__label,
 .kzd-problems__cell--digital .kzd-problems__label {
-  font-size: 10.5px;
+  font-size:  var(--kzd-text-label-sm);
   letter-spacing: .16em;
   margin-right: -.16em;
 }
 
 .kzd-problems__cell--ineff .kzd-problems__text,
 .kzd-problems__cell--digital .kzd-problems__text {
-  margin-top: 21px;
+  margin-top: var(--kzd-space-24);
   max-width: 228px;
-  font-size: 12.8px;
+  font-size:  var(--kzd-text-label);
   line-height: 1.6;
   color: var(--kzd-p-cap-sm);
 }
@@ -322,42 +322,42 @@
    -------------------------------------------------------------------------- */
 
 @media (max-width: 1199px) {
-  .kzd-problems { padding-top: 96px; padding-bottom: 100px; }
-  .kzd-problems__title { font-size: 44px; }
-  .kzd-problems__grid { margin-top: 52px; }
+  .kzd-problems { padding-top: var(--kzd-space-96); padding-bottom: 100px; }
+  .kzd-problems__title { font-size:  var(--kzd-text-headline); }
+  .kzd-problems__grid { margin-top: var(--kzd-space-48); }
   .kzd-problems__cell--gaps .kzd-problems__text,
-  .kzd-problems__cell--analytics .kzd-problems__text { font-size: 14px; }
+  .kzd-problems__cell--analytics .kzd-problems__text { font-size:  var(--kzd-text-label-lg); }
 }
 
 /* Spec 4: below this the bento becomes a single column, all cells 4:3. */
 @media (max-width: 991px) {
   .kzd-problems__head { grid-template-columns: minmax(0, 1fr); }
-  .kzd-problems__intro { margin-top: 24px; }
+  .kzd-problems__intro { margin-top: var(--kzd-space-24); }
 
   .kzd-problems__grid {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: none;
     aspect-ratio: auto;
-    margin-top: 44px;
+    margin-top: var(--kzd-space-40);
   }
   .kzd-problems__cell { grid-column: 1 !important; grid-row: auto !important; aspect-ratio: 4 / 3; }
 
   /* At one column the small cells are as wide as the large ones, so their
      captions should not stay pinned to a 228px measure. */
   .kzd-problems__cell--ineff .kzd-problems__cap,
-  .kzd-problems__cell--digital .kzd-problems__cap { padding: 32px; }
+  .kzd-problems__cell--digital .kzd-problems__cap { padding: var(--kzd-space-32); }
   .kzd-problems__cell--ineff .kzd-problems__label,
-  .kzd-problems__cell--digital .kzd-problems__label { font-size: 11.5px; letter-spacing: .18em; }
+  .kzd-problems__cell--digital .kzd-problems__label { font-size:  var(--kzd-text-label-sm); letter-spacing: .18em; }
   .kzd-problems__cell--ineff .kzd-problems__text,
-  .kzd-problems__cell--digital .kzd-problems__text { max-width: 430px; font-size: 15px; }
+  .kzd-problems__cell--digital .kzd-problems__text { max-width: 430px; font-size:  var(--kzd-text-body); }
 }
 
 @media (max-width: 767px) {
-  .kzd-problems { padding-top: 70px; padding-bottom: 70px; }
-  .kzd-problems__title { font-size: clamp(2rem, 7vw, 2.75rem); }
+  .kzd-problems { padding-top: var(--kzd-space-64); padding-bottom: var(--kzd-space-64); }
+  .kzd-problems__title { font-size:  var(--kzd-text-headline); }
   .kzd-problems__cell { aspect-ratio: 3 / 2; }
-  .kzd-problems__cap { padding: 24px !important; }
-  .kzd-problems__text { font-size: 14px !important; }
+  .kzd-problems__cap { padding: var(--kzd-space-24) !important; }
+  .kzd-problems__text { font-size:  var(--kzd-text-label-lg) !important; }
 }
 
 /* --------------------------------------------------------------------------

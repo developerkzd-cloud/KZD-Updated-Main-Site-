@@ -145,7 +145,7 @@
         <link rel="stylesheet" href="css/kzd-buttons.css">
     </head>
     
-    <body data-mobile-nav-style="full-screen-menu" data-mobile-nav-bg-color="#252840">  
+    <body data-mobile-nav-style="full-screen-menu" data-mobile-nav-bg-color="var(--kzd-navy-700)">  
         <!-- Google Tag Manager (noscript) -->
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT3MT2SC"
         height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
@@ -159,8 +159,8 @@
             right: 25px;
             width: 65px;
             height: 65px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: var(--kzd-radius-full);
+            background: linear-gradient(135deg, var(--kzd-navy-400) 0%, var(--kzd-navy-300) 100%);
             color: white;
             display: flex;
             align-items: center;
@@ -178,8 +178,8 @@
         
         .kzd-icon-container {
             position: relative;
-            width: 40px;
-            height: 40px;
+            width: var(--kzd-icon-feature);
+            height: var(--kzd-icon-feature);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -192,10 +192,10 @@
         
         .kzd-icon-ring {
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: var(--kzd-icon-hero);
+            height: var(--kzd-icon-hero);
             border: 2px solid rgba(255, 255, 255, 0.4);
-            border-radius: 50%;
+            border-radius: var(--kzd-radius-full);
             animation: kzd-pulse-ring 2s infinite;
         }
         
@@ -211,8 +211,8 @@
         .kzd-dot {
             width: 5px;
             height: 5px;
-            background: #ff3366;
-            border-radius: 50%;
+            background: var(--kzd-error);
+            border-radius: var(--kzd-radius-full);
         }
         
         .kzd-dot-1 {
@@ -231,12 +231,12 @@
             position: absolute;
             top: -5px;
             right: -5px;
-            background: #ff3366;
+            background: var(--kzd-error);
             color: white;
-            border-radius: 50%;
+            border-radius: var(--kzd-radius-full);
             width: 22px;
             height: 22px;
-            font-size: 12px;
+            font-size:  var(--kzd-text-label-sm);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -251,7 +251,7 @@
             width: 420px;
             height: 560px;
             background: white;
-            border-radius: 20px;
+            border-radius: var(--kzd-radius-16);
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
             z-index: 10000;
             display: flex;
@@ -266,7 +266,7 @@
             min-height: 450px;
             max-width: 90vw;
             max-height: 70vh;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--kzd-line);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
@@ -277,9 +277,9 @@
         }
         
         .kzd-chat-header {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            background: linear-gradient(135deg, var(--kzd-navy-400) 0%, var(--kzd-navy-300) 100%);
             color: white;
-            padding: 14px 18px;
+            padding: var(--kzd-space-12) var(--kzd-space-16);
             text-align: center;
             position: relative;
             cursor: move;
@@ -291,18 +291,18 @@
         .kzd-chat-header-content {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: var(--kzd-space-12);
         }
         
         .kzd-chat-avatar {
             width: 40px;
             height: 40px;
-            border-radius: 50%;
+            border-radius: var(--kzd-radius-full);
             background: rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size:  var(--kzd-text-title);
         }
         
         .kzd-chat-header-text {
@@ -312,35 +312,35 @@
         .kzd-chat-header-text h3 {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: var(--kzd-space-8);
             margin: 0;
-            font-size: 17px;
+            font-size:  var(--kzd-text-body);
             font-weight: 600;
         }
         
         .kzd-chat-header-text p {
-            margin: 3px 0 0;
-            font-size: 13px;
+            margin: var(--kzd-space-4) 0 0;
+            font-size:  var(--kzd-text-label);
             opacity: 0.9;
         }
         
         .kzd-online-indicator {
             width: 9px;
             height: 9px;
-            background: #00ff4c;
-            border-radius: 50%;
+            background: var(--kzd-navy-100);
+            border-radius: var(--kzd-radius-full);
             animation: kzd-pulse 1.5s infinite;
         }
         
         .kzd-header-controls {
             display: flex;
-            gap: 14px;
+            gap: var(--kzd-space-12);
         }
         
         .kzd-header-btn {
             color: white;
             cursor: pointer;
-            font-size: 15px;
+            font-size:  var(--kzd-text-body);
             opacity: 0.8;
             transition: opacity 0.2s;
         }
@@ -352,12 +352,12 @@
         
         .kzd-chat-messages {
             flex: 1;
-            padding: 12px;
+            padding: var(--kzd-space-12);
             overflow-y: auto;
-            background: #f8f9fa;
+            background: var(--kzd-surface-50);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: var(--kzd-space-8);
         }
         
         /* Custom scrollbar for messages */
@@ -366,89 +366,89 @@
         }
         
         .kzd-chat-messages::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 8px;
+            background: var(--kzd-surface-100);
+            border-radius: var(--kzd-radius-8);
         }
         
         .kzd-chat-messages::-webkit-scrollbar-thumb {
-            background: #c5c5c5;
-            border-radius: 8px;
+            background: var(--kzd-silver-light);
+            border-radius: var(--kzd-radius-8);
         }
         
         .kzd-chat-messages::-webkit-scrollbar-thumb:hover {
-            background: #a5a5c5;
+            background: var(--kzd-silver);
         }
         
         .kzd-message {
             max-width: 85%;
-            padding: 10px 14px;
-            border-radius: 18px;
+            padding: var(--kzd-space-8) var(--kzd-space-12);
+            border-radius: var(--kzd-radius-16);
             line-height: 1.4;
             position: relative;
             animation: kzd-fadeIn 0.3s ease;
-            font-size: 14px;
-            margin: 4px 0;
+            font-size:  var(--kzd-text-label-lg);
+            margin: var(--kzd-space-4) 0;
         }
         
         .kzd-bot-message {
             background: white;
-            border: 1px solid #e8e8e8;
-            border-bottom-left-radius: 6px;
+            border: 1px solid var(--kzd-surface-200);
+            border-bottom-left-radius: var(--kzd-radius-8);
             align-self: flex-start;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
         
         .kzd-user-message {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            background: linear-gradient(135deg, var(--kzd-navy-400) 0%, var(--kzd-navy-300) 100%);
             color: white;
-            border-bottom-right-radius: 6px;
+            border-bottom-right-radius: var(--kzd-radius-8);
             align-self: flex-end;
-            box-shadow: 0 2px 6px rgba(37, 117, 252, 0.2);
+            box-shadow: 0 2px 6px color-mix(in srgb, var(--kzd-navy-300) 20%, transparent);
         }
         
         .kzd-timestamp {
-            font-size: 10px;
+            font-size:  var(--kzd-text-label-sm);
             opacity: 0.6;
-            margin-top: 4px;
+            margin-top: var(--kzd-space-4);
             text-align: right;
         }
         
         /* Welcome options styling */
         .kzd-welcome-options {
-            margin-top: 10px;
+            margin-top: var(--kzd-space-8);
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: var(--kzd-space-8);
         }
         
         .kzd-welcome-option {
             display: flex;
             align-items: center;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 10px;
+            padding: var(--kzd-space-8);
+            background: var(--kzd-surface-50);
+            border-radius: var(--kzd-radius-12);
             cursor: pointer;
             transition: all 0.2s ease;
-            border: 1px solid #eaeaea;
+            border: 1px solid var(--kzd-surface-200);
         }
         
         .kzd-welcome-option:hover {
-            background: #eef4ff;
+            background: var(--kzd-surface-100);
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(106, 17, 203, 0.15);
+            box-shadow: 0 4px 10px color-mix(in srgb, var(--kzd-navy-400) 15%, transparent);
         }
         
         .kzd-option-icon {
             width: 36px;
             height: 36px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: var(--kzd-radius-8);
+            background: linear-gradient(135deg, var(--kzd-navy-400) 0%, var(--kzd-navy-300) 100%);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 12px;
-            font-size: 14px;
+            margin-right: var(--kzd-space-12);
+            font-size:  var(--kzd-text-label-lg);
             flex-shrink: 0;
         }
         
@@ -459,8 +459,8 @@
         
         .kzd-option-text h4 {
             margin: 0;
-            font-size: 14px;
-            color: #6a11cb;
+            font-size:  var(--kzd-text-label-lg);
+            color: var(--kzd-navy-400);
             font-weight: 600;
             white-space: nowrap;
             overflow: hidden;
@@ -468,17 +468,17 @@
         }
         
         .kzd-option-text p {
-            margin: 3px 0 0;
-            font-size: 12px;
-            color: #666;
+            margin: var(--kzd-space-4) 0 0;
+            font-size:  var(--kzd-text-label-sm);
+            color: var(--kzd-gray);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         
         .kzd-welcome-option .kzd-icon:last-child {
-            color: #6a11cb;
-            font-size: 12px;
+            color: var(--kzd-navy-400);
+            font-size:  var(--kzd-text-label-sm);
             opacity: 0.7;
             transition: opacity 0.2s;
             flex-shrink: 0;
@@ -490,45 +490,45 @@
         
         /* Input container */
         .kzd-input-container {
-            padding: 10px 12px;
+            padding: var(--kzd-space-8) var(--kzd-space-12);
             background: white;
-            border-top: 1px solid #eaeaea;
+            border-top: 1px solid var(--kzd-surface-200);
             display: flex;
-            gap: 8px;
+            gap: var(--kzd-space-8);
             align-items: center;
         }
         
         .kzd-input-container input {
             flex: 1;
-            padding: 10px 14px;
-            border: 1px solid #e0e0e0;
-            border-radius: 20px;
+            padding: var(--kzd-space-8) var(--kzd-space-12);
+            border: 1px solid var(--kzd-line);
+            border-radius: var(--kzd-radius-16);
             outline: none;
-            font-size: 14px;
+            font-size:  var(--kzd-text-label-lg);
             transition: all 0.2s;
         }
         
         .kzd-input-container input:focus {
-            border-color: #2575fc;
-            box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.15);
+            border-color: var(--kzd-navy-300);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--kzd-navy-300) 15%, transparent);
         }
         
         .kzd-input-container input::placeholder {
-            color: #999;
+            color: var(--kzd-gray);
         }
         
         .kzd-input-container button {
-            padding: 10px;
+            padding: var(--kzd-space-8);
             width: 38px;
             height: 38px;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            background: linear-gradient(135deg, var(--kzd-navy-400) 0%, var(--kzd-navy-300) 100%);
             color: white;
             border: none;
-            border-radius: 50%;
+            border-radius: var(--kzd-radius-full);
             cursor: pointer;
             font-weight: 500;
             transition: all 0.2s ease;
-            font-size: 14px;
+            font-size:  var(--kzd-text-label-lg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -536,127 +536,127 @@
         
         .kzd-input-container button:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 10px rgba(106, 17, 203, 0.3);
+            box-shadow: 0 4px 10px color-mix(in srgb, var(--kzd-navy-400) 30%, transparent);
         }
         
         .kzd-chat-controls {
             display: flex;
             justify-content: space-between;
-            padding: 10px 12px;
+            padding: var(--kzd-space-8) var(--kzd-space-12);
             background: white;
-            border-top: 1px solid #eaeaea;
+            border-top: 1px solid var(--kzd-surface-200);
         }
         
         .kzd-control-btn {
-            padding: 7px 10px;
-            background: #f0f5ff;
-            border: 1px solid #d0d9ff;
-            border-radius: 16px;
+            padding: var(--kzd-space-8) var(--kzd-space-8);
+            background: var(--kzd-surface-100);
+            border: 1px solid var(--kzd-navy-100);
+            border-radius: var(--kzd-radius-16);
             cursor: pointer;
             transition: all 0.2s ease;
-            font-size: 12px;
-            color: #6a11cb;
+            font-size:  var(--kzd-text-label-sm);
+            color: var(--kzd-navy-400);
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: var(--kzd-space-4);
         }
         
         .kzd-control-btn:hover {
-            background: #e0e9ff;
+            background: var(--kzd-surface-200);
             transform: translateY(-1px);
         }
         
         .kzd-typing-indicator {
             display: flex;
-            gap: 5px;
-            padding: 10px 14px;
+            gap: var(--kzd-space-4);
+            padding: var(--kzd-space-8) var(--kzd-space-12);
             background: white;
-            border-radius: 16px;
-            border: 1px solid #e0e0e0;
+            border-radius: var(--kzd-radius-16);
+            border: 1px solid var(--kzd-line);
             align-self: flex-start;
             width: fit-content;
-            margin-bottom: 6px;
+            margin-bottom: var(--kzd-space-4);
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
         
         .kzd-typing-dot {
             width: 6px;
             height: 6px;
-            background: #2575fc;
-            border-radius: 50%;
+            background: var(--kzd-navy-300);
+            border-radius: var(--kzd-radius-full);
             opacity: 0.6;
         }
         
         .kzd-product-highlight {
-            background: #f0f5ff;
-            padding: 8px 10px;
-            border-radius: 8px;
-            margin: 6px 0;
-            border-left: 3px solid #2575fc;
-            font-size: 13px;
+            background: var(--kzd-surface-100);
+            padding: var(--kzd-space-8) var(--kzd-space-8);
+            border-radius: var(--kzd-radius-8);
+            margin: var(--kzd-space-4) 0;
+            border-left: 3px solid var(--kzd-navy-300);
+            font-size:  var(--kzd-text-label);
         }
         
         .kzd-service-highlight {
-            background: #f8f9fa;
-            padding: 8px 10px;
-            border-radius: 8px;
-            margin: 6px 0;
-            border-left: 3px solid #6a11cb;
-            font-size: 13px;
+            background: var(--kzd-surface-50);
+            padding: var(--kzd-space-8) var(--kzd-space-8);
+            border-radius: var(--kzd-radius-8);
+            margin: var(--kzd-space-4) 0;
+            border-left: 3px solid var(--kzd-navy-400);
+            font-size:  var(--kzd-text-label);
         }
         
         .kzd-location-info {
-            background: #e8f4ff;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 6px 0;
-            border-left: 3px solid #6a11cb;
-            font-size: 13px;
+            background: var(--kzd-surface-100);
+            padding: var(--kzd-space-8);
+            border-radius: var(--kzd-radius-8);
+            margin: var(--kzd-space-4) 0;
+            border-left: 3px solid var(--kzd-navy-400);
+            font-size:  var(--kzd-text-label);
         }
         
         .kzd-contact-info {
-            background: #fff4e6;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 6px 0;
-            border-left: 3px solid #ff9900;
-            font-size: 13px;
+            background: var(--kzd-surface-100);
+            padding: var(--kzd-space-8);
+            border-radius: var(--kzd-radius-8);
+            margin: var(--kzd-space-4) 0;
+            border-left: 3px solid var(--kzd-navy-200);
+            font-size:  var(--kzd-text-label);
         }
         
         .kzd-suggestion-chips {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 10px;
+            gap: var(--kzd-space-4);
+            margin-top: var(--kzd-space-8);
         }
         
         .kzd-suggestion-chip {
-            padding: 6px 12px;
+            padding: var(--kzd-space-4) var(--kzd-space-12);
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 16px;
-            font-size: 12px;
+            border: 1px solid var(--kzd-line);
+            border-radius: var(--kzd-radius-16);
+            font-size:  var(--kzd-text-label-sm);
             cursor: pointer;
             transition: all 0.2s;
         }
         
         .kzd-suggestion-chip:hover {
-            background: #f0f5ff;
-            border-color: #2575fc;
-            color: #2575fc;
+            background: var(--kzd-surface-100);
+            border-color: var(--kzd-navy-300);
+            color: var(--kzd-navy-400);
         }
         
         .kzd-message-actions {
             display: flex;
-            gap: 10px;
-            margin-top: 6px;
+            gap: var(--kzd-space-8);
+            margin-top: var(--kzd-space-4);
             justify-content: flex-end;
         }
         
         .kzd-message-action {
-            font-size: 11px;
-            color: #2575fc;
+            font-size:  var(--kzd-text-label-sm);
+            color: var(--kzd-navy-400);
             cursor: pointer;
             opacity: 0.7;
             transition: opacity 0.2s;
@@ -668,62 +668,62 @@
         
         .kzd-map-link {
             display: inline-block;
-            margin-top: 6px;
-            padding: 6px 10px;
-            background: #2575fc;
+            margin-top: var(--kzd-space-4);
+            padding: var(--kzd-space-4) var(--kzd-space-8);
+            background: var(--kzd-navy-300);
             color: white;
-            border-radius: 5px;
+            border-radius: var(--kzd-radius-8);
             text-decoration: none;
-            font-size: 12px;
+            font-size:  var(--kzd-text-label-sm);
             transition: background 0.2s;
         }
         
         .kzd-map-link:hover {
-            background: #1c64e0;
+            background: var(--kzd-navy-300);
         }
         
         /* Form styling */
         .kzd-form-container {
             background: white;
-            padding: 12px;
-            border-radius: 10px;
-            margin-top: 10px;
-            border: 1px solid #e8e8e8;
+            padding: var(--kzd-space-12);
+            border-radius: var(--kzd-radius-12);
+            margin-top: var(--kzd-space-8);
+            border: 1px solid var(--kzd-surface-200);
         }
         
         .kzd-form-group {
-            margin-bottom: 10px;
+            margin-bottom: var(--kzd-space-8);
         }
         
         .kzd-form-group label {
             display: block;
-            margin-bottom: 5px;
-            font-size: 13px;
+            margin-bottom: var(--kzd-space-4);
+            font-size:  var(--kzd-text-label);
             font-weight: 500;
-            color: #555;
+            color: var(--kzd-gray);
         }
         
         .kzd-form-group input {
             width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
+            padding: var(--kzd-space-8) var(--kzd-space-12);
+            border: 1px solid var(--kzd-silver-light);
+            border-radius: var(--kzd-radius-8);
+            font-size:  var(--kzd-text-label-lg);
             transition: border-color 0.2s;
         }
         
         .kzd-form-group input:focus {
-            border-color: #2575fc;
+            border-color: var(--kzd-navy-300);
             outline: none;
         }
         
         .kzd-form-submit {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            background: linear-gradient(135deg, var(--kzd-navy-400) 0%, var(--kzd-navy-300) 100%);
             color: white;
             border: none;
-            border-radius: 6px;
-            padding: 10px 15px;
-            font-size: 14px;
+            border-radius: var(--kzd-radius-8);
+            padding: var(--kzd-space-8) var(--kzd-space-16);
+            font-size:  var(--kzd-text-label-lg);
             font-weight: 500;
             cursor: pointer;
             width: 100%;
@@ -732,16 +732,16 @@
         
         .kzd-form-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(37, 117, 252, 0.3);
+            box-shadow: 0 4px 8px color-mix(in srgb, var(--kzd-navy-300) 30%, transparent);
         }
         
         /* File upload styling */
         .kzd-file-upload {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-top: 8px;
-            padding: 0 12px 8px;
+            gap: var(--kzd-space-8);
+            margin-top: var(--kzd-space-8);
+            padding: 0 var(--kzd-space-12) var(--kzd-space-8);
         }
         
         .kzd-file-input {
@@ -749,25 +749,25 @@
         }
         
         .kzd-file-label {
-            padding: 7px 10px;
-            background: #f0f5ff;
-            border: 1px dashed #2575fc;
-            border-radius: 6px;
-            font-size: 12px;
+            padding: var(--kzd-space-8) var(--kzd-space-8);
+            background: var(--kzd-surface-100);
+            border: 1px dashed var(--kzd-navy-300);
+            border-radius: var(--kzd-radius-8);
+            font-size:  var(--kzd-text-label-sm);
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: var(--kzd-space-4);
             transition: all 0.2s;
         }
         
         .kzd-file-label:hover {
-            background: #e0e9ff;
+            background: var(--kzd-surface-200);
         }
         
         .kzd-file-name {
-            font-size: 11px;
-            color: #666;
+            font-size:  var(--kzd-text-label-sm);
+            color: var(--kzd-gray);
             max-width: 120px;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -775,9 +775,9 @@
         }
         
         .kzd-file-remove {
-            color: #ff3366;
+            color: var(--kzd-error-ink);
             cursor: pointer;
-            font-size: 12px;
+            font-size:  var(--kzd-text-label-sm);
         }
         
         @keyframes kzd-pulse {
@@ -832,14 +832,14 @@
             }
             
             .kzd-welcome-option {
-                padding: 8px;
+                padding: var(--kzd-space-8);
             }
             
             .kzd-option-icon {
                 width: 32px;
                 height: 32px;
-                margin-right: 10px;
-                font-size: 13px;
+                margin-right: var(--kzd-space-8);
+                font-size:  var(--kzd-text-label);
             }
         }
             /* Nav rules moved to css/kzd-nav.css — one shared copy. */
@@ -847,7 +847,7 @@
 
     
 </head>
-<body data-mobile-nav-style="full-screen-menu" data-mobile-nav-bg-color="#252840">
+<body data-mobile-nav-style="full-screen-menu" data-mobile-nav-bg-color="var(--kzd-navy-700)">
     <!-- KZD Solutions Chatbot -->
     <!-- <div class="kzd-chat-icon" onclick="toggleKZDChat()">
         <div class="kzd-icon-container">
@@ -1557,7 +1557,7 @@
                         <!-- White-on-transparent mark. The dark-background state is the
                              natural one; on light backgrounds it is inverted in CSS via
                              .is-dark rather than swapped for a second file. -->
-                        <img id="logo" class="kzd-mark" src="Assets/logos/kzd-mark.png" width="96" height="95" alt="Logo" style="height: 40px; width: auto; margin-right: 10px;">
+                        <img id="logo" class="kzd-mark" src="Assets/logos/kzd-mark.png" width="96" height="95" alt="Logo" style="height: 40px; width: auto; margin-right: var(--kzd-space-8);">
                         <span id="company-name" class="fs-5 fs-md-4 fs-lg-3" style="color: white;">KZD Solutions</span>
                     </a>
                 </div>
@@ -1632,7 +1632,7 @@
         <section class="cover-background full-screen ipad-top-space-margin py-0 md-h-750px sm-h-650px" style="background-image:url('./images/about.jpg');">
             <div class="opacity-very-light bg-black"></div>
             <div class="shape-image-animation bottom-0 p-0 w-100 d-none d-md-block"> 
-                <svg xmlns="http://www.w3.org/2000/svg" widht="3000" height="400" viewBox="0 180 2500 200" fill="#ffffff"> 
+                <svg xmlns="http://www.w3.org/2000/svg" widht="3000" height="400" viewBox="0 180 2500 200" style="fill: var(--kzd-white)"> 
                 <path class="st1" d="M 0 250 C 1200 400 1200 50 3000 250 L 3000 550 L 0 550 L 0 250">
                 <animate
                     attributeName="d"

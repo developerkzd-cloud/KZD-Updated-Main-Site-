@@ -412,8 +412,10 @@
 
    These links are deliberately small text — enlarging them would change the
    design. The hit area is expanded instead, so the target clears 44px while
-   the visible link stays exactly as drawn. The site runs body { zoom: .9 },
-   so 49px of hit area is what lands at ~44 real pixels.
+   the visible link stays exactly as drawn: 44px, the design-system touch
+   minimum (--kzd-control). The e-mail is display-size text and already
+   clears 44, so it is NOT in this list: its ::after is the underline, and
+   stretching it here painted a full box behind the address.
    ========================================================================== */
 
 .kzd-footer__email,
@@ -422,7 +424,6 @@
 .kzd-footer__list a,
 .kzd-footer__social { position: relative; }
 
-.kzd-footer__email::after,
 .kzd-footer__phone::after,
 .kzd-footer__brand::after,
 .kzd-footer__list a::after,
@@ -432,10 +433,10 @@
   left: 0;
   right: 0;
   top: 50%;
-  min-height: 49px;
+  min-height: var(--kzd-control);
   height: 100%;
   transform: translateY(-50%);
 }
 
 /* The social icons are square, so they need width as well as height. */
-.kzd-footer__social::after { left: 50%; width: 49px; transform: translate(-50%, -50%); }
+.kzd-footer__social::after { left: 50%; width: var(--kzd-control); transform: translate(-50%, -50%); }

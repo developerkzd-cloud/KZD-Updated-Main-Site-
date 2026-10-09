@@ -19,23 +19,23 @@
    ========================================================================== */
 
 .kzd-tst {
-  --kzd-paper:      #FFFFFF;
-  --kzd-card:       #F8FAFC;   /* summary bar fill        */
-  --kzd-ink:        #232323;
-  --kzd-muted:      #717580;   /* sub-heading             */
-  --kzd-dim:        #9298A4;   /* review count            */
-  --kzd-blue:       #2F6FED;   /* button, links, dots     */
-  --kzd-line:       #E1E4EA;   /* hairlines, borders      */
-  --kzd-navy:       #0B2545;   /* names, "Google Reviews" */
-  --kzd-gold:       #FBBC04;   /* filled stars            */
-  --kzd-star-off:   #DADEE5;   /* empty stars             */
-  --kzd-review:     #5A606C;   /* card review text        */
-  --kzd-review-lg:  #505866;   /* modal review text       */
-  --kzd-dot-off:    #CED4DE;
-  --kzd-close-bg:   #EEF1F6;
+  --kzd-paper:      var(--kzd-white);
+  --kzd-card:       var(--kzd-surface-50);   /* summary bar fill        */
+  --kzd-ink:        var(--kzd-black);
+  --kzd-muted:      var(--kzd-gray);   /* sub-heading             */
+  --kzd-dim:        var(--kzd-gray);   /* review count            */
+  --kzd-blue:       var(--kzd-navy-300);   /* button, links, dots     */
+  --kzd-line:       var(--kzd-line);   /* hairlines, borders      */
+  --kzd-navy:       var(--kzd-navy-700);   /* names, "Google Reviews" */
+  --kzd-gold:       var(--kzd-navy-200);   /* filled stars            */
+  --kzd-star-off:   var(--kzd-silver-light);   /* empty stars             */
+  --kzd-review:     var(--kzd-gray);   /* card review text        */
+  --kzd-review-lg:  var(--kzd-gray);   /* modal review text       */
+  --kzd-dot-off:    var(--kzd-silver-light);
+  --kzd-close-bg:   var(--kzd-surface-100);
   --kzd-scrim:      rgba(28, 36, 54, .59);
-  --kzd-grad-start: #4A5468;
-  --kzd-grad-end:   #232323;
+  --kzd-grad-start: var(--kzd-gray);
+  --kzd-grad-end:   var(--kzd-black);
 
   --kzd-font-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --kzd-font-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -49,8 +49,8 @@
 
   position: relative;
   isolation: isolate;
-  padding-top: 88px;
-  padding-bottom: 94px;
+  padding-top: var(--kzd-space-80);
+  padding-bottom: var(--kzd-space-96);
   background: var(--kzd-paper);
 }
 
@@ -62,8 +62,8 @@
   pointer-events: none;
   background: radial-gradient(
     62% 58% at 16% 8%,
-    rgba(47, 111, 237, .075) 0%,
-    rgba(47, 111, 237, 0) 100%
+    color-mix(in srgb, var(--kzd-navy-300) 8%, transparent) 0%,
+    color-mix(in srgb, var(--kzd-navy-300) 0%, transparent) 100%
   );
 }
 
@@ -97,7 +97,7 @@
 .kzd-tst__title {
   margin: 0;
   font-family: var(--kzd-font-display);
-  font-size: 52px;
+  font-size:  var(--kzd-text-headline);
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -.03em;
@@ -115,9 +115,9 @@
 }
 
 .kzd-tst__sub {
-  margin: 6px 0 0;
+  margin: var(--kzd-space-4) 0 0;
   font-family: var(--kzd-font-body);
-  font-size: 16.5px;
+  font-size:  var(--kzd-text-body);
   font-weight: 400;
   line-height: 1.5;
   color: var(--kzd-muted);
@@ -131,20 +131,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: var(--kzd-space-24);
   min-height: 126px;
-  margin-top: 38px;
-  padding: 20px 52px;
+  margin-top: var(--kzd-space-40);
+  padding: var(--kzd-space-16) var(--kzd-space-48);
   border: 1px solid var(--kzd-line);
-  border-radius: 18px;
+  border-radius: var(--kzd-radius-16);
   background: var(--kzd-card);
-  box-shadow: 0 8px 18px -10px rgba(38, 52, 78, .20);
+  box-shadow: 0 8px 18px -10px color-mix(in srgb, var(--kzd-navy-500) 20%, transparent);
 }
 
 .kzd-tst__brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--kzd-space-8);
 }
 
 /* Official four-colour Google G. Never recoloured to our palette. */
@@ -157,7 +157,7 @@
 
 .kzd-tst__brand-name {
   font-family: var(--kzd-font-display);
-  font-size: 25px;
+  font-size:  var(--kzd-text-title);
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -.01em;
@@ -167,13 +167,13 @@
 .kzd-tst__rating {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 10px;
+  gap: var(--kzd-space-8);
+  margin-top: var(--kzd-space-8);
 }
 
 .kzd-tst__score {
   font-family: var(--kzd-font-display);
-  font-size: 23px;
+  font-size:  var(--kzd-text-title);
   font-weight: 700;
   line-height: 1;
   color: var(--kzd-navy);
@@ -181,7 +181,7 @@
 
 .kzd-tst__count {
   font-family: var(--kzd-font-body);
-  font-size: 15.5px;
+  font-size:  var(--kzd-text-body);
   color: var(--kzd-dim);
 }
 
@@ -192,20 +192,20 @@
   justify-content: center;
   width: 212px;
   min-height: 52px;
-  border-radius: 9px;
+  border-radius: var(--kzd-radius-8);
   background: var(--kzd-blue);
   font-family: var(--kzd-font-body);
-  font-size: 15.5px;
+  font-size:  var(--kzd-text-body);
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--kzd-white);
   text-decoration: none;
   transition: background-color 180ms ease;
 }
 
 .kzd-tst__cta:hover,
 .kzd-tst__cta:focus-visible {
-  background: #245FD6;
-  color: #FFFFFF;
+  background: var(--kzd-navy-300);
+  color: var(--kzd-white);
 }
 
 /* --------------------------------------------------------------------------
@@ -215,7 +215,7 @@
 .kzd-tst__stars {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: var(--kzd-space-4);
   line-height: 0;
 }
 
@@ -234,7 +234,7 @@
 
 .kzd-tst__carousel {
   position: relative;
-  margin-top: 58px;
+  margin-top: var(--kzd-space-64);
 }
 
 /* The viewport clips; the track slides. Nothing else moves. */
@@ -255,18 +255,18 @@
   display: flex;
   flex-direction: column;
   min-height: 346px;
-  padding: 44px 32px 32px;
+  padding: var(--kzd-space-40) var(--kzd-space-32) var(--kzd-space-32);
   border: 1px solid var(--kzd-line);
-  border-radius: 18px;
+  border-radius: var(--kzd-radius-16);
   background: var(--kzd-paper);
-  box-shadow: 0 8px 20px -10px rgba(38, 52, 78, .22);
+  box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--kzd-navy-500) 22%, transparent);
 }
 
 /* Stars sit at y+44 and are 20px tall, so 14px lands the text at y+78. */
 .kzd-tst__quote {
-  margin: 14px 0 0;
+  margin: var(--kzd-space-12) 0 0;
   font-family: var(--kzd-font-body);
-  font-size: 15.5px;
+  font-size:  var(--kzd-text-body);
   font-weight: 400;
   line-height: 1.8;
   color: var(--kzd-review);
@@ -275,11 +275,11 @@
 .kzd-tst__more {
   position: relative;
   align-self: flex-start;
-  margin-top: 4px;
+  margin-top: var(--kzd-space-4);
   background: none;
   border: 0;
   font-family: var(--kzd-font-body);
-  font-size: 15.5px;
+  font-size:  var(--kzd-text-body);
   line-height: 1.8;
   color: var(--kzd-blue);
   text-decoration: underline;    /* visible at rest — no hover-only affordance */
@@ -306,11 +306,11 @@
   /* The spec's "38px after the avatar" measured from the avatar's CENTRE:
      38 - 24 (half of the 48px circle) = 14px of actual gap, which is what the
      reference shows. A literal 38px gap reads visibly loose against it. */
-  gap: 14px;
+  gap: var(--kzd-space-12);
   margin-top: auto;
   /* Just a minimum gap. Keeping it small lets min-height govern the card, so
      margin-top:auto pins this row's centre at the board's y+290. */
-  padding-top: 8px;
+  padding-top: var(--kzd-space-8);
 }
 
 .kzd-tst__avatar {
@@ -319,17 +319,17 @@
   place-items: center;
   width: 48px;
   height: 48px;
-  border-radius: 50%;
-  background: var(--kzd-tone, #5B6C9E);
+  border-radius: var(--kzd-radius-full);
+  background: var(--kzd-tone, var(--kzd-navy-300));
   font-family: var(--kzd-font-display);
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--kzd-white);
 }
 
 .kzd-tst__name {
   font-family: var(--kzd-font-display);
-  font-size: 17px;
+  font-size:  var(--kzd-text-body);
   font-weight: 600;
   line-height: 1.3;
   color: var(--kzd-navy);
@@ -344,8 +344,8 @@
 .kzd-tst__door {
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 32px 28px;
+  gap: var(--kzd-space-12);
+  padding: var(--kzd-space-32) var(--kzd-space-24);
   border: 1px dashed var(--kzd-line);
   background: var(--kzd-card);
   box-shadow: none;
@@ -363,7 +363,7 @@
 
 .kzd-tst__door-title {
   font-family: var(--kzd-font-display);
-  font-size: 20px;
+  font-size:  var(--kzd-text-title);
   font-weight: 600;
   line-height: 1.3;
   color: var(--kzd-navy);
@@ -372,7 +372,7 @@
 .kzd-tst__door-sub {
   max-width: 260px;
   font-family: var(--kzd-font-body);
-  font-size: 14.5px;
+  font-size:  var(--kzd-text-label-lg);
   font-weight: 400;
   line-height: 1.5;
   color: var(--kzd-muted);
@@ -381,21 +381,21 @@
 .kzd-tst__door-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 6px;
-  padding: 12px 22px;
+  gap: var(--kzd-space-8);
+  margin-top: var(--kzd-space-4);
+  padding: var(--kzd-space-12) var(--kzd-space-24);
   border: 1px solid var(--kzd-blue);
-  border-radius: 8px;
+  border-radius: var(--kzd-radius-8);
   background: transparent;
   font-family: var(--kzd-font-body);
-  font-size: 15px;
+  font-size:  var(--kzd-text-body);
   font-weight: 500;
   color: var(--kzd-blue);
 }
 
 .kzd-tst__door-arrow {
-  width: 15px;
-  height: 15px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
@@ -435,17 +435,17 @@
   width: 46px;
   height: 46px;
   border: 1px solid var(--kzd-line);
-  border-radius: 50%;
+  border-radius: var(--kzd-radius-full);
   background: var(--kzd-paper);
-  box-shadow: 0 4px 12px -6px rgba(38, 52, 78, .28);
+  box-shadow: 0 4px 12px -6px color-mix(in srgb, var(--kzd-navy-500) 28%, transparent);
   transition: background-color 160ms ease, border-color 160ms ease;
 }
 
 .kzd-tst__arrow-face svg {
-  width: 17px;
-  height: 17px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   fill: none;
-  stroke: #3A404C;
+  stroke: var(--kzd-charcoal);
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -453,8 +453,8 @@
 
 .kzd-tst__arrow:hover .kzd-tst__arrow-face,
 .kzd-tst__arrow:focus-visible .kzd-tst__arrow-face {
-  background: #F4F7FB;
-  border-color: #CBD2DC;
+  background: var(--kzd-surface-100);
+  border-color: var(--kzd-silver-light);
 }
 
 .kzd-tst__arrow--prev { left: -42px; }
@@ -470,8 +470,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-top: 52px;
+  gap: var(--kzd-space-8);
+  margin-top: var(--kzd-space-48);
 }
 
 /* The visible dot is 8px; the button carries a taller hit area around it. */
@@ -491,7 +491,7 @@
   display: block;
   width: 8px;
   height: 8px;
-  border-radius: 50%;
+  border-radius: var(--kzd-radius-full);
   background: var(--kzd-dot-off);
   transition: background-color 180ms ease;
 }
@@ -508,12 +508,12 @@
    needs. Without this the scrim paints transparent and the stars fall back to
    black, because var(--kzd-*) resolves to nothing out here. */
 .kzd-tst__scrim {
-  --kzd-paper:      #FFFFFF;
-  --kzd-navy:       #0B2545;
-  --kzd-gold:       #FBBC04;
-  --kzd-star-off:   #DADEE5;
-  --kzd-review-lg:  #505866;
-  --kzd-close-bg:   #EEF1F6;
+  --kzd-paper:      var(--kzd-white);
+  --kzd-navy:       var(--kzd-navy-700);
+  --kzd-gold:       var(--kzd-navy-200);
+  --kzd-star-off:   var(--kzd-silver-light);
+  --kzd-review-lg:  var(--kzd-gray);
+  --kzd-close-bg:   var(--kzd-surface-100);
   --kzd-scrim:      rgba(28, 36, 54, .59);
 
   --kzd-font-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -525,7 +525,7 @@
   z-index: 2000;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: var(--kzd-space-24);
   background: var(--kzd-scrim);
   opacity: 0;
   transition: opacity 200ms ease;
@@ -540,8 +540,8 @@
   max-height: calc(100vh - 48px);
   display: flex;
   flex-direction: column;
-  padding: 44px 48px 44px 44px;
-  border-radius: 20px;
+  padding: var(--kzd-space-40) var(--kzd-space-48) var(--kzd-space-40) var(--kzd-space-40);
+  border-radius: var(--kzd-radius-16);
   background: var(--kzd-paper);
   box-shadow: 0 40px 90px -20px rgba(12, 20, 38, .45);
   opacity: 0;
@@ -581,46 +581,46 @@
   place-items: center;
   width: 38px;
   height: 38px;
-  border-radius: 50%;
+  border-radius: var(--kzd-radius-full);
   background: var(--kzd-close-bg);
   transition: background-color 160ms ease;
 }
 
 .kzd-tst__close:hover .kzd-tst__close-face,
-.kzd-tst__close:focus-visible .kzd-tst__close-face { background: #E1E6EE; }
+.kzd-tst__close:focus-visible .kzd-tst__close-face { background: var(--kzd-line); }
 
 .kzd-tst__close-face svg {
-  width: 15px;
-  height: 15px;
+  width: var(--kzd-icon-dense);
+  height: var(--kzd-icon-dense);
   fill: none;
-  stroke: #3A404C;
+  stroke: var(--kzd-charcoal);
   stroke-width: 2;
   stroke-linecap: round;
 }
 
 .kzd-tst__modal-quote {
-  margin: 30px 0 0;
+  margin: var(--kzd-space-32) 0 0;
   overflow-y: auto;              /* long reviews scroll, the chrome stays put */
   font-family: var(--kzd-font-body);
-  font-size: 18px;
+  font-size:  var(--kzd-text-body);
   font-weight: 400;
   line-height: 1.78;
   color: var(--kzd-review-lg);
 }
 
 .kzd-tst__modal .kzd-tst__author {
-  margin-top: 32px;
+  margin-top: var(--kzd-space-32);
   padding-top: 0;
-  gap: 16px;                     /* matches the modal reference */
+  gap: var(--kzd-space-16);                     /* matches the modal reference */
 }
 
 .kzd-tst__modal .kzd-tst__avatar {
   width: 56px;
   height: 56px;
-  font-size: 17px;
+  font-size:  var(--kzd-text-body);
 }
 
-.kzd-tst__modal .kzd-tst__name { font-size: 19px; }
+.kzd-tst__modal .kzd-tst__name { font-size:  var(--kzd-text-body); }
 
 /* --------------------------------------------------------------------------
    6. Entry animation. Resting state is the FINAL state; .kzd-tst--anim (added
@@ -711,12 +711,12 @@
 @media (max-width: 1200px) {
   .kzd-tst {
     --kzd-gutter: 40px;
-    padding-top: 72px;
-    padding-bottom: 78px;
+    padding-top: var(--kzd-space-64);
+    padding-bottom: var(--kzd-space-80);
   }
 
-  .kzd-tst__title { font-size: clamp(40px, 4.2vw, 52px); }
-  .kzd-tst__summary { padding-inline: 32px; }
+  .kzd-tst__title { font-size:  var(--kzd-text-headline); }
+  .kzd-tst__summary { padding-inline: var(--kzd-space-32); }
   .kzd-tst__arrow--prev { left: -6px; }
   .kzd-tst__arrow--next { right: -6px; }
 }
@@ -725,28 +725,28 @@
 @media (max-width: 900px) {
   .kzd-tst {
     --kzd-per-page: 2;
-    padding-top: 64px;
-    padding-bottom: 68px;
+    padding-top: var(--kzd-space-64);
+    padding-bottom: var(--kzd-space-64);
   }
 
-  .kzd-tst__title { font-size: 40px; }
+  .kzd-tst__title { font-size:  var(--kzd-text-headline); }
 
   .kzd-tst__summary {
     flex-direction: column;
     align-items: stretch;
     min-height: 0;
-    padding: 24px;
+    padding: var(--kzd-space-24);
   }
 
-  .kzd-tst__rating { margin-top: 12px; }
+  .kzd-tst__rating { margin-top: var(--kzd-space-12); }
 
   .kzd-tst__cta {
     width: 100%;
-    margin-top: 18px;
+    margin-top: var(--kzd-space-16);
   }
 
-  .kzd-tst__carousel { margin-top: 40px; }
-  .kzd-tst__dots { margin-top: 36px; }
+  .kzd-tst__carousel { margin-top: var(--kzd-space-40); }
+  .kzd-tst__dots { margin-top: var(--kzd-space-32); }
 }
 
 /* <= 560 — one card per page, arrows sit on the card edges. */
@@ -755,28 +755,28 @@
     --kzd-per-page: 1;
     --kzd-gutter: 20px;
     --kzd-star: 18px;
-    padding-top: 52px;
-    padding-bottom: 56px;
+    padding-top: var(--kzd-space-48);
+    padding-bottom: var(--kzd-space-48);
   }
 
-  .kzd-tst__title { font-size: 32px; }
-  .kzd-tst__sub { font-size: 15px; }
+  .kzd-tst__title { font-size:  var(--kzd-text-title); }
+  .kzd-tst__sub { font-size:  var(--kzd-text-body); }
 
   .kzd-tst__summary {
     align-items: flex-start;
     text-align: left;
-    padding: 20px;
+    padding: var(--kzd-space-16);
   }
 
   .kzd-tst__cta { min-height: 54px; }   /* ~48px actual, the spec's minimum */
 
   .kzd-tst__card {
     min-height: 300px;           /* one-line reviews must not collapse */
-    padding: 28px 24px 24px;
+    padding: var(--kzd-space-24) var(--kzd-space-24) var(--kzd-space-24);
   }
 
-  .kzd-tst__quote { font-size: 15px; }
-  .kzd-tst__more { font-size: 15px; }
+  .kzd-tst__quote { font-size:  var(--kzd-text-body); }
+  .kzd-tst__more { font-size:  var(--kzd-text-body); }
 
   /* 40px face inside a 44px hit box, overlapping the card edges. Absolutely
      positioned, so they can never narrow the card. */
@@ -785,29 +785,29 @@
   .kzd-tst__arrow--prev { left: -12px; }
   .kzd-tst__arrow--next { right: -12px; }
 
-  .kzd-tst__dots { gap: 14px; margin-top: 28px; }
+  .kzd-tst__dots { gap: var(--kzd-space-12); margin-top: var(--kzd-space-24); }
 
   .kzd-tst__modal {
     width: calc(100% - 32px);
     max-height: 80vh;
-    padding: 32px 24px 28px;
+    padding: var(--kzd-space-32) var(--kzd-space-24) var(--kzd-space-24);
   }
 
   .kzd-tst__close { top: 14px; right: 14px; }
-  .kzd-tst__modal-quote { font-size: 16px; }
-  .kzd-tst__modal .kzd-tst__author { gap: 18px; }
+  .kzd-tst__modal-quote { font-size:  var(--kzd-text-body); }
+  .kzd-tst__modal .kzd-tst__author { gap: var(--kzd-space-16); }
 }
 
 /* <= 380 — tightest supported width. */
 @media (max-width: 380px) {
   .kzd-tst { --kzd-gutter: 16px; }
 
-  .kzd-tst__title { font-size: 28px; }
-  .kzd-tst__brand-name { font-size: 21px; }
-  .kzd-tst__card { padding: 24px 18px 20px; }
-  .kzd-tst__author { gap: 20px; }
-  .kzd-tst__avatar { width: 40px; height: 40px; font-size: 13px; }
-  .kzd-tst__name { font-size: 15px; }
+  .kzd-tst__title { font-size:  var(--kzd-text-title); }
+  .kzd-tst__brand-name { font-size:  var(--kzd-text-title); }
+  .kzd-tst__card { padding: var(--kzd-space-24) var(--kzd-space-16) var(--kzd-space-16); }
+  .kzd-tst__author { gap: var(--kzd-space-16); }
+  .kzd-tst__avatar { width: 40px; height: 40px; font-size:  var(--kzd-text-label); }
+  .kzd-tst__name { font-size:  var(--kzd-text-body); }
   .kzd-tst__arrow--prev { left: -8px; }
   .kzd-tst__arrow--next { right: -8px; }
 }
@@ -821,7 +821,7 @@
   content: "";
   position: absolute;
   left: 0; right: 0; top: 50%;
-  min-height: 49px;
+  min-height: var(--kzd-control);
   transform: translateY(-50%);
 }
 
@@ -829,6 +829,6 @@
   content: "";
   position: absolute;
   top: 50%; left: 50%;
-  width: 49px; height: 49px;
+  width: var(--kzd-control); height: var(--kzd-control);
   transform: translate(-50%, -50%);
 }

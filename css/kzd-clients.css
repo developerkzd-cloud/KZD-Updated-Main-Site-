@@ -7,7 +7,7 @@
    existing site class.
 
    LOGO COLOUR — the source PNGs in images/clients/ are the ORIGINAL artwork,
-   painted #CEDAEC for the dark theme, which is invisible on white. Rather than
+   painted --kzd-silver-light for the dark theme, which is invisible on white. Rather than
    re-processing the files, each logo is drawn as a CSS mask: the PNG supplies
    the alpha channel (shape, trim, 2x detail) and the colour comes from
    --kzd-c-logo. The files are never modified, and the tone is a token.
@@ -21,16 +21,16 @@
    ========================================================================== */
 
 .kzd-clients {
-  --kzd-c-paper:   #FFFFFF;
-  --kzd-c-card:    #FAFBFD;
-  --kzd-c-ink:     #232323;
-  --kzd-c-muted:   #717580;
-  --kzd-c-blue:    #2F6FED;
-  --kzd-c-ember:   #FF6B35;
-  --kzd-c-line:    #E1E4EA;
-  --kzd-c-logo:    #4A5468;   /* the paint the masks are filled with */
-  --kzd-c-grad-from: #232323;
-  --kzd-c-grad-to:   #4A5468;
+  --kzd-c-paper:   var(--kzd-white);
+  --kzd-c-card:    var(--kzd-surface-50);
+  --kzd-c-ink:     var(--kzd-black);
+  --kzd-c-muted:   var(--kzd-gray);
+  --kzd-c-blue:    var(--kzd-navy-300);
+  --kzd-c-ember:   var(--kzd-navy-200);
+  --kzd-c-line:    var(--kzd-line);
+  --kzd-c-logo:    var(--kzd-gray);   /* the paint the masks are filled with */
+  --kzd-c-grad-from: var(--kzd-black);
+  --kzd-c-grad-to:   var(--kzd-gray);
 
   --kzd-c-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --kzd-c-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
@@ -50,11 +50,11 @@
 .kzd-clients__eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--kzd-space-12);
   height: 34px;
-  padding-left: 20px;
-  padding-right: 22px;
-  border-radius: 17px;
+  padding-left: var(--kzd-space-16);
+  padding-right: var(--kzd-space-24);
+  border-radius: var(--kzd-radius-16);
   background: var(--kzd-c-paper);
   border: 1px solid var(--kzd-c-line);
 }
@@ -63,15 +63,15 @@
   flex: 0 0 auto;
   width: 6px;
   height: 6px;
-  border-radius: 50%;
+  border-radius: var(--kzd-radius-full);
   background: var(--kzd-c-ember);
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, .24);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kzd-navy-200) 24%, transparent);
 }
 
 .kzd-clients__eyebrow-text {
   font-family: var(--kzd-c-mono);
   font-weight: 500;
-  font-size: 11.5px;
+  font-size:  var(--kzd-text-label-sm);
   line-height: 1;
   letter-spacing: .18em;
   text-transform: uppercase;
@@ -79,12 +79,12 @@
   margin-right: -.18em;
 }
 
-/* Inverted gradient: dark board ran #FFFFFF -> #B9CDF5; this runs the reverse. */
+/* Inverted gradient: dark board ran --kzd-white -> --kzd-navy-200; this runs the reverse. */
 .kzd-clients__title {
-  margin: 28px 0 0;                 /* eyebrow ends 138, title box top = 166 */
+  margin: var(--kzd-space-24) 0 0;                 /* eyebrow ends 138, title box top = 166 */
   font-family: var(--kzd-c-display);
   font-weight: 600;
-  font-size: 52px;
+  font-size:  var(--kzd-text-headline);
   line-height: 1.06;
   letter-spacing: -.03em;
   color: var(--kzd-c-ink);
@@ -105,7 +105,7 @@
 
 .kzd-clients__rows {
   position: relative;
-  margin-top: 79px;                 /* title box ends 221; rows start at 300 */
+  margin-top: var(--kzd-space-80);                 /* title box ends 221; rows start at 300 */
   /* Entry: the whole block rises 20px and fades, THEN the scroll starts.
      Rows already moving on load feels abrupt. */
   opacity: 0;
@@ -128,7 +128,7 @@
   height: 96px;
 }
 
-.kzd-clients__marquee + .kzd-clients__marquee { margin-top: 20px; }
+.kzd-clients__marquee + .kzd-clients__marquee { margin-top: var(--kzd-space-16); }
 
 .kzd-clients__track {
   display: flex;
@@ -177,15 +177,15 @@
    exactly three sets. */
 .kzd-clients__tile {
   flex: 0 0 auto;
-  margin-right: 20px;
+  margin-right: var(--kzd-space-16);
   height: 96px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
+  border-radius: var(--kzd-radius-16);
   background: var(--kzd-c-card);
   border: 1px solid var(--kzd-c-line);
-  box-shadow: 0 6px 18px -8px rgba(38, 52, 78, .22);
+  box-shadow: 0 6px 18px -8px color-mix(in srgb, var(--kzd-navy-500) 22%, transparent);
   /* transform/opacity/background/border only — nothing that triggers layout. */
   transition:
     opacity 200ms ease-out,
@@ -196,10 +196,10 @@
 }
 
 .kzd-clients__tile:hover {
-  background: #FFFFFF;
-  border-color: rgba(47, 111, 237, .35);
+  background: var(--kzd-white);
+  border-color: color-mix(in srgb, var(--kzd-navy-300) 35%, transparent);
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px -8px rgba(38, 52, 78, .30);
+  box-shadow: 0 10px 24px -8px color-mix(in srgb, var(--kzd-navy-500) 30%, transparent);
 }
 
 /* The PNG supplies only the alpha channel; the colour is painted here.
@@ -268,16 +268,16 @@
    -------------------------------------------------------------------------- */
 
 @media (max-width: 1199px) {
-  .kzd-clients { padding-top: 88px; padding-bottom: 88px; }
-  .kzd-clients__title { font-size: 44px; }
-  .kzd-clients__rows { margin-top: 56px; }
+  .kzd-clients { padding-top: var(--kzd-space-80); padding-bottom: var(--kzd-space-80); }
+  .kzd-clients__title { font-size:  var(--kzd-text-headline); }
+  .kzd-clients__rows { margin-top: var(--kzd-space-48); }
   .kzd-clients__fade { width: 120px; }
 }
 
 @media (max-width: 767px) {
-  .kzd-clients { padding-top: 70px; padding-bottom: 70px; }
-  .kzd-clients__title { font-size: clamp(2rem, 7vw, 2.75rem); }
-  .kzd-clients__rows { margin-top: 40px; }
+  .kzd-clients { padding-top: var(--kzd-space-64); padding-bottom: var(--kzd-space-64); }
+  .kzd-clients__title { font-size:  var(--kzd-text-headline); }
+  .kzd-clients__rows { margin-top: var(--kzd-space-40); }
   .kzd-clients__marquee { height: 80px; }
   .kzd-clients__tile { height: 80px; }
   .kzd-clients__fade { width: 64px; }

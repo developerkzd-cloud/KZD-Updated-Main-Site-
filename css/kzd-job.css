@@ -157,7 +157,7 @@
   border: 0;
   background: none;
   padding: 14px 2px;
-  min-height: 49px;              /* ~44px actual under the 0.9 zoom */
+  min-height: var(--kzd-control);              /* 44: --kzd-control */
   font-family: var(--kzd-j-body);
   font-size: 15px;
   font-weight: 500;
@@ -564,8 +564,8 @@
 .kzd-job__file-x {
   display: grid;
   place-items: center;
-  width: 49px;                   /* ~44px actual */
-  height: 49px;
+  width: var(--kzd-control);                   /* ~44px actual */
+  height: var(--kzd-control);
   flex: none;
   padding: 0;
   border: 0;

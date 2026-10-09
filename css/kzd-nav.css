@@ -181,7 +181,7 @@
     width: 100%;
     justify-content: space-between;
     /* ~49 CSS px clears the 44px touch minimum under body { zoom: .9 } */
-    min-height: 49px;
+    min-height: var(--kzd-control);
   }
 
   .kzd-nav-mega {
@@ -218,7 +218,7 @@
   }
 
   .kzd-nav-mega a {
-    padding: var(--kzd-space-12) var(--kzd-space-16);          /* ~49px tall hit area */
+    padding: var(--kzd-space-12) var(--kzd-space-16);          /* ~var(--kzd-control) tall hit area */
     border-radius: 0;
   }
 }

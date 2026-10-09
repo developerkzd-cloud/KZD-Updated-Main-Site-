@@ -667,6 +667,6 @@
   content: "";
   position: absolute;
   left: 0; right: 0; top: 50%;
-  min-height: 49px;
+  min-height: var(--kzd-control);
   transform: translateY(-50%);
 }

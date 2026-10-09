@@ -25,11 +25,11 @@
   box-sizing: border-box;
 }
 .row-ep {
-  background: #ffffff;
-  padding: 60px 120px 74px 92px;
+  background: var(--kzd-white);
+  padding: var(--kzd-space-64) 120px var(--kzd-space-80) var(--kzd-space-96);
   display: flex;
   flex-direction: row;
-  gap: 50px;
+  gap: var(--kzd-space-48);
   align-items: center;
   justify-content: flex-start;
   flex-shrink: 0;

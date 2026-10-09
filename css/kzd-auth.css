@@ -206,8 +206,8 @@
   transform: translateY(-50%);
   display: grid;
   place-items: center;
-  width: 49px;
-  height: 49px;
+  width: var(--kzd-control);
+  height: var(--kzd-control);
   padding: 0;
   border: 0;
   background: none;
