@@ -497,25 +497,72 @@ export const CONTENT_DEFAULTS = {
   }
 };
 
+/* ==========================================================================
+   DEVELOPMENT-ONLY SEED — MUST NEVER RUN IN PRODUCTION.
+
+   ensureSeed() fills the store with demo applications, employees, leave and
+   notifications and, above all, creates an admin account whose password is
+   plain text in this public file. localStorage is per-browser, so on a live
+   site that would hand EVERY visitor's browser a working admin login that
+   anyone can read here and use to open the admin UI. (The data behind it is
+   only that visitor's own; the exposure is the credential and the admin
+   screens, not anyone's real records.)
+
+   So it runs only where a developer is: localhost, 127.0.0.1, or a *.local
+   host. Everywhere else it does nothing — no demo data, no admin account.
+   Do not widen this check, and do not "fix" a missing admin on a deployed
+   host by seeding there. Real access control has to come from a server.
+
+   Two jobs the public site genuinely depends on are deliberately NOT behind
+   the gate, and neither writes anything into a visitor's browser:
+     - readJobs() below serves the built-in postings when no jobs have been
+       stored, so the public careers and apply pages still have roles.
+     - migrateLegacyApplications() repairs records that already exist.
+   ========================================================================== */
+
+function isLocalDev() {
+  if (typeof location === "undefined") return false;
+  const host = String(location.hostname || "").toLowerCase();
+  return host === "localhost" || host === "127.0.0.1" || host.endsWith(".local");
+}
+
 /**
- * Seeds only when the store is empty. Existing applications written by the
- * public careers form are preserved and migrated (they predate ids and stages).
+ * The jobs every read goes through. On a deployed host nothing seeds kzd_jobs
+ * (see the gate above), so until one is written fall back to the built-in
+ * postings: a fresh copy each call, never stored. That is the same convention
+ * CONTENT_DEFAULTS and SETTINGS_DEFAULTS already follow. In development
+ * ensureSeed() has already written the key, so this changes nothing there.
  */
+function readJobs() {
+  return rawHas(K.jobs) ? rawGet(K.jobs, []) : JSON.parse(JSON.stringify(SEED_JOBS));
+}
+
+/**
+ * Applications written by the public careers form before this module existed
+ * have no id or stage. This only repairs records that are already there and
+ * never creates any, so unlike the seed it is safe, and needed, everywhere.
+ */
+function migrateLegacyApplications() {
+  const apps = rawGet(K.apps, null);
+  if (apps === null) return;
+  let changed = false;
+  apps.forEach((a, i) => {
+    if (!a.id) { a.id = "app-legacy-" + i + "-" + (a.submittedAt || "").slice(0, 10); changed = true; }
+    if (!a.stage) { a.stage = "applied"; changed = true; }
+  });
+  if (changed) rawSet(K.apps, apps);
+}
+
+/** Seeds only when the store is empty. Development only: see the banner above. */
 function ensureSeed() {
+  if (!isLocalDev()) return;
+
   if (!rawHas(K.jobs)) rawSet(K.jobs, SEED_JOBS);
 
   let apps = rawGet(K.apps, null);
   if (apps === null) {
     apps = seedApplications();
     rawSet(K.apps, apps);
-  } else {
-    // Migrate records written before this module existed.
-    let changed = false;
-    apps.forEach((a, i) => {
-      if (!a.id) { a.id = "app-legacy-" + i + "-" + (a.submittedAt || "").slice(0, 10); changed = true; }
-      if (!a.stage) { a.stage = "applied"; changed = true; }
-    });
-    if (changed) rawSet(K.apps, apps);
   }
 
   if (!rawHas(K.employees)) rawSet(K.employees, SEED_EMPLOYEES);
@@ -545,7 +592,7 @@ function ensureSeed() {
   rawSet(K.seeded, true);
 }
 
-try { ensureSeed(); } catch (e) {
+try { migrateLegacyApplications(); ensureSeed(); } catch (e) {
   if (typeof console !== "undefined") console.warn("[kzd-store] seed failed", e);
 }
 
@@ -554,12 +601,12 @@ try { ensureSeed(); } catch (e) {
    ========================================================================== */
 
 export async function getJobs() {
-  return op(() => rawGet(K.jobs, []).slice());
+  return op(() => readJobs().slice());
 }
 
 export async function getJob(id) {
   return op(() => {
-    const job = rawGet(K.jobs, []).find((j) => j.id === id || j.slug === id);
+    const job = readJobs().find((j) => j.id === id || j.slug === id);
     if (!job) throw new Error(`No job with the id "${id}".`);
     return job;
   });
@@ -571,7 +618,7 @@ export async function saveJob(job) {
     if (!job || !String(job.title || "").trim()) {
       throw new Error("A job needs a title.");
     }
-    const jobs = rawGet(K.jobs, []);
+    const jobs = readJobs();
     const slug = slugify(job.slug || job.title);
 
     const clash = jobs.find((j) => j.slug === slug && j.id !== job.id);
@@ -605,7 +652,7 @@ export async function saveJob(job) {
 
 export async function deleteJob(id) {
   return op(() => {
-    const jobs = rawGet(K.jobs, []);
+    const jobs = readJobs();
     const idx = jobs.findIndex((j) => j.id === id);
     if (idx === -1) throw new Error(`No job with the id "${id}".`);
     jobs.splice(idx, 1);
@@ -1046,7 +1093,7 @@ export async function search(query) {
       .filter((a) => [a.fullName, a.email].filter(Boolean).some((v) => String(v).toLowerCase().includes(q)))
       .slice(0, 6);
 
-    const jobs = rawGet(K.jobs, [])
+    const jobs = readJobs()
       .filter((j) => [j.title, j.department, j.location].filter(Boolean).some((v) => String(v).toLowerCase().includes(q)))
       .slice(0, 6);
 
