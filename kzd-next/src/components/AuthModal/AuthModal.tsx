@@ -35,36 +35,22 @@ import {
 import Image from "next/image";
 import { register, signIn, type KzdUser } from "@/lib/kzdStore";
 import styles from "./AuthModal.module.css";
+import Icon from "@/components/Icon/Icon";
 
 export type AuthMode = "signin" | "register";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /* --------------------------------------------------------------------------
-   Icons — ported 1:1 from eyeIcon()/the close icon in js/kzd-auth.js.
+   Icons — the shared Bootstrap Icons set, same glyphs as js/kzd-auth.js.
    -------------------------------------------------------------------------- */
 
 function EyeIcon({ open }: { open: boolean }) {
-  return open ? (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" className={styles.eyeIcon}>
-      <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" />
-      <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-    </svg>
-  ) : (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" className={styles.eyeIcon}>
-      <path d="M2 12s3.6-6.5 10-6.5c2 0 3.7.6 5.1 1.4" />
-      <path d="M22 12s-3.6 6.5-10 6.5c-2 0-3.7-.6-5.1-1.4" />
-      <path d="M4 4l16 16" />
-    </svg>
-  );
+  return <Icon className={styles.eyeIcon} name={open ? "eye" : "eye-slash"} size="dense" />;
 }
 
 function CloseIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M6 6l12 12M18 6L6 18" />
-    </svg>
-  );
+  return <Icon name="x-lg" />;
 }
 
 /* --------------------------------------------------------------------------

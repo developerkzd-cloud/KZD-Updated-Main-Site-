@@ -36,6 +36,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Client } from "@/app/services/content";
 import styles from "./ClientShowcase.module.css";
+import Icon from "@/components/Icon/Icon";
 
 const BASE = "/Assets/clients/r/";
 /* Card 378 + 26 gap; the reference ran 6 cards in 45s. Holding that px/sec
@@ -45,12 +46,7 @@ const CARD_PERIOD_PX = 404;
 const EAGER = 2;
 
 function ExternalGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M8 16L16 8" />
-      <path d="M9 8h7v7" />
-    </svg>
-  );
+  return <Icon name="arrow-up-right" size="dense" />;
 }
 
 function ChromeBar({ domain, className }: { domain: string; className: string }) {
@@ -220,11 +216,7 @@ export default function ClientShowcase({ clients }: { clients: Client[] }) {
                 <span className={`${styles.light} ${styles.lightG}`} />
               </span>
               <span className={styles.domain}>{open.domain}</span>
-              <svg className={styles.globe} viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="12" r="9" />
-                <ellipse cx="12" cy="12" rx="4" ry="9" />
-                <path d="M3 12h18" />
-              </svg>
+              <Icon className={styles.globe} name="globe" size="dense" />
               <button
                 type="button"
                 className={styles.modalClose}
@@ -232,10 +224,7 @@ export default function ClientShowcase({ clients }: { clients: Client[] }) {
                 onClick={closeModal}
                 autoFocus
               >
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d="M6 6l12 12" />
-                  <path d="M18 6L6 18" />
-                </svg>
+                <Icon name="x-lg" />
               </button>
             </div>
 

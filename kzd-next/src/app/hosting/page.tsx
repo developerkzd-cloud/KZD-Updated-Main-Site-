@@ -17,6 +17,7 @@ import PlanCarousel from "./PlanCarousel";
 import GetStartedButton from "./GetStartedButton";
 import { EMAIL_PLANS, FAQ_ITEMS, WHY_CARDS } from "./content";
 import styles from "./hosting.module.css";
+import Icon from "@/components/Icon/Icon";
 
 const DESCRIPTION =
   "Reliable web hosting from KZD Solutions in Durban. Fast, secure shared hosting plans with SSL, backups, and local support built for growing businesses.";
@@ -34,16 +35,7 @@ export const metadata: Metadata = {
   },
 };
 
-const WHY_ICONS = [
-  // check-circle
-  "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
-  // shield-lock
-  "M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4zm0 8v4m-2-2h4",
-  // headset
-  "M4 12a8 8 0 1116 0v5a2 2 0 01-2 2h-1v-6h3m-16 0h3v6H5a2 2 0 01-2-2v-4z",
-  // lightning
-  "M13 2L4 14h6l-1 8 9-12h-6l1-8z",
-] as const;
+const WHY_ICONS = ["check-circle", "shield-lock", "headset", "lightning-charge"] as const;
 
 export default function HostingPage() {
   return (
@@ -55,7 +47,7 @@ export default function HostingPage() {
         </div>
         <div className={styles.heroInner}>
           <span className={styles.eyebrow}>
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 11l18-8-8 18-2-8-8-2z" /></svg>
+            <Icon name="send" size="dense" />
             Grow your business with us
           </span>
           <h1 className={styles.h1}>Web Hosting</h1>
@@ -137,9 +129,7 @@ export default function HostingPage() {
           <div className={styles.whyGrid}>
             {WHY_CARDS.map((card, i) => (
               <Reveal className={styles.whyCard} key={card.title}>
-                <svg className={styles.whyIcon} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d={WHY_ICONS[i]} />
-                </svg>
+                <Icon className={styles.whyIcon} name={WHY_ICONS[i]} size="feature" />
                 <h3 className={styles.whyTitle}>{card.title}</h3>
                 <p className={styles.whyBody}>{card.body}</p>
               </Reveal>

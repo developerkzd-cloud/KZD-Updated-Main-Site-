@@ -365,7 +365,9 @@
   justify-content: center;
 }
 
-.feature-icon i {
+.feature-icon .kzd-icon {
+    width: var(--kzd-icon-feature);
+    height: var(--kzd-icon-feature);
   font-size: 28px;
   color: #fff;
 }

@@ -22,6 +22,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AUTH_LINKS, NAV_ITEMS } from "@/lib/nav";
 import styles from "./MobileDrawer.module.css";
+import Icon from "@/components/Icon/Icon";
 
 export default function MobileDrawer({ burgerClass, barClass }: { burgerClass: string; barClass: string }) {
   const [open, setOpen] = useState(false);
@@ -118,9 +119,7 @@ export default function MobileDrawer({ burgerClass, barClass }: { burgerClass: s
             <span className={styles.word}>KZD Solutions</span>
           </Link>
           <button type="button" className={styles.close} aria-label="Close menu" onClick={close}>
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M5 5l14 14" /><path d="M19 5L5 19" />
-            </svg>
+            <Icon name="x-lg" />
           </button>
         </div>
 
@@ -137,9 +136,7 @@ export default function MobileDrawer({ burgerClass, barClass }: { burgerClass: s
                     onClick={() => setServicesOpen((v) => !v)}
                   >
                     {item.label}
-                    <svg className={styles.caret} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                      <path d="M6 9l6 6 6-6" />
-                    </svg>
+                    <Icon className={styles.caret} name="chevron-down" size="dense" />
                   </button>
 
                   <div

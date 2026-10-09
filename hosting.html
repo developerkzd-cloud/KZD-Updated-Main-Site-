@@ -34,7 +34,6 @@
     <!-- style sheets and font icons -->
     <link rel="stylesheet" href="css/kzd-tokens.css">
     <link rel="stylesheet" href="css/vendors.min.css" />
-    <link rel="stylesheet" href="css/icon.min.css" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/about.css" />
@@ -47,8 +46,6 @@
         <link rel="stylesheet" href="css/kzd-fonts.css" />
 
     <link rel="canonical" href="https://kzdsolutions.co.za/hosting/shared" />
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
 
@@ -174,7 +171,7 @@
                             <li class="nav-item kzd-nav-item">
                                 <button class="nav-link kzd-nav-trigger" type="button" aria-expanded="false" aria-haspopup="true">
                                     Services
-                                    <svg class="kzd-nav-caret" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg>
+                                    <svg class="kzd-icon kzd-nav-caret" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#chevron-down"></use></svg>
                                 </button>
                                 <ul class="kzd-nav-mega">
                                     <li class="kzd-nav-group">
@@ -241,8 +238,7 @@
                 <div class="col-12 col-lg-6 col-md-10 position-relative text-center page-title-extra-large d-flex flex-wrap flex-column align-items-center justify-content-center"
                     data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
                     <span
-                        class="ps-25px pe-25px pt-5px pb-5px mb-15px text-uppercase text-white fs-12 ls-1px fw-600 border-radius-100px bg-gradient-dark-gray-transparent d-flex"><i
-                            class="bi bi-megaphone text-white icon-small me-10px"></i>Grow your business with us</span>
+                        class="ps-25px pe-25px pt-5px pb-5px mb-15px text-uppercase text-white fs-12 ls-1px fw-600 border-radius-100px bg-gradient-dark-gray-transparent d-flex"><svg class="kzd-icon text-white icon-small me-10px" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#megaphone"></use></svg>Grow your business with us</span>
                     <h1 class="mb-20px text-white fw-600 ls-minus-1px">Web Hosting</h1>
                 </div>
             </div>
@@ -413,8 +409,8 @@
 
                 </div>
             </div>
-            <button type="button" class="chp-swiper-prev" aria-label="Previous plan"><i class="bi bi-chevron-left"></i></button>
-            <button type="button" class="chp-swiper-next" aria-label="Next plan"><i class="bi bi-chevron-right"></i></button>
+            <button type="button" class="chp-swiper-prev" aria-label="Previous plan"><svg class="kzd-icon" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#chevron-left"></use></svg></button>
+            <button type="button" class="chp-swiper-next" aria-label="Next plan"><svg class="kzd-icon" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#chevron-right"></use></svg></button>
         </div>
 
         <p class="text-muted text-center" style="margin-top: 24px;">Free .co.za domain included with annual hosting plans only.</p>
@@ -526,8 +522,7 @@
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
               " onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 32px rgba(0,0,0,0.12)';"
                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(0,0,0,0.05)';">
-                        <i class="bi bi-check-circle-fill"
-                            style="font-size: 32px; color: #000; margin-bottom: 16px;"></i>
+                        <svg class="kzd-icon kzd-icon--feature" style="margin-bottom: 16px;" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#check-circle"></use></svg>
                         <h5 style="font-weight: 600; color: #000; text-align: center;">Reliable Uptime</h5>
                         <p style="color: #555; font-size: 14px; text-align: center; margin-top: 8px;">
                             99.99% uptime guarantee to keep your website always available.
@@ -550,8 +545,7 @@
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
               " onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 32px rgba(0,0,0,0.12)';"
                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(0,0,0,0.05)';">
-                        <i class="bi bi-shield-lock-fill"
-                            style="font-size: 32px; color: #000; margin-bottom: 16px;"></i>
+                        <svg class="kzd-icon kzd-icon--feature" style="margin-bottom: 16px;" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#shield-lock"></use></svg>
                         <h5 style="font-weight: 600; color: #000; text-align: center;">Secure & Protected</h5>
                         <p style="color: #555; font-size: 14px; text-align: center; margin-top: 8px;">
                             SSL certificates, firewalls, and automated backups keep your data safe.
@@ -574,7 +568,7 @@
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
               " onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 32px rgba(0,0,0,0.12)';"
                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(0,0,0,0.05)';">
-                        <i class="bi bi-headset" style="font-size: 32px; color: #000; margin-bottom: 16px;"></i>
+                        <svg class="kzd-icon kzd-icon--feature" style="margin-bottom: 16px;" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#headset"></use></svg>
                         <h5 style="font-weight: 600; color: #000; text-align: center;">24/7 Support</h5>
                         <p style="color: #555; font-size: 14px; text-align: center; margin-top: 8px;">
                             Our expert team is available round the clock to assist you with any issue.
@@ -597,8 +591,7 @@
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
               " onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 32px rgba(0,0,0,0.12)';"
                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(0,0,0,0.05)';">
-                        <i class="bi bi-lightning-charge-fill"
-                            style="font-size: 32px; color: #000; margin-bottom: 16px;"></i>
+                        <svg class="kzd-icon kzd-icon--feature" style="margin-bottom: 16px;" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#lightning-charge"></use></svg>
                         <h5 style="font-weight: 600; color: #000; text-align: center;">Fast Performance</h5>
                         <p style="color: #555; font-size: 14px; text-align: center; margin-top: 8px;">
                             Optimized servers and caching technology for lightning-fast load times.
@@ -627,16 +620,14 @@
                     <div class="elements-social social-icon-style-02 mt-15px">
                         <ul class="medium-icon dark d-flex justify-content-lg-start justify-content-center">
                             <li class="my-0"><a class="facebook" aria-label="Facebook"
-                                    href="https://web.facebook.com/profile.php?id=61572728398709" target="_blank"><i
-                                        class="fa-brands fa-facebook-f"></i></a></li>
+                                    href="https://web.facebook.com/profile.php?id=61572728398709" target="_blank"><svg class="kzd-icon" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#facebook"></use></svg></a></li>
                             <li class="my-0"><a class="linkedin" aria-label="LinkedIn"
                                     href="https://www.linkedin.com/company/kzd-solutions/?viewAsMember=true"
-                                    target="_blank"><i class="fa-brands fa-linkedin"></i></a></li>
-                            <li class="my-0"><a class="whatsapp" aria-label="WhatsApp" href="https://wa.me/27704563015" target="_blank"><i
-                                        class="fa-brands fa-whatsapp"></i></a></li>
+                                    target="_blank"><svg class="kzd-icon" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#linkedin"></use></svg></a></li>
+                            <li class="my-0"><a class="whatsapp" aria-label="WhatsApp" href="https://wa.me/27704563015" target="_blank"><svg class="kzd-icon" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#whatsapp"></use></svg></a></li>
                             <li class="my-0"><a class="instagram" aria-label="Instagram"
                                     href="https://www.instagram.com/kzdsolutions96?igsh=MThydXd1MndtbDh5eQ==&utm_source=ig_contact_invite"
-                                    target="_blank"><i class="fa-brands fa-instagram"></i></a></li>
+                                    target="_blank"><svg class="kzd-icon" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#instagram"></use></svg></a></li>
                         </ul>
                     </div>
                 </div>

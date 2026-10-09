@@ -72,7 +72,21 @@
     return n;
   }
 
+  /* Bootstrap Icons sprite (Assets/icons/kzd-icons.svg): the one icon family
+     on the site. Pass "#name" wherever path data used to go. */
+  function glyph(name, cls) {
+    var s = document.createElementNS(SVG_NS, "svg");
+    s.setAttribute("class", "kzd-icon" + (cls ? " " + cls : ""));
+    s.setAttribute("aria-hidden", "true");
+    s.setAttribute("focusable", "false");
+    var u = document.createElementNS(SVG_NS, "use");
+    u.setAttribute("href", "/Assets/icons/kzd-icons.svg#" + name);
+    s.appendChild(u);
+    return s;
+  }
+
   function svg(paths, opts) {
+    if (typeof paths === "string" && paths.charAt(0) === "#") return glyph(paths.slice(1), opts && opts.cls);
     var s = document.createElementNS(SVG_NS, "svg");
     s.setAttribute("viewBox", (opts && opts.box) || "0 0 24 24");
     s.setAttribute("aria-hidden", "true");
@@ -114,21 +128,17 @@
      footer social icons.                                                    */
 
   var ICONS = {
-    pencil: ["M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17v3Z", "M14.5 7.5l2 2"],
-    plus:   ["M12 5v14", "M5 12h14"],
-    x:      ["M5 5l14 14", "M19 5L5 19"],
-    info:   ["M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z", "M12 11v5", "M12 7.6v.2"],
-    doc:    ["M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z",
-             "M14 3v5h5", "M9 13h6", "M9 17h4"],
-    cert:   ["M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z",
-             "M14 3v5h5", "M9 12h6", "M9 16h6"],
-    trash:  ["M4 7h16", "M10 11v6", "M14 11v6",
-             "M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12", "M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"],
-    linkedin: "M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0Z",
-    github: "M12 .3a12 12 0 0 0-3.79 23.4c.6.1.82-.26.82-.58l-.02-2.05c-3.34.73-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.77-1.34-1.77-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.64 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22l-.01 3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .3Z",
-    globe: "M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm8.2 7.2h-3.3a18.6 18.6 0 0 0-1.6-4.1 9.8 9.8 0 0 1 4.9 4.1ZM12 2.2c.8 1.2 1.5 2.6 2 4.9h-4c.5-2.3 1.2-3.7 2-4.9ZM2.5 14.4a9.9 9.9 0 0 1 0-4.8h3.8a20.6 20.6 0 0 0 0 4.8H2.5Zm.9 2.4h3.3c.4 1.5.9 2.9 1.6 4.1a9.8 9.8 0 0 1-4.9-4.1Zm3.3-9.6H3.4a9.8 9.8 0 0 1 4.9-4.1 18.6 18.6 0 0 0-1.6 4.1ZM12 21.8c-.8-1.2-1.5-2.6-2-4.9h4c-.5 2.3-1.2 3.7-2 4.9Zm2.4-7.4H9.6a18.4 18.4 0 0 1 0-4.8h4.8a18.4 18.4 0 0 1 0 4.8Zm.9 6.6c.7-1.2 1.2-2.6 1.6-4.1h3.3a9.8 9.8 0 0 1-4.9 4.1Zm2.4-6.6a20.6 20.6 0 0 0 0-4.8h3.8a9.9 9.9 0 0 1 0 4.8h-3.8Z",
-    link: ["M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7",
-           "M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"]
+    pencil: "#pencil",
+    plus:   "#plus-lg",
+    x:      "#x-lg",
+    info:   "#info-circle",
+    doc:    "#file-earmark-text",
+    cert:   "#file-earmark-check",
+    trash:  "#trash",
+    linkedin: "#linkedin",
+    github: "#github",
+    globe:  "#globe",
+    link:   "#link-45deg"
   };
 
   /* --- profile model ----------------------------------------------------- */
@@ -518,7 +528,7 @@
     { id: "linkedin",  label: "LinkedIn",  icon: "linkedin", glyph: ICONS.linkedin },
     { id: "github",    label: "GitHub",    icon: "github",   glyph: ICONS.github },
     { id: "portfolio", label: "Portfolio", icon: "portfolio", glyph: ICONS.globe },
-    { id: "other",     label: "Other",     icon: "other",    glyph: ICONS.link, stroke: true }
+    { id: "other",     label: "Other",     icon: "other",    glyph: ICONS.link }
   ];
 
   function renderLinks() {
@@ -542,14 +552,7 @@
       }
 
       var tile = el("span", "kzd-pro__link-tile kzd-pro__link-tile--" + spec.icon);
-      var g = svg(spec.glyph);
-      if (spec.stroke) {
-        g.setAttribute("fill", "none");
-        g.setAttribute("stroke", "#FFFFFF");
-        g.setAttribute("stroke-width", "2");
-        g.setAttribute("stroke-linecap", "round");
-      }
-      tile.appendChild(g);
+      tile.appendChild(svg(spec.glyph));
       row.appendChild(tile);
 
       var body = el("span", "kzd-pro__link-body");

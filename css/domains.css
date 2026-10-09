@@ -209,7 +209,9 @@
     margin-bottom: 20px;
 }
 
-.feature-icon i {
+.feature-icon .kzd-icon {
+    width: var(--kzd-icon-feature);
+    height: var(--kzd-icon-feature);
     font-size: 1.8rem;
     color: white;
 }
@@ -332,7 +334,7 @@
     border-bottom: none;
 }
 
-.pricing-features li i {
+.pricing-features li .kzd-icon {
     color: #000;
     margin-right: 12px;
     font-size: 1rem;
@@ -835,7 +837,7 @@ background-color: #000;    color: white;
         margin-bottom: 16px;
     }
     
-    .feature-icon i {
+    .feature-icon .kzd-icon {
         font-size: 1.5rem;
     }
 }

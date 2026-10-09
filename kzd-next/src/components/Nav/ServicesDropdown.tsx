@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { NavItem } from "@/lib/nav";
 import styles from "./Nav.module.css";
+import Icon from "@/components/Icon/Icon";
 
 export default function ServicesDropdown({ item }: { item: NavItem }) {
   const [open, setOpen] = useState(false);
@@ -69,9 +70,7 @@ export default function ServicesDropdown({ item }: { item: NavItem }) {
         }}
       >
         {item.label}
-        <svg className={styles.caret} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M6 9l6 6 6-6" />
-        </svg>
+        <Icon className={styles.caret} name="chevron-down" size="dense" />
       </button>
 
       <ul className={styles.mega}>

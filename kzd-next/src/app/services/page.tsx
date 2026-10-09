@@ -18,6 +18,7 @@ import ClientShowcase from "@/components/ClientShowcase/ClientShowcase";
 import ServicesAccordion from "./ServicesAccordion";
 import { CONSULTING_LIST, DEVELOPMENT_LIST, PRODUCTS, CLIENTS } from "./content";
 import styles from "./services.module.css";
+import Icon from "@/components/Icon/Icon";
 
 const DESCRIPTION =
   "Explore KZD Solutions' services including business process optimization, custom software development, scalable digital platforms, and consulting for business growth.";
@@ -178,9 +179,7 @@ export default function ServicesPage() {
                       sizes="(max-width: 900px) 80vw, 360px"
                     />
                     <span className={styles.prodGo} aria-hidden="true">
-                      <svg viewBox="0 0 24 24" focusable="false">
-                        <path d="M8 16L16 8M9 8h7v7" />
-                      </svg>
+                      <Icon name="arrow-up-right" size="dense" />
                     </span>
                   </span>
                   <h3 className={styles.prodName}>{product.name}</h3>

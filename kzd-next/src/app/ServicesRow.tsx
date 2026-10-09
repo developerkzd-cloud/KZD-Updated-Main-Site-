@@ -20,6 +20,7 @@
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import styles from "./page.module.css";
+import Icon from "@/components/Icon/Icon";
 
 export default function ServicesRow({ children }: { children: ReactNode }) {
   const rowRef = useRef<HTMLDivElement>(null);
@@ -78,9 +79,7 @@ export default function ServicesRow({ children }: { children: ReactNode }) {
           disabled={atStart}
           onClick={() => advance(-1)}
         >
-          <svg viewBox="0 0 18 18" focusable="false" aria-hidden="true">
-            <path d="M11.5 3.5 L5.5 9 l6 5.5" />
-          </svg>
+          <Icon name="chevron-left" size="dense" />
         </button>
         <button
           type="button"
@@ -89,9 +88,7 @@ export default function ServicesRow({ children }: { children: ReactNode }) {
           disabled={atEnd}
           onClick={() => advance(1)}
         >
-          <svg viewBox="0 0 18 18" focusable="false" aria-hidden="true">
-            <path d="M6.5 3.5 L12.5 9 l-6 5.5" />
-          </svg>
+          <Icon name="chevron-right" size="dense" />
         </button>
       </div>
     </>

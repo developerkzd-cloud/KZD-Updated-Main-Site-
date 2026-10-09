@@ -49,7 +49,22 @@ export function el(tag, cls, text) {
   return n;
 }
 
+
+/* Bootstrap Icons sprite (Assets/icons/kzd-icons.svg): the one icon family
+   on the site. Pass "#name" wherever path data used to go. */
+export function glyph(name, cls) {
+  const s = document.createElementNS(SVG_NS, "svg");
+  s.setAttribute("class", "kzd-icon" + (cls ? " " + cls : ""));
+  s.setAttribute("aria-hidden", "true");
+  s.setAttribute("focusable", "false");
+  const u = document.createElementNS(SVG_NS, "use");
+  u.setAttribute("href", "/Assets/icons/kzd-icons.svg#" + name);
+  s.appendChild(u);
+  return s;
+}
+
 export function svg(paths, opts = {}) {
+  if (typeof paths === "string" && paths.charAt(0) === "#") return glyph(paths.slice(1), opts.cls);
   const s = document.createElementNS(SVG_NS, "svg");
   s.setAttribute("viewBox", opts.box || "0 0 24 24");
   s.setAttribute("aria-hidden", "true");
@@ -119,30 +134,26 @@ export function stageChip(stage) {
 }
 
 export const ICONS = {
-  overview: ["M4 4h7v7H4z", "M13 4h7v4h-7z", "M13 10h7v10h-7z", "M4 13h7v7H4z"],
-  apps:     ["M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20", "M10 11.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z", "M20 20v-1.5a3.5 3.5 0 0 0-2.6-3.4", "M15.4 4.6a3.5 3.5 0 0 1 0 6.8"],
-  jobs:     ["M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8Z", "M9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"],
-  content:  ["M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z", "M15 3v4h4", "M9 12h6", "M9 16h6"],
-  settings: ["M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z", "M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 7.9 19.4l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 4 13.9H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 7.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9.4A1.6 1.6 0 0 0 10.5 4V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8v.1a1.6 1.6 0 0 0 1.5 1.1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1.1Z"],
-  search:   ["M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z", "M20 20l-4-4"],
-  bell:     ["M18 9a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6Z", "M13.7 20a2 2 0 0 1-3.4 0"],
-  burger:   ["M4 7h16", "M4 12h16", "M4 17h16"],
-  x:        ["M6 6l12 12", "M18 6 6 18"],
-  doc:      ["M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z", "M14 3v5h5"],
-  chevUp:   ["M6 14l6-6 6 6"],
-  plus:     ["M12 5v14", "M5 12h14"],
-  brief:    ["M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8Z", "M9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"],
-  users:    ["M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20", "M10 11.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"],
-  check:    ["M5 13l4 4L19 7"],
+  overview: "#grid",
+  apps:     "#people",
+  jobs:     "#briefcase",
+  content:  "#file-earmark-text",
+  settings: "#gear",
+  search:   "#search",
+  bell:     "#bell",
+  burger:   "#list",
+  x:        "#x-lg",
+  doc:      "#file-earmark",
+  chevUp:   "#chevron-up",
+  plus:     "#plus-lg",
+  brief:    "#briefcase",
+  users:    "#people",
+  check:    "#check-lg",
   // ID badge — the Employees nav icon
-  badge:    ["M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z",
-             "M12 11.2a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z",
-             "M8.5 16.5a3.6 3.6 0 0 1 7 0",
-             "M9.5 4V2.8h5V4"]
+  badge:    "#person-badge"
 };
 
-const KEBAB = "M12 7a1.6 1.6 0 1 0 0-3.2A1.6 1.6 0 0 0 12 7Zm0 6.6a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2Zm0 6.6a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2Z";
-export function kebabIcon() { return svg(KEBAB, { fill: "currentColor" }); }
+export function kebabIcon() { return svg("#three-dots-vertical"); }
 
 /* --------------------------------------------------------------------------
    Toasts

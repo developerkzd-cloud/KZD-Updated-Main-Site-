@@ -25,8 +25,8 @@ import "swiper/css";
 import "swiper/css/pagination";
 import type { Review } from "@/lib/content";
 import styles from "./page.module.css";
+import Icon from "@/components/Icon/Icon";
 
-const STAR = "M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3-5.8 3 1.1-6.5L2.6 9.4l6.5-.9L12 2.6z";
 
 const AVATAR_TONES = [
   "var(--kzd-navy-400)",
@@ -45,9 +45,7 @@ function Stars({ rating }: { rating: number }) {
   return (
     <span className={styles.tstCardStars} role="img" aria-label={`Rated ${rating} out of 5`}>
       {Array.from({ length: 5 }, (_, i) => (
-        <svg key={i} viewBox="0 0 24 24" aria-hidden="true">
-          <path d={STAR} />
-        </svg>
+        <Icon key={i} name="star-fill" />
       ))}
     </span>
   );
@@ -113,7 +111,7 @@ export default function TestimonialsCarousel({ reviews }: { reviews: Review[] })
         disabled={atStart}
         onClick={() => swiperRef.current?.slidePrev()}
       >
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6" /></svg>
+        <Icon name="chevron-left" />
       </button>
       <button
         type="button"
@@ -122,7 +120,7 @@ export default function TestimonialsCarousel({ reviews }: { reviews: Review[] })
         disabled={atEnd}
         onClick={() => swiperRef.current?.slideNext()}
       >
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6" /></svg>
+        <Icon name="chevron-right" />
       </button>
     </div>
   );

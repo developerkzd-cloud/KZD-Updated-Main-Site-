@@ -103,7 +103,21 @@
     return n;
   }
 
+  /* Bootstrap Icons sprite (Assets/icons/kzd-icons.svg): the one icon family
+     on the site. Pass "#name" wherever path data used to go. */
+  function glyph(name, cls) {
+    var s = document.createElementNS(SVG_NS, "svg");
+    s.setAttribute("class", "kzd-icon" + (cls ? " " + cls : ""));
+    s.setAttribute("aria-hidden", "true");
+    s.setAttribute("focusable", "false");
+    var u = document.createElementNS(SVG_NS, "use");
+    u.setAttribute("href", "/Assets/icons/kzd-icons.svg#" + name);
+    s.appendChild(u);
+    return s;
+  }
+
   function svg(viewBox, d, cls) {
+    if (typeof d === "string" && d.charAt(0) === "#") return glyph(d.slice(1), cls);
     var s = document.createElementNS(SVG_NS, "svg");
     s.setAttribute("viewBox", viewBox);
     s.setAttribute("aria-hidden", "true");
@@ -117,26 +131,11 @@
     return s;
   }
 
-  function externalGlyph() { return svg("0 0 24 24", ["M8 16L16 8", "M9 8h7v7"]); }
-  function chevron(dir) { return svg("0 0 24 24", dir === "prev" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"); }
-  function cross() { return svg("0 0 24 24", ["M6 6l12 12", "M18 6L6 18"]); }
+  function externalGlyph() { return svg("0 0 24 24", "#arrow-up-right"); }
+  function chevron(dir) { return svg("0 0 24 24", dir === "prev" ? "#chevron-left" : "#chevron-right"); }
+  function cross() { return svg("0 0 24 24", "#x-lg"); }
 
-  function globe() {
-    var s = document.createElementNS(SVG_NS, "svg");
-    s.setAttribute("viewBox", "0 0 24 24");
-    s.setAttribute("aria-hidden", "true");
-    s.setAttribute("class", "kzd-sc-modal__globe");
-    [["circle", { cx: 12, cy: 12, r: 9 }],
-     ["ellipse", { cx: 12, cy: 12, rx: 4, ry: 9 }]].forEach(function (spec) {
-      var n = document.createElementNS(SVG_NS, spec[0]);
-      for (var k in spec[1]) n.setAttribute(k, spec[1][k]);
-      s.appendChild(n);
-    });
-    var line = document.createElementNS(SVG_NS, "path");
-    line.setAttribute("d", "M3 12h18");
-    s.appendChild(line);
-    return s;
-  }
+  function globe() { return glyph("globe", "kzd-sc-modal__globe"); }
 
   /** Browser lights + domain, shared by the card and the modal. */
   function chromeBar(client, cls) {

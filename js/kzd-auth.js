@@ -193,7 +193,21 @@
     return n;
   }
 
+  /* Bootstrap Icons sprite (Assets/icons/kzd-icons.svg): the one icon family
+     on the site. Pass "#name" wherever path data used to go. */
+  function glyph(name, cls) {
+    var s = document.createElementNS(SVG_NS, "svg");
+    s.setAttribute("class", "kzd-icon" + (cls ? " " + cls : ""));
+    s.setAttribute("aria-hidden", "true");
+    s.setAttribute("focusable", "false");
+    var u = document.createElementNS(SVG_NS, "use");
+    u.setAttribute("href", "/Assets/icons/kzd-icons.svg#" + name);
+    s.appendChild(u);
+    return s;
+  }
+
   function svg(viewBox, paths, cls) {
+    if (typeof paths === "string" && paths.charAt(0) === "#") return glyph(paths.slice(1), cls);
     var s = document.createElementNS(SVG_NS, "svg");
     s.setAttribute("viewBox", viewBox);
     s.setAttribute("aria-hidden", "true");
@@ -208,10 +222,7 @@
   }
 
   function eyeIcon(open) {
-    return svg("0 0 24 24", open
-      ? ["M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z", "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"]
-      : ["M2 12s3.6-6.5 10-6.5c2 0 3.7.6 5.1 1.4", "M22 12s-3.6 6.5-10 6.5c-2 0-3.7-.6-5.1-1.4", "M4 4l16 16"],
-      "kzd-auth__eye-i");
+    return svg("0 0 24 24", open ? "#eye" : "#eye-slash", "kzd-auth__eye-i");
   }
 
   var modal = {
@@ -510,7 +521,7 @@
     var close_ = el("button", "kzd-auth__close");
     close_.type = "button";
     close_.setAttribute("aria-label", "Close");
-    close_.appendChild(svg("0 0 24 24", ["M6 6l12 12", "M18 6L6 18"]));
+    close_.appendChild(svg("0 0 24 24", "#x-lg"));
     close_.addEventListener("click", function () { close(); });
     box.appendChild(close_);
 

@@ -86,6 +86,14 @@
   --kzd-warning-ink: var(--kzd-status-leave-ink);
   --kzd-warning-bg:  var(--kzd-status-leave-bg);
 
+  /* --------------------------------------------------- THIRD-PARTY MARKS */
+  /* Not brand, not semantic: the official four-colour Google G next to the
+     Google review rating. Its usage rules forbid recolouring it. */
+  --kzd-mark-google-blue:   #4285F4;
+  --kzd-mark-google-green:  #34A853;
+  --kzd-mark-google-yellow: #FBBC05;
+  --kzd-mark-google-red:    #EA4335;
+
   /* ----------------------------------------------------------- TYPOGRAPHY */
   /* Inter / Inter Tight are one family; JetBrains Mono is for eyebrows,
      status chips and labels only. Next sets --kzd-font-body etc. through
@@ -238,7 +246,11 @@
   flex: none;
   display: inline-block;
   vertical-align: middle;
-  fill: currentColor;
+  /* Bootstrap Icons are filled outlines. Several older section styles set
+     svg { fill: none; stroke: currentColor } for the hand-drawn icons these
+     replaced; this wins over them. */
+  fill: currentColor !important;
+  stroke: none !important;
 }
 .kzd-icon--dense   { width: var(--kzd-icon-dense);   height: var(--kzd-icon-dense); }
 .kzd-icon--feature { width: var(--kzd-icon-feature); height: var(--kzd-icon-feature); }

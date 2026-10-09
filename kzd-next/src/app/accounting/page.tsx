@@ -15,6 +15,7 @@ import Image from "next/image";
 import AccountingHealthCheck from "./AccountingHealthCheck";
 import Reveal from "@/components/Reveal/Reveal";
 import styles from "./accounting.module.css";
+import Icon from "@/components/Icon/Icon";
 
 const DESCRIPTION =
   "KZD Solutions provides expert accounting services in Durban. Contact us for all your accounting needs.";
@@ -76,9 +77,7 @@ const PROBLEM_CARDS = [
 
 function XIcon() {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M12 10.6 6.7 5.3 5.3 6.7l5.3 5.3-5.3 5.3 1.4 1.4 5.3-5.3 5.3 5.3 1.4-1.4-5.3-5.3 5.3-5.3-1.4-1.4z" />
-    </svg>
+    <Icon name="x-lg" />
   );
 }
 

@@ -11,6 +11,7 @@ import { getTlds } from "@/lib/content";
 import TransferForm from "./TransferForm";
 import Reveal from "@/components/Reveal/Reveal";
 import styles from "./transfer.module.css";
+import Icon from "@/components/Icon/Icon";
 
 const DESCRIPTION =
   "Transfer your domain to KZD Solutions. Easy, secure domain transfer process with expert support.";
@@ -28,7 +29,6 @@ export const metadata: Metadata = {
   },
 };
 
-const CHECK_ICON = "M20 6L9 17l-5-5";
 
 const BENEFITS = [
   {
@@ -83,10 +83,7 @@ export default function DomainTransferPage() {
               <ul className={styles.benefitList}>
                 {BENEFITS.map((benefit) => (
                   <li className={styles.benefitItem} key={benefit.title}>
-                    <svg className={styles.benefitIcon} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                      <circle cx="12" cy="12" r="10" fill="none" />
-                      <path d={CHECK_ICON} />
-                    </svg>
+                    <Icon className={styles.benefitIcon} name="check-circle" />
                     <div>
                       <h3 className={styles.benefitTitle}>{benefit.title}</h3>
                       <p className={styles.benefitBody}>{benefit.body}</p>

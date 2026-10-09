@@ -29,6 +29,7 @@ import "swiper/css/navigation";
 import GetStartedButton from "./GetStartedButton";
 import { BILLING_LABELS, HOSTING_PLANS, type BillingPeriod, type HostingPlan } from "./content";
 import styles from "./hosting.module.css";
+import Icon from "@/components/Icon/Icon";
 
 const PERIODS: { id: BillingPeriod; label: string; save?: string }[] = [
   { id: "monthly", label: "Monthly" },
@@ -120,10 +121,10 @@ export default function PlanCarousel() {
         </Swiper>
 
         <button ref={prevRef} type="button" className={styles.swiperPrev} aria-label="Previous plan">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6" /></svg>
+          <Icon name="chevron-left" />
         </button>
         <button ref={nextRef} type="button" className={styles.swiperNext} aria-label="Next plan">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6" /></svg>
+          <Icon name="chevron-right" />
         </button>
       </div>
 

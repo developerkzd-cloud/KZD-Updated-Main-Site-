@@ -15,6 +15,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CONTACT, FOOTER_COMPANY, FOOTER_SERVICES, SOCIALS } from "@/lib/nav";
 import styles from "./Footer.module.css";
+import Icon from "@/components/Icon/Icon";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -59,9 +60,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     aria-label={`KZD Solutions on ${s.name}`}
                   >
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                      <path d={s.path} />
-                    </svg>
+                    <Icon name={s.icon} size="dense" />
                   </a>
                 </li>
               ))}

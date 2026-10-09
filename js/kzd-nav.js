@@ -150,7 +150,21 @@
 
   var SVG = "http://www.w3.org/2000/svg";
 
+  /* Bootstrap Icons sprite (Assets/icons/kzd-icons.svg): the one icon family
+     on the site. Pass "#name" wherever path data used to go. */
+  function glyph(name, cls) {
+    var s = document.createElementNS(SVG, "svg");
+    s.setAttribute("class", "kzd-icon" + (cls ? " " + cls : ""));
+    s.setAttribute("aria-hidden", "true");
+    s.setAttribute("focusable", "false");
+    var u = document.createElementNS(SVG, "use");
+    u.setAttribute("href", "/Assets/icons/kzd-icons.svg#" + name);
+    s.appendChild(u);
+    return s;
+  }
+
   function svg(paths, cls) {
+    if (typeof paths === "string" && paths.charAt(0) === "#") return glyph(paths.slice(1), cls);
     var s = document.createElementNS(SVG, "svg");
     s.setAttribute("viewBox", "0 0 24 24");
     s.setAttribute("aria-hidden", "true");
@@ -229,7 +243,7 @@
     var close = el("button", "kzd-mnav__close");
     close.type = "button";
     close.setAttribute("aria-label", "Close menu");
-    close.appendChild(svg(["M5 5l14 14", "M19 5L5 19"]));
+    close.appendChild(svg("#x-lg"));
     head.appendChild(close);
     panel.appendChild(head);
 
@@ -250,7 +264,7 @@
         trigger.setAttribute("aria-expanded", "false");
         trigger.setAttribute("aria-controls", "kzd-mnav-sub");
         trigger.appendChild(document.createTextNode("Services"));
-        trigger.appendChild(svg(["M6 9l6 6 6-6"], "kzd-mnav__caret"));
+        trigger.appendChild(svg("#chevron-down", "kzd-mnav__caret"));
         row.appendChild(trigger);
 
         var wrap = el("div", "kzd-mnav__subwrap");

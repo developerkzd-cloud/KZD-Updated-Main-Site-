@@ -16,14 +16,11 @@ import { getJob, getJobs, type Job } from "@/lib/content";
 import JobTabs from "./JobTabs";
 import ShareJob from "./ShareJob";
 import styles from "./job.module.css";
+import Icon from "@/components/Icon/Icon";
 
 const SITE = "https://kzdsolutions.co.za";
 
-const ICONS = {
-  pin: "M12 21s7-5.6 7-11a7 7 0 10-14 0c0 5.4 7 11 7 11z M12 10a2 2 0 100-4 2 2 0 000 4z",
-  clock: "M12 21a9 9 0 100-18 9 9 0 000 18z M12 7v5l3 2",
-  people: "M16 20v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2 M9 10a4 4 0 100-8 4 4 0 000 8 M22 20v-2a4 4 0 00-3-3.9",
-};
+const ICONS = { pin: "geo-alt", clock: "clock", people: "people" } as const;
 
 export function generateStaticParams() {
   return getJobs().map((job) => ({ id: job.id }));
@@ -99,9 +96,7 @@ function MetaList({ job, className }: { job: Job; className: string }) {
         .filter(([, value]) => Boolean(value))
         .map(([icon, value]) => (
           <li key={icon}>
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d={ICONS[icon]} />
-            </svg>
+            <Icon name={ICONS[icon]} size="dense" />
             {value}
           </li>
         ))}
@@ -235,9 +230,7 @@ export default async function JobPage(props: PageProps<"/careers/[id]">) {
       <header className={styles.head}>
         <div className={styles.inner}>
           <Link className={styles.back} href="/careers">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M19 12H5M11 18l-6-6 6-6" />
-            </svg>
+            <Icon name="arrow-left" size="dense" />
             All openings
           </Link>
           <div className={styles.headIn}>

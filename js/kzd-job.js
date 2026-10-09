@@ -44,7 +44,21 @@
     return n;
   }
 
+  /* Bootstrap Icons sprite (Assets/icons/kzd-icons.svg): the one icon family
+     on the site. Pass "#name" wherever path data used to go. */
+  function glyph(name, cls) {
+    var s = document.createElementNS(SVG_NS, "svg");
+    s.setAttribute("class", "kzd-icon" + (cls ? " " + cls : ""));
+    s.setAttribute("aria-hidden", "true");
+    s.setAttribute("focusable", "false");
+    var u = document.createElementNS(SVG_NS, "use");
+    u.setAttribute("href", "/Assets/icons/kzd-icons.svg#" + name);
+    s.appendChild(u);
+    return s;
+  }
+
   function svg(viewBox, paths, cls) {
+    if (typeof paths === "string" && paths.charAt(0) === "#") return glyph(paths.slice(1), cls);
     var s = document.createElementNS(SVG_NS, "svg");
     s.setAttribute("viewBox", viewBox);
     s.setAttribute("aria-hidden", "true");
@@ -59,15 +73,15 @@
   }
 
   var ICONS = {
-    pin: ["M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11z", "M12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"],
-    clock: ["M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z", "M12 7v5l3 2"],
-    people: ["M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20", "M9.5 10.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7", "M21 20v-1.5a4 4 0 0 0-3-3.87", "M16 3.6a4 4 0 0 1 0 7.75"],
-    arrowLeft: "M19 12H5M11 6l-6 6 6 6",
-    arrowRight: "M5 12h14M13 6l6 6-6 6",
-    upload: ["M12 17V5", "M7 10l5-5 5 5"],
-    x: ["M6 6l12 12", "M18 6L6 18"],
-    info: ["M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z", "M12 11v5", "M12 8h.01"],
-    tick: "M4.5 12.5l5 5 10-11"
+    pin: "#geo-alt",
+    clock: "#clock",
+    people: "#people",
+    arrowLeft: "#arrow-left",
+    arrowRight: "#arrow-right",
+    upload: "#upload",
+    x: "#x-lg",
+    info: "#info-circle",
+    tick: "#check-lg"
   };
 
   function metaList(cls) {

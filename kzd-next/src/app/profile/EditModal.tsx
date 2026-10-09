@@ -14,6 +14,7 @@
 
 import { useEffect, useId, useRef, type ReactNode } from "react";
 import styles from "./profile.module.css";
+import Icon from "@/components/Icon/Icon";
 
 export default function EditModal({
   title,
@@ -95,9 +96,7 @@ export default function EditModal({
         ref={dialogRef}
       >
         <button type="button" className={styles.modalClose} aria-label="Close" onClick={onClose}>
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M5 5l14 14M19 5L5 19" />
-          </svg>
+          <Icon name="x-lg" />
         </button>
         <h2 className={styles.modalTitle} id={titleId}>
           {title}
