@@ -1,0 +1,62 @@
+.accordion {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--kzd-line);
+}
+
+.item {
+  border-bottom: 1px solid var(--kzd-line);
+  scroll-margin-top: 100px;
+}
+
+.heading {
+  margin: 0;
+  font: inherit;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 22px 4px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--kzd-display);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--kzd-navy);
+}
+
+.trigger:hover { color: var(--kzd-blue); }
+
+.icon {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--kzd-blue-tint);
+  color: var(--kzd-blue);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.panel {
+  overflow: hidden;
+}
+
+.panelBody {
+  padding: 0 4px 22px;
+  color: var(--kzd-body);
+  max-width: var(--kzd-measure);
+}
+
+.panelBody :global(a) {
+  color: var(--kzd-blue);
+  text-decoration: underline;
+}

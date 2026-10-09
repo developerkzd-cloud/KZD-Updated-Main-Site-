@@ -1,0 +1,552 @@
+/* ==========================================================================
+   ACCOUNTING — ported from accounting.html + its inline <style> block.
+
+   Shared by page.tsx (hero, trusted-by, problem cards — server-rendered) and
+   AccountingHealthCheck.tsx (checklist, package recommendation, lead form —
+   client-rendered, tightly coupled by the live checklist score).
+   ========================================================================== */
+
+.acc {
+  --a-danger: #d93025;
+  --a-danger-tint: #fdecea;
+  --a-warn: #b8860b;
+  --a-warn-tint: #fdf3de;
+  --a-info: #149ca0;
+  --a-info-tint: #e0f6f7;
+  --a-neutral: #565d6b;
+  --a-neutral-tint: #eef0f4;
+
+  --a-gutter: 100px;
+
+  position: relative;
+  isolation: isolate;
+  background: var(--kzd-paper);
+}
+
+.inner {
+  width: 100%;
+  max-width: calc(1240px + var(--a-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--a-gutter);
+}
+
+.h2 {
+  margin: 0;
+  text-align: center;
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  color: var(--kzd-navy);
+}
+
+/* 1. Hero -------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 110px 0 70px;
+}
+
+.heroMedia { position: absolute; inset: 0; z-index: -2; }
+.heroImg { object-fit: cover; }
+
+.heroWash {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(11, 22, 41, 0.72) 0%, rgba(11, 22, 41, 0.58) 55%, rgba(11, 22, 41, 0.78) 100%);
+}
+
+.heroInner {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
+  padding-inline: 24px;
+  text-align: center;
+  color: #fff;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(6px);
+  font-family: var(--kzd-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.h1 {
+  margin: 20px 0 0;
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+
+.heroCtas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 34px;
+}
+
+.btnHeroPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 34px;
+  border-radius: 999px;
+  border: 2px solid var(--kzd-blue);
+  background: var(--kzd-blue);
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 10px 24px -8px rgba(47, 111, 237, 0.55);
+  transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease, color 200ms ease;
+}
+
+.btnHeroPrimary:hover,
+.btnHeroPrimary:focus-visible {
+  background: transparent;
+  color: var(--kzd-blue);
+  transform: translateY(-2px);
+}
+
+.btnHeroOutline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 34px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  transition: transform 200ms ease, background-color 200ms ease, color 200ms ease;
+}
+
+.btnHeroOutline:hover,
+.btnHeroOutline:focus-visible {
+  background: #fff;
+  color: var(--kzd-navy);
+  transform: translateY(-2px);
+}
+
+/* 2. Trusted-by ---------------------------------------------------------- */
+
+.trusted { padding: 56px 0 24px; text-align: center; }
+.trustedTitle { max-width: 640px; margin: 0 auto; font-size: 28px; }
+.trustedSub {
+  margin: 14px 0 0;
+  font-size: 14.5px;
+  color: var(--kzd-muted);
+}
+
+/* 3. Problem cards --------------------------------------------------------- */
+
+.problems { padding: 40px 0 88px; background: var(--kzd-paper-2); }
+.problemsTitle { max-width: 760px; margin: 0 auto 44px; }
+
+.problemGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.problemCard {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 24px;
+  border: 1px solid var(--kzd-line);
+  border-radius: var(--kzd-radius-lg);
+  background: var(--kzd-paper);
+  box-shadow: 0 8px 20px -14px rgba(11, 37, 69, 0.22);
+}
+
+.problemBadge {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  margin-bottom: 16px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.badgeDanger { background: var(--a-danger-tint); color: var(--a-danger); }
+.badgeWarn { background: var(--a-warn-tint); color: var(--a-warn); }
+.badgeNeutral { background: var(--a-neutral-tint); color: var(--a-neutral); }
+.badgeInfo { background: var(--a-info-tint); color: var(--a-info); }
+
+.problemList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+
+.problemItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--kzd-muted);
+}
+
+.problemItem svg { width: 14px; height: 14px; margin-top: 3px; flex: none; fill: var(--a-danger); }
+
+.problemFoot {
+  margin: 16px 0 0;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--kzd-navy);
+}
+
+/* 4. Checklist ------------------------------------------------------------- */
+
+.checklist { padding: 88px 0; }
+
+.checklistHead { max-width: 700px; margin: 0 auto; text-align: center; }
+
+.pill {
+  display: inline-flex;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--kzd-navy);
+  font-family: var(--kzd-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.lead { margin: 16px 0 0; font-size: 17px; color: var(--kzd-muted); }
+
+.progressWrap { max-width: 400px; margin: 28px auto 0; }
+
+.progressTrack {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--kzd-line);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--kzd-green);
+  transition: width 300ms ease;
+}
+
+.progressLabels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: var(--kzd-dim);
+}
+
+.tickCounter { font-weight: 600; color: var(--kzd-navy); }
+
+.checklistGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.checklistCard {
+  padding: 34px;
+  border: 1px solid var(--kzd-line);
+  border-radius: var(--kzd-radius-lg);
+  background: var(--kzd-paper);
+  box-shadow: 0 8px 20px -14px rgba(11, 37, 69, 0.18);
+}
+
+.checklistCardTitle {
+  margin: 0 0 16px;
+  font-size: 18px;
+}
+
+.checkRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--kzd-line);
+}
+
+.checkRow:last-child { border-bottom: 0; }
+
+.checkRow input {
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  flex: none;
+  accent-color: var(--kzd-navy);
+}
+
+.checkRow label { font-size: 15px; line-height: 1.5; color: var(--kzd-body); cursor: pointer; }
+
+.checklistActions { margin-top: 56px; text-align: center; }
+
+.btnRecommend {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 40px;
+  border: 2px solid var(--kzd-blue);
+  border-radius: 999px;
+  background: var(--kzd-blue);
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 200ms ease, background-color 200ms ease, color 200ms ease;
+}
+
+.btnRecommend:hover,
+.btnRecommend:focus-visible { background: transparent; color: var(--kzd-blue); transform: translateY(-2px); }
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.btnDark,
+.btnOutlineDark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 30px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform 200ms ease, background-color 200ms ease, color 200ms ease, box-shadow 200ms ease;
+}
+
+.btnDark {
+  border: 2px solid var(--kzd-navy);
+  background: var(--kzd-navy);
+  color: #fff;
+}
+
+.btnDark:hover, .btnDark:focus-visible { background: transparent; color: var(--kzd-navy); transform: translateY(-2px); }
+
+.btnOutlineDark {
+  border: 2px solid var(--kzd-navy);
+  background: transparent;
+  color: var(--kzd-navy);
+}
+
+.btnOutlineDark:hover, .btnOutlineDark:focus-visible { background: var(--kzd-navy); color: #fff; transform: translateY(-2px); }
+
+/* 5. Package recommendation ------------------------------------------------- */
+
+.pkgSection { padding: 88px 0; background: var(--kzd-paper-2); }
+.pkgTitle { margin: 0 0 44px; }
+
+.pkgGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.pkgCard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 30px 26px;
+  border: 1px solid var(--kzd-line);
+  border-radius: var(--kzd-radius-lg);
+  background: var(--kzd-paper);
+  text-align: center;
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease, background-color 200ms ease;
+}
+
+.pkgCard:hover { transform: translateY(-6px); box-shadow: 0 20px 34px -18px rgba(11, 37, 69, 0.3); }
+
+.pkgCardRecommended {
+  border: 2px solid var(--kzd-blue);
+  background: var(--kzd-blue-tint);
+  box-shadow: 0 20px 40px -16px rgba(47, 111, 237, 0.35);
+}
+
+.pkgName { margin: 0; font-size: 18px; }
+.pkgDesc { margin: 14px 0 0; font-size: 14.5px; color: var(--kzd-muted); }
+.pkgDesc2 { margin: 8px 0 0; font-size: 14.5px; font-weight: 500; color: var(--kzd-navy); }
+
+.pkgBtnWrap { margin-top: auto; padding-top: 24px; }
+
+.pkgBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 2px solid var(--kzd-navy);
+  border-radius: 999px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--kzd-navy);
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 200ms ease, color 200ms ease, transform 200ms ease;
+}
+
+.pkgBtn:hover, .pkgBtn:focus-visible { background: var(--kzd-navy); color: #fff; transform: translateY(-2px); }
+
+/* 6. CTA banner -------------------------------------------------------------- */
+
+.banner { padding: 88px 0; text-align: center; }
+.bannerTitle { max-width: 760px; margin: 0 auto; }
+.divider { width: 80px; height: 1px; margin: 40px auto; border: 0; background: var(--kzd-line); }
+.bannerSub { margin: 0; font-size: 20px; }
+.bannerCtas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+/* 7. Lead form ---------------------------------------------------------------- */
+
+.leadSection { padding: 88px 0; background: var(--kzd-paper-2); }
+.leadWrap { max-width: 680px; margin: 0 auto; }
+
+.card {
+  padding: 48px;
+  border: 1px solid var(--kzd-line);
+  border-radius: 32px;
+  background: var(--kzd-paper);
+  box-shadow: 0 30px 60px -30px rgba(11, 37, 69, 0.28);
+}
+
+.cardTitle { margin: 0; font-size: 26px; }
+.cardSub { margin: 12px 0 32px; font-size: 15px; color: var(--kzd-muted); }
+
+.field { margin-bottom: 22px; }
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--kzd-navy);
+}
+
+.required { color: var(--a-danger); }
+
+.input,
+.select {
+  width: 100%;
+  min-height: var(--kzd-control);
+  padding: 10px 18px;
+  border: 1px solid var(--kzd-line);
+  border-radius: 999px;
+  background: var(--kzd-paper-2);
+  font: inherit;
+  font-size: 15px;
+  color: var(--kzd-body);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--kzd-navy);
+  box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.12);
+}
+
+.hint { display: block; margin-top: 8px; font-size: 12.5px; color: var(--kzd-dim); }
+
+.submitBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 50px;
+  margin-top: 8px;
+  border: 2px solid var(--kzd-navy);
+  border-radius: 999px;
+  background: var(--kzd-navy);
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 200ms ease, background-color 200ms ease, color 200ms ease;
+}
+
+.submitBtn:hover:not(:disabled),
+.submitBtn:focus-visible:not(:disabled) { background: transparent; color: var(--kzd-navy); transform: translateY(-2px); }
+.submitBtn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+.status { margin-top: 18px; text-align: center; font-size: 14.5px; }
+.statusOk { color: var(--kzd-green); }
+.statusErr { color: var(--a-danger); }
+.statusMuted { color: var(--kzd-muted); }
+
+/* Responsive ------------------------------------------------------------------ */
+
+@media (max-width: 1200px) {
+  .acc { --a-gutter: 40px; }
+  .h1 { font-size: clamp(38px, 5vw, 54px); }
+}
+
+@media (max-width: 900px) {
+  .hero { padding: 90px 0 56px; }
+  .h1 { font-size: 38px; }
+  .h2 { font-size: 28px; }
+  .problemGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .checklistGrid { grid-template-columns: minmax(0, 1fr); }
+  .pkgGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card { padding: 34px 26px; }
+}
+
+@media (max-width: 560px) {
+  .acc { --a-gutter: 20px; }
+  .h1 { font-size: 32px; }
+  .h2 { font-size: 24px; }
+  .problemGrid { grid-template-columns: minmax(0, 1fr); }
+  .pkgGrid { grid-template-columns: minmax(0, 1fr); }
+  .heroCtas, .ctaRow, .bannerCtas { flex-direction: column; align-items: stretch; }
+  .btnHeroPrimary, .btnHeroOutline, .btnDark, .btnOutlineDark { width: 100%; }
+  .card { padding: 28px 20px; border-radius: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pkgCard, .btnRecommend, .submitBtn, .btnDark, .btnOutlineDark, .btnHeroPrimary, .btnHeroOutline, .pkgBtn {
+    transition: none !important;
+  }
+}

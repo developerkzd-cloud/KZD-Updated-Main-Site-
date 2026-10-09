@@ -1,0 +1,455 @@
+/* ==========================================================================
+   /contact — ported from contact.html + css/contact.css.
+
+   The legacy page was two Bootstrap "services box" rows plus a
+   contact-form-style-03 form, built for the old grid. Neither is reused here;
+   the content (two locations, contact channels, form, map) is redesigned into
+   this app's card/section language, matching /careers.
+   ========================================================================== */
+
+.con {
+  --k-paper: #ffffff;
+  --k-paper2: #f7f9fc;
+  --k-card: #f8fafc;
+  --k-line: #e1e4ea;
+  --k-navy: #0b2545;
+  --k-muted: #717580;
+  --k-dim: #9298a4;
+  --k-blue: #2f6fed;
+  --k-ember: #ff6b35;
+
+  --k-grad-start: #4a5468;
+  --k-grad-end: #232323;
+
+  --k-gutter: 100px;
+
+  position: relative;
+  isolation: isolate;
+  background: var(--k-paper2);
+}
+
+.inner {
+  width: 100%;
+  max-width: calc(1240px + var(--k-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--k-gutter);
+}
+
+.h2 {
+  margin: 0;
+  text-align: center;
+  font-family: var(--kzd-font-display);
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--k-navy);
+}
+
+/* 1. Hero ------------------------------------------------------------------ */
+
+.hero { position: relative; padding-top: 66px; padding-bottom: 76px; text-align: center; }
+
+.wash {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(58% 52% at 50% 0%, rgba(47, 111, 237, 0.08) 0%, rgba(47, 111, 237, 0) 100%);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 16px;
+  border: 1px solid var(--k-line);
+  border-radius: 999px;
+  background: var(--k-paper);
+  font-family: var(--kzd-font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--k-blue);
+}
+
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--k-ember); flex: none; }
+
+.h1 {
+  margin: 26px 0 0;
+  font-family: var(--kzd-font-display);
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--k-grad-end);
+  background-image: linear-gradient(180deg, var(--k-grad-start) 0%, var(--k-grad-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .h1 { -webkit-text-fill-color: transparent; color: transparent; }
+}
+
+.intro {
+  max-width: 620px;
+  margin: 20px auto 0;
+  font-size: 18px;
+  line-height: 1.66;
+  color: var(--k-muted);
+}
+
+/* 2. Locations --------------------------------------------------------------- */
+
+.locations { padding-bottom: 96px; }
+
+.locGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 44px;
+}
+
+.locCard {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 26px;
+  border: 1px solid var(--k-line);
+  border-radius: 16px;
+  background: var(--k-paper);
+  box-shadow: 0 8px 20px -12px rgba(38, 52, 78, 0.18);
+}
+
+.locRule { width: 30px; height: 4px; border-radius: 2px; background: var(--k-ember); flex: none; }
+
+.locTitle {
+  margin: 20px 0 0;
+  font-family: var(--kzd-font-display);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--k-navy);
+}
+
+.locAddr { margin: 10px 0 0; font-size: 14.5px; line-height: 1.62; color: var(--k-muted); }
+
+.locFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--k-line);
+}
+
+.locMapLink {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--k-blue);
+  text-decoration: none;
+}
+.locMapLink:hover,
+.locMapLink:focus-visible { color: #1b57cc; text-decoration: underline; text-underline-offset: 3px; }
+
+.locPhone {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--k-navy);
+  text-decoration: none;
+}
+.locPhone:hover,
+.locPhone:focus-visible { color: var(--k-blue); }
+
+.locPhone svg {
+  width: 15px; height: 15px;
+  fill: none; stroke: currentColor;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  flex: none;
+}
+
+/* 3. Get in touch (channels + form) ----------------------------------------- */
+
+.touch { padding-bottom: 96px; }
+
+.touchGrid {
+  display: grid;
+  grid-template-columns: 400px minmax(0, 1fr);
+  gap: 26px;
+  align-items: start;
+  margin-top: 44px;
+}
+
+.channels {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 36px;
+  border-radius: 20px;
+  background: var(--k-paper);
+  border: 1px solid var(--k-line);
+  box-shadow: 0 10px 26px -14px rgba(38, 52, 78, 0.22);
+}
+
+.channelsEyebrow {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 8px 16px;
+  margin-bottom: 18px;
+  border-radius: 999px;
+  background: var(--k-card);
+  font-family: var(--kzd-font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--k-blue);
+}
+
+.channelsTitle {
+  margin: 0;
+  font-family: var(--kzd-font-display);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--k-navy);
+}
+
+.channelsBody { margin: 12px 0 0; font-size: 15px; line-height: 1.6; color: var(--k-muted); }
+
+.channelList { list-style: none; margin: 28px 0 0; padding: 0; display: flex; flex-direction: column; gap: 20px; }
+
+.channelLabel { margin: 0 0 5px; font-size: 12.5px; font-weight: 600; color: var(--k-dim); }
+
+.channelValue {
+  display: block;
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--k-navy);
+  text-decoration: none;
+  word-break: break-word;
+}
+.channelValue:hover,
+.channelValue:focus-visible { color: var(--k-blue); }
+
+.formCard {
+  padding: 40px 44px;
+  border-radius: 20px;
+  background: var(--k-paper);
+  border: 1px solid var(--k-line);
+  box-shadow: 0 10px 26px -14px rgba(38, 52, 78, 0.22);
+}
+
+.formTitle {
+  margin: 0;
+  font-family: var(--kzd-font-display);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--k-navy);
+}
+
+.formNote { margin: 10px 0 0; font-size: 14px; line-height: 1.6; color: var(--k-dim); }
+
+/* ContactForm ---------------------------------------------------------------- */
+
+.form { margin-top: 28px; display: flex; flex-direction: column; gap: 18px; }
+
+.fieldRow { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+
+.field { display: flex; flex-direction: column; gap: 7px; }
+
+.label {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--k-navy);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  min-height: var(--kzd-control);
+  padding: 0 14px;
+  border: 1px solid var(--k-line);
+  border-radius: 10px;
+  background: var(--k-card);
+  font-family: var(--kzd-font-body);
+  font-size: 15px;
+  color: var(--k-navy);
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.textarea { padding: 12px 14px; resize: vertical; min-height: 120px; }
+
+.input:hover,
+.textarea:hover { border-color: var(--k-dim); }
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--k-blue);
+  background: var(--k-paper);
+}
+
+.input::placeholder,
+.textarea::placeholder { color: var(--k-dim); }
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.consent { margin: 0; max-width: 320px; font-size: 13px; line-height: 1.55; color: var(--k-dim); }
+
+.submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--kzd-control);
+  padding: 0 28px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--k-navy);
+  font-family: var(--kzd-font-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: #ffffff;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 200ms ease, box-shadow 200ms ease, opacity 200ms ease;
+}
+
+.submit:hover:not(:disabled),
+.submit:focus-visible:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px -10px rgba(11, 37, 69, 0.55);
+}
+
+.submit:disabled { opacity: 0.65; cursor: not-allowed; }
+
+.status {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.statusOk { color: #207842; }
+.statusErr { color: #b3261e; }
+
+@media (max-width: 560px) {
+  .fieldRow { grid-template-columns: minmax(0, 1fr); }
+  .actions { flex-direction: column; align-items: stretch; }
+  .submit { width: 100%; }
+}
+
+/* 4. Map --------------------------------------------------------------------- */
+
+.mapSection { padding-bottom: 110px; }
+
+.mapCard {
+  margin-top: 44px;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid var(--k-line);
+  background: var(--k-paper);
+  box-shadow: 0 10px 26px -14px rgba(38, 52, 78, 0.22);
+}
+
+.mapCanvas { width: 100%; height: 420px; display: block; background: var(--k-card); }
+
+.mapFallback {
+  padding: 48px 40px;
+  text-align: center;
+}
+
+.mapFallbackTitle {
+  margin: 0;
+  font-family: var(--kzd-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--k-navy);
+}
+
+.mapFallbackBody { margin: 10px auto 0; max-width: 52ch; font-size: 14.5px; line-height: 1.62; color: var(--k-muted); }
+
+.mapFallbackList {
+  list-style: none;
+  margin: 28px auto 0;
+  padding: 0;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+.mapFallbackItem {
+  padding: 14px 18px;
+  border: 1px solid var(--k-line);
+  border-radius: 12px;
+  background: var(--k-card);
+  text-align: left;
+  min-width: 240px;
+}
+
+.mapFallbackName { margin: 0; font-size: 14px; font-weight: 600; color: var(--k-navy); }
+.mapFallbackAddr { margin: 5px 0 0; font-size: 13px; line-height: 1.5; color: var(--k-muted); }
+
+.mapFallbackLink {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--k-blue);
+  text-decoration: none;
+}
+.mapFallbackLink:hover,
+.mapFallbackLink:focus-visible { color: #1b57cc; text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 560px) {
+  .mapCanvas { height: 320px; }
+  .mapFallback { padding: 36px 20px; }
+}
+
+/* Responsive ------------------------------------------------------------------ */
+
+@media (max-width: 1200px) {
+  .con { --k-gutter: 40px; }
+  .h1 { font-size: clamp(38px, 4.6vw, 54px); }
+  .touchGrid { grid-template-columns: 340px minmax(0, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .hero { padding-top: 44px; padding-bottom: 60px; }
+  .h1 { font-size: 40px; }
+  .h2 { font-size: 28px; }
+  .locations, .touch { padding-bottom: 72px; }
+  .mapSection { padding-bottom: 80px; }
+
+  .locGrid { grid-template-columns: minmax(0, 1fr); }
+  .touchGrid { grid-template-columns: minmax(0, 1fr); }
+  .formCard { padding: 32px 26px; }
+}
+
+@media (max-width: 560px) {
+  .con { --k-gutter: 20px; }
+  .h1 { font-size: 32px; }
+  .h2 { font-size: 24px; }
+  .intro { font-size: 16.5px; }
+  .channels { padding: 30px 24px; }
+  .formCard { padding: 26px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .locMapLink, .locPhone, .channelValue { transition: none !important; }
+}

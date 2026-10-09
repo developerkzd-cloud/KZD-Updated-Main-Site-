@@ -88,6 +88,18 @@ export type ReviewSummary = {
   reviews: Review[];
 };
 
+export type TldCategory = "south-african" | "global" | "african" | "business";
+
+export type Tld = {
+  ext: string;
+  register: number;
+  transfer: number;
+  renew: number;
+  category: TldCategory;
+  popular?: boolean;
+  description: string;
+};
+
 /* -------------------------------------------------------------------------- */
 /* Reading                                                                     */
 /* -------------------------------------------------------------------------- */
@@ -198,6 +210,23 @@ export function getDepartments(): string[] {
 
 export function getReviews(): ReviewSummary {
   return readJson<ReviewSummary>("reviews.json");
+}
+
+/* -------------------------------------------------------------------------- */
+/* TLDs                                                                        */
+/* -------------------------------------------------------------------------- */
+
+/** The domain extensions KZD Solutions sells. Passed down into client
+    components as a prop (see DomainSearchForm etc.) — this function itself
+    reads a file and so can only run on the server. */
+export function getTlds(): Tld[] {
+  const { tlds } = readJson<{ tlds: Tld[] }>("tlds.json");
+  return tlds;
+}
+
+export function getTldCategoryLabels(): Record<string, string> {
+  const { categoryLabels } = readJson<{ categoryLabels: Record<string, string> }>("tlds.json");
+  return categoryLabels;
 }
 
 /* -------------------------------------------------------------------------- */

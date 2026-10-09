@@ -1,0 +1,360 @@
+/* ==========================================================================
+   /domains/register — ported from domain-register.html + css/domains.css.
+
+   The legacy page's search box, TLD dropdown and popular-TLD "boxes" are
+   redesigned into this app's card/section language (see /careers,
+   /contact); the search/suggestions/order behaviour is ported as-is into
+   DomainSearchForm.
+   ========================================================================== */
+
+.reg {
+  --k-paper: #ffffff;
+  --k-paper2: #f7f9fc;
+  --k-card: #f8fafc;
+  --k-line: #e1e4ea;
+  --k-navy: #0b2545;
+  --k-muted: #717580;
+  --k-dim: #9298a4;
+  --k-blue: #2f6fed;
+  --k-ember: #ff6b35;
+
+  --k-grad-start: #4a5468;
+  --k-grad-end: #232323;
+
+  --k-gutter: 100px;
+
+  position: relative;
+  isolation: isolate;
+  background: var(--k-paper2);
+}
+
+.inner {
+  width: 100%;
+  max-width: calc(1240px + var(--k-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--k-gutter);
+}
+
+.h2 {
+  margin: 0;
+  text-align: center;
+  font-family: var(--kzd-font-display);
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--k-navy);
+}
+
+/* 1. Hero -------------------------------------------------------------------- */
+
+.hero { position: relative; padding-top: 66px; padding-bottom: 20px; text-align: center; }
+
+.wash {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(58% 52% at 50% 0%, rgba(47, 111, 237, 0.08) 0%, rgba(47, 111, 237, 0) 100%);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 16px;
+  border: 1px solid var(--k-line);
+  border-radius: 999px;
+  background: var(--k-paper);
+  font-family: var(--kzd-font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--k-blue);
+}
+
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--k-ember); flex: none; }
+
+.h1 {
+  margin: 26px 0 0;
+  font-family: var(--kzd-font-display);
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--k-grad-end);
+  background-image: linear-gradient(180deg, var(--k-grad-start) 0%, var(--k-grad-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .h1 { -webkit-text-fill-color: transparent; color: transparent; }
+}
+
+.intro {
+  max-width: 640px;
+  margin: 20px auto 0;
+  font-size: 18px;
+  line-height: 1.66;
+  color: var(--k-muted);
+}
+
+/* 2. Search ------------------------------------------------------------------ */
+
+.searchSection { padding-bottom: 60px; }
+
+.searchCard {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px;
+  border-radius: var(--kzd-radius-lg);
+  border: 1px solid var(--k-line);
+  background: var(--k-paper);
+  box-shadow: 0 10px 26px -14px rgba(38, 52, 78, 0.22);
+}
+
+.searchRow { position: relative; display: flex; gap: 10px; }
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  min-height: 50px;
+  padding: 0 16px;
+  border: 1px solid var(--k-line);
+  border-radius: 10px;
+  background: var(--k-card);
+  font-family: var(--kzd-font-body);
+  font-size: 16px;
+  color: var(--k-navy);
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.searchInput:hover { border-color: var(--k-dim); }
+.searchInput:focus { outline: none; border-color: var(--k-blue); background: var(--k-paper); }
+.searchInput::placeholder { color: var(--k-dim); }
+
+.tldSelect {
+  min-height: 50px;
+  padding: 0 14px;
+  border: 1px solid var(--k-line);
+  border-radius: 10px;
+  background: var(--k-card);
+  font-family: var(--kzd-font-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--k-navy);
+  cursor: pointer;
+}
+
+.searchBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--k-navy);
+  font-family: var(--kzd-font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.searchBtn:hover,
+.searchBtn:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 22px -10px rgba(11, 37, 69, 0.55); }
+
+.hint { margin: 10px 0 0; font-size: 13px; color: var(--k-dim); text-align: left; }
+.hintWarn { color: #b3261e; }
+
+/* Suggestions dropdown -- absolutely positioned under the input group. */
+.suggestions {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 5;
+  overflow: hidden;
+  border: 1px solid var(--k-line);
+  border-radius: 10px;
+  background: var(--k-paper);
+  box-shadow: 0 16px 36px -16px rgba(38, 52, 78, 0.35);
+}
+
+.suggestion {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--k-line);
+  background: transparent;
+  font-family: var(--kzd-font-mono);
+  font-size: 14.5px;
+  text-align: left;
+  color: var(--k-navy);
+  cursor: pointer;
+}
+
+.suggestion:last-child { border-bottom: 0; }
+.suggestion:hover, .suggestion:focus-visible { background: var(--k-paper2); color: var(--k-blue); }
+
+/* 3. Popular TLD chips (rendered inside DomainSearchForm, below the search
+      row, matching the legacy hero's search box + tld-boxes grouping) ------- */
+
+.chipsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 20px 14px;
+  border: 1px solid var(--k-line);
+  border-radius: 14px;
+  background: var(--k-paper);
+  cursor: pointer;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.chip:hover, .chip:focus-visible {
+  border-color: rgba(47, 111, 237, 0.35);
+  box-shadow: 0 12px 26px -14px rgba(38, 52, 78, 0.3);
+  transform: translateY(-2px);
+}
+
+.chipExt { font-family: var(--kzd-font-mono); font-size: 18px; font-weight: 600; color: var(--k-navy); }
+.chipDesc { font-size: 12.5px; color: var(--k-dim); }
+.chipPrice { margin-top: 4px; font-size: 13px; font-weight: 600; color: var(--k-blue); }
+
+/* 4. Features ------------------------------------------------------------------ */
+
+.features { padding-bottom: 96px; }
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 44px;
+}
+
+.featureCard {
+  display: flex;
+  flex-direction: column;
+  padding: 26px 24px;
+  border: 1px solid var(--k-line);
+  border-radius: 16px;
+  background: var(--k-paper);
+  box-shadow: 0 8px 20px -12px rgba(38, 52, 78, 0.18);
+}
+
+.featureRule { width: 30px; height: 4px; border-radius: 2px; background: var(--k-ember); flex: none; }
+
+.featureTitle {
+  margin: 20px 0 0;
+  font-family: var(--kzd-font-display);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--k-navy);
+}
+
+.featureBody { margin: 10px 0 0; font-size: 14.5px; line-height: 1.62; color: var(--k-muted); }
+
+/* 5. Cross-sell CTA -------------------------------------------------------------- */
+
+.cta { padding-bottom: 110px; }
+
+.ctaCard {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 40px 44px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--k-navy) 0%, #17335c 100%);
+}
+
+.ctaText { max-width: 520px; }
+
+.ctaTitle { margin: 0; font-family: var(--kzd-font-display); font-size: 26px; font-weight: 600; color: #ffffff; }
+.ctaBody { margin: 10px 0 0; font-size: 15px; line-height: 1.6; color: rgba(255, 255, 255, 0.78); }
+
+.ctaLinks { display: flex; flex-wrap: wrap; gap: 12px; }
+
+.ctaLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 24px;
+  border-radius: 10px;
+  font-size: 14.5px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.ctaLinkPrimary { background: #ffffff; color: var(--k-navy); }
+.ctaLinkGhost { border: 1px solid rgba(255, 255, 255, 0.4); color: #ffffff; }
+
+.ctaLink:hover, .ctaLink:focus-visible { transform: translateY(-2px); }
+.ctaLinkPrimary:hover, .ctaLinkPrimary:focus-visible { box-shadow: 0 14px 26px -12px rgba(0, 0, 0, 0.4); color: var(--k-navy); }
+.ctaLinkGhost:hover, .ctaLinkGhost:focus-visible { border-color: #ffffff; color: #ffffff; }
+
+/* 6. FAQ -------------------------------------------------------------------------- */
+
+.faq { padding-bottom: 110px; }
+.faqInner { max-width: 780px; margin: 44px auto 0; }
+
+/* Responsive ----------------------------------------------------------------- */
+
+@media (max-width: 1200px) {
+  .reg { --k-gutter: 40px; }
+  .h1 { font-size: clamp(38px, 4.6vw, 54px); }
+}
+
+@media (max-width: 900px) {
+  .hero { padding-top: 44px; padding-bottom: 12px; }
+  .h1 { font-size: 40px; }
+  .h2 { font-size: 28px; }
+  .searchSection, .features { padding-bottom: 64px; }
+  .cta, .faq { padding-bottom: 80px; }
+  .featureGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .chipsGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .searchRow { flex-wrap: wrap; }
+  .searchInput { flex-basis: 100%; }
+  .tldSelect { flex: 1; }
+  .searchBtn { flex: 1; }
+  .ctaCard { padding: 32px 26px; }
+}
+
+@media (max-width: 560px) {
+  .reg { --k-gutter: 20px; }
+  .h1 { font-size: 32px; }
+  .h2 { font-size: 24px; }
+  .intro { font-size: 16.5px; }
+  .featureGrid { grid-template-columns: minmax(0, 1fr); }
+  .chipsGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .searchCard { padding: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip, .searchBtn, .ctaLink { transition: none !important; }
+  .chip:hover, .searchBtn:hover, .ctaLink:hover { transform: none; }
+}

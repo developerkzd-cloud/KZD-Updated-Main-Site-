@@ -1,0 +1,540 @@
+/* ==========================================================================
+   PROFILE — ported from css/kzd-profile.css (applicant profile dashboard).
+
+   Uses the shared design tokens declared once in globals.css (--kzd-navy,
+   --kzd-blue, --kzd-line, --kzd-card, --kzd-radius, --kzd-control, ...)
+   rather than redeclaring a section-local copy, the way careers.module.css
+   already does.
+   ========================================================================== */
+
+.pro {
+  background: var(--kzd-paper-2);
+  padding-block: 48px 96px;
+  min-height: 60vh;
+}
+
+.wrap {
+  width: 100%;
+  max-width: calc(920px + var(--kzd-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--kzd-gutter);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.loading {
+  padding: 80px 0;
+  text-align: center;
+  color: var(--kzd-muted);
+  font-size: 15px;
+}
+
+/* 1. Header card ------------------------------------------------------------ */
+
+.header {
+  padding: 28px 32px 0;
+  border: 1px solid var(--kzd-line);
+  border-radius: var(--kzd-radius-lg);
+  background: var(--kzd-paper);
+  box-shadow: 0 8px 20px -14px rgba(11, 37, 69, 0.22);
+}
+
+.id {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--kzd-blue-tint);
+  font-family: var(--kzd-display);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--kzd-blue);
+}
+
+.name {
+  margin: 0;
+  font-size: 24px;
+}
+
+.email {
+  margin: 4px 0 0;
+  font-size: 14.5px;
+  color: var(--kzd-muted);
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--kzd-card);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--kzd-body);
+}
+
+.statusDot { width: 7px; height: 7px; border-radius: 50%; background: var(--kzd-dim); flex: none; }
+
+.statusInterviewing { background: var(--kzd-amber-tint); color: #8a611a; }
+.statusInterviewing .statusDot { background: var(--kzd-amber); }
+
+.statusOffer { background: var(--kzd-green-tint); color: #146b3f; }
+.statusOffer .statusDot { background: var(--kzd-green); }
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-top: 24px;
+  border-bottom: 1px solid var(--kzd-line);
+}
+
+.tab {
+  appearance: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  padding: 12px 6px;
+  margin-right: 22px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--kzd-muted);
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.tab:hover { color: var(--kzd-navy); }
+
+.tabActive { color: var(--kzd-navy); border-bottom-color: var(--kzd-blue); }
+
+/* 2. Completion banner ------------------------------------------------------ */
+
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 24px;
+  border: 1px solid var(--kzd-line);
+  border-radius: var(--kzd-radius);
+  background: var(--kzd-blue-tint);
+}
+
+.bannerTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--kzd-navy);
+}
+
+.bannerTitle span { color: var(--kzd-blue); }
+
+.bannerSub { margin: 4px 0 0; font-size: 13.5px; color: var(--kzd-muted); }
+
+.meter {
+  width: 260px;
+  max-width: 100%;
+  height: 6px;
+  margin-top: 12px;
+  border-radius: 999px;
+  background: rgba(11, 37, 69, 0.1);
+  overflow: hidden;
+}
+
+.meterFill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--kzd-blue);
+  transition: width 400ms ease;
+}
+
+.bannerBtn {
+  flex: none;
+  appearance: none;
+  border: 0;
+  border-radius: 10px;
+  min-height: var(--kzd-control);
+  padding: 0 20px;
+  background: var(--kzd-navy);
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.bannerBtn:hover { transform: translateY(-1px); box-shadow: 0 10px 18px -10px rgba(11, 37, 69, 0.5); }
+
+/* 3. Panels / cards ---------------------------------------------------------- */
+
+.panel { display: flex; }
+.panel[hidden] { display: none; }
+
+.tabBody {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.card {
+  padding: 24px 28px;
+  border: 1px solid var(--kzd-line);
+  border-radius: var(--kzd-radius-lg);
+  background: var(--kzd-paper);
+}
+
+.cardHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cardH { margin: 0; font-size: 18px; }
+.cardSub { margin: 4px 0 0; font-size: 13.5px; color: var(--kzd-muted); }
+
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--kzd-line);
+  border-radius: 10px;
+  background: var(--kzd-paper);
+  color: var(--kzd-muted);
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+.iconBtn:hover { color: var(--kzd-blue); border-color: rgba(47, 111, 237, 0.35); background: var(--kzd-blue-tint); }
+
+.iconBtn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.empty { margin: 16px 0 0; font-size: 14px; color: var(--kzd-dim); }
+
+/* 3a. Documents -------------------------------------------------------------- */
+
+.docs { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+
+.doc {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--kzd-line);
+  border-radius: 12px;
+  background: var(--kzd-card);
+}
+
+.docTile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--kzd-blue-tint);
+  color: var(--kzd-blue);
+}
+
+.docTileQual { background: var(--kzd-violet-tint); color: var(--kzd-violet); }
+
+.docTile svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.docBody { flex: 1; min-width: 0; }
+.docName { margin: 0; font-size: 14.5px; font-weight: 500; color: var(--kzd-navy); overflow-wrap: anywhere; }
+.docMeta { margin: 2px 0 0; font-size: 12.5px; color: var(--kzd-dim); }
+
+.docTag {
+  flex: none;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--kzd-paper);
+  border: 1px solid var(--kzd-line);
+  font-family: var(--kzd-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--kzd-muted);
+}
+
+/* 3b. Entry lists (experience / education / projects) ----------------------- */
+
+.entryList { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+
+.entry {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--kzd-line);
+}
+
+.entry:first-child { border-top: 0; padding-top: 0; }
+
+.entryBody { min-width: 0; }
+.entryTitle { margin: 0; font-size: 15px; font-weight: 600; color: var(--kzd-navy); }
+.entryMeta { margin: 2px 0 0; font-size: 13.5px; color: var(--kzd-body); }
+.entryDates { margin: 2px 0 0; font-size: 12.5px; color: var(--kzd-dim); }
+
+.entryActions { display: flex; gap: 8px; flex: none; }
+
+/* 3c. Links -------------------------------------------------------------------- */
+
+.links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--kzd-line);
+  border-radius: 12px;
+  background: var(--kzd-card);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+a.link:hover { border-color: rgba(47, 111, 237, 0.35); background: var(--kzd-blue-tint); }
+
+.linkTile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  color: #fff;
+}
+
+.linkTile svg { width: 17px; height: 17px; fill: currentColor; }
+
+.linkTile_linkedin { background: #0a66c2; }
+.linkTile_github { background: #181a20; }
+.linkTile_portfolio { background: var(--kzd-teal); }
+.linkTile_other { background: var(--kzd-violet); }
+
+.linkBody { min-width: 0; }
+.linkLabel { display: block; font-size: 12px; color: var(--kzd-dim); }
+.linkValue { display: block; margin-top: 1px; font-size: 14px; font-weight: 500; color: var(--kzd-navy); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.linkValueEmpty { color: var(--kzd-dim); font-weight: 400; }
+
+/* 3d. Chips (skills / languages) ------------------------------------------------ */
+
+.chips { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px 6px 14px;
+  border-radius: 999px;
+  background: var(--kzd-card);
+  border: 1px solid var(--kzd-line);
+  font-size: 13.5px;
+  color: var(--kzd-navy);
+}
+
+.chipX {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--kzd-dim);
+  cursor: pointer;
+}
+
+.chipX:hover { background: var(--kzd-line); color: var(--kzd-navy); }
+.chipX svg { width: 11px; height: 11px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+/* 4. Editable field grids (personal info tab) ----------------------------------- */
+
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 20px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+
+.label { font-size: 12.5px; font-weight: 500; color: var(--kzd-muted); }
+
+.value { margin: 0; font-size: 14.5px; color: var(--kzd-navy); }
+.valueEmpty { color: var(--kzd-dim); }
+
+.input, .select {
+  min-height: var(--kzd-control);
+  padding: 0 12px;
+  border: 1px solid var(--kzd-line);
+  border-radius: 10px;
+  background: var(--kzd-paper);
+  font: inherit;
+  font-size: 14.5px;
+  color: var(--kzd-navy);
+}
+
+.input:focus-visible, .select:focus-visible { outline: 2px solid var(--kzd-blue); outline-offset: 1px; }
+
+.editActions, .modalActions { display: flex; gap: 10px; margin-top: 22px; }
+
+.btnPrimary, .btnGhost {
+  min-height: var(--kzd-control);
+  padding: 0 20px;
+  border-radius: 10px;
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btnPrimary { border: 0; background: var(--kzd-navy); color: #fff; }
+.btnPrimary:hover { background: #143560; }
+
+.btnGhost { border: 1px solid var(--kzd-line); background: var(--kzd-paper); color: var(--kzd-body); }
+.btnGhost:hover { background: var(--kzd-card); }
+
+/* 5. Modal ------------------------------------------------------------------------ */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(11, 20, 38, 0.5);
+}
+
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 32px 28px 28px;
+  border-radius: var(--kzd-radius-lg);
+  background: var(--kzd-paper);
+  box-shadow: 0 24px 60px -20px rgba(11, 20, 38, 0.45);
+}
+
+.modalClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--kzd-muted);
+  cursor: pointer;
+}
+
+.modalClose:hover { background: var(--kzd-card); color: var(--kzd-navy); }
+.modalClose svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+.modalTitle { margin: 0; font-size: 19px; padding-right: 28px; }
+.modalSub { margin: 8px 0 0; font-size: 13.5px; color: var(--kzd-muted); }
+.noticeBody { margin: 16px 0 0; font-size: 14.5px; line-height: 1.6; color: var(--kzd-body); }
+
+.form { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+
+.req { margin-left: 3px; color: var(--kzd-red); }
+.fieldError { margin: 0; min-height: 1em; font-size: 12px; color: var(--kzd-red); }
+
+/* 6. Job tracker board ------------------------------------------------------------- */
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border-radius: var(--kzd-radius);
+  background: var(--kzd-card);
+  border-top: 3px solid var(--kzd-dash);
+}
+
+.col_applied { border-top-color: var(--kzd-blue); }
+.col_interviewing { border-top-color: var(--kzd-amber); }
+.col_offer { border-top-color: var(--kzd-green); }
+
+.colLabel { margin: 0; font-size: 12.5px; font-weight: 600; letter-spacing: 0.02em; color: var(--kzd-muted); text-transform: uppercase; }
+
+.colBody { display: flex; flex-direction: column; gap: 10px; }
+
+.colEmpty { margin: 0; padding: 18px 4px; text-align: center; font-size: 13px; color: var(--kzd-dim); }
+
+.appCard {
+  padding: 14px;
+  border: 1px solid var(--kzd-line);
+  border-radius: 12px;
+  background: var(--kzd-paper);
+}
+
+.appTop { display: flex; align-items: flex-start; gap: 10px; }
+
+.appMark {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--kzd-card);
+  overflow: hidden;
+}
+
+.appTitle { margin: 0; font-size: 14px; font-weight: 600; color: var(--kzd-navy); }
+.appMeta { margin: 2px 0 0; font-size: 12px; color: var(--kzd-dim); }
+.appSchedule { margin: 10px 0 0; font-size: 12.5px; color: var(--kzd-amber); }
+.appDate { margin: 10px 0 0; font-size: 11.5px; color: var(--kzd-dim); }
+
+/* Responsive ------------------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+  .fields, .links { grid-template-columns: minmax(0, 1fr); }
+  .board { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .pro { padding-block: 28px 64px; }
+  .header { padding: 22px 18px 0; }
+  .card { padding: 18px; }
+  .banner { flex-direction: column; align-items: flex-start; }
+  .bannerBtn { width: 100%; }
+  .tabs { gap: 0; overflow-x: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meterFill, .bannerBtn, .tab { transition: none !important; }
+}

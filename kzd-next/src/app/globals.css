@@ -172,3 +172,11 @@ button { font: inherit; color: inherit; }
 .kzd-below-nav { padding-top: 84px; }
 
 @media (max-width: 560px) { .kzd-below-nav { padding-top: 72px; } }
+
+/* ...except where a page opens on a full-bleed dark hero the bar is meant to
+   float over (the homepage). That page marks its hero with data-hero-full and
+   takes the clearance into its own padding instead, so the photo runs to the
+   top of the viewport — which is the whole reason NavShell has a transparent
+   state. Keyed off the attribute rather than the route so the page that owns
+   the hero is also the page that opts in. */
+.kzd-below-nav:has([data-hero-full]) { padding-top: 0; }

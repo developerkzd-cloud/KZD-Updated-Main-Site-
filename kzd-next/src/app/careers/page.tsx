@@ -9,10 +9,13 @@
    No client boundary at all: nothing on this page is interactive beyond links.
    ========================================================================== */
 
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getJobs, getReviews } from "@/lib/content";
 import { WHY_CARDS, HIRING_STEPS } from "./content";
+import CareersAuthGate from "./CareersAuthGate";
+import Reveal from "@/components/Reveal/Reveal";
 import styles from "./careers.module.css";
 
 const DESCRIPTION =
@@ -55,6 +58,12 @@ export default function CareersPage() {
             businesses. If you want to do real work early and learn from people who will actually
             explain things, we would like to meet you.
           </p>
+          {/* Client-only leaf: opens the (prototype, localStorage) applicant
+              sign-in modal, either from this trigger or automatically when
+              /profile bounces a signed-out visitor here with ?signin=1. */}
+          <Suspense fallback={null}>
+            <CareersAuthGate />
+          </Suspense>
         </div>
       </section>
 
@@ -71,7 +80,11 @@ export default function CareersPage() {
             {jobs.map((job) => {
               const open = job.status === "open";
               return (
-                <li key={job.id} className={styles.row + " " + (open ? styles.rowOpen : styles.rowClosed)}>
+                <Reveal
+                  key={job.id}
+                  as="li"
+                  className={styles.row + " " + (open ? styles.rowOpen : styles.rowClosed)}
+                >
                   <div>
                     <div className={styles.chips}>
                       <span className={styles.chip + " " + (open ? styles.chipOpen : styles.chipClosed)}>
@@ -111,7 +124,7 @@ export default function CareersPage() {
                       Position filled
                     </button>
                   )}
-                </li>
+                </Reveal>
               );
             })}
           </ul>
@@ -123,11 +136,11 @@ export default function CareersPage() {
           <h2 className={styles.h2} id="car-why">Why work here</h2>
           <div className={styles.whyGrid}>
             {WHY_CARDS.map((card) => (
-              <div className={styles.whyCard} key={card.title}>
+              <Reveal className={styles.whyCard} key={card.title}>
                 <span className={styles.whyRule} aria-hidden="true" />
                 <h3 className={styles.whyTitle}>{card.title}</h3>
                 <p className={styles.whyBody}>{card.body}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -138,12 +151,12 @@ export default function CareersPage() {
           <h2 className={styles.h2} id="car-how">How hiring works</h2>
           <div className={styles.steps}>
             {HIRING_STEPS.map((step, i) => (
-              <div className={styles.step} key={step.title}>
+              <Reveal className={styles.step} key={step.title}>
                 <p className={styles.stepNo}>{String(i + 1).padStart(2, "0")}</p>
                 <hr className={styles.stepRule} />
                 <h3 className={styles.stepTitle}>{step.title}</h3>
                 <p className={styles.stepBody}>{step.body}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -151,7 +164,7 @@ export default function CareersPage() {
 
       <section className={styles.people} aria-labelledby="car-people">
         <div className={styles.inner}>
-          <div className={styles.peopleCard}>
+          <Reveal className={styles.peopleCard}>
             <div className={styles.peopleL}>
               {/* Official four-colour Google G, not recoloured. */}
               <svg className={styles.glogo} viewBox="0 0 18 18" aria-hidden="true" focusable="false">
@@ -187,7 +200,7 @@ export default function CareersPage() {
                 </svg>
               </a>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
     </main>

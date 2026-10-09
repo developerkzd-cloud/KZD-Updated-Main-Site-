@@ -1,0 +1,359 @@
+/* ==========================================================================
+   /services — ported from css/kzd-hero.css, css/kzd-accordion.css,
+   css/kzd-products.css and css/kzd-showcase.css (+ the "story" block from
+   css/about.css). Namespaced by CSS Modules instead of the kzd-* prefixes
+   those files used, so the values carry over unchanged.
+   ========================================================================== */
+
+.svc {
+  --s-paper:  #ffffff;
+  --s-paper2: #f7f9fc;
+  --s-tile:   #eef3f9;
+  --s-navy:   var(--kzd-navy);
+  --s-muted:  var(--kzd-muted);
+  --s-line:   var(--kzd-line);
+  --s-blue:   var(--kzd-blue);
+  --s-ember:  var(--kzd-ember);
+  --s-veil:   rgba(11, 37, 69, 0.24);
+  --s-edge:   rgba(47, 111, 237, 0.37);
+  --s-grad-start: #4a5468;
+  --s-grad-end:   #232323;
+
+  --s-gutter: 100px;
+
+  position: relative;
+  isolation: isolate;
+  background: var(--s-paper);
+}
+
+.inner,
+.storyInner,
+.accInner,
+.prodInner,
+.clientsInner {
+  width: 100%;
+  max-width: calc(1240px + var(--s-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--s-gutter);
+}
+
+/* Shared eyebrow pill, used above every section heading. ------------------- */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 16px;
+  border: 1px solid var(--s-line);
+  border-radius: 999px;
+  background: var(--s-paper);
+  font-family: var(--kzd-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--s-blue);
+}
+
+.eyebrowDot { width: 7px; height: 7px; border-radius: 50%; background: var(--s-ember); flex: none; }
+
+/* 1. Hero -------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 460px;
+  padding: 110px var(--s-gutter) 90px;
+  overflow: hidden;
+  text-align: center;
+  color: #fff;
+}
+
+.heroMedia { position: absolute; inset: 0; }
+.heroImg { object-fit: cover; }
+
+.heroWash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 37, 69, 0.6) 0%, rgba(11, 37, 69, 0.78) 100%);
+}
+
+.heroInner { position: relative; display: flex; flex-direction: column; align-items: center; }
+
+.hero .eyebrow {
+  margin-bottom: 16px;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(11, 37, 69, 0.4);
+  backdrop-filter: blur(4px);
+  color: #fff;
+}
+
+.h1 {
+  margin: 0;
+  color: #fff;
+  font-family: var(--kzd-display);
+  font-size: clamp(38px, 5.4vw, 58px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+/* 2. Story --------------------------------------------------------------- */
+
+.story { padding: 96px var(--s-gutter); background: var(--s-paper2); }
+
+.storyInner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 56px;
+  padding-inline: 0;
+}
+
+.storyTitle {
+  margin: 0;
+  font-family: var(--kzd-display);
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--s-navy);
+}
+
+.storyBody { margin: 22px 0 0; max-width: 46ch; font-size: 16px; line-height: 1.7; color: var(--s-muted); }
+
+.storyFigure { position: relative; margin: 0; }
+
+.storyImageWrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.storyImage { object-fit: cover; }
+
+.storyStat {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  padding: 24px 18px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(6px);
+  text-align: center;
+}
+
+.storyStatNum {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--kzd-display);
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--s-navy);
+}
+
+.storyStatPlus { position: relative; top: -20px; font-size: 24px; }
+
+.storyStatLabel {
+  display: block;
+  width: 150px;
+  margin-inline: auto;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--s-navy);
+}
+
+/* 3. Accordion ------------------------------------------------------------ */
+
+.acc { position: relative; padding: 96px var(--s-gutter) 82px; background: var(--s-paper2); }
+
+.accHead { text-align: center; }
+
+.accTitle {
+  margin: 24px 0 0;
+  font-family: var(--kzd-display);
+  font-size: clamp(30px, 3.6vw, 44px);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: var(--s-grad-end);
+  background-image: linear-gradient(180deg, var(--s-grad-start) 0%, var(--s-grad-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .accTitle { -webkit-text-fill-color: transparent; color: transparent; }
+}
+
+.accSub { margin: 12px 0 0; font-size: 17px; color: var(--s-muted); }
+
+.accWrap {
+  max-width: 820px;
+  margin: 56px auto 0;
+  padding: 12px 32px;
+  border: 1px solid var(--s-line);
+  border-radius: var(--kzd-radius-lg);
+  background: var(--s-paper);
+}
+
+.accDesc { margin: 0 0 14px; font-size: 15px; line-height: 1.62; color: var(--s-muted); }
+
+.accList { margin: 0 0 20px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+.accRow {
+  position: relative;
+  padding-left: 20px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--s-navy);
+}
+
+.accRow::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--s-ember);
+}
+
+.accCta {
+  display: inline-flex;
+  align-items: center;
+  height: var(--kzd-control);
+  padding-inline: 22px;
+  border-radius: 999px;
+  background: var(--s-navy);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.accCta:hover,
+.accCta:focus-visible { color: #fff; opacity: 0.9; }
+
+/* 4. Our Products ----------------------------------------------------- */
+
+.prod { position: relative; padding: 96px var(--s-gutter); background: var(--s-paper); }
+
+.prodHead { text-align: center; }
+
+.prodTitle {
+  margin: 24px 0 0;
+  font-family: var(--kzd-display);
+  font-size: clamp(30px, 3.6vw, 44px);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: var(--s-navy);
+}
+
+.prodSub { margin: 12px 0 0; font-size: 17px; color: var(--s-muted); }
+
+.prodGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 56px; }
+
+.revealCard { display: block; height: 100%; }
+
+.prodCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 18px;
+  border: 1px solid var(--s-line);
+  border-radius: 22px;
+  background: var(--s-paper);
+  box-shadow: 0 8px 20px -10px rgba(38, 52, 78, 0.22);
+  text-decoration: none;
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+}
+
+.prodCard:hover,
+.prodCard:focus-visible {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 34px -14px rgba(38, 52, 78, 0.4);
+  border-color: var(--s-edge);
+}
+
+.prodTile {
+  position: relative;
+  display: block;
+  height: 240px;
+  border-radius: 15px;
+  background: var(--s-tile);
+  overflow: hidden;
+}
+
+.prodShot { object-fit: contain; padding: 15px; }
+
+.prodGo {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--s-navy);
+  color: #fff;
+}
+
+.prodGo svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.prodName { margin: 18px 0 0; font-family: var(--kzd-display); font-size: 19px; font-weight: 600; color: var(--s-navy); }
+.prodCopy { margin: 8px 0 0; font-size: 14px; line-height: 1.6; color: var(--s-muted); flex: 1; }
+
+/* 5. Client showcase -------------------------------------------------- */
+
+.clients { position: relative; padding: 96px var(--s-gutter) 110px; background: var(--s-paper2); }
+
+.clientsHead { text-align: center; }
+
+.clientsTitle {
+  margin: 24px 0 0;
+  font-family: var(--kzd-display);
+  font-size: clamp(30px, 3.6vw, 44px);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: var(--s-navy);
+}
+
+.clientsSub { max-width: 640px; margin: 14px auto 0; font-size: 16px; line-height: 1.62; color: var(--s-muted); }
+
+.clientsRail { margin-top: 56px; }
+
+/* The client card visuals moved with the markup into
+   src/components/ClientShowcase/ClientShowcase.module.css when this page and
+   the homepage stopped each keeping their own copy of the same grid. */
+
+/* Responsive ------------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+  .svc { --s-gutter: 56px; }
+}
+
+@media (max-width: 900px) {
+  .storyInner { grid-template-columns: minmax(0, 1fr); }
+  .prodGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .accWrap { padding: 8px 20px; }
+}
+
+@media (max-width: 560px) {
+  .svc { --s-gutter: 20px; }
+  .hero { min-height: 340px; padding-top: 84px; padding-bottom: 60px; }
+  .story, .acc, .prod, .clients { padding-left: var(--s-gutter); padding-right: var(--s-gutter); }
+  .prodGrid { grid-template-columns: minmax(0, 1fr); }
+  .storyStat { position: static; margin-top: 16px; display: inline-flex; flex-direction: column; }
+}

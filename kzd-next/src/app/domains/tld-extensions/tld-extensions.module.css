@@ -1,0 +1,196 @@
+/* ==========================================================================
+   /domains/tld-extensions — ported from tld-extensions.html.
+   ========================================================================== */
+
+.tld {
+  --k-paper: #ffffff;
+  --k-paper2: #f7f9fc;
+  --k-card: #f8fafc;
+  --k-line: #e1e4ea;
+  --k-navy: #0b2545;
+  --k-muted: #717580;
+  --k-dim: #9298a4;
+  --k-blue: #2f6fed;
+  --k-ember: #ff6b35;
+
+  --k-grad-start: #4a5468;
+  --k-grad-end: #232323;
+
+  --k-gutter: 100px;
+
+  position: relative;
+  isolation: isolate;
+  background: var(--k-paper2);
+}
+
+.inner {
+  width: 100%;
+  max-width: calc(1240px + var(--k-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--k-gutter);
+}
+
+.h2 {
+  margin: 0;
+  font-family: var(--kzd-font-display);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--k-navy);
+}
+
+.h2Center { text-align: center; font-size: 34px; }
+
+/* 1. Hero -------------------------------------------------------------------- */
+
+.hero { position: relative; padding-top: 66px; padding-bottom: 40px; text-align: center; }
+
+.wash {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(58% 52% at 50% 0%, rgba(47, 111, 237, 0.08) 0%, rgba(47, 111, 237, 0) 100%);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 16px;
+  border: 1px solid var(--k-line);
+  border-radius: 999px;
+  background: var(--k-paper);
+  font-family: var(--kzd-font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--k-blue);
+}
+
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--k-ember); flex: none; }
+
+.h1 {
+  margin: 26px 0 0;
+  font-family: var(--kzd-font-display);
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--k-grad-end);
+  background-image: linear-gradient(180deg, var(--k-grad-start) 0%, var(--k-grad-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .h1 { -webkit-text-fill-color: transparent; color: transparent; }
+}
+
+.intro {
+  max-width: 640px;
+  margin: 20px auto 0;
+  font-size: 18px;
+  line-height: 1.66;
+  color: var(--k-muted);
+}
+
+/* 2. Popular TLDs --------------------------------------------------------------- */
+
+.popular { padding-bottom: 80px; }
+
+.popularGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 32px;
+}
+
+.popularCard {
+  display: flex;
+  flex-direction: column;
+  padding: 22px 20px;
+  border: 1px solid var(--k-line);
+  border-radius: 16px;
+  background: var(--k-paper);
+  box-shadow: 0 8px 20px -12px rgba(38, 52, 78, 0.18);
+}
+
+.popularHead { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+
+.popularExt { font-family: var(--kzd-font-mono); font-size: 20px; font-weight: 600; color: var(--k-navy); }
+
+.popularBadge {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--kzd-blue-tint);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--k-blue);
+  white-space: nowrap;
+}
+
+.popularDesc { margin: 10px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--k-muted); flex: 1; }
+.popularPrice { margin: 14px 0 0; font-size: 16px; font-weight: 700; color: var(--k-navy); }
+
+.popularBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  margin-top: 14px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--k-navy);
+  font-family: var(--kzd-font-body);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.popularBtn:hover, .popularBtn:focus-visible { transform: translateY(-1px); box-shadow: 0 10px 18px -10px rgba(11, 37, 69, 0.55); }
+
+/* 3. Tables ----------------------------------------------------------------------- */
+
+.tables { padding-bottom: 40px; }
+.tableBlock { margin-top: 56px; }
+.tableBlock:first-child { margin-top: 0; }
+.tableBody { margin-top: 24px; }
+
+/* 4. FAQ ---------------------------------------------------------------------------- */
+
+.faq { padding-bottom: 110px; }
+.faqInner { max-width: 780px; margin: 44px auto 0; }
+
+/* Responsive -------------------------------------------------------------------------- */
+
+@media (max-width: 1200px) {
+  .tld { --k-gutter: 40px; }
+  .h1 { font-size: clamp(38px, 4.6vw, 54px); }
+}
+
+@media (max-width: 900px) {
+  .hero { padding-top: 44px; padding-bottom: 28px; }
+  .h1 { font-size: 40px; }
+  .h2Center { font-size: 28px; }
+  .popular, .tables { padding-bottom: 56px; }
+  .faq { padding-bottom: 80px; }
+  .popularGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .tld { --k-gutter: 20px; }
+  .h1 { font-size: 32px; }
+  .h2Center { font-size: 24px; }
+  .intro { font-size: 16.5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popularBtn { transition: none !important; }
+  .popularBtn:hover { transform: none; }
+}

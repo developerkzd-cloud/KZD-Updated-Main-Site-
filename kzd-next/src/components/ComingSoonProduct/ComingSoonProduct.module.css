@@ -1,0 +1,111 @@
+.page { display: block; }
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+  padding: 90px var(--kzd-gutter);
+  overflow: hidden;
+  color: #fff;
+  text-align: center;
+}
+
+.heroMedia { position: absolute; inset: 0; }
+.heroImg { object-fit: cover; }
+
+.heroWash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 37, 69, 0.72) 0%, rgba(11, 37, 69, 0.55) 100%);
+}
+
+.heroInner { position: relative; max-width: 640px; }
+
+.eyebrow {
+  display: inline-flex;
+  padding: 6px 16px;
+  margin-bottom: 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(4px);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.h1 {
+  color: #fff;
+  font-size: clamp(32px, 5vw, 52px);
+}
+
+.soonSection {
+  padding: 90px var(--kzd-gutter);
+  display: flex;
+  justify-content: center;
+}
+
+.soonCard {
+  max-width: 640px;
+  width: 100%;
+  text-align: center;
+  padding: 56px 40px;
+  border-radius: var(--kzd-radius-lg);
+  background: var(--kzd-card);
+  border: 1px solid var(--kzd-line);
+}
+
+.badge {
+  display: inline-flex;
+  padding: 6px 16px;
+  margin-bottom: 20px;
+  border-radius: 999px;
+  background: var(--kzd-amber-tint);
+  color: var(--kzd-amber);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.soonTitle { font-size: 26px; margin-bottom: 14px; }
+
+.soonBody {
+  color: var(--kzd-muted);
+  max-width: 480px;
+  margin-inline: auto;
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.ctaPrimary,
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  height: var(--kzd-control);
+  padding-inline: 22px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.ctaPrimary {
+  background: var(--kzd-navy);
+  color: #fff;
+}
+.ctaPrimary:hover { color: #fff; opacity: 0.9; }
+
+.ctaSecondary {
+  background: #fff;
+  border: 1px solid var(--kzd-line);
+  color: var(--kzd-navy);
+}
+.ctaSecondary:hover { color: var(--kzd-blue); border-color: var(--kzd-blue); }

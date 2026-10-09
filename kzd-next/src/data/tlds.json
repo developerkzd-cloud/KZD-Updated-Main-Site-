@@ -1,0 +1,28 @@
+{
+  "_README": "The domain extensions KZD Solutions sells, kept in sync with FOSSBilling's own tld table (my.kzdsolutions.co.za). Nothing on the website checks real availability or pricing — that is FOSSBilling's job — this only renders tables/cards and feeds the FOSSBilling order-URL builder in src/lib/kzd-integration.ts. Ported verbatim from the static site's js/kzd-integration.js KZD.tlds array plus the description copy that was hardcoded inline in tld-extensions.html.",
+
+  "categoryLabels": {
+    "south-african": "South Africa",
+    "global": "Global",
+    "african": "Africa",
+    "business": "Business"
+  },
+
+  "tlds": [
+    { "ext": ".co.za", "register": 99, "transfer": 49, "renew": 150, "category": "south-african", "popular": true, "description": "South Africa" },
+    { "ext": ".com", "register": 349, "transfer": 349, "renew": 389, "category": "global", "popular": true, "description": "The world's most recognized extension" },
+    { "ext": ".net", "register": 299, "transfer": 299, "renew": 299, "category": "global", "popular": true, "description": "Network and technology websites" },
+    { "ext": ".org", "register": 249, "transfer": 249, "renew": 249, "category": "global", "description": "Organizations and nonprofits" },
+    { "ext": ".africa", "register": 199, "transfer": 349, "renew": 349, "category": "african", "popular": true, "description": "Pan-African" },
+    { "ext": ".info", "register": 269, "transfer": 269, "renew": 269, "category": "global", "description": "Information sites" },
+    { "ext": ".net.za", "register": 99, "transfer": 49, "renew": 99, "category": "south-african", "description": "South African networks" },
+    { "ext": ".org.za", "register": 120, "transfer": 49, "renew": 120, "category": "south-african", "description": "South African organizations" },
+    { "ext": ".web.za", "register": 120, "transfer": 49, "renew": 120, "category": "south-african", "description": "South African websites" },
+    { "ext": ".capetown", "register": 199, "transfer": 249, "renew": 249, "category": "south-african", "description": "Cape Town" },
+    { "ext": ".durban", "register": 199, "transfer": 249, "renew": 249, "category": "south-african", "description": "Durban" },
+    { "ext": ".joburg", "register": 199, "transfer": 249, "renew": 249, "category": "south-african", "description": "Johannesburg" },
+    { "ext": ".online", "register": 399, "transfer": 399, "renew": 399, "category": "business", "description": "Online presence" },
+    { "ext": ".mobi", "register": 289, "transfer": 289, "renew": 289, "category": "business", "description": "Mobile-focused sites" },
+    { "ext": ".biz", "register": 289, "transfer": 289, "renew": 289, "category": "business", "description": "Business" }
+  ]
+}

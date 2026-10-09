@@ -115,6 +115,25 @@
   color: var(--k-muted);
 }
 
+/* Opens AuthModal (a client-only prototype account, unrelated to the
+   FOSSBilling login the global nav links to — see CareersAuthGate.tsx). */
+.signInTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 22px auto 0;
+  padding: 10px 18px;
+  border: 1px solid var(--k-line);
+  border-radius: 999px;
+  background: var(--k-paper);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--k-navy);
+  cursor: pointer;
+}
+
+.signInTrigger:hover { background: var(--k-card); border-color: var(--k-blue); }
+
 /* 2. Current openings ------------------------------------------------------ */
 
 .jobs { padding-bottom: 96px; }

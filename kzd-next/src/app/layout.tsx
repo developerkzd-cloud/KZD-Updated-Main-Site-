@@ -21,7 +21,12 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={fontVariables}>
-      <body>
+      {/* suppressHydrationWarning: some browser extensions (e.g. ColorZilla)
+          inject attributes like cz-shortcut-listen onto <body> before React
+          hydrates. That's a client-only DOM mutation outside our control, not
+          a real server/client mismatch — see
+          https://nextjs.org/docs/messages/react-hydration-error */}
+      <body suppressHydrationWarning>
         <Nav />
         {/* The nav is fixed, so content clears it here rather than every page
             repeating a magic padding value the way the static site did. */}

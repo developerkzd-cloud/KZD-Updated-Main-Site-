@@ -21,6 +21,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Cover from "@/components/Cover/Cover";
 import PostCard from "@/components/Cover/CoverCard";
+import Reveal from "@/components/Reveal/Reveal";
 import ShareButton from "./ShareButton";
 import {
   formatDate,
@@ -194,7 +195,9 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
             <h2 className={styles.relatedHead}>More from KZD Insights</h2>
             <div className={styles.grid}>
               {related.map((p) => (
-                <PostCard key={p.slug} post={p} />
+                <Reveal key={p.slug}>
+                  <PostCard post={p} />
+                </Reveal>
               ))}
             </div>
           </section>

@@ -1,0 +1,386 @@
+/* ==========================================================================
+   HOSTING — ported from css/hosting.css (the .chp-* rules) plus the inline
+   <style> block in hosting.html for the feature tooltip. Scoped by CSS
+   Modules instead of the .chp- prefix; the design tokens come from
+   globals.css rather than being redeclared per-section.
+   ========================================================================== */
+
+.hosting { display: block; background: var(--kzd-paper); }
+
+/* 1. Hero -------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 380px;
+  padding: 90px var(--kzd-gutter);
+  overflow: hidden;
+  color: #fff;
+  text-align: center;
+}
+
+.heroMedia { position: absolute; inset: 0; }
+.heroImg { object-fit: cover; }
+
+.heroWash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 37, 69, 0.78) 0%, rgba(11, 37, 69, 0.6) 100%);
+}
+
+.heroInner { position: relative; max-width: 640px; }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  margin-bottom: 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(4px);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.eyebrow svg { width: 14px; height: 14px; fill: #fff; }
+
+.h1 { color: #fff; font-size: clamp(32px, 5vw, 52px); }
+
+/* 2. Sections ------------------------------------------------------------ */
+
+.section { padding: 72px 0; }
+.section + .section { border-top: 1px solid var(--kzd-line); }
+
+.header { text-align: center; margin-bottom: 36px; }
+
+.h2 {
+  font-size: clamp(26px, 3.4vw, 34px);
+}
+
+.subtitle {
+  margin: 10px auto 0;
+  max-width: 620px;
+  color: var(--kzd-muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.service { text-align: center; max-width: 760px; margin-inline: auto; margin-bottom: 44px; }
+.serviceTitle { font-size: 22px; }
+.serviceText { margin-top: 12px; color: var(--kzd-body); line-height: 1.65; }
+
+/* 3. Billing toggle -------------------------------------------------------- */
+
+.toggleGroup {
+  display: inline-flex;
+  gap: 4px;
+  margin: 0 auto 40px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--kzd-card);
+  border: 1px solid var(--kzd-line);
+}
+
+.toggleBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 9px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--kzd-muted);
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.toggleBtn:hover { color: var(--kzd-navy); }
+
+.toggleBtnActive,
+.toggleBtnActive:hover {
+  background: var(--kzd-navy);
+  color: #fff;
+}
+
+.toggleSave {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--kzd-green);
+}
+
+.toggleBtnActive .toggleSave { color: var(--kzd-green-tint); }
+
+/* Group is centered as a block within kzd-wrap */
+.section > .toggleGroup,
+div > .toggleGroup { display: flex; width: max-content; margin-inline: auto; }
+
+/* 4. Plan cards + carousel -------------------------------------------------- */
+
+.swiperOuter { position: relative; padding: 0 52px; }
+
+.swiper { padding: 6px 2px 12px; }
+
+.swiperPrev,
+.swiperNext {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--kzd-line);
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 8px 20px -12px rgba(11, 37, 69, 0.3);
+}
+
+.swiperPrev svg,
+.swiperNext svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: var(--kzd-navy);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.swiperPrev { left: 0; }
+.swiperNext { right: 0; }
+.swiperPrev:hover,
+.swiperNext:hover { border-color: var(--kzd-blue); }
+.swiperPrev:hover svg,
+.swiperNext:hover svg { stroke: var(--kzd-blue); }
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 28px 26px 26px;
+  border: 1px solid var(--kzd-line);
+  border-radius: var(--kzd-radius-lg);
+  background: var(--kzd-card);
+  box-shadow: 0 8px 20px -14px rgba(11, 37, 69, 0.18);
+}
+
+.cardActive {
+  border-color: var(--kzd-blue);
+  background: #fff;
+  box-shadow: 0 16px 34px -16px rgba(47, 111, 237, 0.35);
+}
+
+.cardTitle { font-size: 20px; }
+.cardDesc { margin-top: 8px; font-size: 14px; color: var(--kzd-muted); min-height: 38px; }
+
+.price {
+  margin-top: 18px;
+  font-family: var(--kzd-display);
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--kzd-navy);
+}
+
+.priceValue { font-variant-numeric: tabular-nums; }
+
+.priceCycle,
+.priceCycleSmall {
+  font-family: var(--kzd-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--kzd-muted);
+}
+
+.priceEffective {
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: var(--kzd-green);
+  min-height: 1em;
+}
+
+.features {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  flex: 1;
+}
+
+.features li {
+  position: relative;
+  padding-left: 24px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--kzd-body);
+}
+
+.features li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 5px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--kzd-blue-tint);
+  box-shadow: inset 0 0 0 2px var(--kzd-blue);
+}
+
+.tooltipWrapper { position: relative; display: inline-block; margin-left: 6px; }
+
+.tooltipIcon {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--kzd-dash);
+  color: #fff;
+  font-size: 10px;
+  line-height: 15px;
+  text-align: center;
+  cursor: help;
+}
+
+.tooltipBox {
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 190px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: var(--kzd-navy);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 160ms ease, visibility 160ms ease;
+  z-index: 10;
+}
+
+.tooltipWrapper:hover .tooltipBox,
+.tooltipWrapper:focus-within .tooltipBox { opacity: 1; visibility: visible; }
+
+.btn {
+  margin-top: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--kzd-control);
+  border: 0;
+  border-radius: 10px;
+  background: var(--kzd-navy);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px -10px rgba(11, 37, 69, 0.5);
+  background: var(--kzd-blue);
+}
+
+.domainNote {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--kzd-dim);
+}
+
+/* 5. Email plans ----------------------------------------------------------- */
+
+.emailCards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 780px;
+}
+
+/* 6. FAQ --------------------------------------------------------------------- */
+
+.faq { max-width: 760px; }
+
+/* 7. Why choose -------------------------------------------------------------- */
+
+.why { background: var(--kzd-paper-2); }
+
+.whyHeader { text-align: center; max-width: 620px; margin: 0 auto 44px; }
+
+.whyGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.whyCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 28px 22px;
+  border-radius: var(--kzd-radius-lg);
+  background: #fff;
+  border: 1px solid var(--kzd-line);
+  box-shadow: 0 8px 20px -14px rgba(11, 37, 69, 0.18);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.whyCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 34px -16px rgba(11, 37, 69, 0.3);
+}
+
+.whyIcon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 14px;
+  fill: none;
+  stroke: var(--kzd-blue);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.whyTitle { font-size: 17px; }
+.whyBody { margin-top: 8px; font-size: 14px; color: var(--kzd-muted); line-height: 1.6; }
+
+/* Responsive ----------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .section { padding: 56px 0; }
+  .emailCards { grid-template-columns: minmax(0, 1fr); }
+  .whyGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .swiperOuter { padding: 0 44px; }
+}
+
+@media (max-width: 560px) {
+  .hero { padding: 64px 20px; min-height: 320px; }
+  .whyGrid { grid-template-columns: minmax(0, 1fr); }
+  .toggleGroup { flex-wrap: wrap; justify-content: center; }
+  .swiperOuter { padding: 0 36px; }
+  .swiperPrev, .swiperNext { width: 34px; height: 34px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whyCard, .btn, .toggleBtn { transition: none !important; }
+  .whyCard:hover, .btn:hover { transform: none; }
+}

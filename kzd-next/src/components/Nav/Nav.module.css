@@ -68,11 +68,16 @@
 
 /* Desktop list ------------------------------------------------------------ */
 
+/* The auto margins belong on the <nav>, not the <ul> inside it: <nav> is the
+   flex child of .inner, so centring the <ul> within a nav that only hugs its
+   own content did nothing — the links bunched up beside the brand and the
+   account actions sat mid-bar instead of at the right edge. */
+.navWrap { margin-inline: auto; }
+
 .list {
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-inline: auto;
   list-style: none;
 }
 
