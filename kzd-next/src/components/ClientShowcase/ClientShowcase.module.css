@@ -434,3 +434,21 @@
   .dotlive, .halo { animation: none; }
   .modal { animation: none; }
 }
+
+/* ---- Design system: buttons (KZD Reusable Design System) ----------------------------
+   Appended last so it settles the cascade within this module. Height 44,
+   radius 16, no vertical padding: the label is centred by inline-flex +
+   align-items:center + line-height:1. One primary per view; repeated card
+   and row actions are outline; consultation/contact is the silver accent.
+   ------------------------------------------------------------------------- */
+.modalClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--kzd-control);
+  min-height: var(--kzd-control);
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 1;
+  border-radius: var(--kzd-radius-8);
+}

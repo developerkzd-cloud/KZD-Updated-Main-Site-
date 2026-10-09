@@ -1021,3 +1021,109 @@
   .clientsTitle { font-size: clamp(2rem, 7vw, 2.75rem); }
   .clientsRail { margin-top: 36px; }
 }
+
+/* ---- Design system: buttons (KZD Reusable Design System) ----------------------------
+   Appended last so it settles the cascade within this module. Height 44,
+   radius 16, no vertical padding: the label is centred by inline-flex +
+   align-items:center + line-height:1. One primary per view; repeated card
+   and row actions are outline; consultation/contact is the silver accent.
+   ------------------------------------------------------------------------- */
+.heroCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kzd-space-8);
+  height: var(--kzd-control);
+  min-height: var(--kzd-control);
+  padding: 0 var(--kzd-space-24);
+  border-width: var(--kzd-border);
+  border-style: solid;
+  border-radius: var(--kzd-radius-16);
+  font-family: var(--kzd-type-sans);
+  font-size: var(--kzd-text-label-lg);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: none;
+  box-shadow: none;
+  background-image: none;
+  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
+    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+  background-color: var(--kzd-silver);
+  border-color: var(--kzd-silver);
+  color: var(--kzd-black);
+}
+.heroCta:hover {
+  background-color: var(--kzd-silver-light);
+  border-color: var(--kzd-silver-light);
+  color: var(--kzd-black);
+}
+.heroCta:active { transform: translateY(1px); }
+
+.tstCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kzd-space-8);
+  height: var(--kzd-control);
+  min-height: var(--kzd-control);
+  padding: 0 var(--kzd-space-24);
+  border-width: var(--kzd-border);
+  border-style: solid;
+  border-radius: var(--kzd-radius-16);
+  font-family: var(--kzd-type-sans);
+  font-size: var(--kzd-text-label-lg);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: none;
+  box-shadow: none;
+  background-image: none;
+  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
+    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+  background-color: transparent;
+  border-color: var(--kzd-black);
+  color: var(--kzd-black);
+}
+.tstCta:hover {
+  background-color: var(--kzd-surface-100);
+  border-color: var(--kzd-black);
+  color: var(--kzd-black);
+}
+.tstCta:active { transform: translateY(1px); }
+
+.servicesArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--kzd-control);
+  min-height: var(--kzd-control);
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 1;
+  border-radius: var(--kzd-radius-full);
+}
+
+.tstPrev {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--kzd-control);
+  min-height: var(--kzd-control);
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 1;
+  border-radius: var(--kzd-radius-full);
+}
+
+.tstNext {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--kzd-control);
+  min-height: var(--kzd-control);
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 1;
+  border-radius: var(--kzd-radius-full);
+}

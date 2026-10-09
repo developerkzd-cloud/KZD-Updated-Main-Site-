@@ -262,3 +262,41 @@
   .submit { transition: none !important; }
   .submit:hover { transform: none; }
 }
+
+/* ---- Design system: buttons (KZD Reusable Design System) ----------------------------
+   Appended last so it settles the cascade within this module. Height 44,
+   radius 16, no vertical padding: the label is centred by inline-flex +
+   align-items:center + line-height:1. One primary per view; repeated card
+   and row actions are outline; consultation/contact is the silver accent.
+   ------------------------------------------------------------------------- */
+.submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kzd-space-8);
+  height: var(--kzd-control);
+  min-height: var(--kzd-control);
+  padding: 0 var(--kzd-space-24);
+  border-width: var(--kzd-border);
+  border-style: solid;
+  border-radius: var(--kzd-radius-16);
+  font-family: var(--kzd-type-sans);
+  font-size: var(--kzd-text-label-lg);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: none;
+  box-shadow: none;
+  background-image: none;
+  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
+    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease);
+  background-color: var(--kzd-black);
+  border-color: var(--kzd-black);
+  color: var(--kzd-white);
+}
+.submit:hover {
+  background-color: var(--kzd-charcoal);
+  border-color: var(--kzd-charcoal);
+  color: var(--kzd-white);
+}
+.submit:active { transform: translateY(1px); }

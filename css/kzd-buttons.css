@@ -1,0 +1,220 @@
+/* ==========================================================================
+   KZD Solutions — buttons, static site (KZD Reusable Design System §Buttons)
+
+   Linked LAST on every static page so it settles the cascade against the
+   theme (css/style.css) and the section stylesheets. Values come only from
+   css/kzd-tokens.css. The !important flags are confined to geometry: the
+   theme sizes .btn through compound selectors (.btn.btn-large, .btn-rounded)
+   that a single class cannot outrank.
+
+   Geometry: height 44 (--kzd-control), radius 16, NO vertical padding. The
+   label is centred by inline-flex + align-items:center + line-height:1;
+   padding arithmetic is what broke mobile label centring before.
+
+   Roles (one primary per view):
+     primary    Rich Black     the main action of the view
+     secondary  Medium Gray    supporting actions
+     accent     Silver Gray    consultation / contact
+     outline    1px border     everything repeated (card, row and table CTAs)
+   On dark (navy) surfaces primary inverts to white and outline to a white line.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------- geometry */
+.btn,
+.chp-btn,
+.pricing-btn,
+.package-select-btn,
+.domain-search-btn,
+.result-btn,
+.btn-recommend,
+.kzd-acc__cta,
+.kzd-car__apply,
+.kzd-job__btn,
+.kzd-job__submit,
+.kzd-pro__btn,
+.kzd-pro__banner-btn,
+.kzd-blog__cta-btn,
+.kzd-blog__share,
+.kzd-tst__cta,
+.kzd-mnav__btn,
+.kzd-ad__btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center;
+  gap: var(--kzd-space-8);
+  height: var(--kzd-control) !important;
+  min-height: var(--kzd-control) !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: var(--kzd-space-24) !important;
+  padding-right: var(--kzd-space-24) !important;
+  border-width: var(--kzd-border) !important;
+  border-style: solid !important;
+  border-radius: var(--kzd-radius-16) !important;
+  font-family: var(--kzd-type-sans) !important;
+  font-size: var(--kzd-text-label-lg) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+  white-space: nowrap;
+  box-shadow: none !important;
+  background-image: none !important;
+  transition: background-color var(--kzd-dur-micro) var(--kzd-ease), color var(--kzd-dur-micro) var(--kzd-ease),
+    border-color var(--kzd-dur-micro) var(--kzd-ease), transform var(--kzd-dur-micro) var(--kzd-ease) !important;
+}
+/* Full-width variants and long labels may wrap on phones: keep centring. */
+.w-100.btn,
+.btn-recommend,
+.package-select-btn,
+.kzd-job__submit { white-space: normal; text-align: center; }
+.btn:active, .chp-btn:active, .pricing-btn:active, .package-select-btn:active, .domain-search-btn:active,
+.btn-recommend:active, .kzd-acc__cta:active, .kzd-car__apply:active, .kzd-job__btn:active, .kzd-job__submit:active,
+.kzd-pro__btn:active, .kzd-pro__banner-btn:active, .kzd-blog__cta-btn:active, .kzd-blog__share:active,
+.kzd-tst__cta:active, .kzd-mnav__btn:active, .kzd-ad__btn:active { transform: translateY(1px); }
+
+/* Theme switch-text buttons stack two labels; show one, centred. */
+.btn .btn-double-text { display: inline-flex; align-items: center; }
+.btn.btn-switch-text > span { display: inline-flex; align-items: center; gap: var(--kzd-space-8); }
+
+/* The admin base button is an outline; its --primary / --blue / state
+   variants below override it, so this rule must stay above them. */
+.kzd-ad__btn { background-color: transparent !important; border-color: var(--kzd-black) !important; color: var(--kzd-black) !important; }
+.kzd-ad__btn:hover { background-color: var(--kzd-surface-100) !important; }
+
+/* ----------------------------------------------------------------- primary */
+.btn-dark-gray, .btn-dark-custom, .btn-recommend, .domain-search-btn, .result-btn,
+.kzd-job__btn--primary, .kzd-job__submit, .kzd-pro__btn--primary, .kzd-pro__banner-btn, .kzd-ad__btn--primary,
+.btn.submit {
+  background-color: var(--kzd-black) !important;
+  border-color: var(--kzd-black) !important;
+  color: var(--kzd-white) !important;
+}
+.btn-dark-gray:hover, .btn-dark-custom:hover, .btn-recommend:hover, .domain-search-btn:hover,
+.result-btn:hover, .kzd-job__btn--primary:hover, .kzd-job__submit:hover, .kzd-pro__btn--primary:hover,
+.kzd-pro__banner-btn:hover, .kzd-ad__btn--primary:hover, .btn.submit:hover {
+  background-color: var(--kzd-charcoal) !important;
+  border-color: var(--kzd-charcoal) !important;
+  color: var(--kzd-white) !important;
+}
+
+/* --------------------------------------------------------------- secondary */
+.kzd-ad__btn--blue {
+  background-color: var(--kzd-gray) !important;
+  border-color: var(--kzd-gray) !important;
+  color: var(--kzd-white) !important;
+}
+.kzd-ad__btn--blue:hover { background-color: var(--kzd-charcoal) !important; border-color: var(--kzd-charcoal) !important; }
+
+/* ------------------------------------------------------------------ accent */
+.btn-gradient-purple-pink, .kzd-acc__cta, .kzd-blog__cta-btn, .kzd-mnav__btn--ember,
+.btn-transparent-white-light[href$="contact.html"] {
+  background-color: var(--kzd-silver) !important;
+  border-color: var(--kzd-silver) !important;
+  color: var(--kzd-black) !important;
+}
+.btn-gradient-purple-pink:hover, .kzd-acc__cta:hover, .kzd-blog__cta-btn:hover, .kzd-mnav__btn--ember:hover,
+.btn-transparent-white-light[href$="contact.html"]:hover {
+  background-color: var(--kzd-silver-light) !important;
+  border-color: var(--kzd-silver-light) !important;
+  color: var(--kzd-black) !important;
+}
+
+/* ----------------------------------------------------------------- outline */
+.btn-transparent-dark-gray, .btn-outline-dark-custom, .package-select-btn, .pricing-btn, .chp-btn,
+.kzd-car__apply, .kzd-job__btn--ghost, .kzd-job__btn--inline, .kzd-pro__btn--ghost, .kzd-ad__btn--ghost,
+.kzd-blog__share, .kzd-tst__cta, .kzd-mnav__btn--ghost {
+  background-color: transparent !important;
+  border-color: var(--kzd-black) !important;
+  color: var(--kzd-black) !important;
+}
+.btn-transparent-dark-gray:hover, .btn-outline-dark-custom:hover, .package-select-btn:hover,
+.pricing-btn:hover, .chp-btn:hover, .kzd-car__apply:hover, .kzd-job__btn--ghost:hover, .kzd-job__btn--inline:hover,
+.kzd-pro__btn--ghost:hover, .kzd-ad__btn--ghost:hover, .kzd-blog__share:hover, .kzd-tst__cta:hover,
+.kzd-mnav__btn--ghost:hover {
+  background-color: var(--kzd-surface-100) !important;
+  color: var(--kzd-black) !important;
+}
+/* Selected package / plan: 2px border = "selected" in the system. */
+.package-select-btn.active, .package-select-btn.selected, .chp-btn.active { border-width: var(--kzd-border-selected) !important; }
+
+/* A closed role cannot be applied for. */
+.kzd-car__apply--closed, .kzd-car__apply--closed:hover {
+  background-color: var(--kzd-surface-100) !important;
+  border-color: var(--kzd-line) !important;
+  color: var(--kzd-text-muted) !important;
+  cursor: not-allowed;
+}
+
+/* -------------------------------------------------------- on dark surfaces */
+.btn-white, .btn-hero-primary {
+  background-color: var(--kzd-white) !important;
+  border-color: var(--kzd-white) !important;
+  color: var(--kzd-black) !important;
+}
+.btn-white:hover, .btn-hero-primary:hover { background-color: var(--kzd-silver-light) !important; border-color: var(--kzd-silver-light) !important; }
+.btn-transparent-white-light:not([href$="contact.html"]), .btn-hero-outline {
+  background-color: transparent !important;
+  border-color: var(--kzd-white) !important;
+  color: var(--kzd-white) !important;
+}
+.btn-transparent-white-light:not([href$="contact.html"]):hover, .btn-hero-outline:hover {
+  background-color: var(--kzd-white) !important;
+  color: var(--kzd-black) !important;
+}
+
+/* -------------------------------------------- admin state actions (semantic)
+   These move an application between stages, so they keep the stage colour
+   (text label + tint), never colour alone. */
+.kzd-ad__btn--green  { background-color: var(--kzd-status-active-bg) !important; border-color: var(--kzd-status-active-bg) !important; color: var(--kzd-status-active-ink) !important; }
+.kzd-ad__btn--amber  { background-color: var(--kzd-status-leave-bg)  !important; border-color: var(--kzd-status-leave-bg)  !important; color: var(--kzd-status-leave-ink)  !important; }
+.kzd-ad__btn--danger { background-color: var(--kzd-error-bg)         !important; border-color: var(--kzd-error-bg)         !important; color: var(--kzd-error-ink)         !important; }
+.kzd-ad__btn--green:hover  { border-color: var(--kzd-status-active-ink) !important; }
+.kzd-ad__btn--amber:hover  { border-color: var(--kzd-status-leave-ink)  !important; }
+.kzd-ad__btn--danger:hover { border-color: var(--kzd-error-ink)         !important; }
+
+/* ---------------------------------------------------------------- disabled */
+.btn:disabled, .btn.disabled, .kzd-job__btn:disabled, .kzd-job__submit:disabled, .kzd-pro__btn:disabled,
+.kzd-ad__btn:disabled, .domain-search-btn:disabled {
+  background-color: var(--kzd-surface-200) !important;
+  border-color: var(--kzd-surface-200) !important;
+  color: var(--kzd-text-muted) !important;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ------------------------------------------------- compact controls (pills)
+   Filter chips, the billing-period toggle and icon-only arrows are compact
+   controls: full radius allowed, touch target still 44. */
+.kzd-blog__pill, .kzd-ad__pill, .chp-toggle-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: var(--kzd-control) !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 1 !important;
+  border-radius: var(--kzd-radius-full) !important;
+}
+.kzd-services__arrow, .chp-swiper-prev, .chp-swiper-next, .kzd-tst__prev, .kzd-tst__next, .kzd-sc__nav,
+.kzd-pro__icon-btn, .kzd-header-btn, .kzd-control-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: var(--kzd-control) !important;
+  min-height: var(--kzd-control) !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 1 !important;
+}
+.kzd-pro__icon-btn { border-radius: var(--kzd-radius-8) !important; }
+
+/* Tabs are controls too: same 44 height, label centred by flex. */
+.kzd-job__tab, .kzd-pro__tab, .kzd-ad-modal__tab {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: var(--kzd-control) !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 1 !important;
+  border-radius: var(--kzd-radius-8) !important;
+}

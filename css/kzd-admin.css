@@ -47,7 +47,7 @@
   --ad-topbar:  84px;
 
   /* Every control in an action row is this tall — buttons and pills alike. */
-  --ad-control: 42px;
+  --ad-control: var(--kzd-control);   /* 44: design-system control height */
 }
 
 * { box-sizing: border-box; }
@@ -1443,30 +1443,8 @@ body.kzd-ad {
   .kzd-ad__item-tools { flex-direction: row; width: 100%; justify-content: flex-end; }
 }
 
-/* ==========================================================================
-   CONTROL HEIGHT vs TAP TARGET
-
-   The brief asks for 42px controls AND tap targets of at least 44px. Those
-   conflict, so the visual height stays 42px and the HIT AREA is expanded to
-   46px with a pseudo-element — the button looks as specified and still meets
-   the touch minimum. Admin pages never load css/about.css, so there is no
-   body { zoom: .9 } here and 42px means 42 real pixels.
-   ========================================================================== */
-
-@media (pointer: coarse), (max-width: 900px) {
-  .kzd-ad__btn::after,
-  .kzd-ad__pill::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    height: 46px;
-    transform: translateY(-50%);
-  }
-
-  .kzd-ad__pill { position: relative; }
-}
+/* CONTROL HEIGHT: controls are 44px (--kzd-control), which is also the touch
+   minimum, so the old 42px-visual / 46px-hit-area workaround is gone. */
 
 /* Modal action rows sit on one baseline like every other row. */
 .kzd-ad__moves,

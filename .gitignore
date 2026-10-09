@@ -1,3 +1,6 @@
 node_modules/
 .env
 .htmlvalidate-cache/
+
+# Next.js cache (Turbopack root is the repo root; see kzd-next/next.config.ts)
+.next/
