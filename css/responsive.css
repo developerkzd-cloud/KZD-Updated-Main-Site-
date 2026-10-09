@@ -110,59 +110,59 @@
 @media (max-width: 1600px) {
   /* Font size */
   .xxl-fs-100 {
-    font-size: 6.25rem;
+    font-size:  var(--kzd-text-display);
     line-height: 6.25rem;
   }
   .xxl-fs-110 {
-    font-size: 6.875rem;
+    font-size:  var(--kzd-text-display);
     line-height: 6.875rem;
   }
   .xxl-fs-120 {
-    font-size: 7.5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 7.5rem;
   }
   .xxl-fs-130 {
-    font-size: 8.125rem;
+    font-size:  var(--kzd-text-display);
     line-height: 8.125rem;
   }
   .xxl-fs-140 {
-    font-size: 8.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 8.75rem;
   }
   .xxl-fs-150 {
-    font-size: 9.375rem;
+    font-size:  var(--kzd-text-display);
     line-height: 9.375rem;
   }
   .xxl-fs-160 {
-    font-size: 10rem;
+    font-size:  var(--kzd-text-display);
     line-height: 10rem;
   }
   .xxl-fs-170 {
-    font-size: 10.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 10.625rem;
   }
   .xxl-fs-180 {
-    font-size: 11.25rem;
+    font-size:  var(--kzd-text-display);
     line-height: 11.25rem;
   }
   .xxl-fs-190 {
-    font-size: 11.875rem;
+    font-size:  var(--kzd-text-display);
     line-height: 11.875rem;
   }
   .xxl-fs-200 {
-    font-size: 12.5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 12.5rem;
   }
   .xxl-fs-250 {
-    font-size: 15.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 15.625rem;
   }
   .xxl-fs-275 {
-    font-size: 17.188rem;
+    font-size:  var(--kzd-text-display);
     line-height: 17.188rem;
   }
   .xxl-fs-300 {
-    font-size: 18.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 18.75rem;
   }
 }
@@ -172,163 +172,163 @@
     font-size: 0;
   }
   .xl-fs-10 {
-    font-size: 10px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .xl-fs-11 {
-    font-size: 11px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .xl-fs-12 {
-    font-size: 12px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .xl-fs-13 {
-    font-size: 13px;
+    font-size:  var(--kzd-text-label);
   }
   .xl-fs-14 {
-    font-size: 14px;
+    font-size:  var(--kzd-text-label-lg);
   }
   .xl-fs-15 {
-    font-size: 15px;
+    font-size:  var(--kzd-text-body);
   }
   .xl-fs-16 {
-    font-size: 16px;
+    font-size:  var(--kzd-text-body);
   }
   .xl-fs-17 {
-    font-size: 17px;
+    font-size:  var(--kzd-text-body);
   }
   .xl-fs-18 {
-    font-size: 18px;
+    font-size:  var(--kzd-text-body);
   }
   .xl-fs-19 {
-    font-size: 19px;
+    font-size:  var(--kzd-text-body);
   }
   .xl-fs-20 {
-    font-size: 20px;
+    font-size:  var(--kzd-text-title);
   }
   .xl-fs-22 {
-    font-size: 22px;
+    font-size:  var(--kzd-text-title);
   }
   .xl-fs-24 {
-    font-size: 24px;
+    font-size:  var(--kzd-text-title);
     line-height: 32px;
   }
   .xl-fs-26 {
-    font-size: 26px;
+    font-size:  var(--kzd-text-title);
     line-height: 38px;
   }
   .xl-fs-28 {
-    font-size: 1.75rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.6rem;
   }
   .xl-fs-30 {
-    font-size: 1.875rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.8rem;
   }
   .xl-fs-32 {
-    font-size: 2rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.5rem;
   }
   .xl-fs-40 {
-    font-size: 2.5rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 2.5rem;
   }
   .xl-fs-45 {
-    font-size: 2.813rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 3rem;
   }
   .xl-fs-50 {
-    font-size: 3.125rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 3.25rem;
   }
   .xl-fs-55 {
-    font-size: 3.438rem;
+    font-size:  var(--kzd-text-display);
     line-height: 3.5rem;
   }
   .xl-fs-60 {
-    font-size: 3.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 3.75rem;
   }
   .xl-fs-65 {
-    font-size: 4.063rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.688rem;
   }
   .xl-fs-70 {
-    font-size: 4.375rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.375rem;
   }
   .xl-fs-75 {
-    font-size: 4.668rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.668rem;
   }
   .xl-fs-80 {
-    font-size: 5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5rem;
   }
   .xl-fs-85 {
-    font-size: 5.313rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.313rem;
   }
   .xl-fs-90 {
-    font-size: 5.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.625rem;
   }
   .xl-fs-95 {
-    font-size: 5.938rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.938rem;
   }
   .xl-fs-100 {
-    font-size: 6.25rem;
+    font-size:  var(--kzd-text-display);
     line-height: 6.25rem;
   }
   .xl-fs-110 {
-    font-size: 6.875rem;
+    font-size:  var(--kzd-text-display);
     line-height: 6.875rem;
   }
   .xl-fs-120 {
-    font-size: 7.5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 7.5rem;
   }
   .xl-fs-130 {
-    font-size: 8.125rem;
+    font-size:  var(--kzd-text-display);
     line-height: 8.125rem;
   }
   .xl-fs-140 {
-    font-size: 8.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 8.75rem;
   }
   .xl-fs-150 {
-    font-size: 9.375rem;
+    font-size:  var(--kzd-text-display);
     line-height: 9.375rem;
   }
   .xl-fs-160 {
-    font-size: 10rem;
+    font-size:  var(--kzd-text-display);
     line-height: 10rem;
   }
   .xl-fs-170 {
-    font-size: 10.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 10.625rem;
   }
   .xl-fs-180 {
-    font-size: 11.25rem;
+    font-size:  var(--kzd-text-display);
     line-height: 11.25rem;
   }
   .xl-fs-190 {
-    font-size: 11.875rem;
+    font-size:  var(--kzd-text-display);
     line-height: 11.875rem;
   }
   .xl-fs-200 {
-    font-size: 12.5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 12.5rem;
   }
   .xl-fs-250 {
-    font-size: 15.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 15.625rem;
   }
   .xl-fs-275 {
-    font-size: 17.188rem;
+    font-size:  var(--kzd-text-display);
     line-height: 17.188rem;
   }
   .xl-fs-300 {
-    font-size: 18.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 18.75rem;
   }
   /* Line height */
@@ -423,163 +423,163 @@
     font-size: 0;
   }
   .lg-fs-10 {
-    font-size: 10px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .lg-fs-11 {
-    font-size: 11px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .lg-fs-12 {
-    font-size: 12px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .lg-fs-13 {
-    font-size: 13px;
+    font-size:  var(--kzd-text-label);
   }
   .lg-fs-14 {
-    font-size: 14px;
+    font-size:  var(--kzd-text-label-lg);
   }
   .lg-fs-15 {
-    font-size: 15px;
+    font-size:  var(--kzd-text-body);
   }
   .lg-fs-16 {
-    font-size: 16px;
+    font-size:  var(--kzd-text-body);
   }
   .lg-fs-17 {
-    font-size: 17px;
+    font-size:  var(--kzd-text-body);
   }
   .lg-fs-18 {
-    font-size: 18px;
+    font-size:  var(--kzd-text-body);
   }
   .lg-fs-19 {
-    font-size: 19px;
+    font-size:  var(--kzd-text-body);
   }
   .lg-fs-20 {
-    font-size: 20px;
+    font-size:  var(--kzd-text-title);
   }
   .lg-fs-22 {
-    font-size: 22px;
+    font-size:  var(--kzd-text-title);
   }
   .lg-fs-24 {
-    font-size: 24px;
+    font-size:  var(--kzd-text-title);
     line-height: 32px;
   }
   .lg-fs-26 {
-    font-size: 26px;
+    font-size:  var(--kzd-text-title);
     line-height: 38px;
   }
   .lg-fs-28 {
-    font-size: 1.75rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.6rem;
   }
   .lg-fs-30 {
-    font-size: 1.875rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.8rem;
   }
   .lg-fs-32 {
-    font-size: 2rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.5rem;
   }
   .lg-fs-40 {
-    font-size: 2.5rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 2.5rem;
   }
   .lg-fs-45 {
-    font-size: 2.813rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 3rem;
   }
   .lg-fs-50 {
-    font-size: 3.125rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 3.25rem;
   }
   .lg-fs-55 {
-    font-size: 3.438rem;
+    font-size:  var(--kzd-text-display);
     line-height: 3.5rem;
   }
   .lg-fs-60 {
-    font-size: 3.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 3.75rem;
   }
   .lg-fs-65 {
-    font-size: 4.063rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.688rem;
   }
   .lg-fs-70 {
-    font-size: 4.375rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.375rem;
   }
   .lg-fs-75 {
-    font-size: 4.668rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.668rem;
   }
   .lg-fs-80 {
-    font-size: 5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5rem;
   }
   .lg-fs-85 {
-    font-size: 5.313rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.313rem;
   }
   .lg-fs-90 {
-    font-size: 5.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.625rem;
   }
   .lg-fs-95 {
-    font-size: 5.938rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.938rem;
   }
   .lg-fs-100 {
-    font-size: 6.25rem;
+    font-size:  var(--kzd-text-display);
     line-height: 6.25rem;
   }
   .lg-fs-110 {
-    font-size: 6.875rem;
+    font-size:  var(--kzd-text-display);
     line-height: 6.875rem;
   }
   .lg-fs-120 {
-    font-size: 7.5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 7.5rem;
   }
   .lg-fs-130 {
-    font-size: 8.125rem;
+    font-size:  var(--kzd-text-display);
     line-height: 8.125rem;
   }
   .lg-fs-140 {
-    font-size: 8.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 8.75rem;
   }
   .lg-fs-150 {
-    font-size: 9.375rem;
+    font-size:  var(--kzd-text-display);
     line-height: 9.375rem;
   }
   .lg-fs-160 {
-    font-size: 10rem;
+    font-size:  var(--kzd-text-display);
     line-height: 10rem;
   }
   .lg-fs-170 {
-    font-size: 10.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 10.625rem;
   }
   .lg-fs-180 {
-    font-size: 11.25rem;
+    font-size:  var(--kzd-text-display);
     line-height: 11.25rem;
   }
   .lg-fs-190 {
-    font-size: 11.875rem;
+    font-size:  var(--kzd-text-display);
     line-height: 11.875rem;
   }
   .lg-fs-200 {
-    font-size: 12.5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 12.5rem;
   }
   .lg-fs-250 {
-    font-size: 15.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 15.625rem;
   }
   .lg-fs-275 {
-    font-size: 17.188rem;
+    font-size:  var(--kzd-text-display);
     line-height: 17.188rem;
   }
   .lg-fs-300 {
-    font-size: 18.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 18.75rem;
   }
   /* Line height */
@@ -674,163 +674,163 @@
     font-size: 0;
   }
   .md-fs-10 {
-    font-size: 10px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .md-fs-11 {
-    font-size: 11px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .md-fs-12 {
-    font-size: 12px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .md-fs-13 {
-    font-size: 13px;
+    font-size:  var(--kzd-text-label);
   }
   .md-fs-14 {
-    font-size: 14px;
+    font-size:  var(--kzd-text-label-lg);
   }
   .md-fs-15 {
-    font-size: 15px;
+    font-size:  var(--kzd-text-body);
   }
   .md-fs-16 {
-    font-size: 16px;
+    font-size:  var(--kzd-text-body);
   }
   .md-fs-17 {
-    font-size: 17px;
+    font-size:  var(--kzd-text-body);
   }
   .md-fs-18 {
-    font-size: 18px;
+    font-size:  var(--kzd-text-body);
   }
   .md-fs-19 {
-    font-size: 19px;
+    font-size:  var(--kzd-text-body);
   }
   .md-fs-20 {
-    font-size: 20px;
+    font-size:  var(--kzd-text-title);
   }
   .md-fs-22 {
-    font-size: 22px;
+    font-size:  var(--kzd-text-title);
   }
   .md-fs-24 {
-    font-size: 24px;
+    font-size:  var(--kzd-text-title);
     line-height: 32px;
   }
   .md-fs-26 {
-    font-size: 26px;
+    font-size:  var(--kzd-text-title);
     line-height: 38px;
   }
   .md-fs-28 {
-    font-size: 1.75rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.6rem;
   }
   .md-fs-30 {
-    font-size: 1.875rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.8rem;
   }
   .md-fs-32 {
-    font-size: 2rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.5rem;
   }
   .md-fs-40 {
-    font-size: 2.5rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 2.5rem;
   }
   .md-fs-45 {
-    font-size: 2.813rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 3rem;
   }
   .md-fs-50 {
-    font-size: 3.125rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 3.25rem;
   }
   .md-fs-55 {
-    font-size: 3.438rem;
+    font-size:  var(--kzd-text-display);
     line-height: 3.5rem;
   }
   .md-fs-60 {
-    font-size: 3.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 3.75rem;
   }
   .md-fs-65 {
-    font-size: 4.063rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.688rem;
   }
   .md-fs-70 {
-    font-size: 4.375rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.375rem;
   }
   .md-fs-75 {
-    font-size: 4.668rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.668rem;
   }
   .md-fs-80 {
-    font-size: 5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5rem;
   }
   .md-fs-85 {
-    font-size: 5.313rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.313rem;
   }
   .md-fs-90 {
-    font-size: 5.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.625rem;
   }
   .md-fs-95 {
-    font-size: 5.938rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.938rem;
   }
   .md-fs-100 {
-    font-size: 6.25rem;
+    font-size:  var(--kzd-text-display);
     line-height: 6.25rem;
   }
   .md-fs-110 {
-    font-size: 6.875rem;
+    font-size:  var(--kzd-text-display);
     line-height: 6.875rem;
   }
   .md-fs-120 {
-    font-size: 7.5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 7.5rem;
   }
   .md-fs-130 {
-    font-size: 8.125rem;
+    font-size:  var(--kzd-text-display);
     line-height: 8.125rem;
   }
   .md-fs-140 {
-    font-size: 8.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 8.75rem;
   }
   .md-fs-150 {
-    font-size: 9.375rem;
+    font-size:  var(--kzd-text-display);
     line-height: 9.375rem;
   }
   .md-fs-160 {
-    font-size: 10rem;
+    font-size:  var(--kzd-text-display);
     line-height: 10rem;
   }
   .md-fs-170 {
-    font-size: 10.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 10.625rem;
   }
   .md-fs-180 {
-    font-size: 11.25rem;
+    font-size:  var(--kzd-text-display);
     line-height: 11.25rem;
   }
   .md-fs-190 {
-    font-size: 11.875rem;
+    font-size:  var(--kzd-text-display);
     line-height: 11.875rem;
   }
   .md-fs-200 {
-    font-size: 12.5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 12.5rem;
   }
   .md-fs-250 {
-    font-size: 15.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 15.625rem;
   }
   .md-fs-275 {
-    font-size: 17.188rem;
+    font-size:  var(--kzd-text-display);
     line-height: 17.188rem;
   }
   .md-fs-300 {
-    font-size: 18.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 18.75rem;
   }
   /* Line height */
@@ -929,163 +929,163 @@
     font-size: 0;
   }
   .sm-fs-10 {
-    font-size: 10px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .sm-fs-11 {
-    font-size: 11px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .sm-fs-12 {
-    font-size: 12px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .sm-fs-13 {
-    font-size: 13px;
+    font-size:  var(--kzd-text-label);
   }
   .sm-fs-14 {
-    font-size: 14px;
+    font-size:  var(--kzd-text-label-lg);
   }
   .sm-fs-15 {
-    font-size: 15px;
+    font-size:  var(--kzd-text-body);
   }
   .sm-fs-16 {
-    font-size: 16px;
+    font-size:  var(--kzd-text-body);
   }
   .sm-fs-17 {
-    font-size: 17px;
+    font-size:  var(--kzd-text-body);
   }
   .sm-fs-18 {
-    font-size: 18px;
+    font-size:  var(--kzd-text-body);
   }
   .sm-fs-19 {
-    font-size: 19px;
+    font-size:  var(--kzd-text-body);
   }
   .sm-fs-20 {
-    font-size: 20px;
+    font-size:  var(--kzd-text-title);
   }
   .sm-fs-22 {
-    font-size: 22px;
+    font-size:  var(--kzd-text-title);
   }
   .sm-fs-24 {
-    font-size: 24px;
+    font-size:  var(--kzd-text-title);
     line-height: 32px;
   }
   .sm-fs-26 {
-    font-size: 26px;
+    font-size:  var(--kzd-text-title);
     line-height: 38px;
   }
   .sm-fs-28 {
-    font-size: 1.75rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.6rem;
   }
   .sm-fs-30 {
-    font-size: 1.875rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.8rem;
   }
   .sm-fs-32 {
-    font-size: 2rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.5rem;
   }
   .sm-fs-40 {
-    font-size: 2.5rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 2.5rem;
   }
   .sm-fs-45 {
-    font-size: 2.813rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 2.813rem;
   }
   .sm-fs-50 {
-    font-size: 3.125rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 3.125rem;
   }
   .sm-fs-55 {
-    font-size: 3.438rem;
+    font-size:  var(--kzd-text-display);
     line-height: 3.438rem;
   }
   .sm-fs-60 {
-    font-size: 3.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 3.75rem;
   }
   .sm-fs-65 {
-    font-size: 4.063rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.063rem;
   }
   .sm-fs-70 {
-    font-size: 4.375rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.375rem;
   }
   .sm-fs-75 {
-    font-size: 4.668rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.668rem;
   }
   .sm-fs-80 {
-    font-size: 5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5rem;
   }
   .sm-fs-85 {
-    font-size: 5.313rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.313rem;
   }
   .sm-fs-90 {
-    font-size: 5.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.625rem;
   }
   .sm-fs-95 {
-    font-size: 5.938rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.938rem;
   }
   .sm-fs-100 {
-    font-size: 6.25rem;
+    font-size:  var(--kzd-text-display);
     line-height: 6.25rem;
   }
   .sm-fs-110 {
-    font-size: 6.875rem;
+    font-size:  var(--kzd-text-display);
     line-height: 6.875rem;
   }
   .sm-fs-120 {
-    font-size: 7.5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 7.5rem;
   }
   .sm-fs-130 {
-    font-size: 8.125rem;
+    font-size:  var(--kzd-text-display);
     line-height: 8.125rem;
   }
   .sm-fs-140 {
-    font-size: 8.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 8.75rem;
   }
   .sm-fs-150 {
-    font-size: 9.375rem;
+    font-size:  var(--kzd-text-display);
     line-height: 9.375rem;
   }
   .sm-fs-160 {
-    font-size: 10rem;
+    font-size:  var(--kzd-text-display);
     line-height: 10rem;
   }
   .sm-fs-170 {
-    font-size: 10.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 10.625rem;
   }
   .sm-fs-180 {
-    font-size: 11.25rem;
+    font-size:  var(--kzd-text-display);
     line-height: 11.25rem;
   }
   .sm-fs-190 {
-    font-size: 11.875rem;
+    font-size:  var(--kzd-text-display);
     line-height: 11.875rem;
   }
   .sm-fs-200 {
-    font-size: 12.5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 12.5rem;
   }
   .sm-fs-250 {
-    font-size: 15.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 15.625rem;
   }
   .sm-fs-275 {
-    font-size: 17.188rem;
+    font-size:  var(--kzd-text-display);
     line-height: 17.188rem;
   }
   .sm-fs-300 {
-    font-size: 18.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 18.75rem;
   }
   /* Line height */
@@ -1180,163 +1180,163 @@
     font-size: 0;
   }
   .xs-fs-10 {
-    font-size: 10px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .xs-fs-11 {
-    font-size: 11px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .xs-fs-12 {
-    font-size: 12px;
+    font-size:  var(--kzd-text-label-sm);
   }
   .xs-fs-13 {
-    font-size: 13px;
+    font-size:  var(--kzd-text-label);
   }
   .xs-fs-14 {
-    font-size: 14px;
+    font-size:  var(--kzd-text-label-lg);
   }
   .xs-fs-15 {
-    font-size: 15px;
+    font-size:  var(--kzd-text-body);
   }
   .xs-fs-16 {
-    font-size: 16px;
+    font-size:  var(--kzd-text-body);
   }
   .xs-fs-17 {
-    font-size: 17px;
+    font-size:  var(--kzd-text-body);
   }
   .xs-fs-18 {
-    font-size: 18px;
+    font-size:  var(--kzd-text-body);
   }
   .xs-fs-19 {
-    font-size: 19px;
+    font-size:  var(--kzd-text-body);
   }
   .xs-fs-20 {
-    font-size: 20px;
+    font-size:  var(--kzd-text-title);
   }
   .xs-fs-22 {
-    font-size: 22px;
+    font-size:  var(--kzd-text-title);
   }
   .xs-fs-24 {
-    font-size: 24px;
+    font-size:  var(--kzd-text-title);
     line-height: 32px;
   }
   .xs-fs-26 {
-    font-size: 26px;
+    font-size:  var(--kzd-text-title);
     line-height: 38px;
   }
   .xs-fs-28 {
-    font-size: 1.75rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.6rem;
   }
   .xs-fs-30 {
-    font-size: 1.875rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.8rem;
   }
   .xs-fs-32 {
-    font-size: 2rem;
+    font-size:  var(--kzd-text-title);
     line-height: 2.5rem;
   }
   .xs-fs-40 {
-    font-size: 2.5rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 2.5rem;
   }
   .xs-fs-45 {
-    font-size: 2.813rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 3rem;
   }
   .xs-fs-50 {
-    font-size: 3.125rem;
+    font-size:  var(--kzd-text-headline);
     line-height: 3.125rem;
   }
   .xs-fs-55 {
-    font-size: 3.438rem;
+    font-size:  var(--kzd-text-display);
     line-height: 3.438rem;
   }
   .xs-fs-60 {
-    font-size: 3.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 3.75rem;
   }
   .xs-fs-65 {
-    font-size: 4.063rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.688rem;
   }
   .xs-fs-70 {
-    font-size: 4.375rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.375rem;
   }
   .xs-fs-75 {
-    font-size: 4.668rem;
+    font-size:  var(--kzd-text-display);
     line-height: 4.668rem;
   }
   .xs-fs-80 {
-    font-size: 5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5rem;
   }
   .xs-fs-85 {
-    font-size: 5.313rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.313rem;
   }
   .xs-fs-90 {
-    font-size: 5.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.625rem;
   }
   .xs-fs-95 {
-    font-size: 5.938rem;
+    font-size:  var(--kzd-text-display);
     line-height: 5.938rem;
   }
   .xs-fs-100 {
-    font-size: 6.25rem;
+    font-size:  var(--kzd-text-display);
     line-height: 6.25rem;
   }
   .xs-fs-110 {
-    font-size: 6.875rem;
+    font-size:  var(--kzd-text-display);
     line-height: 6.875rem;
   }
   .xs-fs-120 {
-    font-size: 7.5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 7.5rem;
   }
   .xs-fs-130 {
-    font-size: 8.125rem;
+    font-size:  var(--kzd-text-display);
     line-height: 8.125rem;
   }
   .xs-fs-140 {
-    font-size: 8.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 8.75rem;
   }
   .xs-fs-150 {
-    font-size: 9.375rem;
+    font-size:  var(--kzd-text-display);
     line-height: 9.375rem;
   }
   .xs-fs-160 {
-    font-size: 10rem;
+    font-size:  var(--kzd-text-display);
     line-height: 10rem;
   }
   .xs-fs-170 {
-    font-size: 10.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 10.625rem;
   }
   .xs-fs-180 {
-    font-size: 11.25rem;
+    font-size:  var(--kzd-text-display);
     line-height: 11.25rem;
   }
   .xs-fs-190 {
-    font-size: 11.875rem;
+    font-size:  var(--kzd-text-display);
     line-height: 11.875rem;
   }
   .xs-fs-200 {
-    font-size: 12.5rem;
+    font-size:  var(--kzd-text-display);
     line-height: 12.5rem;
   }
   .xs-fs-250 {
-    font-size: 15.625rem;
+    font-size:  var(--kzd-text-display);
     line-height: 15.625rem;
   }
   .xs-fs-275 {
-    font-size: 17.188rem;
+    font-size:  var(--kzd-text-display);
     line-height: 17.188rem;
   }
   .xs-fs-300 {
-    font-size: 18.75rem;
+    font-size:  var(--kzd-text-display);
     line-height: 18.75rem;
   }
   /* Line height */
@@ -2652,7 +2652,7 @@
   }
   /* Border radius */
   .md-border-radius-6px {
-    border-radius: 6px !important;
+    border-radius: var(--kzd-radius-8) !important;
   }
   /* Background image */
   .md-background-image-none {
@@ -2780,25 +2780,25 @@
   }
   /* Icon size */
   .md-icon-extra-double-large {
-    font-size: 80px;
+    font-size:  var(--kzd-text-display);
   }
   .md-icon-double-large {
-    font-size: 60px;
+    font-size:  var(--kzd-text-display);
   }
   .md-icon-extra-large {
-    font-size: 50px;
+    font-size:  var(--kzd-text-headline);
   }
   .md-icon-large {
-    font-size: 42px;
+    font-size:  var(--kzd-text-headline);
   }
   .md-icon-medium {
-    font-size: 34px;
+    font-size:  var(--kzd-text-title);
   }
   .md-icon-very-medium {
-    font-size: 28px;
+    font-size:  var(--kzd-text-title);
   }
   .md-icon-extra-medium {
-    font-size: 24px;
+    font-size:  var(--kzd-text-title);
   }
   /* Text vertical */
   .md-vertical-align-top {
@@ -3300,7 +3300,7 @@
     border-radius: 0 !important;
   }
   .sm-border-radius-6px {
-    border-radius: 6px !important;
+    border-radius: var(--kzd-radius-8) !important;
   }
   /* Position */
   .sm-position-relative {
@@ -3476,7 +3476,7 @@
   .video-icon-extra-large .video-icon {
     width: 100px;
     height: 100px;
-    font-size: 28px;
+    font-size:  var(--kzd-text-title);
   }
   .video-icon-extra-large .video-icon .video-icon-sonar .video-icon-sonar-bfr {
     width: 150px;
@@ -3508,25 +3508,25 @@
   }
   /* Icon size */
   .sm-icon-extra-double-large {
-    font-size: 80px;
+    font-size:  var(--kzd-text-display);
   }
   .sm-icon-double-large {
-    font-size: 60px;
+    font-size:  var(--kzd-text-display);
   }
   .sm-icon-extra-large {
-    font-size: 50px;
+    font-size:  var(--kzd-text-headline);
   }
   .sm-icon-large {
-    font-size: 42px;
+    font-size:  var(--kzd-text-headline);
   }
   .sm-icon-medium {
-    font-size: 34px;
+    font-size:  var(--kzd-text-title);
   }
   .sm-icon-very-medium {
-    font-size: 28px;
+    font-size:  var(--kzd-text-title);
   }
   .sm-icon-extra-medium {
-    font-size: 24px;
+    font-size:  var(--kzd-text-title);
   }
   /* Text vertical */
   .sm-vertical-align-top {
@@ -4129,25 +4129,25 @@
   }
   /* Icon size */
   .xs-icon-extra-double-large {
-    font-size: 80px;
+    font-size:  var(--kzd-text-display);
   }
   .xs-icon-double-large {
-    font-size: 60px;
+    font-size:  var(--kzd-text-display);
   }
   .xs-icon-extra-large {
-    font-size: 50px;
+    font-size:  var(--kzd-text-headline);
   }
   .xs-icon-large {
-    font-size: 42px;
+    font-size:  var(--kzd-text-headline);
   }
   .xs-icon-medium {
-    font-size: 34px;
+    font-size:  var(--kzd-text-title);
   }
   .xs-icon-very-medium {
-    font-size: 28px;
+    font-size:  var(--kzd-text-title);
   }
   .xs-icon-extra-medium {
-    font-size: 24px;
+    font-size:  var(--kzd-text-title);
   }
   /* Text vertical */
   .xs-vertical-align-top {
@@ -4158,7 +4158,7 @@
     border-radius: 0 !important;
   }
   .xs-border-radius-30px {
-    border-radius: 30px !important;
+    border-radius: var(--kzd-radius-full) !important;
   }
   .xs-no-border-radius {
     border-radius: 0 !important;
@@ -18974,7 +18974,7 @@
     background-image: none !important;
   }
   .header-demo.navbar .navbar-nav .premium-element .sub-title {
-    font-size: 16px;
+    font-size:  var(--kzd-text-body);
   }
   .header-demo.navbar .navbar-nav .dropdown .dropdown-menu a .label {
     display: none;
@@ -18998,7 +18998,7 @@
     display: none !important;
   }
   [data-mobile-nav-style=full-screen-menu] .navbar-full-screen-menu-inner {
-    background-image: linear-gradient(to right top, #0039e3, #4132e0, #5e28dd, #741bd9, #8600d4);
+    background-image: linear-gradient(to right top, var(--kzd-navy-400), var(--kzd-navy-400), var(--kzd-navy-400), var(--kzd-navy-400), var(--kzd-navy-400));
     visibility: hidden;
     overflow: hidden !important;
     width: 100vw;
@@ -19036,7 +19036,7 @@
   [data-mobile-nav-style=full-screen-menu] .navbar-full-screen-menu-inner .navbar-nav .nav-item .nav-link {
     display: inline-block;
     line-height: 25px;
-    font-size: 17px;
+    font-size:  var(--kzd-text-body);
     font-weight: 500;
     color: var(--white);
     padding-left: 0 !important;
@@ -19181,7 +19181,7 @@
   [data-mobile-nav-style=full-screen-menu] .navbar-full-screen-menu-inner .navbar-nav .dropdown.dropdown-with-icon-style02 .dropdown-menu li a {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 15px 0;
-    font-size: 15px;
+    font-size:  var(--kzd-text-body);
     line-height: normal;
     display: block;
   }
@@ -19208,7 +19208,7 @@
     margin: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 15px 0;
-    font-size: 16px;
+    font-size:  var(--kzd-text-body);
     line-height: 28px;
     font-weight: 500;
     width: 100%;
@@ -19226,7 +19226,7 @@
   }
   [data-mobile-nav-style=full-screen-menu] .navbar-full-screen-menu-inner .navbar-nav .dropdown.dropdown-with-icon .dropdown-menu li a i {
     width: 35px;
-    font-size: 32px;
+    font-size:  var(--kzd-text-title);
     margin-right: 15px;
     color: var(--white);
     flex-shrink: 0;
@@ -19239,12 +19239,12 @@
   }
   [data-mobile-nav-style=full-screen-menu] .navbar-full-screen-menu-inner .navbar-nav .dropdown.dropdown-with-icon .dropdown-menu li a p {
     margin: 0;
-    font-size: 13px;
+    font-size:  var(--kzd-text-label);
     color: var(--white);
     opacity: 0.6;
   }
   [data-mobile-nav-style=full-screen-menu] .navbar-full-screen-menu-inner .navbar-nav .dropdown.dropdown-with-icon .dropdown-menu li a img {
-    border-radius: 100%;
+    border-radius: var(--kzd-radius-full);
     width: 55px;
     margin-right: 15px;
   }
@@ -19258,7 +19258,7 @@
     color: var(--white);
     font-family: bootstrap-icons;
     font-weight: 400;
-    font-size: 23px;
+    font-size:  var(--kzd-text-title);
     position: absolute;
     right: 6px;
     opacity: 0;
@@ -19371,7 +19371,7 @@
   }
   [data-mobile-nav-style=modern] .navbar-modern-inner .navbar-nav .nav-item .nav-link {
     display: inline-block;
-    font-size: 17px;
+    font-size:  var(--kzd-text-body);
     line-height: 24px;
     font-weight: 500;
     color: var(--white);
@@ -19394,12 +19394,12 @@
   }
   [data-mobile-nav-style=modern] .navbar-modern-inner .navbar-nav .nav-item .dropdown-menu .sub-title {
     color: var(--white) !important;
-    font-size: 14px;
+    font-size:  var(--kzd-text-label-lg);
   }
   [data-mobile-nav-style=modern] .navbar-modern-inner .navbar-nav .nav-item .dropdown-menu a {
     color: var(--white);
     opacity: 0.6;
-    font-size: 13.5px;
+    font-size:  var(--kzd-text-label);
     display: block;
   }
   [data-mobile-nav-style=modern] .navbar-modern-inner .navbar-nav .nav-item .dropdown-menu .dropdown > a {
@@ -19462,7 +19462,7 @@
   [data-mobile-nav-style=modern] .navbar-modern-inner .navbar-nav .dropdown.dropdown-with-icon-style02 .dropdown-menu li a {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 15px 0;
-    font-size: 15px;
+    font-size:  var(--kzd-text-body);
     line-height: normal;
   }
   [data-mobile-nav-style=modern] .navbar-modern-inner .navbar-nav .dropdown.dropdown-with-icon-style02 .dropdown-menu li i {
@@ -19488,7 +19488,7 @@
     margin: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 15px 0;
-    font-size: 16px;
+    font-size:  var(--kzd-text-body);
     line-height: 28px;
     font-weight: 500;
     width: 100%;
@@ -19506,7 +19506,7 @@
   }
   [data-mobile-nav-style=modern] .navbar-modern-inner .navbar-nav .dropdown.dropdown-with-icon .dropdown-menu li a i {
     width: 35px;
-    font-size: 32px;
+    font-size:  var(--kzd-text-title);
     margin-right: 15px;
     color: var(--white);
     flex-shrink: 0;
@@ -19519,12 +19519,12 @@
   }
   [data-mobile-nav-style=modern] .navbar-modern-inner .navbar-nav .dropdown.dropdown-with-icon .dropdown-menu li a p {
     margin: 0;
-    font-size: 13px;
+    font-size:  var(--kzd-text-label);
     color: var(--white);
     opacity: 0.6;
   }
   [data-mobile-nav-style=modern] .navbar-modern-inner .navbar-nav .dropdown.dropdown-with-icon .dropdown-menu li a img {
-    border-radius: 100%;
+    border-radius: var(--kzd-radius-full);
     width: 55px;
     margin-right: 15px;
   }
@@ -19538,7 +19538,7 @@
     color: var(--white);
     font-family: bootstrap-icons;
     font-weight: 400;
-    font-size: 23px;
+    font-size:  var(--kzd-text-title);
     position: absolute;
     right: 6px;
     opacity: 0;
@@ -19565,7 +19565,7 @@
     left: 0;
     z-index: -1;
     opacity: 0;
-    background-image: linear-gradient(to right top, #0039e3, #4132e0, #5e28dd, #741bd9, #8600d4);
+    background-image: linear-gradient(to right top, var(--kzd-navy-400), var(--kzd-navy-400), var(--kzd-navy-400), var(--kzd-navy-400), var(--kzd-navy-400));
     transform: scale(1.75);
     -webkit-transform: scale(1.75);
     transition: opacity 0.3s, transform 0.3s;
@@ -19749,7 +19749,7 @@
     margin-top: -3px;
     display: inline-block;
     padding: 1px 11px;
-    font-size: 12px;
+    font-size:  var(--kzd-text-label-sm);
     margin-left: 8px;
     vertical-align: middle;
     line-height: 21px;
@@ -20344,17 +20344,17 @@
     height: 380px !important;
   }
   .search-form-wrapper .search-form h6 {
-    font-size: 18px;
+    font-size:  var(--kzd-text-body);
     line-height: 20px;
     margin-bottom: 10px !important;
   }
   .search-form-wrapper .search-form .search-input {
-    font-size: 15px;
+    font-size:  var(--kzd-text-body);
     height: 50px;
   }
   .search-form-wrapper .search-form .search-button {
     bottom: 11px;
-    font-size: 20px;
+    font-size:  var(--kzd-text-title);
   }
 }
 @media (max-height: 380px) {
@@ -20362,17 +20362,17 @@
     height: 85vh !important;
   }
   .search-form-wrapper .search-form h6 {
-    font-size: 18px;
+    font-size:  var(--kzd-text-body);
     line-height: 20px;
     margin-bottom: 10px !important;
   }
   .search-form-wrapper .search-form .search-input {
-    font-size: 14px;
+    font-size:  var(--kzd-text-label-lg);
     height: 50px;
   }
   .search-form-wrapper .search-form .search-button {
     bottom: 10px;
-    font-size: 18px;
+    font-size:  var(--kzd-text-body);
   }
   .header-cart-icon .header-cart .cart-item-list .cart-item {
     padding: 12px;
@@ -20391,15 +20391,15 @@
 }
 @media (max-width: 767px) {
   .page-title-extra-large h1 {
-    font-size: 36px;
+    font-size:  var(--kzd-text-headline);
     line-height: 44px;
   }
   .page-title-extra-small h2 {
-    font-size: 36px;
+    font-size:  var(--kzd-text-headline);
     line-height: 44px;
   }
   .page-title-large h1 {
-    font-size: 36px;
+    font-size:  var(--kzd-text-headline);
     line-height: 44px;
   }
 }
@@ -20710,7 +20710,7 @@
   }
   .blockquote-style-04 .blockquote-content {
     padding-left: 20%;
-    border-bottom-right-radius: 89px;
+    border-bottom-right-radius: var(--kzd-radius-full);
   }
 }
 @media (max-width: 991px) {
@@ -20718,7 +20718,7 @@
     margin-top: -72px;
   }
   .blockquote-style-04 .blockquote-content {
-    border-bottom-right-radius: 64px;
+    border-bottom-right-radius: var(--kzd-radius-full);
   }
 }
 @media (max-width: 767px) {
@@ -20729,11 +20729,11 @@
 }
 @media (max-width: 767px) {
   .btn.btn-extra-large {
-    font-size: 15px;
+    font-size:  var(--kzd-text-body);
     padding: 20px 40px;
   }
   .btn.btn-large {
-    font-size: 13px;
+    font-size:  var(--kzd-text-label);
     padding: 16px 36px;
   }
   .btn.btn-rounded.btn-extra-large {
@@ -21143,7 +21143,7 @@
     position: relative;
     margin-top: 15px;
     width: 100%;
-    border-radius: 4px;
+    border-radius: var(--kzd-radius-8);
   }
   .newsletter-style-03 input {
     padding-right: 90px !important;
@@ -21208,7 +21208,7 @@
   }
   .tab-style-01 .nav-tabs > li.nav-item .nav-link {
     border-bottom: 1px solid var(--light-medium-gray);
-    border-radius: 6px;
+    border-radius: var(--kzd-radius-8);
   }
   .tab-style-02 .nav-tabs > li.nav-item {
     margin-bottom: 30px;
@@ -21395,7 +21395,7 @@
 }
 @media (max-width: 1199px) {
   .portfolio-creative .portfolio-box .portfolio-title:after {
-    font-size: 80px;
+    font-size:  var(--kzd-text-display);
   }
   .threeD-letter-menu .menu-item .hover-reveal {
     width: 320px;
@@ -21419,7 +21419,7 @@
     display: none !important;
   }
   .portfolio-creative .portfolio-box .portfolio-title:after {
-    font-size: 60px;
+    font-size:  var(--kzd-text-display);
   }
   .sticky-image-distortion-wrapper .menu .menu__link.active .svg-wrapper {
     margin-top: 50px;
@@ -21531,7 +21531,7 @@
     float: left !important;
     display: block !important;
     color: var(--dark-gray);
-    font-size: 15px;
+    font-size:  var(--kzd-text-body);
   }
   .cart-products tbody tr {
     border-bottom: 1px solid var(--extra-medium-gray);

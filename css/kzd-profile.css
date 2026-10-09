@@ -31,12 +31,12 @@
   --kzd-p-chip:      var(--kzd-surface-100);
   --kzd-p-chip-line: var(--kzd-line);
 
-  --kzd-p-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-p-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-p-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --kzd-p-display: var(--kzd-type-display);
+  --kzd-p-body:    var(--kzd-type-sans);
+  --kzd-p-mono:    var(--kzd-type-label);
 
   --kzd-p-gutter: 60px;
-  --kzd-p-radius: 18px;
+  --kzd-p-radius: var(--kzd-radius-16);
 
   display: block;
   /* 140px clears the theme's fixed navbar, same as css/kzd-job.css. */

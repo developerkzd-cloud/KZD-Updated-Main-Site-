@@ -42,9 +42,9 @@
   --ad-side-rule: rgba(255, 255, 255, .10);
   --ad-side-active: color-mix(in srgb, var(--kzd-navy-300) 24%, transparent);
 
-  --ad-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --ad-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --ad-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --ad-display: var(--kzd-type-display);
+  --ad-body:    var(--kzd-type-sans);
+  --ad-mono:    var(--kzd-type-label);
 
   --ad-sidebar: 260px;
   --ad-topbar:  84px;

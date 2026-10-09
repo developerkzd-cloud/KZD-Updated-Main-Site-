@@ -38,9 +38,9 @@
   --kzd-p-cap-lg:     var(--kzd-silver-light);
   --kzd-p-cap-sm:     var(--kzd-navy-400);
 
-  --kzd-p-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-p-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-p-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --kzd-p-display: var(--kzd-type-display);
+  --kzd-p-body:    var(--kzd-type-sans);
+  --kzd-p-mono:    var(--kzd-type-label);
 
   --kzd-p-ease: cubic-bezier(.22, .61, .36, 1);
 

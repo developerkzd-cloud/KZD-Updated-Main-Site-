@@ -23,8 +23,8 @@
   --kzd-a-red:   var(--kzd-error);
   --kzd-a-close: var(--kzd-surface-100);
 
-  --kzd-a-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-a-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --kzd-a-display: var(--kzd-type-display);
+  --kzd-a-body:    var(--kzd-type-sans);
 
   position: fixed;
   inset: 0;

@@ -32,9 +32,9 @@
   --kzd-s-grad-from:  var(--kzd-black);
   --kzd-s-grad-to:    var(--kzd-gray);
 
-  --kzd-s-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-s-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-s-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --kzd-s-display: var(--kzd-type-display);
+  --kzd-s-body:    var(--kzd-type-sans);
+  --kzd-s-mono:    var(--kzd-type-label);
 
   --kzd-s-ease: cubic-bezier(.22, .61, .36, 1);
 

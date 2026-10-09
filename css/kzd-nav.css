@@ -85,9 +85,9 @@
   --kzd-n-muted: var(--kzd-gray);
   --kzd-n-dim:   var(--kzd-gray);
   --kzd-n-blue:  var(--kzd-navy-300);
-  --kzd-n-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-n-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-n-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --kzd-n-display: var(--kzd-type-display);
+  --kzd-n-body:    var(--kzd-type-sans);
+  --kzd-n-mono:    var(--kzd-type-label);
 
   position: absolute;
   top: 100%;
@@ -260,9 +260,9 @@
   --kzd-m-edge:   color-mix(in srgb, var(--kzd-navy-200) 45%, transparent);
   --kzd-m-press:  color-mix(in srgb, var(--kzd-navy-200) 12%, transparent);
 
-  --kzd-m-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-m-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-m-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --kzd-m-display: var(--kzd-type-display);
+  --kzd-m-body:    var(--kzd-type-sans);
+  --kzd-m-mono:    var(--kzd-type-label);
 }
 
 .kzd-mnav-scrim {

@@ -25,9 +25,9 @@
   --kzd-b-navy:   var(--kzd-navy-700);
   --kzd-b-navy-t: var(--kzd-navy-200);
 
-  --kzd-b-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-b-sans:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-b-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --kzd-b-display: var(--kzd-type-display);
+  --kzd-b-sans:    var(--kzd-type-sans);
+  --kzd-b-mono:    var(--kzd-type-label);
 
   --kzd-b-gutter:  110px;
   --kzd-b-measure: 760px;

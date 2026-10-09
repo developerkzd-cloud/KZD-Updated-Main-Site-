@@ -97,7 +97,7 @@ function buildChart(buckets) {
     // Colours are tokens; SVG presentation attributes cannot take var(), so
     // fill and stroke go through style instead.
     Object.keys(attrs).forEach((k) => {
-      if ((k === "fill" || k === "stroke") && String(attrs[k]).startsWith("var(")) n.style[k] = attrs[k];
+      if ((k === "fill" || k === "stroke" || k === "font-size") && String(attrs[k]).startsWith("var(")) n.style.setProperty(k, attrs[k]);
       else n.setAttribute(k, attrs[k]);
     });
     return n;
@@ -106,7 +106,7 @@ function buildChart(buckets) {
   // Gridlines + Y labels
   for (let v = 0; v <= top; v += step) {
     s.appendChild(mk("line", { x1: padL, x2: W - padR, y1: y(v), y2: y(v), stroke: "var(--kzd-line)", "stroke-width": 1 }));
-    const t = mk("text", { x: padL - 10, y: y(v) + 4, "text-anchor": "end", "font-size": 11, fill: "var(--kzd-gray)" });
+    const t = mk("text", { x: padL - 10, y: y(v) + 4, "text-anchor": "end", "font-size": "var(--kzd-text-label-sm)", fill: "var(--kzd-gray)" });
     t.textContent = String(v);
     s.appendChild(t);
   }
@@ -124,7 +124,7 @@ function buildChart(buckets) {
   const thin = window.matchMedia("(max-width: 900px)").matches;
   buckets.forEach((b, i) => {
     if (thin && i % 2 === 1 && i !== buckets.length - 1) return;
-    const t = mk("text", { x: x(i), y: H - 8, "text-anchor": "middle", "font-size": 12, fill: "var(--kzd-gray)" });
+    const t = mk("text", { x: x(i), y: H - 8, "text-anchor": "middle", "font-size": "var(--kzd-text-label-sm)", fill: "var(--kzd-gray)" });
     t.textContent = b.label;
     s.appendChild(t);
   });

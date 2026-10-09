@@ -206,6 +206,38 @@
 }
 
 /* --------------------------------------------------------------------------
+   THIRD-PARTY BRIDGE: Bootstrap 5 (css/vendors.min.css) reads these custom
+   properties. :root:root outranks the vendor's own :root, so Bootstrap's
+   components, utilities and links resolve to KZD tokens without editing
+   vendor code. The -rgb triplets are the same token colours as channels,
+   because Bootstrap composes them as rgba(var(--bs-*-rgb), alpha).
+   -------------------------------------------------------------------------- */
+:root:root {
+  --bs-primary: var(--kzd-navy-400);     --bs-primary-rgb: 47, 81, 120;
+  --bs-secondary: var(--kzd-gray);       --bs-secondary-rgb: 107, 107, 107;
+  --bs-success: var(--kzd-success);      --bs-success-rgb: 28, 158, 94;
+  --bs-danger: var(--kzd-error);         --bs-danger-rgb: 217, 48, 37;
+  --bs-warning: var(--kzd-warning);      --bs-warning-rgb: 214, 150, 30;
+  --bs-info: var(--kzd-navy-300);        --bs-info-rgb: 74, 107, 138;
+  --bs-light: var(--kzd-surface-100);    --bs-light-rgb: 244, 244, 244;
+  --bs-dark: var(--kzd-black);           --bs-dark-rgb: 26, 26, 26;
+  --bs-body-color: var(--kzd-text);      --bs-body-color-rgb: 58, 58, 58;
+  --bs-body-bg: var(--kzd-white);
+  --bs-emphasis-color: var(--kzd-black);
+  --bs-link-color: var(--kzd-link);      --bs-link-color-rgb: 47, 81, 120;
+  --bs-link-hover-color: var(--kzd-navy-500); --bs-link-hover-color-rgb: 32, 51, 84;
+  --bs-border-color: var(--kzd-line);
+  --bs-body-font-family: var(--kzd-type-sans);
+  --bs-border-radius: var(--kzd-radius-8);
+  --bs-border-radius-sm: var(--kzd-radius-8);
+  --bs-border-radius-lg: var(--kzd-radius-12);
+  --bs-border-radius-xl: var(--kzd-radius-16);
+  --bs-border-radius-xxl: var(--kzd-radius-24);
+  --bs-border-radius-pill: var(--kzd-radius-full);
+  --bs-focus-ring-color: color-mix(in srgb, var(--kzd-focus-color) 25%, transparent);
+}
+
+/* --------------------------------------------------------------------------
    Shared primitives both sites use. Buttons keep the inline-flex /
    align-items:center / line-height:1 pattern with NO vertical padding: the
    height comes from --kzd-control, so the label is centred by flexbox, not by

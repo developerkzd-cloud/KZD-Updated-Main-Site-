@@ -33,9 +33,9 @@
   --kzd-s-grad-start: var(--kzd-gray);
   --kzd-s-grad-end:   var(--kzd-black);
 
-  --kzd-s-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-s-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-s-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --kzd-s-display: var(--kzd-type-display);
+  --kzd-s-body:    var(--kzd-type-sans);
+  --kzd-s-mono:    var(--kzd-type-label);
 
   --kzd-s-gutter: 100px;
   --kzd-s-card: 378px;
@@ -481,9 +481,9 @@
   --kzd-s-domain: var(--kzd-gray);
   --kzd-s-badge:  var(--kzd-gray);
   --kzd-s-live:   var(--kzd-navy-300);
-  --kzd-s-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-s-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-s-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --kzd-s-display: var(--kzd-type-display);
+  --kzd-s-body:    var(--kzd-type-sans);
+  --kzd-s-mono:    var(--kzd-type-label);
 
   position: fixed;
   inset: 0;

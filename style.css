@@ -28,7 +28,7 @@
   height: 58.08px;
   width: 332.46px;
   margin-top: 150px;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-white);
   font-size:  var(--kzd-text-headline);
@@ -45,7 +45,7 @@
   margin-left: 0.3px;
   height: 29.7px;
   width: 323.53px;
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-body);
@@ -72,7 +72,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Medium", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 500;
   color: var(--kzd-white);
   font-size:  var(--kzd-text-body);
@@ -111,7 +111,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Medium", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 500;
   color: var(--kzd-white);
   font-size:  var(--kzd-text-body);
@@ -161,7 +161,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-title);
@@ -179,7 +179,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-body);
@@ -205,7 +205,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-headline);
@@ -222,7 +222,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-title);
@@ -240,7 +240,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-body);
@@ -278,7 +278,7 @@
   width: 113.82px;
   height: 18px;
   margin-left: 0.4px;
-  font-family: "Plus Jakarta Sans-ExtraBold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 800;
   color: var(--kzd-white);
   font-size:  var(--kzd-text-label-lg);
@@ -297,7 +297,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-label-sm);
@@ -315,7 +315,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-body);
@@ -341,7 +341,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-body);
@@ -418,7 +418,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-body);
@@ -444,7 +444,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-body);
@@ -475,7 +475,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-title);
@@ -493,7 +493,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-body);
@@ -518,7 +518,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-headline);
@@ -535,7 +535,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-title);
@@ -553,7 +553,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-body);
@@ -583,7 +583,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-label-sm);
@@ -601,7 +601,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-body);
@@ -627,7 +627,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-body);
@@ -644,7 +644,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-body);
@@ -684,7 +684,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-title);
@@ -702,7 +702,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-body);
@@ -727,7 +727,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-headline);
@@ -744,7 +744,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-title);
@@ -762,7 +762,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-body);
@@ -790,7 +790,7 @@
   width: 122.14px;
   height: 21px;
   margin-left: 0.4px;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-white);
   font-size:  var(--kzd-text-body);
@@ -821,7 +821,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-title);
@@ -839,7 +839,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-body);
@@ -864,7 +864,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-headline);
@@ -881,7 +881,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-title);
@@ -969,7 +969,7 @@
   width: 129.32px;
   height: 26px;
   margin-top: var(--kzd-space-16);
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-title);
@@ -986,7 +986,7 @@
   width: 282.98px;
   height: 80.41px;
   margin-top: var(--kzd-space-12);
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-body);
@@ -1028,7 +1028,7 @@
   width: 145.48px;
   height: 26px;
   margin-top: var(--kzd-space-16);
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-title);
@@ -1045,7 +1045,7 @@
   width: 288.78px;
   height: 80.41px;
   margin-top: var(--kzd-space-12);
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-body);
@@ -1087,7 +1087,7 @@
   width: 159.3px;
   height: 26px;
   margin-top: var(--kzd-space-16);
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-title);
@@ -1104,7 +1104,7 @@
   width: 297px;
   height: 80.41px;
   margin-top: var(--kzd-space-12);
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-body);
@@ -1130,7 +1130,7 @@
   width: 172.58px;
   height: 26px;
   margin-top: var(--kzd-space-16);
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-title);
@@ -1147,7 +1147,7 @@
   width: 296.06px;
   height: 80.41px;
   margin-top: var(--kzd-space-12);
-  font-family: "Plus Jakarta Sans-Regular", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 400;
   color: var(--kzd-gray);
   font-size:  var(--kzd-text-body);
@@ -1194,7 +1194,7 @@
   width: 98.13px;
   height: 15px;
   margin-left: 0.4px;
-  font-family: "Plus Jakarta Sans-Medium", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 500;
   color: var(--kzd-navy-400);
   font-size:  var(--kzd-text-label-sm);
@@ -1211,7 +1211,7 @@
   margin-left: 1.6px;
   height: 104.08px;
   width: 522.22px;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: transparent;
   font-size:  var(--kzd-text-headline);
@@ -1324,7 +1324,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-white);
   font-size:  var(--kzd-text-title);
@@ -1351,7 +1351,7 @@
   width: 328.91px;
   height: 130.03px;
   margin-top: 2px;
-  font-family: "Plus Jakarta Sans-Medium", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 500;
   color: color-mix(in srgb, var(--kzd-white) 70%, transparent);
   font-size:  var(--kzd-text-label-lg);
@@ -1367,7 +1367,7 @@
   width: 126.53px;
   height: 18px;
   opacity: 0.8;
-  font-family: "Plus Jakarta Sans-SemiBold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 600;
   color: var(--kzd-white);
   font-size:  var(--kzd-text-label-lg);
@@ -1416,7 +1416,7 @@
   width: 324.8px;
   height: 130.03px;
   margin-top: 2px;
-  font-family: "Plus Jakarta Sans-Medium", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 500;
   color: color-mix(in srgb, var(--kzd-white) 70%, transparent);
   font-size:  var(--kzd-text-label-lg);
@@ -1432,7 +1432,7 @@
   width: 75.26px;
   height: 18px;
   opacity: 0.8;
-  font-family: "Plus Jakarta Sans-SemiBold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 600;
   color: var(--kzd-white);
   font-size:  var(--kzd-text-label-lg);
@@ -1474,7 +1474,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-white);
   font-size:  var(--kzd-text-title);
@@ -1501,7 +1501,7 @@
   width: 329.45px;
   height: 85.22px;
   margin-top: 2px;
-  font-family: "Plus Jakarta Sans-Medium", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 500;
   color: color-mix(in srgb, var(--kzd-white) 70%, transparent);
   font-size:  var(--kzd-text-label-lg);
@@ -1517,7 +1517,7 @@
   width: 106.16px;
   height: 18px;
   opacity: 0.8;
-  font-family: "Plus Jakarta Sans-SemiBold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 600;
   color: var(--kzd-white);
   font-size:  var(--kzd-text-label-lg);
@@ -1563,7 +1563,7 @@
   width: 217.35px;
   height: 15px;
   margin-left: 0.4px;
-  font-family: "Plus Jakarta Sans-Medium", Helvetica;
+  font-family: var(--kzd-type-sans);
   font-weight: 500;
   color: var(--kzd-navy-400);
   font-size:  var(--kzd-text-label-sm);
@@ -1582,7 +1582,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Plus Jakarta Sans-Bold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 700;
   color: var(--kzd-black);
   font-size:  var(--kzd-text-headline);
@@ -1613,7 +1613,7 @@
   margin-top: var(--kzd-space-16);
   width: 449.52px;
   height: 22px;
-  font-family: "Plus Jakarta Sans-SemiBold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 600;
   color: var(--kzd-charcoal);
   font-size:  var(--kzd-text-body);
@@ -1668,7 +1668,7 @@
   margin-top: var(--kzd-space-16);
   width: 464.47px;
   height: 22px;
-  font-family: "Plus Jakarta Sans-SemiBold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 600;
   color: var(--kzd-charcoal);
   font-size:  var(--kzd-text-body);
@@ -1698,7 +1698,7 @@
   margin-top: var(--kzd-space-16);
   width: 417.99px;
   height: 22px;
-  font-family: "Plus Jakarta Sans-SemiBold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 600;
   color: var(--kzd-charcoal);
   font-size:  var(--kzd-text-body);
@@ -1728,7 +1728,7 @@
   margin-top: var(--kzd-space-16);
   width: 588.07px;
   height: 22px;
-  font-family: "Plus Jakarta Sans-SemiBold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 600;
   color: var(--kzd-charcoal);
   font-size:  var(--kzd-text-body);
@@ -1758,7 +1758,7 @@
   margin-top: var(--kzd-space-16);
   width: 528.17px;
   height: 22px;
-  font-family: "Plus Jakarta Sans-SemiBold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 600;
   color: var(--kzd-charcoal);
   font-size:  var(--kzd-text-body);
@@ -1788,7 +1788,7 @@
   margin-top: var(--kzd-space-16);
   width: 407.53px;
   height: 22px;
-  font-family: "Plus Jakarta Sans-SemiBold", Helvetica;
+  font-family: var(--kzd-type-display);
   font-weight: 600;
   color: var(--kzd-charcoal);
   font-size:  var(--kzd-text-body);

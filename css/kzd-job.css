@@ -25,9 +25,9 @@
   --kzd-j-grad-start: var(--kzd-gray);
   --kzd-j-grad-end:   var(--kzd-black);
 
-  --kzd-j-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-j-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-j-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --kzd-j-display: var(--kzd-type-display);
+  --kzd-j-body:    var(--kzd-type-sans);
+  --kzd-j-mono:    var(--kzd-type-label);
 
   --kzd-j-gutter: 100px;
 

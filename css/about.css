@@ -46,7 +46,7 @@
 .the-winning-roadmap {
   color: var(--navy-blue);
   text-align: center;
-  font-family: "AllertaStencil-Regular", sans-serif;
+  font-family: var(--kzd-type-display);
   font-size:  var(--kzd-text-headline);
   font-weight: 400;
   position: relative;

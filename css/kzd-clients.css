@@ -32,8 +32,8 @@
   --kzd-c-grad-from: var(--kzd-black);
   --kzd-c-grad-to:   var(--kzd-gray);
 
-  --kzd-c-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-c-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --kzd-c-display: var(--kzd-type-display);
+  --kzd-c-mono:    var(--kzd-type-label);
   --kzd-c-ease:    cubic-bezier(.22, .61, .36, 1);
 
   position: relative;

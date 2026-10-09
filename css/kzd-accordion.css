@@ -34,9 +34,9 @@
   --kzd-a-grad-start: var(--kzd-gray);
   --kzd-a-grad-end:   var(--kzd-black);
 
-  --kzd-a-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-a-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-a-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --kzd-a-display: var(--kzd-type-display);
+  --kzd-a-body:    var(--kzd-type-sans);
+  --kzd-a-mono:    var(--kzd-type-label);
 
   /* Slow-in / fast-out. A linear or ease-out curve makes a width transition
      feel rubbery, which is why this is not the section's usual ease. */

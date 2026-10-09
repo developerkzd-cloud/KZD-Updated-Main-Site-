@@ -65,9 +65,9 @@
   --kzd-grad-start: var(--kzd-gray);   /* heading gradient start  */
   --kzd-grad-end:   var(--kzd-black);   /* heading gradient end    */
 
-  --kzd-font-display: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-font-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --kzd-font-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --kzd-font-display: var(--kzd-type-display);
+  --kzd-font-body:    var(--kzd-type-sans);
+  --kzd-font-mono:    var(--kzd-type-label);
 
   --kzd-ease-out: cubic-bezier(.16, 1, .3, 1);
 
