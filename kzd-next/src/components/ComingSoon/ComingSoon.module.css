@@ -1,0 +1,55 @@
+/* Same page as css/kzd-coming-soon.css on the static site. Tokens only. */
+
+.soon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--kzd-nav-h));
+  padding: var(--kzd-space-64) var(--kzd-pad-page) var(--kzd-gap-section);
+  background: var(--kzd-surface-50);
+  text-align: center;
+}
+
+.inner {
+  max-width: var(--kzd-measure);
+}
+
+.eyebrow {
+  margin: 0 0 var(--kzd-space-16);
+  font-family: var(--kzd-type-label);
+  font-size: var(--kzd-text-label);
+  font-weight: 500;
+  letter-spacing: var(--kzd-tracking-label);
+  text-transform: uppercase;
+  color: var(--kzd-accent-ink);
+}
+
+.title {
+  margin: 0 0 var(--kzd-space-24);
+  font-family: var(--kzd-type-display);
+  font-size: var(--kzd-text-display);
+  font-weight: 600;
+  line-height: var(--kzd-leading-display);
+  letter-spacing: var(--kzd-tracking-display);
+  color: var(--kzd-ink);
+}
+
+.body {
+  margin: 0 auto var(--kzd-space-40);
+  max-width: 560px;
+  font-size: var(--kzd-text-body);
+  line-height: var(--kzd-leading-body);
+  color: var(--kzd-text-muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--kzd-space-12);
+}
+
+.actions :global(.kzd-btn--primary),
+.actions :global(.kzd-btn--primary:hover) { color: var(--kzd-white); }
+.actions :global(.kzd-btn--accent),
+.actions :global(.kzd-btn--accent:hover) { color: var(--kzd-black); }

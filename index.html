@@ -954,6 +954,9 @@
             const kzdFileRemove = document.getElementById('kzd-file-remove');
             const kzdFileUploadContainer = document.getElementById('kzd-file-upload-container');
             const kzdUserInfoForm = document.getElementById('kzd-user-info-form');
+            // The chatbot markup above is commented out; without it every lookup
+            // here is null and the first addEventListener threw on page load.
+            if (!kzdChatWindow) return;
             
             let kzdChatActive = false;
             let kzdSoundEnabled = true;

@@ -60,7 +60,7 @@
   white-space: nowrap;
   box-shadow: none !important;
   background-image: none !important;
-  transition: transform var(--kzd-dur-micro) var(--kzd-ease) !important;
+  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
 }
 /* Full-width variants and long labels may wrap on phones: keep centring. */
 .w-100.btn,

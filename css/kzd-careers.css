@@ -20,7 +20,7 @@
   --kzd-k-navy:    var(--kzd-navy-700);
   --kzd-k-muted:   var(--kzd-gray);
   --kzd-k-dim:     var(--kzd-gray);
-  --kzd-k-blue:    var(--kzd-navy-300);
+  --kzd-k-blue:    var(--kzd-navy-400);
   --kzd-k-ember:   var(--kzd-navy-200);
   --kzd-k-gold:    var(--kzd-status-leave);
 
@@ -28,7 +28,7 @@
   --kzd-k-open-dot:  var(--kzd-status-active);
   --kzd-k-open-txt:  var(--kzd-status-active-ink);
   --kzd-k-shut-bg:   var(--kzd-surface-100);
-  --kzd-k-dept-bg:   var(--kzd-line);
+  --kzd-k-dept-bg:   var(--kzd-navy-50);
   --kzd-k-shut-btn:  var(--kzd-surface-100);
 
   --kzd-k-grad-start: var(--kzd-gray);

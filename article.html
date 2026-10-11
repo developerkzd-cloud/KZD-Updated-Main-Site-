@@ -10,7 +10,7 @@
         <!-- End Google Tag Manager -->  
 
 
-        <title>KZD Insights</title>
+        <title>Blog | Coming soon | KZD Solutions</title>
 
         <!-- 
             META tags
@@ -18,12 +18,12 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="author" content="KZD Solutions">
+        <meta name="robots" content="noindex">
         <meta name="viewport" content="width=device-width,initial-scale=1.0" />
         <!--
             Description & Keywords
         -->
-        <meta name="description" content="Practical guides for South African business.">
-        <meta name="keywords" content="KZD Solutions careers, jobs Durban, web developer jobs South Africa, IT support jobs Durban, business analyst internship">
+        <meta name="description" content="Blog at KZD Solutions is coming soon.">
         
         <!-- favicon icon -->
         <link rel="shortcut icon" href="images/logo-black.png">
@@ -57,62 +57,9 @@
         <link rel="stylesheet" href="css/kzd-fonts.css" />
         <link rel="stylesheet" href="css/kzd-footer.css" />
         <!-- Careers page — self-contained, scoped to .kzd-car -->
-        <!-- Blog — self-contained, scoped to .kzd-blog -->
-        <link rel="stylesheet" href="css/kzd-blog.css" />
+        <link rel="stylesheet" href="css/kzd-coming-soon.css" />
 
-        <link rel="canonical" href="https://kzdsolutions.co.za/blog.html" />
-      
-
-        <!--
-            Schema Markup/Structured Data Markup
-        -->
-        <script type="application/ld+json">
-            {
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "KZD Solutions",
-            "url": "https://kzdsolutions.co.za",
-            "logo": "https://kzdsolutions.co.za/images/logo-black.png",
-            "foundingDate": "2021",
-            "location": [
-                {
-                "@type": "Place",
-                "name": "Smart Xchange Office",
-                "address": {
-                    "@type": "PostalAddress",
-                    "streetAddress": "3rd Floor, Convention House, 125 Bram Fischer Rd",
-                    "addressLocality": "Durban Central",
-                    "addressRegion": "KwaZulu-Natal",
-                    "postalCode": "4000",
-                    "addressCountry": "ZA"
-                }
-                },
-                {
-                "@type": "Place",
-                "name": "DUT ML Sultan Campus",
-                "address": {
-                    "@type": "PostalAddress",
-                    "streetAddress": "Durban University of Technology, ML Sultan Campus, Greyville",
-                    "addressLocality": "Berea",
-                    "addressRegion": "KwaZulu-Natal",
-                    "postalCode": "4023",
-                    "addressCountry": "ZA"
-                }
-                }
-            ],
-            "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": "+27310053129",
-                "contactType": "Customer Service",
-                "email": "info@kzdsolutions.co.za",
-                "areaServed": "ZA",
-                "availableLanguage": "en"
-            },
-            "sameAs": [
-                "https://www.linkedin.com/company/kzdsolutions"
-            ]
-            }
-        </script>
+        <link rel="canonical" href="https://kzdsolutions.co.za/blog" />
 
         <style>
             /* Nav rules moved to css/kzd-nav.css — one shared copy. */
@@ -135,22 +82,6 @@
 
         gtag('config', 'G-JNYDW84W44');
     </script>
-    
-        <!-- ⚠ FALLBACK ONLY. Every article shares these tags until JavaScript
-             runs and js/kzd-blog.js replaces them with the real ones for the
-             post in ?slug=. Crawlers that do not execute JS — including the
-             LinkedIn, Facebook, WhatsApp and X preview bots — will only ever
-             see what is written here, so link previews are generic.
-             Run tools/build-blog.js to emit one real HTML file per post with
-             its metadata baked in, or move to Next.js where this is solved
-             server-side. See the banner at the top of js/kzd-blog.js. -->
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content="KZD Insights" />
-        <meta property="og:description" content="Practical guides for South African business." />
-        <meta property="og:url" content="https://kzdsolutions.co.za/blog.html" />
-        <meta property="og:image" content="https://kzdsolutions.co.za/images/logo-black.png" />
-        <meta property="og:site_name" content="KZD Solutions" />
-        <meta name="twitter:card" content="summary_large_image" />
         <link rel="stylesheet" href="css/kzd-buttons.css">
     </head>
 
@@ -240,17 +171,17 @@
         </header>
         <!-- end header -->
 
-        <!-- ============================== ARTICLE ==============================
-             Reads ?slug= and renders that post from js/kzd-blog.js. The body is
-             an array of typed blocks, rendered one at a time — unknown types are
-             ignored so CMS or generated content can never inject markup. -->
-        <main class="kzd-blog kzd-blog--article" aria-busy="true">
-            <div class="kzd-blog__wrap">
-                <div class="kzd-blog__measure">
-                    <div class="kzd-blog__article-host"></div>
-                    <div class="kzd-blog__related-host"></div>
+        <!-- ============================ COMING SOON ============================ -->
+        <main class="kzd-soon">
+            <section class="kzd-soon__inner" aria-labelledby="kzd-soon-title">
+                <p class="kzd-soon__eyebrow">Blog</p>
+                <h1 class="kzd-soon__title" id="kzd-soon-title">Coming soon</h1>
+                <p class="kzd-soon__body">We are working on this page. In the meantime, get in touch and we will help you directly.</p>
+                <div class="kzd-soon__actions">
+                    <a class="kzd-btn kzd-btn--primary" href="index.html">Back to home</a>
+                    <a class="kzd-btn kzd-btn--accent" href="contact.html">Contact us</a>
                 </div>
-            </div>
+            </section>
         </main>
 
         <!-- start footer -->
@@ -392,8 +323,5 @@
             });
         </script>
         <!-- navbar logo color change end -->
-        <!-- Blog: one content module, then the page controller -->
-        <script src="js/kzd-blog.js" defer></script>
-        <script src="js/kzd-blog-pages.js" defer></script>
     </body>
 </html>

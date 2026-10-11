@@ -41,6 +41,21 @@
   color: var(--kzd-navy-400);
 }
 
+/* The theme marks the current page and hovered items by fading the link to
+   60% opacity, which drops the label below 4.5:1. Keep full opacity; mark the
+   current page with the link colour and a 2px "selected" underline instead. */
+.navbar .navbar-nav .nav-item .nav-link,
+.navbar .navbar-nav .nav-item:hover .nav-link,
+.navbar .navbar-nav .nav-item.active .nav-link,
+.navbar .navbar-nav .nav-item .nav-link.active { opacity: 1; }
+.navbar.kzd-nav--solid .navbar-nav .nav-item.active > .nav-link,
+.navbar.kzd-nav--solid .navbar-nav .nav-item > .nav-link.active {
+  color: var(--kzd-navy-400);
+  text-decoration: underline;
+  text-decoration-thickness: var(--kzd-border-selected);
+  text-underline-offset: var(--kzd-space-8);
+}
+
 .navbar.kzd-nav--solid .navbar-toggler-line {
   background-color: var(--kzd-navy-700);
 }

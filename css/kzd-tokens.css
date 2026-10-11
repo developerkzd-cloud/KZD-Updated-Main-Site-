@@ -288,18 +288,22 @@
 .kzd-icon--feature { width: var(--kzd-icon-feature); height: var(--kzd-icon-feature); }
 .kzd-icon--hero    { width: var(--kzd-icon-hero);    height: var(--kzd-icon-hero); }
 
-/* Keyboard focus: one ring everywhere, inverted on dark surfaces. */
+/* Keyboard focus: one two-tone ring on every surface. A 2px navy outline
+   sits outside a 2px white halo, so the ring reads on white (navy) and on
+   navy or photo surfaces (white). !important because an accessibility
+   indicator must not be suppressible: the theme sets outline:none on links
+   and buttons, which a plain :focus-visible cannot outrank. */
 :focus-visible {
-  outline: var(--kzd-focus-ring) solid var(--kzd-focus-color);
-  outline-offset: 2px;
-}
-.kzd-on-dark :focus-visible,
-[data-surface="dark"] :focus-visible {
-  outline-color: var(--kzd-focus-color-on-dark);
+  outline: var(--kzd-focus-ring) solid var(--kzd-focus-color) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 var(--kzd-focus-ring) var(--kzd-white) !important;
 }
 
+/* Reduced motion: one global switch. The :root:root:root prefix (0-3-0) lets
+   it outrank component rules that declare transitions !important at class
+   specificity (the theme and the static button layer both do). */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  :root:root:root *, :root:root:root *::before, :root:root:root *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     animation-delay: 0ms !important;

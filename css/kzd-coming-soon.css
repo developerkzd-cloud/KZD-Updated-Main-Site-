@@ -1,0 +1,61 @@
+/* ==========================================================================
+   KZD Solutions — "Coming soon" placeholder (static site)
+
+   Used by the pages parked while they are rebuilt: blog, article, hosting,
+   WordPress hosting and the four domain pages. Tokens only.
+   ========================================================================== */
+
+.kzd-soon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: calc(var(--kzd-nav-h) + var(--kzd-space-64)) var(--kzd-pad-page) var(--kzd-gap-section);
+  background: var(--kzd-surface-50);
+  text-align: center;
+}
+
+.kzd-soon__inner {
+  max-width: var(--kzd-measure);
+}
+
+.kzd-soon__eyebrow {
+  margin: 0 0 var(--kzd-space-16);
+  font-family: var(--kzd-type-label);
+  font-size: var(--kzd-text-label);
+  font-weight: 500;
+  letter-spacing: var(--kzd-tracking-label);
+  text-transform: uppercase;
+  color: var(--kzd-accent-ink);
+}
+
+.kzd-soon__title {
+  margin: 0 0 var(--kzd-space-24);
+  font-family: var(--kzd-type-display);
+  font-size: var(--kzd-text-display);
+  font-weight: 600;
+  line-height: var(--kzd-leading-display);
+  letter-spacing: var(--kzd-tracking-display);
+  color: var(--kzd-ink);
+}
+
+.kzd-soon__body {
+  margin: 0 auto var(--kzd-space-40);
+  max-width: 560px;
+  font-family: var(--kzd-type-sans);
+  font-size: var(--kzd-text-body);
+  line-height: var(--kzd-leading-body);
+  color: var(--kzd-text-muted);
+}
+
+.kzd-soon__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--kzd-space-12);
+}
+
+.kzd-soon .kzd-btn--primary,
+.kzd-soon .kzd-btn--primary:hover { color: var(--kzd-white); }
+.kzd-soon .kzd-btn--accent,
+.kzd-soon .kzd-btn--accent:hover { color: var(--kzd-black); }
