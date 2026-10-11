@@ -54,11 +54,17 @@
 .heroMedia { position: absolute; inset: 0; z-index: -2; }
 .heroImg { object-fit: cover; }
 
+/* Above the photo: the wash shares .heroMedia's stacking context with the
+   positioned next/image <img>, so z-index:-1 put it BEHIND the photo and the
+   white copy sat at ~1.7:1. */
 .heroWash {
   position: absolute;
   inset: 0;
-  z-index: -1;
-  background: linear-gradient(180deg, rgba(11, 22, 41, 0.72) 0%, rgba(11, 22, 41, 0.58) 55%, rgba(11, 22, 41, 0.78) 100%);
+  z-index: 1;
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--kzd-navy-700) 74%, transparent) 0%,
+    color-mix(in srgb, var(--kzd-navy-700) 66%, transparent) 55%,
+    color-mix(in srgb, var(--kzd-navy-700) 80%, transparent) 100%);
 }
 
 .heroInner {
@@ -195,10 +201,11 @@
   font-weight: 600;
 }
 
-.badgeDanger { background: var(--a-danger-tint); color: var(--a-danger); }
-.badgeWarn { background: var(--a-warn-tint); color: var(--a-warn); }
-.badgeNeutral { background: var(--a-neutral-tint); color: var(--a-neutral); }
-.badgeInfo { background: var(--a-info-tint); color: var(--a-info); }
+/* Severity labels: semantic ink on tint (>= 5.3:1), always with their text. */
+.badgeDanger { background: var(--kzd-error-bg); color: var(--kzd-error-ink); }
+.badgeWarn { background: var(--kzd-warning-bg); color: var(--kzd-warning-ink); }
+.badgeNeutral { background: var(--kzd-surface-100); color: var(--kzd-charcoal); }
+.badgeInfo { background: var(--kzd-navy-50); color: var(--kzd-navy-400); }
 
 .problemList { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--kzd-space-8); }
 
@@ -773,3 +780,15 @@
   color: var(--kzd-white);
 }
 .submitBtn:active { transform: translateY(1px); }
+
+/* Long full-width labels wrap on phones: grow from the 44px minimum instead
+   of clipping, still centred by flex with no vertical padding. */
+.submitBtn,
+.btnRecommend,
+.pkgBtn {
+  height: auto;
+  min-height: var(--kzd-control);
+  line-height: var(--kzd-leading-label);
+  white-space: normal;
+  text-align: center;
+}

@@ -127,3 +127,19 @@
 
 
 /* Global Scaling Fix, navbar fix, and footer fix are shared globally via css/about.css (loaded on every page) */
+
+/* Hero scrim (design system: white text over a photo must clear 4.5:1).
+   The theme's 20% black film left the copy at ~2.2:1 over this bright desk
+   photo. Navy, weighted to the left where the copy sits, plus a band along
+   the top for the transparent nav. */
+.cover-background > .opacity-very-light.bg-black {
+  opacity: 1;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--kzd-navy-700) 60%, transparent) 0%,
+      transparent 22%),
+    linear-gradient(90deg,
+      color-mix(in srgb, var(--kzd-navy-700) 86%, transparent) 0%,
+      color-mix(in srgb, var(--kzd-navy-700) 74%, transparent) 55%,
+      color-mix(in srgb, var(--kzd-navy-700) 50%, transparent) 100%) !important;
+}

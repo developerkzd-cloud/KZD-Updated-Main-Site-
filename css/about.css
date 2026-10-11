@@ -181,3 +181,21 @@ footer {
   border-color: var(--dark-gray);
   color: var(--dark-gray);
 }
+
+/* Photo heroes (theme .cover-background with an inline background-image)
+   carry white copy. Without a scrim the copy sat at 1.5-2.6:1 on the light
+   photos (contact, accounting). One navy scrim, unless the hero already has
+   its own (the homepage film, the services scrim). */
+.cover-background[style*="background-image"]:not(:has(> [class*="opacity-"], .kzd-hero__scrim)) { position: relative; }
+.cover-background[style*="background-image"]:not(:has(> [class*="opacity-"], .kzd-hero__scrim))::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--kzd-overlay-dark);
+  pointer-events: none;
+}
+.cover-background[style*="background-image"]:not(:has(> [class*="opacity-"], .kzd-hero__scrim)) > .container {
+  position: relative;
+  z-index: 2;
+}

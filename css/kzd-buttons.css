@@ -62,11 +62,17 @@
   background-image: none !important;
   transition: transform var(--kzd-dur-micro) var(--kzd-ease);
 }
-/* Full-width variants and long labels may wrap on phones: keep centring. */
+/* Full-width variants and long labels may wrap on phones: they grow from the
+   44px minimum instead of clipping, still centred by flex, no vertical padding. */
 .w-100.btn,
 .btn-recommend,
 .package-select-btn,
-.kzd-job__submit { white-space: normal; text-align: center; }
+.kzd-job__submit {
+  height: auto !important;
+  line-height: var(--kzd-leading-label) !important;
+  white-space: normal;
+  text-align: center;
+}
 .btn:active, .chp-btn:active, .pricing-btn:active, .package-select-btn:active, .domain-search-btn:active,
 .btn-recommend:active, .kzd-acc__cta:active, .kzd-car__apply:active, .kzd-job__btn:active, .kzd-job__submit:active,
 .kzd-pro__btn:active, .kzd-pro__banner-btn:active, .kzd-blog__cta-btn:active, .kzd-blog__share:active,

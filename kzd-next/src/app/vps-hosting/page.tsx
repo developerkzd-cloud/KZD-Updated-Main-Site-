@@ -1,31 +1,13 @@
 import type { Metadata } from "next";
-import ComingSoonProduct from "@/components/ComingSoonProduct/ComingSoonProduct";
+import ComingSoon from "@/components/ComingSoon/ComingSoon";
 
-const DESCRIPTION =
-  "Dedicated virtual server hosting from KZD Solutions — in active development.";
-
+/* Parked while it is rebuilt: the previous page is in git history. */
 export const metadata: Metadata = {
-  title: "VPS Hosting",
-  description: DESCRIPTION,
-  alternates: { canonical: "/vps-hosting" },
-  openGraph: {
-    type: "website",
-    url: "/vps-hosting",
-    title: "VPS Hosting | KZD Solutions",
-    description: DESCRIPTION,
-    siteName: "KZD Solutions",
-  },
+  title: "VPS hosting | Coming soon",
+  description: "VPS hosting at KZD Solutions is coming soon.",
+  robots: { index: false },
 };
 
-export default function VpsHostingPage() {
-  return (
-    <ComingSoonProduct
-      eyebrow="VPS Hosting"
-      title="VPS Hosting"
-      heroImage="/images/vps.jpeg"
-      heroAlt=""
-      bodyTitle="VPS Hosting Is On Its Way"
-      body="We're building dedicated virtual server infrastructure with the reliability, scalability, and security you expect from KZD Solutions. It isn't ready to launch just yet, but it's actively in development."
-    />
-  );
+export default function Page() {
+  return <ComingSoon section="VPS hosting" />;
 }

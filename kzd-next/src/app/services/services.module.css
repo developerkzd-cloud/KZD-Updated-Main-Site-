@@ -394,3 +394,8 @@
   color: var(--kzd-black);
 }
 .accCta:active { transform: translateY(1px); }
+
+/* The accordion styles links inside its panels; outrank it so the accent
+   button keeps Rich Black text on Silver (7.2:1). */
+.accCta.accCta,
+.accCta.accCta:hover { color: var(--kzd-black); }

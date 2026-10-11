@@ -53,7 +53,11 @@
 .heroWash {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--kzd-navy-700) 42%, transparent) 0%, color-mix(in srgb, var(--kzd-navy-700) 72%, transparent) 100%);
+  /* Same scrim as the static hero: white copy over the photo clears 4.5:1.
+     Weighted left where the copy sits, with a band along the top for the nav. */
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--kzd-navy-700) 60%, transparent) 0%, transparent 22%),
+    linear-gradient(90deg, color-mix(in srgb, var(--kzd-navy-700) 86%, transparent) 0%, color-mix(in srgb, var(--kzd-navy-700) 74%, transparent) 55%, color-mix(in srgb, var(--kzd-navy-700) 50%, transparent) 100%);
 }
 
 /* The page's content column — same figure as .aboutInner/.tstInner/etc, so
@@ -711,7 +715,8 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(18, 24, 38, 0) 24%, rgba(18, 24, 38, 0.55) 64%, rgba(18, 24, 38, 0.93) 100%);
+  /* Same scrim as the static site: captions sit from ~40% height on short cells. */
+  background: linear-gradient(180deg, transparent 8%, color-mix(in srgb, var(--kzd-navy-700) 68%, transparent) 42%, color-mix(in srgb, var(--kzd-navy-700) 94%, transparent) 100%);
 }
 
 .problemsCap { position: absolute; z-index: 2; left: 0; bottom: 0; }
@@ -736,7 +741,7 @@
 .cellDigital .problemsLabel { font-size:  var(--kzd-text-label-sm); letter-spacing: 0.16em; }
 
 .cellIneff .problemsText,
-.cellDigital .problemsText { margin-top: var(--kzd-space-24); max-width: 228px; font-size:  var(--kzd-text-label); line-height: 1.6; color: var(--kzd-navy-400); }
+.cellDigital .problemsText { margin-top: var(--kzd-space-24); max-width: 228px; font-size:  var(--kzd-text-label); line-height: 1.6; color: var(--kzd-navy-100); }
 
 @media (max-width: 1199px) {
   .problems { padding-top: var(--kzd-space-96); padding-bottom: var(--kzd-space-96); }

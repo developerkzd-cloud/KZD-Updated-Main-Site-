@@ -36,7 +36,7 @@
   /* Caption tones — unchanged from the dark theme, because the captions still
      sit on a dark scrim. */
   --kzd-p-cap-lg:     var(--kzd-silver-light);
-  --kzd-p-cap-sm:     var(--kzd-navy-400);
+  --kzd-p-cap-sm:     var(--kzd-navy-100);   /* light text on the dark scrim */
 
   --kzd-p-display: var(--kzd-type-display);
   --kzd-p-body:    var(--kzd-type-sans);
@@ -220,7 +220,8 @@
   );
 }
 
-/* THE SCRIM. Starts at 24% of cell height, ramps to near-opaque at the bottom.
+/* THE SCRIM. Ramps from 8% of cell height to near-opaque at the bottom: the
+   captions start around 40% on the short cells, over bright screenshots.
    This is what makes the white captions legible — it is not decorative. */
 .kzd-problems__cell::after {
   content: "";
@@ -230,9 +231,9 @@
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgba(18, 24, 38, 0) 24%,
-    rgba(18, 24, 38, .55) 64%,
-    rgba(18, 24, 38, .93) 100%
+    transparent 8%,
+    color-mix(in srgb, var(--kzd-navy-700) 68%, transparent) 42%,
+    color-mix(in srgb, var(--kzd-navy-700) 94%, transparent) 100%
   );
 }
 

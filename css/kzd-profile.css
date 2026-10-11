@@ -18,7 +18,7 @@
   --kzd-p-navy:   var(--kzd-navy-700);
   --kzd-p-muted:  var(--kzd-gray);
   --kzd-p-dim:    var(--kzd-gray);
-  --kzd-p-empty:  var(--kzd-silver);
+  --kzd-p-empty:  var(--kzd-text-muted);
   --kzd-p-dash:   var(--kzd-silver-light);
   --kzd-p-blue:   var(--kzd-navy-300);
   --kzd-p-ember:  var(--kzd-navy-200);
@@ -532,7 +532,7 @@
   overflow-wrap: anywhere;
 }
 
-.kzd-pro__link-value--empty { color: var(--kzd-p-dash); }
+.kzd-pro__link-value--empty { color: var(--kzd-text-muted); }
 
 a.kzd-pro__link:hover .kzd-pro__link-value { color: var(--kzd-p-blue); text-decoration: underline; }
 a.kzd-pro__link:focus-visible { outline: 2px solid var(--kzd-p-blue); outline-offset: 3px; border-radius: var(--kzd-radius-8); }
