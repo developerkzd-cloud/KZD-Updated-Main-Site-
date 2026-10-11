@@ -72,7 +72,7 @@
         .bg-score-high { background: var(--kzd-surface-100); color: var(--kzd-navy-400); }
         .bg-score-medium { background: var(--kzd-navy-50); color: var(--kzd-navy-400); }
         .bg-score-low { background: var(--kzd-surface-200); color: var(--kzd-error-ink); }
-        .package-card { border-radius: var(--radius-xl); background: white; border: 1px solid rgba(0,0,0,0.03); padding: 2rem; height: 100%; transition: transform var(--kzd-dur-micro), opacity var(--kzd-dur-micro); display: flex; flex-direction: column; }
+        .package-card { border-radius: var(--radius-xl); background: var(--kzd-white); border: 1px solid rgba(0,0,0,0.03); padding: 2rem; height: 100%; transition: transform var(--kzd-dur-micro), opacity var(--kzd-dur-micro); display: flex; flex-direction: column; }
         .package-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover-lg); }
         .package-card .btn-wrapper {
             margin-top: auto;
@@ -83,14 +83,14 @@
         }
         .package-icon { font-size:  var(--kzd-text-headline); margin-bottom: 1.2rem; display: inline-block; }
         .text-dark-gray { color: var(--kzd-black) !important; }
-        .btn-dark-custom { background: var(--base-color); border-color: var(--base-color); color: white; border-radius: var(--radius-pill); padding: var(--kzd-space-12) var(--kzd-space-32); font-weight: 500; transition: transform var(--kzd-dur-micro) ease, opacity var(--kzd-dur-micro) ease; }
+        .btn-dark-custom { background: var(--base-color); border-color: var(--base-color); color: var(--kzd-white); border-radius: var(--radius-pill); padding: var(--kzd-space-12) var(--kzd-space-32); font-weight: 500; transition: transform var(--kzd-dur-micro) ease, opacity var(--kzd-dur-micro) ease; }
         .btn-dark-custom:hover { background: transparent; color: var(--base-color); transform: translateY(-2px); box-shadow: 0 8px 20px color-mix(in srgb, var(--kzd-navy-300) 20%, transparent); }
         .btn-outline-dark-custom { border: 2px solid var(--base-color); color: var(--base-color); border-radius: var(--radius-pill); padding: var(--kzd-space-8) var(--kzd-space-32); font-weight: 500; background: transparent; transition: transform var(--kzd-dur-micro) ease, opacity var(--kzd-dur-micro) ease; }
-        .btn-outline-dark-custom:hover { background: var(--base-color); color: white; transform: translateY(-2px); box-shadow: 0 8px 20px color-mix(in srgb, var(--kzd-navy-300) 15%, transparent); }
-        .btn-recommend { background: var(--base-color); border: 2px solid var(--base-color); color: white; border-radius: var(--radius-pill); padding: var(--kzd-space-12) var(--kzd-space-40); font-weight: 600; letter-spacing: 0.3px; transition: transform var(--kzd-dur-micro) ease, opacity var(--kzd-dur-micro) ease; }
+        .btn-outline-dark-custom:hover { background: var(--base-color); color: var(--kzd-white); transform: translateY(-2px); box-shadow: 0 8px 20px color-mix(in srgb, var(--kzd-navy-300) 15%, transparent); }
+        .btn-recommend { background: var(--base-color); border: 2px solid var(--base-color); color: var(--kzd-white); border-radius: var(--radius-pill); padding: var(--kzd-space-12) var(--kzd-space-40); font-weight: 600; letter-spacing: 0.3px; transition: transform var(--kzd-dur-micro) ease, opacity var(--kzd-dur-micro) ease; }
         .btn-recommend:hover { background: transparent; color: var(--base-color); transform: translateY(-2px); box-shadow: 0 8px 20px color-mix(in srgb, var(--kzd-navy-300) 20%, transparent); }
         hr { opacity: 0.2; }
-        .lead-form { background: white; border-radius: var(--kzd-radius-24); padding: 3rem; box-shadow: 0 40px 80px rgba(0,0,0,0.04); }
+        .lead-form { background: var(--kzd-white); border-radius: var(--kzd-radius-24); padding: 3rem; box-shadow: 0 40px 80px rgba(0,0,0,0.04); }
         .form-select, .form-control { border-radius: var(--kzd-radius-12); padding: var(--kzd-space-12) var(--kzd-space-24); border: 1px solid var(--kzd-line); background: var(--kzd-surface-50); transition: transform var(--kzd-dur-micro), opacity var(--kzd-dur-micro); }
         .form-select:focus, .form-control:focus { border-color: var(--kzd-charcoal); box-shadow: 0 0 0 3px rgba(37,40,64,0.1); }
         .glass-effect-light { background: rgba(255,255,255,0.8); backdrop-filter: blur(8px); }
@@ -121,7 +121,7 @@
         }
         .btn-hero-primary {
             background: var(--base-color) !important;
-            color: white !important;
+            color: var(--kzd-white) !important;
             border: 2px solid var(--base-color) !important;
             padding: var(--kzd-space-12) var(--kzd-space-40) !important;
             font-weight: 600 !important;
@@ -142,8 +142,8 @@
             box-shadow: 0 8px 25px color-mix(in srgb, var(--kzd-navy-300) 30%, transparent) !important;
         }
         .btn-hero-outline {
-            border: 2px solid white !important;
-            color: white !important;
+            border: 2px solid var(--kzd-white) !important;
+            color: var(--kzd-white) !important;
             padding: var(--kzd-space-12) var(--kzd-space-40) !important;
             font-weight: 600 !important;
             border-radius: var(--radius-pill) !important;
@@ -157,7 +157,7 @@
             z-index: 100 !important;
         }
         .btn-hero-outline:hover {
-            background: white !important;
+            background: var(--kzd-white) !important;
             color: var(--base-color) !important;
             transform: translateY(-3px) !important;
             box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
@@ -222,7 +222,7 @@
                 <div class="col-auto col-xxl-3 col-lg-2 me-lg-0 me-auto">
                     <a class="navbar-brand d-flex align-items-center me-2" href="index.html">
                         <img id="logo" src="images/logo-white.png" alt="Logo" style="height: 40px; margin-right: var(--kzd-space-8);">
-                        <span id="company-name" class="fs-5 fs-md-4 fs-lg-3" style="color: white;">KZD Solutions</span>
+                        <span id="company-name" class="fs-5 fs-md-4 fs-lg-3" style="color: var(--kzd-white);">KZD Solutions</span>
                     </a>
                 </div>
 
@@ -454,7 +454,7 @@
                     <div class="col-12 col-xl-3 col-lg-3 col-md-6 col-sm-12 last-paragraph-no-margin text-lg-start text-center text-sm-center order-sm-1 lg-mb-50px sm-mb-30px">
                         <a class="navbar-brand d-flex align-items-center justify-content-lg-start justify-content-center" href="index.html">
                             <img src="images/logo-black.png" alt="Logo" style="height: 40px; margin-right: var(--kzd-space-8);">
-                            <span style="font-size:  var(--kzd-text-title); color: black;">KZD Solutions</span>
+                            <span style="font-size:  var(--kzd-text-title); color: var(--kzd-black);">KZD Solutions</span>
                         </a>
                         <p class="lh-28 w-90 xl-w-100 mx-lg-auto mx-xl-0">Gearing your company through an innovative strategy.</p>
                         <div class="elements-social social-icon-style-02 mt-15px">

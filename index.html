@@ -161,7 +161,7 @@
             height: 65px;
             border-radius: var(--kzd-radius-full);
             background: linear-gradient(135deg, var(--kzd-navy-400) 0%, var(--kzd-navy-300) 100%);
-            color: white;
+            color: var(--kzd-white);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -232,7 +232,7 @@
             top: -5px;
             right: -5px;
             background: var(--kzd-error);
-            color: white;
+            color: var(--kzd-white);
             border-radius: var(--kzd-radius-full);
             width: 22px;
             height: 22px;
@@ -250,7 +250,7 @@
             right: 30px;
             width: 420px;
             height: 560px;
-            background: white;
+            background: var(--kzd-white);
             border-radius: var(--kzd-radius-16);
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
             z-index: 10000;
@@ -278,7 +278,7 @@
         
         .kzd-chat-header {
             background: linear-gradient(135deg, var(--kzd-navy-400) 0%, var(--kzd-navy-300) 100%);
-            color: white;
+            color: var(--kzd-white);
             padding: var(--kzd-space-12) var(--kzd-space-16);
             text-align: center;
             position: relative;
@@ -338,7 +338,7 @@
         }
         
         .kzd-header-btn {
-            color: white;
+            color: var(--kzd-white);
             cursor: pointer;
             font-size:  var(--kzd-text-body);
             opacity: 0.8;
@@ -391,7 +391,7 @@
         }
         
         .kzd-bot-message {
-            background: white;
+            background: var(--kzd-white);
             border: 1px solid var(--kzd-surface-200);
             border-bottom-left-radius: var(--kzd-radius-8);
             align-self: flex-start;
@@ -400,7 +400,7 @@
         
         .kzd-user-message {
             background: linear-gradient(135deg, var(--kzd-navy-400) 0%, var(--kzd-navy-300) 100%);
-            color: white;
+            color: var(--kzd-white);
             border-bottom-right-radius: var(--kzd-radius-8);
             align-self: flex-end;
             box-shadow: 0 2px 6px color-mix(in srgb, var(--kzd-navy-300) 20%, transparent);
@@ -443,7 +443,7 @@
             height: 36px;
             border-radius: var(--kzd-radius-8);
             background: linear-gradient(135deg, var(--kzd-navy-400) 0%, var(--kzd-navy-300) 100%);
-            color: white;
+            color: var(--kzd-white);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -491,7 +491,7 @@
         /* Input container */
         .kzd-input-container {
             padding: var(--kzd-space-8) var(--kzd-space-12);
-            background: white;
+            background: var(--kzd-white);
             border-top: 1px solid var(--kzd-surface-200);
             display: flex;
             gap: var(--kzd-space-8);
@@ -522,7 +522,7 @@
             width: 38px;
             height: 38px;
             background: linear-gradient(135deg, var(--kzd-navy-400) 0%, var(--kzd-navy-300) 100%);
-            color: white;
+            color: var(--kzd-white);
             border: none;
             border-radius: var(--kzd-radius-full);
             cursor: pointer;
@@ -543,7 +543,7 @@
             display: flex;
             justify-content: space-between;
             padding: var(--kzd-space-8) var(--kzd-space-12);
-            background: white;
+            background: var(--kzd-white);
             border-top: 1px solid var(--kzd-surface-200);
         }
         
@@ -571,7 +571,7 @@
             display: flex;
             gap: var(--kzd-space-4);
             padding: var(--kzd-space-8) var(--kzd-space-12);
-            background: white;
+            background: var(--kzd-white);
             border-radius: var(--kzd-radius-16);
             border: 1px solid var(--kzd-line);
             align-self: flex-start;
@@ -633,7 +633,7 @@
         
         .kzd-suggestion-chip {
             padding: var(--kzd-space-4) var(--kzd-space-12);
-            background: white;
+            background: var(--kzd-white);
             border: 1px solid var(--kzd-line);
             border-radius: var(--kzd-radius-16);
             font-size:  var(--kzd-text-label-sm);
@@ -671,7 +671,7 @@
             margin-top: var(--kzd-space-4);
             padding: var(--kzd-space-4) var(--kzd-space-8);
             background: var(--kzd-navy-300);
-            color: white;
+            color: var(--kzd-white);
             border-radius: var(--kzd-radius-8);
             text-decoration: none;
             font-size:  var(--kzd-text-label-sm);
@@ -684,7 +684,7 @@
         
         /* Form styling */
         .kzd-form-container {
-            background: white;
+            background: var(--kzd-white);
             padding: var(--kzd-space-12);
             border-radius: var(--kzd-radius-12);
             margin-top: var(--kzd-space-8);
@@ -719,7 +719,7 @@
         
         .kzd-form-submit {
             background: linear-gradient(135deg, var(--kzd-navy-400) 0%, var(--kzd-navy-300) 100%);
-            color: white;
+            color: var(--kzd-white);
             border: none;
             border-radius: var(--kzd-radius-8);
             padding: var(--kzd-space-8) var(--kzd-space-16);
@@ -1561,7 +1561,7 @@
                              natural one; on light backgrounds it is inverted in CSS via
                              .is-dark rather than swapped for a second file. -->
                         <img id="logo" class="kzd-mark" src="Assets/logos/kzd-mark.png" width="96" height="95" alt="Logo" style="height: 40px; width: auto; margin-right: var(--kzd-space-8);">
-                        <span id="company-name" class="fs-5 fs-md-4 fs-lg-3" style="color: white;">KZD Solutions</span>
+                        <span id="company-name" class="fs-5 fs-md-4 fs-lg-3" style="color: var(--kzd-white);">KZD Solutions</span>
                     </a>
                 </div>
 

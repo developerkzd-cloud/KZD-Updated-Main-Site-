@@ -83,7 +83,7 @@
 }
 
 .client-heading h3 {
-  color: gray;
+  color: var(--kzd-gray);
   font-weight: 700;
   letter-spacing: -2px;
   margin-bottom: 1rem;

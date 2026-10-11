@@ -47,7 +47,7 @@
 .domain-input-group {
     position: relative;
     display: flex;
-    background: white;
+    background: var(--kzd-white);
     border-radius: var(--radius-md);
     padding: var(--kzd-space-4);
     box-shadow: var(--shadow-md);
@@ -90,7 +90,7 @@
 
 .domain-search-btn {
     background-color: var(--black);
-    color: white;
+    color: var(--kzd-white);
     border: none;
     padding: 0 var(--kzd-space-32);
     border-radius: var(--radius-sm);
@@ -116,7 +116,7 @@
 }
 
 .tld-box {
-    background: white;
+    background: var(--kzd-white);
     border-radius: var(--radius-md);
     padding: var(--kzd-space-32) var(--kzd-space-16);
     text-align: center;
@@ -135,7 +135,7 @@
     transform: translateY(-6px);
     /* border-color: --kzd-black; */
     box-shadow: var(--shadow-hover-sm);
-    border: 1px solid black;
+    border: 1px solid var(--kzd-black);
 }
 
 .tld-boxes .col-lg-2:nth-child(1) .tld-box { animation-delay: 0s; }
@@ -181,7 +181,7 @@
 }
 
 .feature-card {
-    background: white;
+    background: var(--kzd-white);
     padding: var(--kzd-space-32) var(--kzd-space-24);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
@@ -213,7 +213,7 @@
     width: var(--kzd-icon-feature);
     height: var(--kzd-icon-feature);
     font-size:  var(--kzd-text-title);
-    color: white;
+    color: var(--kzd-white);
 }
 
 .feature-card h4 {
@@ -231,7 +231,7 @@
 
 /* Pricing Cards */
 .pricing-card {
-    background: white;
+    background: var(--kzd-white);
     border-radius: var(--radius-md);
     overflow: hidden;
     box-shadow: var(--shadow-md);
@@ -267,9 +267,9 @@
 }
 
 .pricing-header {
-    background: white;
-    color: black;
-    border: 1px solid black;
+    background: var(--kzd-white);
+    color: var(--kzd-black);
+    border: 1px solid var(--kzd-black);
     color: var(--kzd-black);
     padding: var(--kzd-space-32) var(--kzd-space-24);
     text-align: center;
@@ -291,7 +291,7 @@
     font-size:  var(--kzd-text-headline);
     font-weight: 800;
     margin: var(--kzd-space-16) 0;
-    color: black;
+    color: var(--kzd-black);
 }
 
 .pricing-price .currency {
@@ -345,7 +345,7 @@
     width: 100%;
     padding: var(--kzd-space-12);
     text-align: center;
-    background-color: white;
+    background-color: var(--kzd-white);
     color: var(--black);
     border: 1px solid var(--black);
     border-radius: var(--radius-sm);
@@ -358,7 +358,7 @@
 
 .pricing-btn:hover {
     background-color: var(--black);
-    color: white;
+    color: var(--kzd-white);
     transform: translateY(-2px);
     /* box-shadow: 0 8px 16px rgba(107,33,168,.2); */
 }
@@ -370,7 +370,7 @@
 }
 
 .domain-result {
-    background: white;
+    background: var(--kzd-white);
     border-radius: var(--radius-sm);
     padding: var(--kzd-space-16) var(--kzd-space-24);
     margin-bottom: var(--kzd-space-12);
@@ -414,7 +414,7 @@
 
 /* Transfer Form */
 .transfer-form {
-    background: white;
+    background: var(--kzd-white);
     padding: var(--kzd-space-32);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
@@ -460,7 +460,7 @@
     border-radius: var(--radius-sm);
     font-size:  var(--kzd-text-body);
     transition: transform var(--kzd-dur-micro) ease, opacity var(--kzd-dur-micro) ease;
-    background: white;
+    background: var(--kzd-white);
 }
 
 .form-control:focus {
@@ -483,7 +483,7 @@
 }
 
 .tld-item {
-    background: white;
+    background: var(--kzd-white);
     padding: var(--kzd-space-16);
     border-radius: var(--radius-sm);
     text-align: center;
@@ -531,7 +531,7 @@
 }
 
 .tld-item .btn-primary {
-    background-color: white;
+    background-color: var(--kzd-white);
     color: var(--black) !important;
     border: 1px solid var(--black);
     text-decoration: none;
@@ -541,7 +541,7 @@
 
 .tld-item .btn-primary:hover {
     background-color: var(--black);
-    color: white !important;
+    color: var(--kzd-white) !important;
     transform: translateY(-2px);
 }
 
@@ -559,7 +559,7 @@
     padding: var(--kzd-space-8) var(--kzd-space-16);
     font-weight: 500;
     border: 2px solid var(--kzd-line);
-    background: white;
+    background: var(--kzd-white);
     color: var(--kzd-charcoal);
     transition: transform var(--kzd-dur-micro) ease, opacity var(--kzd-dur-micro) ease;
 }
@@ -568,12 +568,12 @@
 .category-filter .btn.active {
     background: var(--black);
     border-color: var(--black);
-    color: white;
+    color: var(--kzd-white);
 }
 
 /* TLD Card */
 .tld-card {
-    background: white;
+    background: var(--kzd-white);
     border-radius: var(--radius-md);
     padding: var(--kzd-space-24);
     box-shadow: var(--shadow-md);
@@ -601,7 +601,7 @@
 }
 
 .tld-badge {
-background-color: var(--kzd-black);    color: white;
+background-color: var(--kzd-black);    color: var(--kzd-white);
     padding: var(--kzd-space-4) var(--kzd-space-8);
     border-radius: var(--radius-md);
     font-size:  var(--kzd-text-label);
@@ -623,7 +623,7 @@ background-color: var(--kzd-black);    color: white;
 .accordion-button {
     font-weight: 600;
     color: var(--kzd-black);
-    background: white;
+    background: var(--kzd-white);
     border: 2px solid var(--kzd-line);
     margin-bottom: var(--kzd-space-8);
     border-radius: var(--radius-sm) !important;
@@ -631,7 +631,7 @@ background-color: var(--kzd-black);    color: white;
 }
 
 .accordion-button:not(.collapsed) {
-    background-color: white;
+    background-color: var(--kzd-white);
     color: var(--black);
     border-color: transparent;
 }
@@ -655,7 +655,7 @@ background-color: var(--kzd-black);    color: white;
     top: 100%;
     left: 0;
     right: 0;
-    background: white;
+    background: var(--kzd-white);
     border-radius: var(--radius-sm);
     box-shadow: var(--shadow-hover-lg);
     z-index: 1000;
