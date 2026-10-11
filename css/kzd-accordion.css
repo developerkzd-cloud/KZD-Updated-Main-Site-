@@ -26,7 +26,7 @@
   --kzd-a-navy:    var(--kzd-navy-700);   /* Development panel         */
   --kzd-a-ink:     var(--kzd-black);   /* light panel text          */
   --kzd-a-muted:   var(--kzd-gray);   /* light panel secondary     */
-  --kzd-a-dusk:    var(--kzd-navy-400);   /* navy panel secondary      */
+  --kzd-a-dusk:    var(--kzd-navy-200);   /* navy panel secondary: on-dark muted, >= 7:1 */
   --kzd-a-line:    var(--kzd-line);   /* hairlines, borders        */
   --kzd-a-rule-d:  rgba(255, 255, 255, .14);  /* navy hairlines */
   --kzd-a-blue:    var(--kzd-navy-300);   /* eyebrow text              */
