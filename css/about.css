@@ -199,3 +199,9 @@ footer {
   position: relative;
   z-index: 2;
 }
+
+/* Heading leading from the type tokens. The theme fixes heading line-heights
+   in px (sized for its own, larger type), so a 40px fluid heading kept a
+   ~70px line on phones. :root outranks the theme's element and utility rules. */
+:root h1, :root h2 { line-height: var(--kzd-leading-headline); }
+:root h3, :root h4, :root h5, :root h6 { line-height: var(--kzd-leading-title); }
