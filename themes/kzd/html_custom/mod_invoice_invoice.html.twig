@@ -18,7 +18,7 @@
 {% set seller = invoice.seller %}
 {% set buyer = invoice.buyer %}
 {% set company = guest.system_company %}
-    {% if invoice.status == 'unpaid' %}
+    {% if invoice.status == 'unpaid' and client %}
         {% set saved_card = client.invoice_get_saved_card({ 'gateway': 'Paystack' }) %}
         {% if saved_card %}
             <div class="row mb-3">
