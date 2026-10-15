@@ -470,15 +470,15 @@ class Server_Manager_Directadmin extends Server_Manager
      *
      * @param Server_Account $account the account to be unsuspended
      *
-     * @return bool returns true if the account is successfully unsuspended
+     * @return bool returns true if the account is already unsuspended or is successfully unsuspended
      *
-     * @throws Server_Exception if the account is not suspended or there is an error while sending the request to the server
+     * @throws Server_Exception if there is an error while sending the request to the server
      */
     public function unsuspendAccount(Server_Account $account): bool
     {
         $info = $this->getAccountInfo($account);
         if ($info['suspended'] == 'no') {
-            throw new Server_Exception('Server Manager DirectAdmin Error: "Account is not suspended"');
+            return true;
         }
 
         $fields = [
