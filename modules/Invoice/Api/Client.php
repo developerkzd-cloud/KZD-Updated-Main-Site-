@@ -152,6 +152,7 @@ class Client extends \FOSSBilling\Api\AbstractApi
     public function get_saved_card($data = [])
     {
         $gateway = $data['gateway'] ?? 'Paystack';
+        $this->ensurePaystackAdapterLoaded();
         \Payment_Adapter_Paystack::ensureSavedCardTableExists($this->getDi()['pdo']);
         $row = $this->getDi()['pdo']->prepare(
             'SELECT card_type, last4, exp_month, exp_year FROM client_saved_card WHERE client_id = :client_id AND gateway = :gateway'
@@ -184,6 +185,7 @@ class Client extends \FOSSBilling\Api\AbstractApi
 
         $gateway = 'Paystack';
 
+        $this->ensurePaystackAdapterLoaded();
         \Payment_Adapter_Paystack::ensureSavedCardTableExists($this->getDi()['pdo']);
         $cardStmt = $this->getDi()['pdo']->prepare(
             'SELECT authorization_code, email FROM client_saved_card WHERE client_id = :client_id AND gateway = :gateway'
@@ -232,5 +234,22 @@ class Client extends \FOSSBilling\Api\AbstractApi
         $this->getDi()['mod_service']('Invoice', 'Transaction')->createAndProcess($ipn);
 
         return true;
+    }
+
+    /**
+     * The one-click flow references Payment_Adapter_Paystack directly as a
+     * static call, unlike the regular checkout path (ServicePayGateway::
+     * getAdapterClassName()), which already self-heals by require_once-ing
+     * the adapter file straight off disk whenever it isn't resolvable via
+     * Composer's autoloader -- e.g. a custom gateway file added to
+     * library/Payment/Adapter/ without the classmap having been regenerated
+     * since. Mirrors that same fallback here so this code path can't hard-
+     * fail with a "Class not found" error the same way again.
+     */
+    private function ensurePaystackAdapterLoaded(): void
+    {
+        if (!class_exists(\Payment_Adapter_Paystack::class)) {
+            require_once PATH_LIBRARY . '/Payment/Adapter/Paystack.php';
+        }
     }
 }

@@ -3260,6 +3260,7 @@ class ComposerStaticInit38fc7436dd7776432192c06dc2e7f30e
         'Payment_Adapter_ClientBalance' => __DIR__ . '/../..' . '/library/Payment/Adapter/ClientBalance.php',
         'Payment_Adapter_Custom' => __DIR__ . '/../..' . '/library/Payment/Adapter/Custom.php',
         'Payment_Adapter_PayPalEmail' => __DIR__ . '/../..' . '/library/Payment/Adapter/PayPalEmail.php',
+        'Payment_Adapter_Paystack' => __DIR__ . '/../..' . '/library/Payment/Adapter/Paystack.php',
         'Payment_Adapter_Stripe' => __DIR__ . '/../..' . '/library/Payment/Adapter/Stripe.php',
         'Payment_Exception' => __DIR__ . '/../..' . '/library/Payment/Exception.php',
         'Payment_Invoice' => __DIR__ . '/../..' . '/library/Payment/Invoice.php',

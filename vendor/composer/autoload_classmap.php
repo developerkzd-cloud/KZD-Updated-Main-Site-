@@ -2644,6 +2644,7 @@ return array(
     'Payment_Adapter_ClientBalance' => $baseDir . '/library/Payment/Adapter/ClientBalance.php',
     'Payment_Adapter_Custom' => $baseDir . '/library/Payment/Adapter/Custom.php',
     'Payment_Adapter_PayPalEmail' => $baseDir . '/library/Payment/Adapter/PayPalEmail.php',
+    'Payment_Adapter_Paystack' => $baseDir . '/library/Payment/Adapter/Paystack.php',
     'Payment_Adapter_Stripe' => $baseDir . '/library/Payment/Adapter/Stripe.php',
     'Payment_Exception' => $baseDir . '/library/Payment/Exception.php',
     'Payment_Invoice' => $baseDir . '/library/Payment/Invoice.php',
