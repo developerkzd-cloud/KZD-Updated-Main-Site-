@@ -84,6 +84,19 @@ runs a `CREATE TABLE IF NOT EXISTS` lazily wherever the table is touched
 (both in the adapter and in `Invoice/Api/Client.php`), so a new
 environment just works.
 
+**A declined/pending/failed one-click charge now actually tells the client
+why** (2026-10-17). `Paystack.php::verifyAndApply()` never throws on a
+non-`success` verification — correct for the redirect and webhook paths,
+where nothing synchronously depends on an exception — but
+`pay_with_saved_card()` used to treat "`createAndProcess()` didn't throw"
+as success and return `true` regardless, so a declined or OTP-pending
+saved-card charge silently reloaded the client back to the still-unpaid
+invoice with zero explanation, even though the real failure reason was
+already sitting on the transaction row. It now loads the transaction
+after `createAndProcess()` and throws with that stored error message if
+it didn't end up `Model_Transaction::STATUS_PROCESSED`, so the UI's
+existing (previously dead) error-callback path actually fires.
+
 ## Config
 
 Admin → gateway settings for Paystack: Secret Key, Public Key
@@ -93,6 +106,28 @@ that's gone now that it's unconditional (see above).
 
 ## Known gaps / things to watch
 
+- **`composer dump-autoload` must be re-run (by hand — see below) whenever
+  a new file is added under `library/Payment/Adapter/`.** Hit live
+  (2026-10-17): `library/Payment/Adapter/Paystack.php` was added back in
+  July but never made it into `vendor/composer/autoload_static.php` /
+  `autoload_classmap.php`'s baked `$classMap`, so
+  `class_exists('Payment_Adapter_Paystack')` failed — but *only* for the
+  one-click payment code (`Invoice/Api/Client.php`'s
+  `\Payment_Adapter_Paystack::ensureSavedCardTableExists(...)` static
+  calls), which reference the class directly. Regular Paystack checkout
+  never hit this, because `ServicePayGateway::getAdapterClassName()`
+  already self-heals with a `require_once` fallback when `class_exists()`
+  fails first. No `composer.json` is tracked in this repo (predates the
+  git-based deploy setup — see `DEPLOYMENT.md`), so `composer
+  dump-autoload` can't be run normally here; the missing classmap entry
+  was added by hand to both generated files, in the same form Composer
+  itself produces. `Invoice/Api/Client.php` also now has its own
+  `ensurePaystackAdapterLoaded()` `require_once` fallback (mirroring
+  `getAdapterClassName()`'s pattern) so this specific code path can't
+  break the same way again even if the classmap drifts a second time —
+  but any *other* new adapter file added the same way would still need
+  the classmap entry added by hand, or a real `composer dump-autoload`
+  run somewhere that has a `composer.json`.
 - No dedicated unit test file for this adapter (`Paystack*Test.php` doesn't
   exist). Changes here are only as safe as manual/E2E testing catches.
 - Full payment completion (a real charge through Paystack's hosted

@@ -230,3 +230,61 @@ the template in a null-service check instead (`8db58b5`) — see
 Also added `/_design-capture/` (local Penpot screenshot tooling, has live
 credentials in its own `.env`) to `.gitignore` — it was never meant to be
 tracked or deployed.
+
+## Invoice, client-portal, payment, and deploy-infra fixes (2026-08-31, 2026-10-15 to 2026-10-17)
+
+A run of live-reported bugs, most of the same underlying shape: stock or
+custom template/code assuming a value (an array key, an object, a Twig
+global) is always present, which `strict_variables: true` turns into a
+hard crash instead of a blank field the moment that assumption breaks.
+Full detail for each in `CUSTOMIZATIONS.md`'s "Invoice PDF fixes" and
+"Client-portal crash fixes" sections, plus `PAYSTACK.md` and
+`DEPLOYMENT.md` for the two that extend those specifically.
+
+- **Invoice PDF**: crashed outright once the company address was changed
+  to a real 2-line address (a 3rd, unfilled address line isn't just
+  empty by the time the template sees it — the key is gone entirely);
+  separately, the logo rendered with no company name anywhere near it
+  (same either/or bug already fixed in emails), and fixing that then
+  overlapped the two because of a Dompdf `position: relative` quirk in
+  the logo's own CSS rule (`f72effa`, `52b728d`).
+- **Admin previewing a client's invoice link** crashed on a null `client`
+  Twig global — that page is deliberately guest-accessible via hash, so
+  `client` is null for an admin or an actual guest opening it directly,
+  and the one-click-payment block didn't guard for that (`6a5fca0`).
+- **DirectAdmin `unsuspendAccount()`** threw instead of succeeding
+  whenever FOSSBilling's local "Suspended" status had drifted out of
+  sync with an account that was already active on the server — blocking
+  the only way to clear that stale status (`c3e028c`).
+- **Client custom fields** missing `active`/`required` keys crashed the
+  client profile page and (in the stock fallback template) the signup
+  page — a gap an earlier fix (`c49e408`) patched everywhere except these
+  two spots (`297532d`).
+- **Password reset was actually broken**, not just erroring cosmetically:
+  a circular self-reference in the shared public-page layout's
+  `meta_description` fallback crashed any page that didn't override that
+  block, which included the "set new password" page a client lands on
+  from the reset email — and that crash had been masking a second,
+  independent bug underneath it (the `hash` needed to submit the form was
+  never actually passed to the template). A client had already been
+  manually reset by an admin as a workaround before both were found and
+  fixed at the root — the layout fix covers any current or future page
+  using it, not just the one reported (`297532d`, `f0a7c49`).
+- **Paystack one-click payment** hard-failed with "Class
+  'Payment_Adapter_Paystack' not found" — the adapter file was never
+  added to Composer's generated classmap after being committed (no
+  tracked `composer.json` to re-run `dump-autoload` against), and the
+  one-click code referenced the class directly with no fallback, unlike
+  regular checkout. Fixed by hand-adding the classmap entry plus a
+  `require_once` fallback; a related audit also found a declined/failed
+  one-click charge was failing silently (the error was recorded but never
+  shown to the client) and fixed that too. Verified for real afterward —
+  not just read — by driving the actual code through FOSSBilling's API
+  dispatcher against local dev (`f0a7c49`, `3e59ff8`).
+- **GeoIP databases were never meant to be tracked** — two binary files
+  the app re-downloads from GitHub on a schedule had been committed at
+  baseline, showing as permanently "modified" every time the cron
+  refreshed them. Untracked via `.gitignore` + `git rm --cached`; this
+  surfaced a new, more general deploy gotcha (untracking a file the
+  running app writes to breaks the next `git pull` with a merge conflict,
+  not GeoIP-specific) now documented in `DEPLOYMENT.md` (`dd944b7`).
