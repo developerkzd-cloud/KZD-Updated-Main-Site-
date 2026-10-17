@@ -231,7 +231,23 @@ class Client extends \FOSSBilling\Api\AbstractApi
             'server' => [],
             'http_raw_post_data' => '',
         ];
-        $this->getDi()['mod_service']('Invoice', 'Transaction')->createAndProcess($ipn);
+        $txId = $this->getDi()['mod_service']('Invoice', 'Transaction')->createAndProcess($ipn);
+
+        // Paystack.php::verifyAndApply() never throws on a declined/pending/
+        // failed charge -- for the redirect and webhook flows that's correct,
+        // since nothing is synchronously waiting on an exception there. Here,
+        // though, the client's AJAX call treats "no exception" as success and
+        // just reloads the page, so a declined or OTP-pending saved-card
+        // charge would otherwise silently reload back to the still-unpaid
+        // invoice with no explanation at all. Check the actual outcome and
+        // surface it as a real error instead.
+        $tx = $this->getDi()['db']->load('Transaction', $txId);
+        if (!$tx instanceof \Model_Transaction || $tx->status !== \Model_Transaction::STATUS_PROCESSED) {
+            throw new \FOSSBilling\InformationException(
+                'One-click payment failed: :error',
+                [':error' => $tx->error ?? 'Payment could not be confirmed. Please try again or use another payment method.']
+            );
+        }
 
         return true;
     }
