@@ -180,6 +180,51 @@
   --kzd-dur-section: 400ms;     /* 300–500 */
   --kzd-ease:        cubic-bezier(0.2, 0.7, 0.2, 1);
 
+  /* ---------------------------------------------- SERVICES (homepage, option A)
+     Component values from the approved section design. */
+  --kzd-sv-h2:          48px;
+  --kzd-sv-h2-sm:       34px;
+  --kzd-sv-name:        clamp(28px, 2.5vw, 36px);   /* 36 at 1440, 28 at 1024 so names stay on one line */
+  --kzd-sv-name-sm:     22px;
+  --kzd-sv-row-h:       104px;
+  --kzd-sv-row-h-sm:    72px;
+  --kzd-sv-num-w:       28px;
+  --kzd-sv-mono:        11px;
+  --kzd-sv-body:        15px;
+  --kzd-sv-intro:       17px;
+  --kzd-sv-btn:         15px;
+  --kzd-sv-preview-w:   280px;
+  --kzd-sv-tile:        48px;
+  --kzd-sv-go:          44px;
+  --kzd-sv-pad-y:       88px;
+
+  /* ---------------------------------------------- PROBLEMS WE SOLVE (homepage)
+     Component values from the approved section design. */
+  --kzd-surface-card:     #F4F5F7;  /* front card */
+  --kzd-pb-h2:            56px;
+  --kzd-pb-h2-sm:         40px;
+  --kzd-pb-h3:            48px;
+  --kzd-pb-h3-sm:         30px;
+  --kzd-pb-num:           140px;
+  --kzd-pb-num-sm:        80px;
+  --kzd-pb-rail-active:   28px;
+  --kzd-pb-rail:          20px;
+  --kzd-pb-intro:         17px;
+  --kzd-pb-step-name:     18px;
+  --kzd-pb-step-text:     15px;
+  --kzd-pb-eyebrow-sm:    11px;
+  --kzd-pb-card-h:        640px;
+  --kzd-pb-card-h-sm:     600px;
+  --kzd-pb-card-gap:      64px;
+  --kzd-pb-top:           120px;    /* first sticky card, desktop */
+  --kzd-pb-top-sm:        96px;     /* first sticky card, mobile  */
+  --kzd-pb-step:          32px;     /* stagger between stuck cards */
+  --kzd-pb-step-sm:       20px;
+  --kzd-pb-pad-card-sm:   28px;
+  --kzd-pb-step-col:      92px;
+  --kzd-pb-entrance:      600ms;
+  --kzd-ease-out-expo:    cubic-bezier(0.22, 1, 0.36, 1);
+
   /* Stacking */
   --kzd-z-nav:   1000;
   --kzd-z-modal: 2400;

@@ -1,0 +1,97 @@
+/* Three cards across on desktop (gap 24), one + a peek on mobile. */
+.rail { --snap-gap: 24px; }
+
+/* Room for the cards' shadows inside the scrolling rail, cancelled out
+   with negative margins so the layout does not move. */
+.track {
+  margin: -8px -6px -40px;
+  padding: 8px 6px 40px;
+  scroll-padding-inline: 6px;
+}
+
+.slide {
+  display: flex;
+  width: calc((100% - 48px) / 3);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 300px;
+  padding: 26px 24px 24px;
+  border: 1px solid var(--color-surface);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  box-shadow: 0 10px 30px rgb(26 26 26 / 0.06);
+}
+
+.stars { font-size: 17px; letter-spacing: 3px; }
+
+.quote {
+  display: -webkit-box;
+  margin: 18px 0 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--color-strong);
+}
+.quoteOpen { display: block; }
+
+.more {
+  align-self: flex-start;
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 14px;
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+@media (hover: hover) { .more:hover { color: var(--color-secondary); } }
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-white);
+}
+
+.name { font-size: 14px; font-weight: 600; color: var(--color-ink); }
+
+.dots { display: none; }
+
+@media (max-width: 900px) {
+  .rail { --snap-gap: 16px; }
+  /* Bleed to the screen edge so the next card peeks in. */
+  .track {
+    margin: -8px calc(-1 * var(--container-gutter)) -40px;
+    padding: 8px var(--container-gutter) 40px;
+    scroll-padding-inline: var(--container-gutter);
+  }
+  .slide { width: 300px; }
+  .card { min-height: 290px; padding: 24px 22px; border-color: var(--color-border); box-shadow: none; }
+  .quote { font-size: 17px; line-height: 1.6; color: var(--color-strong); }
+  .more { display: none; }
+  .quoteOpen { display: -webkit-box; }
+  .avatar { width: 44px; height: 44px; font-size: 14px; background: var(--color-ink) !important; }
+  .name { font-size: 16px; }
+  .dots { display: flex; }
+}

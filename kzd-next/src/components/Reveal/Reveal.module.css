@@ -1,16 +1,23 @@
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity var(--kzd-dur-section) ease, transform var(--kzd-dur-section) ease;
+  transform: translateY(var(--reveal-distance, 16px));
+  transition:
+    opacity var(--reveal-duration, 600ms) var(--ease-motion, ease),
+    transform var(--reveal-duration, 600ms) var(--ease-motion, ease);
+  transition-delay: calc(var(--d, 0) * var(--reveal-stagger, 80ms));
 }
 
-.visible {
+.reveal[data-from="left"]  { transform: translateX(calc(var(--reveal-distance, 16px) * -1.5)); }
+.reveal[data-from="right"] { transform: translateX(calc(var(--reveal-distance, 16px) * 2)); }
+
+.reveal[data-revealed="true"] {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
+  .reveal,
+  .reveal[data-from] {
     opacity: 1;
     transform: none;
     transition: none;

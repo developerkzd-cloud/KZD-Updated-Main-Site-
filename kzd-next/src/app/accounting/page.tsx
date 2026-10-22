@@ -92,6 +92,7 @@ export default function AccountingPage() {
             fill
             sizes="100vw"
             priority
+            fetchPriority="high"
             className={styles.heroImg}
           />
           <div className={styles.heroWash} aria-hidden="true" />

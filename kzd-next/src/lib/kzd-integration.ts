@@ -14,7 +14,17 @@
 
 import type { Tld } from "./content";
 
-export const FOSSBILLING_ORIGIN = "https://my.kzdsolutions.co.za";
+/** Where the FOSSBilling client portal lives. Production by default; set
+    NEXT_PUBLIC_FOSSBILLING_ORIGIN (e.g. http://localhost for a local
+    FOSSBilling) to point the order hand-offs somewhere else. */
+export const FOSSBILLING_ORIGIN = process.env.NEXT_PUBLIC_FOSSBILLING_ORIGIN || "https://my.kzdsolutions.co.za";
+
+/** The AI website builder -- a separate Node/Express app
+    (kzd-ai-website-builder-app), served on this site at /build through the
+    rewrite in next.config.ts (BUILDER_ORIGIN says where it runs). Kept
+    same-origin so the builder's own relative /build/api calls and its
+    Publish hand-off to /order work unchanged. */
+export const BUILDER_URL = "/build";
 
 /** FOSSBilling product IDs. Domains is product 1 (seeded by FOSSBilling
     itself as "Domains registration and transfer"). */

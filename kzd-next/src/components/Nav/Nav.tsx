@@ -20,6 +20,7 @@ import Link from "next/link";
 import { AUTH_LINKS, NAV_ITEMS } from "@/lib/nav";
 import NavShell from "./NavShell";
 import ServicesDropdown from "./ServicesDropdown";
+import CurrentLink from "./CurrentLink";
 import MobileDrawer from "./MobileDrawer";
 import styles from "./Nav.module.css";
 
@@ -41,13 +42,13 @@ export default function Nav() {
       <nav aria-label="Main" className={styles.navWrap}>
         <ul className={styles.list}>
           {NAV_ITEMS.map((item) =>
-            item.groups ? (
-              <ServicesDropdown key={item.label} item={item} />
+            item.label === "Services" ? (
+              <ServicesDropdown key={item.label} />
             ) : (
               <li className={styles.item} key={item.label}>
-                <Link className={styles.link} href={item.href}>
+                <CurrentLink className={styles.link} href={item.href}>
                   {item.label}
-                </Link>
+                </CurrentLink>
               </li>
             )
           )}
@@ -64,7 +65,7 @@ export default function Nav() {
         ))}
       </ul>
 
-      <MobileDrawer burgerClass={styles.burger} barClass={styles.burgerBar} />
+      <MobileDrawer burgerClass={styles.burger} barsClass={styles.burgerBars} barClass={styles.burgerBar} />
     </NavShell>
   );
 }

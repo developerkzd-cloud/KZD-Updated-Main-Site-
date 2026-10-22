@@ -1,374 +1,402 @@
 /* ==========================================================================
-   KZD Solutions — Problems We Solve (light theme, bento grid)
-   Replaces the swiper carousel version of this section.
+   KZD Solutions — Problems We Solve (homepage)
 
-   SELF-CONTAINED AND SCOPED. Everything is namespaced under .kzd-problems with
-   --kzd-p- prefixed properties. No bare element, :root, body or existing site
-   class is targeted, so it cannot affect other sections or the other 17 pages.
+   A sticky left column (eyebrow, heading, intro, progress rail) beside a deck
+   of four stacking cards.
 
-   THE CELLS STAY DARK. The captions sit on top of the photos, so every cell
-   keeps its dark bottom scrim regardless of the page background. The section
-   reads as dark tiles on white paper — that is intentional, and it matches the
-   light Creative Approach photo panel. Removing the scrim would force the
-   captions below their photos, which changes the layout, not the theme.
+   FITTING THE SCREEN. Each card's sticky top is measured from the real header
+   height (--header-h, set by js) and its height is capped at what is left of
+   the viewport below that top (--card-max), so a stuck card is always fully
+   on screen. Content flows from the top; type is fluid so it fits short
+   screens. If a card still cannot fit, js switches the section to a plain
+   list (.problems--static).
 
-   Geometry: the board is a 1240x520 grid at 24px gaps inside a 1240 column.
-   This site's container is 1098, so the grid holds the board's proportions via
-   fr units + aspect-ratio rather than hard-coded board pixels.
-     GAPS            0,   0    610 x 520
-     ANALYTICS       634, 0    606 x 248
-     INEFFICIENCIES  634, 272  291 x 248
-     DIGITAL         949, 272  291 x 248
-   (610 + 24 + 606 = 1240 · 291 + 24 + 291 = 606 · 248 + 24 + 248 = 520)
+   READ TIME. Cards are sticky inside the shared list, and the list leaves 60vh
+   of scroll between consecutive cards (40vh after the last). A card that has
+   just stuck stays fully visible and still for that distance before the next
+   card reaches its bottom edge.
+
+   COVER EFFECT. js sets three numbers on each card's <li> from live rects:
+     --p  0 -> 1  while the NEXT card slides from this card's bottom edge to
+                  its own stuck position (scale + darken)
+     --q  0 -> 1  the same for the card after that (second layer colour)
+     --f  0 -> 1  the last 40% of --p: content fades only then
+   Only transform, opacity and the card's own background-color change.
    ========================================================================== */
 
+@property --p { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --q { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --f { syntax: "<number>"; inherits: true; initial-value: 0; }
+
 .kzd-problems {
-  /* Light palette — same values as the Creative Approach section. */
-  --kzd-p-paper:      var(--kzd-white);
-  --kzd-p-ink:        var(--kzd-black);
-  --kzd-p-muted:      var(--kzd-gray);
-  --kzd-p-blue:       var(--kzd-navy-300);
-  --kzd-p-ember:      var(--kzd-navy-200);
-  --kzd-p-line:       var(--kzd-line);
-  --kzd-p-grad-from:  var(--kzd-black);
-  --kzd-p-grad-to:    var(--kzd-gray);
-
-  /* Caption tones — unchanged from the dark theme, because the captions still
-     sit on a dark scrim. */
-  --kzd-p-cap-lg:     var(--kzd-silver-light);
-  --kzd-p-cap-sm:     var(--kzd-navy-100);   /* light text on the dark scrim */
-
-  --kzd-p-display: var(--kzd-type-display);
-  --kzd-p-body:    var(--kzd-type-sans);
-  --kzd-p-mono:    var(--kzd-type-label);
-
-  --kzd-p-ease: cubic-bezier(.22, .61, .36, 1);
+  --pb-head: var(--header-h, 80px);
+  --pb-top0: calc(var(--pb-head) + var(--kzd-space-24));   /* first card's sticky top */
+  --pb-step: 28px;                                          /* stagger between stuck cards */
+  --pb-dwell: 60vh;                                         /* read time before the next card arrives */
+  --pb-tail: 40vh;                                          /* read time after the last card */
+  --pb-pad: clamp(28px, 3vw, 44px);
+  --pb-num: clamp(64px, 9vw, 120px);
+  --pb-h3: clamp(32px, 3.2vw, 44px);
+  --pb-h3-long: clamp(26px, 2.4vw, 34px);
+  --pb-gap-in: var(--kzd-space-24);
+  /* how far a covered card's label rises into the strip left visible above
+     the card covering it */
+  --pb-label-lift: calc(var(--pb-pad) - var(--kzd-space-8));
 
   position: relative;
-  /* Flat --paper. No ambient wash: this section was flat on the dark board too,
-     deliberately, because it alternates with the washed sections either side. */
-  background: var(--kzd-p-paper);
-  padding-top: 120px;
-  padding-bottom: 140px;
-}
-
-/* --------------------------------------------------------------------------
-   1. Header — eyebrow + heading left, intro right
-   Board: eyebrow y=120, H2 y=180, intro at x=760 y=186 width 470.
-   660 : 470 is the board's column split (100..760 and 760..1230).
-   -------------------------------------------------------------------------- */
-
-.kzd-problems__head {
-  display: grid;
-  grid-template-columns: 660fr 470fr;
-  column-gap: var(--kzd-space-32);
-  align-items: start;
-}
-
-.kzd-problems__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--kzd-space-12);
-  height: 34px;
-  padding-left: var(--kzd-space-16);
-  padding-right: var(--kzd-space-24);
-  border-radius: var(--kzd-radius-16);
-  background: var(--kzd-p-paper);
-  border: 1px solid var(--kzd-p-line);
-}
-
-.kzd-problems__dot {
-  flex: 0 0 auto;
-  width: 6px;
-  height: 6px;
-  border-radius: var(--kzd-radius-full);
-  background: var(--kzd-p-ember);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kzd-navy-200) 24%, transparent);
-}
-
-.kzd-problems__eyebrow-text {
-  font-family: var(--kzd-p-mono);
-  font-weight: 500;
-  font-size:  var(--kzd-text-label-sm);
-  line-height: 1;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--kzd-p-blue);
-  margin-right: -.18em;
-}
-
-/* Heading gradient INVERTS versus the dark board: that ran --kzd-white → --kzd-navy-200;
-   this runs --kzd-black → --kzd-gray. */
-.kzd-problems__title {
-  margin: var(--kzd-space-24) 0 0;
-  font-family: var(--kzd-p-display);
-  font-weight: 600;
-  font-size:  var(--kzd-text-headline);
-  line-height: 1.06;
-  letter-spacing: -.03em;
-  color: var(--kzd-p-ink);          /* fallback if background-clip:text fails */
-}
-
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .kzd-problems__title {
-    background-image: linear-gradient(180deg, var(--kzd-p-grad-from) 0%, var(--kzd-p-grad-to) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-}
-
-.kzd-problems__intro {
-  margin: var(--kzd-space-64) 0 0;                 /* board: 186 - 120 = 66 below the eyebrow top */
-  font-family: var(--kzd-p-body);
-  font-weight: 500;                 /* optical bump, as in Creative Approach */
-  font-size:  var(--kzd-text-body);
-  line-height: 1.706;
-  color: var(--kzd-p-muted);
-  text-wrap: wrap;
-}
-
-/* --------------------------------------------------------------------------
-   2. Bento grid
-   -------------------------------------------------------------------------- */
-
-.kzd-problems__grid {
-  margin-top: var(--kzd-space-64);                 /* lands the grid top on the board's y=340 */
-  display: grid;
-  grid-template-columns: 610fr 291fr 291fr;
-  grid-template-rows: 1fr 1fr;
-  gap: var(--kzd-space-24);
-  aspect-ratio: 1240 / 520;         /* holds the board proportions at any width */
-}
-
-.kzd-problems__cell--gaps      { grid-column: 1; grid-row: 1 / span 2; }
-.kzd-problems__cell--analytics { grid-column: 2 / span 2; grid-row: 1; }
-.kzd-problems__cell--ineff     { grid-column: 2; grid-row: 2; }
-.kzd-problems__cell--digital   { grid-column: 3; grid-row: 2; }
-
-.kzd-problems__cell {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--kzd-radius-24);
-  /* A light edge rather than the dark theme's translucent white — it sits over
-     a dark photo, so it reads as a subtle rim, not a line on the paper. */
-  border: 1px solid rgba(255, 255, 255, .16);
-  /* Lifts the tile off the white paper. */
-  box-shadow: 0 10px 28px -12px color-mix(in srgb, var(--kzd-navy-500) 30%, transparent);
-  opacity: 0;
-  transform: scale(.98);
-  transition:
-    opacity var(--kzd-dur-section) var(--kzd-p-ease), transform var(--kzd-dur-section) var(--kzd-p-ease);
-  transition-delay: calc(var(--kzd-p-i, 0) * 90ms);
-}
-
-.kzd-problems__cell.is-in {
-  opacity: 1;
-  transform: none;
-}
-
-/* Stagger by grid position, large cell first (DOM order matches). */
-.kzd-problems__cell--gaps      { --kzd-p-i: 0; }
-.kzd-problems__cell--analytics { --kzd-p-i: 1; }
-.kzd-problems__cell--ineff     { --kzd-p-i: 2; }
-.kzd-problems__cell--digital   { --kzd-p-i: 3; }
-
-.kzd-problems__cell img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* PER-PHOTO TREATMENT — these are not interchangeable. Each photo fights the
-   white page differently. Lifted slightly versus the dark theme (they no longer
-   need to sink into the page) but still clearly dark objects. */
-.kzd-problems__cell--gaps img {
-  filter: grayscale(.48) brightness(.94) contrast(1.04);
-  object-position: center 45%;
-}
-.kzd-problems__cell--analytics img {
-  filter: grayscale(.60) brightness(.92) contrast(1.05);
-  object-position: center 34%;
-}
-/* .90, deliberately harder than the .84 the dark theme used: this is a 3D
-   render in olive and teal, and lifting brightness for the light theme brings
-   the green cast straight back. Do not lower it to match the dark value. */
-.kzd-problems__cell--ineff img {
-  filter: grayscale(.90) brightness(.96) contrast(1.07);
-  object-position: 56% center;
-}
-.kzd-problems__cell--digital img {
-  filter: grayscale(.52) brightness(.92) contrast(1.04);
-  object-position: center 42%;
-}
-
-/* Left-edge blue wash, fading out by ~80% width.
-   FLAG: the brief gives the extent but no opacity; .16 is my value. */
-.kzd-problems__cell::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--kzd-navy-300) 16%, transparent) 0%,
-    color-mix(in srgb, var(--kzd-navy-300) 0%, transparent) 80%
-  );
-}
-
-/* THE SCRIM. Ramps from 8% of cell height to near-opaque at the bottom: the
-   captions start around 40% on the short cells, over bright screenshots.
-   This is what makes the white captions legible — it is not decorative. */
-.kzd-problems__cell::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    transparent 8%,
-    color-mix(in srgb, var(--kzd-navy-700) 68%, transparent) 42%,
-    color-mix(in srgb, var(--kzd-navy-700) 94%, transparent) 100%
-  );
-}
-
-/* --------------------------------------------------------------------------
-   3. Captions — white on the scrim, unchanged from the dark theme
-   -------------------------------------------------------------------------- */
-
-.kzd-problems__cap {
-  position: absolute;
-  z-index: 2;
-  left: 0;
-  bottom: 0;
-  opacity: 0;
-  transform: translateY(12px);
-  transition:
-    opacity var(--kzd-dur-section) var(--kzd-p-ease), transform var(--kzd-dur-section) var(--kzd-p-ease);
-  /* 120ms behind its own cell. */
-  transition-delay: calc(var(--kzd-p-i, 0) * 90ms + 120ms);
-}
-
-.kzd-problems__cell.is-in .kzd-problems__cap {
-  opacity: 1;
-  transform: none;
-}
-
-.kzd-problems__label {
-  display: block;
-  margin: 0;
-  font-family: var(--kzd-p-mono);
-  font-weight: 500;
-  line-height: 1;
-  text-transform: uppercase;
+  padding: var(--kzd-space-96) var(--kzd-space-80);
+  background: var(--kzd-black);
   color: var(--kzd-white);
 }
 
-.kzd-problems__text {
-  margin: 0;
-  font-family: var(--kzd-p-body);
-  font-weight: 400;
-  text-wrap: wrap;
-}
+.kzd-problems ol { list-style: none; margin: 0; padding: 0; }
+.kzd-problems p,
+.kzd-problems h2,
+.kzd-problems h3 { margin: 0; }
 
-/* Large cells */
-.kzd-problems__cell--gaps .kzd-problems__cap,
-.kzd-problems__cell--analytics .kzd-problems__cap { padding: var(--kzd-space-32); }
-
-.kzd-problems__cell--gaps .kzd-problems__label,
-.kzd-problems__cell--analytics .kzd-problems__label {
-  font-size:  var(--kzd-text-label-sm);
-  letter-spacing: .18em;
-  margin-right: -.18em;
-}
-
-.kzd-problems__cell--gaps .kzd-problems__text,
-.kzd-problems__cell--analytics .kzd-problems__text {
-  margin-top: var(--kzd-space-24);
-  max-width: 430px;
-  font-size:  var(--kzd-text-body);
-  line-height: 1.6;
-  color: var(--kzd-p-cap-lg);
-}
-
-/* Small cells */
-.kzd-problems__cell--ineff .kzd-problems__cap,
-.kzd-problems__cell--digital .kzd-problems__cap { padding: var(--kzd-space-24); }
-
-.kzd-problems__cell--ineff .kzd-problems__label,
-.kzd-problems__cell--digital .kzd-problems__label {
-  font-size:  var(--kzd-text-label-sm);
-  letter-spacing: .16em;
-  margin-right: -.16em;
-}
-
-.kzd-problems__cell--ineff .kzd-problems__text,
-.kzd-problems__cell--digital .kzd-problems__text {
-  margin-top: var(--kzd-space-24);
-  max-width: 228px;
-  font-size:  var(--kzd-text-label);
-  line-height: 1.6;
-  color: var(--kzd-p-cap-sm);
+.kzd-problems__wrap {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--kzd-space-24);
+  max-width: calc(var(--kzd-wrap) + var(--kzd-space-64));
+  margin: 0 auto;
 }
 
 /* --------------------------------------------------------------------------
-   4. Responsive
+   Left column (cols 1-4), sticky while the cards scroll
    -------------------------------------------------------------------------- */
+.kzd-problems__aside { grid-column: 1 / 5; }
+.kzd-problems__sticky { position: sticky; top: var(--pb-top0); }
 
-@media (max-width: 1199px) {
-  .kzd-problems { padding-top: var(--kzd-space-96); padding-bottom: 100px; }
-  .kzd-problems__title { font-size:  var(--kzd-text-headline); }
-  .kzd-problems__grid { margin-top: var(--kzd-space-48); }
-  .kzd-problems__cell--gaps .kzd-problems__text,
-  .kzd-problems__cell--analytics .kzd-problems__text { font-size:  var(--kzd-text-label-lg); }
+.kzd-problems__eyebrow {
+  font-family: var(--kzd-type-label);
+  font-size: var(--kzd-text-label-sm);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  line-height: var(--kzd-leading-label);
+  text-transform: uppercase;
+  color: var(--kzd-silver);
 }
 
-/* Spec 4: below this the bento becomes a single column, all cells 4:3. */
-@media (max-width: 991px) {
-  .kzd-problems__head { grid-template-columns: minmax(0, 1fr); }
-  .kzd-problems__intro { margin-top: var(--kzd-space-24); }
+.kzd-problems__title {
+  margin-top: var(--kzd-space-16) !important;
+  font-family: var(--kzd-type-display);
+  font-size: var(--kzd-pb-h2);
+  font-weight: 700;
+  line-height: 1 !important;
+  letter-spacing: -0.04em;
+  color: var(--kzd-white);
+}
 
-  .kzd-problems__grid {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: none;
-    aspect-ratio: auto;
-    margin-top: var(--kzd-space-40);
+.kzd-problems__intro {
+  margin-top: var(--kzd-space-24) !important;
+  max-width: 380px;
+  font-family: var(--kzd-type-sans);
+  font-size: var(--kzd-pb-intro);
+  line-height: 1.6;
+  color: var(--kzd-silver-light);
+}
+
+/* Progress rail: a 2px track, a white fill that grows (scaleY) with the
+   active card, and the four problems as links. */
+.kzd-problems__rail-wrap {
+  position: relative;
+  margin-top: var(--kzd-space-40);
+  padding-left: var(--kzd-space-24);
+}
+.kzd-problems__rail-wrap::before,
+.kzd-problems__rail-fill {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--kzd-border-selected);
+}
+.kzd-problems__rail-wrap::before { background: color-mix(in srgb, var(--kzd-white) 12%, transparent); }
+.kzd-problems__rail-fill {
+  background: var(--kzd-white);
+  transform: scaleY(var(--fill, 0.25));
+  transform-origin: 50% 0;
+  transition: transform 300ms ease;
+}
+
+.kzd-problems__rail-link {
+  display: flex;
+  align-items: center;
+  gap: var(--kzd-space-12);
+  min-height: var(--kzd-control);
+  color: var(--kzd-silver);
+  text-decoration: none;
+  transition: color 300ms ease;
+}
+.kzd-problems__rail-num {
+  font-family: var(--kzd-type-label);
+  font-size: var(--kzd-text-label-sm);
+  letter-spacing: 0.08em;
+}
+.kzd-problems__rail-name {
+  font-family: var(--kzd-type-display);
+  font-size: var(--kzd-pb-rail);
+  font-weight: 500;
+  line-height: 1.1;
+  transition: font-size 300ms ease;
+}
+.kzd-problems__rail-link:hover { color: var(--kzd-white); }
+.kzd-problems__rail-link.is-active { color: var(--kzd-white); }
+.kzd-problems__rail-link.is-active .kzd-problems__rail-name {
+  font-size: var(--kzd-pb-rail-active);
+  font-weight: 600;
+}
+
+/* Focus on the dark section: a white ring (outranks the global two-tone ring). */
+.kzd-problems .kzd-problems__rail-link:focus-visible {
+  outline: var(--kzd-focus-ring) solid var(--kzd-white) !important;
+  outline-offset: 4px !important;
+  box-shadow: none !important;
+  border-radius: var(--kzd-radius-8);
+}
+
+/* Mobile/tablet progress bar (hidden on desktop) */
+.kzd-problems__bar { display: none; }
+
+/* --------------------------------------------------------------------------
+   The deck (cols 6-12)
+   -------------------------------------------------------------------------- */
+/* Spacing is a flex gap (the read time), not item margins: sticky keeps an
+   element's MARGIN box inside its container. The ::after spacer adds the read
+   time after the last card; it sits inside the list so cards stay stuck. */
+.kzd-problems__cards {
+  grid-column: 6 / 13;
+  display: flex;
+  flex-direction: column;
+  gap: var(--pb-dwell);
+}
+.kzd-problems__cards::after {
+  content: "";
+  display: block;
+  flex: none;
+  height: 0;
+  /* the gap before it is the dwell (60vh); pull it back to the 40vh tail */
+  margin-top: calc(var(--pb-tail) - var(--pb-dwell));
+}
+
+.kzd-problems__item {
+  /* this card's sticky top and the height left for it below that top */
+  --top: calc(var(--pb-top0) + var(--i) * var(--pb-step));
+  --card-max: calc(100vh - var(--top) - var(--kzd-space-24));
+  position: sticky;
+  top: var(--top);
+  flex: none;
+  /* Every sticky box ends at the same line (top + height = 100svh - 24px),
+     so when the list ends all four cards are released together and leave as
+     one deck. Sized by content, a taller card was released first and slid
+     above the strip of the card under it. The card inside keeps its own
+     height; the space below it is transparent and only adds read time. */
+  height: var(--card-max);
+  pointer-events: none;
+}
+.kzd-problems__item > .kzd-problems__card { pointer-events: auto; }
+@supports (height: 100svh) {
+  .kzd-problems__item { --card-max: calc(100svh - var(--top) - var(--kzd-space-24)); }
+}
+
+.kzd-problems__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--pb-gap-in);
+  height: auto;
+  max-height: var(--card-max);
+  padding: var(--pb-pad);
+  border-radius: var(--kzd-radius-24);
+  overflow: hidden;
+  color: var(--kzd-black);
+  box-shadow: 0 -12px 40px rgb(0 0 0 / 0.25);
+  /* front card -> charcoal as the next card covers it (--p) -> gray once a
+     second card covers it (--q): the three-layer deck */
+  background-color: color-mix(in srgb, var(--kzd-gray) calc(var(--q) * 100%),
+                     color-mix(in srgb, var(--kzd-charcoal) calc(var(--p) * 100%), var(--kzd-surface-card)));
+  transform: scale(calc(1 - 0.06 * var(--p)));
+  transform-origin: 50% 0;
+}
+.kzd-problems.is-onscreen:not(.problems--static) .kzd-problems__card { will-change: transform; }
+
+/* top row: label left, outline number right; the headline follows directly */
+.kzd-problems__card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--kzd-space-16);
+}
+.kzd-problems__card-label {
+  padding-top: var(--kzd-space-8);
+  font-family: var(--kzd-type-label);
+  font-size: var(--kzd-text-label-sm);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  /* gray on the front card (4.9:1), light silver on the first back card
+     (8.1:1), white on the oldest, gray-filled card (5.3:1) */
+  color: color-mix(in srgb, var(--kzd-white) calc(var(--q) * 100%),
+         color-mix(in srgb, var(--kzd-silver-light) calc(var(--p) * 100%), var(--kzd-gray)));
+  transform: translateY(calc(var(--p) * -1 * var(--pb-label-lift)));
+}
+.kzd-problems__card-num {
+  flex: none;
+  margin: calc(var(--pb-num) * -0.06) 0 calc(var(--pb-num) * -0.12);
+  font-family: var(--kzd-type-display);
+  font-size: var(--pb-num);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--kzd-silver);
+  opacity: calc(1 - var(--f));
+  pointer-events: none;
+}
+
+.kzd-problems__card-body { opacity: calc(1 - var(--f)); }
+
+.kzd-problems__card-title {
+  max-width: 560px;
+  font-family: var(--kzd-type-display);
+  font-size: var(--pb-h3);
+  font-weight: 700;
+  line-height: 1.05 !important;
+  letter-spacing: -0.03em;
+  color: var(--kzd-black);
+}
+/* the two long problem statements step down a size */
+#kzd-problem-gaps .kzd-problems__card-title,
+#kzd-problem-analytics .kzd-problems__card-title { font-size: var(--pb-h3-long); line-height: 1.15 !important; }
+
+.kzd-problems__fix-label {
+  margin-top: var(--pb-gap-in) !important;
+  padding-top: var(--kzd-space-16);
+  border-top: var(--kzd-border) solid var(--kzd-silver-light);
+  font-family: var(--kzd-type-label);
+  font-size: var(--kzd-text-label-sm);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--kzd-gray);
+}
+
+.kzd-problems__steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--kzd-space-24);
+  margin-top: var(--kzd-space-16) !important;
+}
+.kzd-problems__step-name {
+  display: block;
+  font-family: var(--kzd-type-display);
+  font-size: var(--kzd-pb-step-name);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--kzd-black);
+}
+.kzd-problems__step-text {
+  display: block;
+  margin-top: var(--kzd-space-4);
+  font-family: var(--kzd-type-sans);
+  font-size: var(--kzd-pb-step-text);
+  line-height: 1.5;
+  color: var(--kzd-charcoal);
+}
+
+/* --------------------------------------------------------------------------
+   Entrance (once): eyebrow, heading, intro and rail fade up 80ms apart.
+   Hidden only after JS arms it, so the content shows without JS.
+   -------------------------------------------------------------------------- */
+.kzd-problems.is-armed .kzd-problems__in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--kzd-pb-entrance) var(--kzd-ease-out-expo), transform var(--kzd-pb-entrance) var(--kzd-ease-out-expo);
+  transition-delay: calc(var(--d, 0) * 80ms);
+}
+.kzd-problems.is-armed.is-entered .kzd-problems__in { opacity: 1; transform: none; }
+
+/* --------------------------------------------------------------------------
+   Tablet and mobile (< 1024px): one column, a sticky 4-segment progress bar
+   instead of the rail, full-width cards.
+   -------------------------------------------------------------------------- */
+@media (max-width: 1023px) {
+  .kzd-problems {
+    /* 56px under the header leaves room for the sticky progress bar */
+    --pb-top0: calc(var(--pb-head) + 56px);
+    --pb-step: 14px;
+    --pb-pad: var(--kzd-space-24);
+    --pb-num: clamp(56px, 16vw, 72px);
+    --pb-h3: clamp(24px, 7vw, 28px);
+    --pb-h3-long: clamp(22px, 6vw, 26px);
+    --pb-gap-in: var(--kzd-space-16);
+    --pb-label-lift: calc(var(--pb-pad) - var(--kzd-space-8));
+    padding: var(--kzd-space-64) 20px;
   }
-  .kzd-problems__cell { grid-column: 1 !important; grid-row: auto !important; aspect-ratio: 4 / 3; }
+  .kzd-problems__wrap { display: block; max-width: 640px; }
+  .kzd-problems__sticky { position: static; }
+  .kzd-problems__eyebrow { font-size: var(--kzd-pb-eyebrow-sm); }
+  .kzd-problems__title { font-size: var(--kzd-pb-h2-sm); white-space: nowrap; }
+  .kzd-problems__br { display: none; }
+  .kzd-problems__intro { font-size: var(--kzd-text-body-sm); max-width: none; }
+  .kzd-problems__rail-wrap { display: none; }
 
-  /* At one column the small cells are as wide as the large ones, so their
-     captions should not stay pinned to a 228px measure. */
-  .kzd-problems__cell--ineff .kzd-problems__cap,
-  .kzd-problems__cell--digital .kzd-problems__cap { padding: var(--kzd-space-32); }
-  .kzd-problems__cell--ineff .kzd-problems__label,
-  .kzd-problems__cell--digital .kzd-problems__label { font-size:  var(--kzd-text-label-sm); letter-spacing: .18em; }
-  .kzd-problems__cell--ineff .kzd-problems__text,
-  .kzd-problems__cell--digital .kzd-problems__text { max-width: 430px; font-size:  var(--kzd-text-body); }
+  .kzd-problems__bar {
+    position: sticky;
+    top: var(--pb-head);
+    z-index: 5;
+    display: flex;
+    gap: 6px;
+    margin: var(--kzd-space-24) 0 var(--kzd-space-8);
+    padding: var(--kzd-space-16) 0;
+    background: var(--kzd-black);
+  }
+  .kzd-problems__seg {
+    flex: 1;
+    height: 3px;
+    border-radius: var(--kzd-radius-full);
+    background: color-mix(in srgb, var(--kzd-white) 18%, transparent);
+    transition: background-color 300ms ease;
+  }
+  .kzd-problems__seg.is-done { background: var(--kzd-white); }
+
+  .kzd-problems__card { padding: var(--kzd-space-24) 20px; }
+  .kzd-problems__card-title { line-height: 1.1 !important; }
+  .kzd-problems__steps { grid-template-columns: 1fr; gap: var(--kzd-space-12); }
+  .kzd-problems__steps li { display: grid; grid-template-columns: var(--kzd-pb-step-col) 1fr; gap: var(--kzd-space-8); align-items: baseline; }
+  .kzd-problems__step-name { font-size: var(--kzd-text-body-sm); }
+  .kzd-problems__step-text { margin-top: 0; font-size: var(--kzd-text-label-lg); }
 }
-
-@media (max-width: 767px) {
-  .kzd-problems { padding-top: var(--kzd-space-64); padding-bottom: var(--kzd-space-64); }
-  .kzd-problems__title { font-size:  var(--kzd-text-headline); }
-  .kzd-problems__cell { aspect-ratio: 3 / 2; }
-  .kzd-problems__cap { padding: var(--kzd-space-24) !important; }
-  .kzd-problems__text { font-size:  var(--kzd-text-label-lg) !important; }
+@media (max-width: 380px) {
+  .kzd-problems__title { font-size: var(--kzd-text-headline); }
 }
 
 /* --------------------------------------------------------------------------
-   5. Reduced motion — everything lands in its final state.
+   Static list: short screens (< 620px tall), cards that cannot fit even with
+   fluid type (js adds .problems--static), and reduced motion. No stacking,
+   no scaling, everything visible; the rail still highlights.
    -------------------------------------------------------------------------- */
+.kzd-problems.problems--static .kzd-problems__cards { gap: var(--kzd-space-24); }
+.kzd-problems.problems--static .kzd-problems__cards::after { display: none; }
+.kzd-problems.problems--static .kzd-problems__item { position: relative; top: auto; height: auto; --p: 0; --q: 0; --f: 0; }
+.kzd-problems.problems--static .kzd-problems__card { max-height: none; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .kzd-problems__cell,
-  .kzd-problems__cap {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
+  .kzd-problems .kzd-problems__cards { gap: var(--kzd-space-24); }
+  .kzd-problems .kzd-problems__cards::after { display: none; }
+  .kzd-problems .kzd-problems__item { position: relative; top: auto; height: auto; --p: 0 !important; --q: 0 !important; --f: 0 !important; }
+  .kzd-problems .kzd-problems__card { max-height: none; transform: none; }
+  .kzd-problems.is-armed .kzd-problems__in { opacity: 1; transform: none; }
 }
 
+/* --------------------------------------------------------------------------
+   Lenis smooth scrolling (homepage only, set up by js/kzd-problems.js).
+   From lenis/dist/lenis.css, v1.3.26.
+   -------------------------------------------------------------------------- */
+html.lenis, html.lenis body { height: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-smooth iframe { pointer-events: none; }

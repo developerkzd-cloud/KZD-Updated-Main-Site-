@@ -1,0 +1,32 @@
+.card {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 196px; /* confirmed */
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card-light);
+}
+
+.value {
+  margin: 0;
+  font-family: var(--kzd-type-display); /* Inter Tight, confirmed */
+  font-size: var(--text-stat-size);
+  font-weight: var(--text-stat-weight);
+  line-height: var(--text-stat-leading);
+  letter-spacing: var(--text-stat-tracking);
+  color: var(--color-ink);
+}
+
+.label {
+  margin: 0;
+  font-family: var(--kzd-type-label); /* JetBrains Mono, confirmed */
+  font-size: var(--text-label-micro-size);
+  font-weight: var(--text-label-micro-weight);
+  line-height: var(--text-label-micro-leading);
+  letter-spacing: var(--text-label-micro-tracking);
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}

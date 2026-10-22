@@ -33,7 +33,7 @@ export default function ComingSoonProduct({
     <main className={styles.page}>
       <section className={styles.hero}>
         <div className={styles.heroMedia}>
-          <Image src={heroImage} alt={heroAlt} fill sizes="100vw" priority className={styles.heroImg} />
+          <Image src={heroImage} alt={heroAlt} fill sizes="100vw" priority fetchPriority="high" className={styles.heroImg} />
           <div className={styles.heroWash} aria-hidden="true" />
         </div>
         <div className={styles.heroInner}>

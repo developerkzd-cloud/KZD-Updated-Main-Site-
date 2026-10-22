@@ -2,7 +2,7 @@
    KZD Solutions — global stylesheet
 
    Only three things belong in here:
-     1. the import of the shared design tokens (css/kzd-tokens.css)
+     1. the token imports (see NOTE ON THE TWO TOKEN FILES below)
      2. a minimal reset
      3. base element styling
 
@@ -11,11 +11,24 @@
    Modules do the same job at build time, so the prefixes are no longer needed
    inside a module.
 
-   NOTE ON THE TOKENS
-   There are none in this file. Every colour, radius, spacing step and type
-   size lives in css/kzd-tokens.css at the repo root, which the static site
-   links and this file imports, so the two sites cannot drift. Do not add a
-   literal value here or in a module; add a token there.
+   NOTE ON THE TWO TOKEN FILES (read this before touching either import)
+   This app is mid-redesign, from an old greyscale-plus-navy system to a new
+   black-and-white one driven by Penpot. The two imports below are NOT
+   interchangeable:
+
+     css/kzd-tokens.css   OLD. Shared with the static site, lives outside
+                          kzd-next/, and is therefore off-limits to edit for
+                          this redesign. Kept only so components that have
+                          not been rebuilt yet keep working. Its tokens are
+                          named --kzd-*.
+     ./tokens.css         NEW. Lives inside kzd-next/, Next.js-only, and is
+                          the one source of truth for every new component.
+                          Its tokens have no prefix (--color-*, --radius-*,
+                          --text-*, etc.).
+
+   As each page is rebuilt in this redesign it stops referencing --kzd-*
+   entirely. Once nothing does, the old import is deleted — do that
+   deliberately in the final QA pass, not piecemeal.
 
    NOTE ON ZOOM
    The static site runs body { zoom: .9 } from css/about.css, which is why every
@@ -25,7 +38,8 @@
    are true CSS pixels.
    ========================================================================== */
 
-@import "../../../css/kzd-tokens.css";
+@import "../../../css/kzd-tokens.css"; /* OLD — being phased out, see above */
+@import "./tokens.css";                /* NEW — use this one */
 
 
 /* --------------------------------------------------------------------------
@@ -38,11 +52,11 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--kzd-white);
+  background: var(--color-white);
   font-family: var(--kzd-type-sans);
   font-size: var(--kzd-text-body);
   line-height: var(--kzd-leading-body);
-  color: var(--kzd-text);
+  color: var(--color-strong);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -53,14 +67,21 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   line-height: var(--kzd-leading-title);
   letter-spacing: -0.02em;
-  color: var(--kzd-ink);
+  color: var(--color-ink);
 }
 
 p { margin: 0; }
 ul, ol { margin: 0; padding: 0; }
 
 a { color: inherit; text-decoration: none; }
-a:hover { color: var(--kzd-navy-400); }
+/* Zero specificity: any component that sets its own link colour (e.g. a
+   dark button with white text) keeps it on hover. */
+:where(a:hover) { color: var(--color-ink); }
+
+/* Site accent is black: selected text turns black with white type, and
+   checkboxes, radios, range thumbs and the text cursor follow suit. */
+::selection { background: var(--color-ink); color: var(--color-white); }
+:root { accent-color: var(--color-ink); caret-color: var(--color-ink); }
 
 img, svg, video { display: block; max-width: 100%; }
 img { height: auto; }
@@ -73,6 +94,12 @@ button { font: inherit; color: inherit; }
 /* --------------------------------------------------------------------------
    Utilities
    -------------------------------------------------------------------------- */
+
+/* Safety net: nothing may widen the page sideways on a phone (a stray
+   wide element would let the page be swiped into empty space and make the
+   browser zoom out). clip, not hidden, so position: sticky keeps working. */
+html,
+body { overflow-x: clip; }
 
 .kzd-sr {
   position: absolute;

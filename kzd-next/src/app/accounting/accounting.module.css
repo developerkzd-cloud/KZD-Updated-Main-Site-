@@ -481,7 +481,7 @@
   min-height: var(--kzd-control);
   padding: var(--kzd-space-8) var(--kzd-space-16);
   border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-12)
+  border-radius: var(--kzd-radius-12);
   background: var(--kzd-surface-50);
   font: inherit;
   font-size:  var(--kzd-text-body);

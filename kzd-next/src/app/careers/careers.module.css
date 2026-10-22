@@ -14,18 +14,18 @@
   --k-paper2: var(--kzd-surface-50);
   --k-card: var(--kzd-surface-50);
   --k-line: var(--kzd-line);
-  --k-navy: var(--kzd-navy-700);
+  --k-navy: var(--color-ink);
   --k-muted: var(--kzd-gray);
   --k-dim: var(--kzd-gray);
-  --k-blue: var(--kzd-navy-400);
-  --k-ember: var(--kzd-navy-200);
+  --k-blue: var(--color-secondary);
+  --k-ember: var(--color-ink);
   --k-gold: var(--kzd-status-leave);
 
   --k-open-bg: var(--kzd-surface-100);
   --k-open-dot: var(--kzd-status-active);
   --k-open-txt: var(--kzd-status-active-ink);
   --k-shut-bg: var(--kzd-surface-100);
-  --k-dept-bg: var(--kzd-navy-50);
+  --k-dept-bg: var(--color-surface);
   --k-shut-btn: var(--kzd-surface-100);
 
   --k-grad-start: var(--kzd-gray);
@@ -35,7 +35,7 @@
 
   position: relative;
   isolation: isolate;
-  background: var(--k-paper2);
+  background: var(--color-white);
 }
 
 .inner {
@@ -56,51 +56,53 @@
   color: var(--k-navy);
 }
 
-/* 1. Hero ------------------------------------------------------------------ */
+/* 1. Hero: the team photo under the black overlay, nav floating on top
+   (data-hero-full + NavShell). Same recipe as the contact hero. ---------- */
 
-.hero { position: relative; padding-top: var(--kzd-space-64); padding-bottom: var(--kzd-space-80); text-align: center; }
-
-.wash {
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 520px;
+  padding: 130px 0 90px;
+  overflow: hidden;
+  text-align: center;
+  color: var(--color-white);
+  background: var(--color-black);
+}
+.heroMedia { position: absolute; inset: 0; }
+.heroImg { object-fit: cover; }
+.heroOverlay {
   position: absolute;
   inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(58% 52% at 50% 0%, color-mix(in srgb, var(--kzd-navy-300) 8%, transparent) 0%, color-mix(in srgb, var(--kzd-navy-300) 0%, transparent) 100%);
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0.88) 0%, rgb(0 0 0 / 0.74) 55%, rgb(0 0 0 / 0.7) 100%);
 }
+.hero .inner { position: relative; z-index: 1; }
 
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: var(--kzd-space-8);
-  padding: var(--kzd-space-8) var(--kzd-space-16);
-  border: 1px solid var(--k-line);
-  border-radius: var(--kzd-radius-full);
-  background: var(--k-paper);
-  font-family: var(--kzd-type-label);
-  font-size:  var(--kzd-text-label-sm);
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--kzd-font-body);
+  font-size: var(--text-hero-eyebrow-size);
+  font-weight: var(--text-hero-eyebrow-weight);
+  letter-spacing: var(--text-hero-eyebrow-tracking);
   text-transform: uppercase;
-  color: var(--k-blue);
+  color: var(--color-white);
 }
 
-.dot { width: 7px; height: 7px; border-radius: var(--kzd-radius-full); background: var(--k-ember); flex: none; }
+.dot { width: 7px; height: 7px; border-radius: var(--radius-pill); background: var(--color-white); flex: none; }
 
 .h1 {
-  margin: var(--kzd-space-24) 0 0;
-  font-family: var(--kzd-type-display);
-  font-size:  var(--kzd-text-display);
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  color: var(--k-grad-end); /* fallback if background-clip fails */
-  background-image: linear-gradient(180deg, var(--k-grad-start) 0%, var(--k-grad-end) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .h1 { -webkit-text-fill-color: transparent; color: transparent; }
+  margin: 20px 0 0;
+  font-family: var(--kzd-font-display);
+  font-size: 76px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -2.8px;
+  color: var(--color-white);
 }
 
 /* Only shown at the narrow breakpoint, so the heading is one accessible
@@ -108,31 +110,18 @@
 .br { display: none; }
 
 .intro {
-  max-width: 720px;
-  margin: var(--kzd-space-16) auto 0;
-  font-size:  var(--kzd-text-body);
-  line-height: 1.66;
-  color: var(--k-muted);
+  max-width: 680px;
+  margin: 20px auto 0;
+  font-size: var(--text-hero-lead-size);
+  line-height: 1.6;
+  color: rgb(255 255 255 / 0.82);
 }
 
-/* Opens AuthModal (a client-only prototype account, unrelated to the
-   FOSSBilling login the global nav links to — see CareersAuthGate.tsx). */
-.signInTrigger {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--kzd-space-4);
-  margin: var(--kzd-space-24) auto 0;
-  padding: var(--kzd-space-8) var(--kzd-space-16);
-  border: 1px solid var(--k-line);
-  border-radius: var(--kzd-radius-full);
-  background: var(--k-paper);
-  font-size:  var(--kzd-text-label);
-  font-weight: 500;
-  color: var(--k-navy);
-  cursor: pointer;
-}
+.curve { position: absolute; z-index: 1; left: 0; bottom: -1px; width: 100%; display: block; }
+.curveDesktop { height: 26px; }
+.curveMobile { display: none; height: 30px; }
 
-.signInTrigger:hover { background: var(--k-card); border-color: var(--k-blue); }
+.hero ::selection { background: var(--color-white); color: var(--color-ink); }
 
 /* 2. Current openings ------------------------------------------------------ */
 
@@ -306,7 +295,7 @@
 
 /* 4. How hiring works ------------------------------------------------------ */
 
-.how { padding-bottom: var(--kzd-space-96); }
+.how { padding-top: var(--kzd-space-80); padding-bottom: var(--kzd-space-96); }
 .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--kzd-space-24); margin-top: var(--kzd-space-40); }
 
 .stepNo {
@@ -393,13 +382,13 @@
 
 @media (max-width: 1200px) {
   .car { --k-gutter: 40px; }
-  .h1 { font-size:  var(--kzd-text-display); }
   .peopleCard { grid-template-columns: 380px minmax(0, 1fr); }
 }
 
 @media (max-width: 900px) {
-  .hero { padding-top: var(--kzd-space-40); padding-bottom: var(--kzd-space-64); }
-  .h1 { font-size:  var(--kzd-text-headline); }
+  .hero { min-height: 420px; padding: 116px 0 72px; }
+  .h1 { font-size: 60px; letter-spacing: -2.2px; }
+  .how { padding-top: var(--kzd-space-64); }
   .h2 { font-size:  var(--kzd-text-title); }
   .jobs, .why, .how { padding-bottom: var(--kzd-space-64); }
 
@@ -416,8 +405,10 @@
 
 @media (max-width: 560px) {
   .car { --k-gutter: 20px; }
-  .h1 { font-size:  var(--kzd-text-title); }
+  .h1 { font-size: 48px; letter-spacing: -1.6px; }
   .br { display: inline; }
+  .curveDesktop { display: none; }
+  .curveMobile { display: block; }
   .h2 { font-size:  var(--kzd-text-title); }
   .intro { font-size:  var(--kzd-text-body); }
 
@@ -437,7 +428,7 @@
 
 @media (max-width: 380px) {
   .car { --k-gutter: 16px; }
-  .h1 { font-size:  var(--kzd-text-title); }
+  .h1 { font-size: 42px; }
   .title { font-size:  var(--kzd-text-body); }
   .score { font-size:  var(--kzd-text-title); }
   .stars svg { width: var(--kzd-icon-dense); height: var(--kzd-icon-dense); }
@@ -462,36 +453,6 @@
    align-items:center + line-height:1. One primary per view; repeated card
    and row actions are outline; consultation/contact is the silver accent.
    ------------------------------------------------------------------------- */
-.signInTrigger {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--kzd-space-8);
-  height: var(--kzd-control);
-  min-height: var(--kzd-control);
-  padding: 0 var(--kzd-space-24);
-  border-width: var(--kzd-border);
-  border-style: solid;
-  border-radius: var(--kzd-radius-16);
-  font-family: var(--kzd-type-sans);
-  font-size: var(--kzd-text-label-lg);
-  font-weight: 600;
-  letter-spacing: 0;
-  line-height: 1;
-  text-transform: none;
-  box-shadow: none;
-  background-image: none;
-  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
-  background-color: transparent;
-  border-color: var(--kzd-black);
-  color: var(--kzd-black);
-}
-.signInTrigger:hover {
-  background-color: var(--kzd-surface-100);
-  border-color: var(--kzd-black);
-  color: var(--kzd-black);
-}
-.signInTrigger:active { transform: translateY(1px); }
 
 .apply {
   display: inline-flex;
@@ -513,14 +474,16 @@
   box-shadow: none;
   background-image: none;
   transition: transform var(--kzd-dur-micro) var(--kzd-ease);
-  background-color: transparent;
-  border-color: var(--kzd-black);
-  color: var(--kzd-black);
+  background-color: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-white);
 }
-.apply:hover {
-  background-color: var(--kzd-surface-100);
-  border-color: var(--kzd-black);
-  color: var(--kzd-black);
+.apply:hover,
+.apply:focus-visible {
+  background-color: var(--color-black);
+  border-color: var(--color-black);
+  color: var(--color-white);
+  transform: translateY(-2px);
 }
 .apply:active { transform: translateY(1px); }
 

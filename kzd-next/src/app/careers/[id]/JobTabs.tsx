@@ -24,7 +24,7 @@ type TabId = "details" | "apply";
 
 const TABS = [
   ["details", "Job details"],
-  ["apply", "Apply"],
+  ["apply", "Application"],
 ] as const;
 
 export default function JobTabs({ details, apply }: { details: ReactNode; apply: ReactNode }) {

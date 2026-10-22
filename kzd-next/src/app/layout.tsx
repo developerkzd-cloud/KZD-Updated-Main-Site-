@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { fontVariables } from "@/lib/fonts";
 import Nav from "@/components/Nav/Nav";
 import Footer from "@/components/Footer/Footer";
+import FooterGate from "@/components/Footer/FooterGate";
+import OfflineGate from "@/components/Offline/OfflineGate";
+import RevealObserver from "@/components/Reveal/RevealObserver";
 import "./globals.css";
 
 /* Per-route generateMetadata() overrides this. The title template means a page
@@ -9,7 +12,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://kzdsolutions.co.za"),
   title: {
-    default: "KZD Solutions — Digital innovation for South African business",
+    default: "KZD Solutions | Digital innovation for South African business",
     template: "%s | KZD Solutions",
   },
   description:
@@ -31,7 +34,13 @@ export default function RootLayout({
         {/* The nav is fixed, so content clears it here rather than every page
             repeating a magic padding value the way the static site did. */}
         <div className="kzd-below-nav">{children}</div>
-        <Footer />
+        <FooterGate>
+          <Footer />
+        </FooterGate>
+        {/* Covers the page while the connection is down (and registers the
+            service worker that serves /offline when a page can't load). */}
+        <OfflineGate />
+        <RevealObserver />
       </body>
     </html>
   );

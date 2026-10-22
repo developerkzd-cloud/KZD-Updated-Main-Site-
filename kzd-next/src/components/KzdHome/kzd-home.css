@@ -1,0 +1,1620 @@
+/* ==========================================================================
+   KZD Solutions homepage design, ported verbatim from the FOSSBilling kzd
+   theme (themes/kzd/html_custom/mod_index_dashboard.html.twig, its <style>
+   block) so /services/ai-builder, /hosting and the /domains pages render the exact
+   upgraded design instead of a re-imagining of it.
+
+   Changes from the source, nothing else:
+     - 'Hanken Grotesk' -> this app's self-hosted Inter Tight
+       (--kzd-font-display), the Phase 11 type decision.
+     - #F4F4F4 -> #F4F5F7, the Phase 11 surface colour.
+     - The FOSSBilling header / mega-menu / footer rules are still here but
+       unused: kzd-next's own Nav and Footer wrap these pages.
+   Every selector is .kzd-* / .pp-* prefixed, so it cannot leak into the
+   rest of the site.
+   ========================================================================== */
+.kzd-home .icon { width: 1em; height: 1em; display: inline-block; vertical-align: middle; flex: none; }
+.kzd-home h1, .kzd-home h2, .kzd-home h3, .kzd-home h4 { font-family: var(--kzd-font-display), 'Inter Tight', system-ui, sans-serif; }
+body.kzd-homepage { margin: 0; padding: 0; background: #FFFFFF; }
+/* Motion tokens (see refero-design's motion.md) — every transition on
+   this page should reference these instead of ad-hoc durations/easings,
+   so the whole page moves with one consistent hand. ease-out for things
+   entering/responding, ease-in-out for state changes. Apple's one real
+   system-wide micro-interaction (button press = scale(0.96)) is applied
+   via .kzd-press below, used on every clickable CTA on the page. */
+.kzd-home {
+    --dur-fast: 120ms; --dur-default: 200ms; --dur-slow: 320ms;
+    --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+    --ease-in-out: cubic-bezier(0.4, 0.0, 0.2, 1);
+    background: #FFFFFF; font-family: var(--kzd-font-display), 'Inter Tight', system-ui, sans-serif; color: #1A1A1A; overflow-x: hidden; -webkit-font-smoothing: antialiased; color-scheme: light;
+}
+.kzd-press { transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out); }
+.kzd-press:active { transform: scale(0.96); }
+@media (prefers-reduced-motion: reduce) { .kzd-press:active { transform: none; } }
+.kzd-home ::selection { background: #1A1A1A; color: #FFFFFF; }
+.kzd-home a { text-decoration: none; }
+.kzd-home input, .kzd-home button { font: inherit; color: inherit; }
+.kzd-serif { font-family: var(--kzd-font-display), 'Inter Tight', system-ui, sans-serif !important; font-weight: 700 !important; }
+.kzd-link-topbar { color: #A7A7A7; transition: color 160ms ease; }
+.kzd-link-topbar:hover { color: #6B6B6B; }
+.kzd-link-client { color: #6B6B6B; transition: color 160ms ease; }
+.kzd-link-client:hover { color: #FFFFFF; }
+.kzd-nav-link { color: #1A1A1A; transition: color 160ms ease; }
+/* Touch tablets (iPad landscape shows the full menu): give each item a
+   full thumb-height target without changing the bar. */
+@media (pointer: coarse) { .kzd-nav-link { min-height: 44px; display: inline-flex; align-items: center; } }
+.kzd-nav-link:hover { color: #1A1A1A; }
+.kzd-nav-trigger { background: none; border: 0; padding: 0; cursor: pointer; position: relative; }
+.kzd-nav-trigger::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -19px; height: 2px;
+    background: #1A1A1A; transform: scaleX(0); transition: transform 180ms ease;
+}
+.kzd-nav-trigger.is-active { color: #1A1A1A; }
+.kzd-nav-trigger.is-active::after { transform: scaleX(1); }
+.kzd-footer-link-btn { background: none; border: 0; padding: 0; cursor: pointer; text-align: left; font-size: 14px; }
+
+/* Nav mega-menu overlay — floats over the page (doesn't push content
+   down), stacking correctly under the sticky header via two adjacent
+   sticky siblings both pinned to top:0 (the header "arrives" first in
+   flow, this sticks right below it — no JS height measurement needed,
+   survives the header's own height changing at any breakpoint). */
+.kzd-menu-backdrop {
+    position: fixed; inset: 0; z-index: 39; background: rgba(26, 26, 26,0.42);
+    backdrop-filter: blur(2px); opacity: 0; transition: opacity 200ms ease;
+}
+.kzd-menu-backdrop.is-open { opacity: 1; }
+.kzd-menu-overlay {
+    position: sticky; top: 0; z-index: 40; max-height: calc(100vh - 70px); overflow-y: auto;
+    background: #FFFFFF; border-bottom: 1px solid rgba(26, 26, 26,0.1);
+    box-shadow: 0 40px 90px -30px rgba(26, 26, 26,0.35);
+    opacity: 0; transform: translateY(-8px); pointer-events: none;
+    transition: opacity 220ms ease, transform 220ms ease;
+}
+.kzd-menu-overlay.is-open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.kzd-menu-overlay-inner { max-width: 1240px; margin: 0 auto; padding: 56px 32px 64px; position: relative; }
+.kzd-menu-close {
+    position: absolute; top: 22px; right: 28px; z-index: 1;
+    display: flex; align-items: center; justify-content: center; width: 36px; height: 36px;
+    border-radius: 50%; border: 1px solid rgba(26, 26, 26,0.12); background: #FFFFFF;
+    color: #3A3A3A; cursor: pointer;
+}
+.kzd-menu-close:hover { background: #F4F5F7; color: #1A1A1A; }
+.kzd-menu-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--kzd-font-display), 'Inter Tight', system-ui, sans-serif; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase; color: #1A1A1A;
+}
+.kzd-cta-primary { transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease; }
+.kzd-cta-primary:hover { background: #1A1A1A !important; transform: translateY(-1px); box-shadow: 0 10px 24px -10px rgba(26, 26, 26,0.5); }
+
+/* Signature gradient — a restrained navy/white/black page, so the one
+   "bold moment" (top accent line, badge glow, hero background wash)
+   stays inside KZD's own navy family rather than reaching for a
+   second hue, so it reads as intentional, not decorative. */
+.kzd-gradient-bar { background: linear-gradient(90deg, #1A1A1A 0%, #1A1A1A 45%, #6B6B6B 75%, #6B6B6B 100%); }
+.kzd-gradient-text {
+    background: linear-gradient(100deg, #1A1A1A 0%, #1A1A1A 55%, #6B6B6B 130%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.kzd-header-shell {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    border-bottom: 1px solid rgba(26, 26, 26,0.1);
+}
+.kzd-btn-primary {
+    display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px;
+    background: #1A1A1A; color: #FFFFFF; border: 1px solid #1A1A1A;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.02em;
+    transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+    white-space: nowrap;
+}
+.kzd-btn-primary:hover { background: #1A1A1A; border-color: #1A1A1A; transform: translateY(-1px); box-shadow: 0 12px 26px -12px rgba(26, 26, 26,0.55); }
+@media (max-width: 1023px) {
+    .kzd-promise-grid { grid-template-columns: 1fr !important; }
+    .kzd-promise-grid > div { grid-column: 1 / -1 !important; }
+    .kzd-builder-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+    .kzd-builder-grid > div { min-width: 0; }
+}
+/* Mobile hero: real device chrome (status bar, address bar, bottom
+   toolbar) eats far more height than a bare viewport test accounts
+   for, so the text stack has to be genuinely compact — not just
+   "smaller than desktop" — for the product video to land inside the
+   first screen. Every gap in the stack is cut roughly in half here,
+   on top of (not instead of) the earlier size reductions. */
+@media (max-width: 767px) {
+    .kzd-builder-section { padding-top: 20px !important; }
+    .kzd-builder-section h1 { font-size: 24px !important; }
+    .kzd-builder-section p { font-size: 14px !important; }
+    .kzd-builder-grid { gap: 16px !important; }
+    .kzd-hero-checklist { margin-top: 8px !important; gap: 4px 12px !important; }
+    .kzd-prompt-bar { margin-top: 10px !important; }
+    .kzd-chip-row { flex-wrap: nowrap !important; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 2px; margin-top: 8px !important; }
+    .kzd-chip-row::-webkit-scrollbar { display: none; }
+    .kzd-chip-row .kzd-chip { flex: none; }
+    .kzd-hero-trust { margin-top: 8px !important; }
+
+    /* Put the demo directly under the input instead of below the whole
+       copy stack. Trimming gaps alone could not buy back enough height:
+       the chips and the two trust lines sat between the field and the
+       video and pushed it to 441px, past the fold once real browser
+       chrome is subtracted, so the one thing proving the product works
+       was never on screen when someone landed.
+       display:contents dissolves the copy wrapper so its children
+       become grid items alongside the demo and can be ordered against
+       it — the wrapper is an unclassed layout div with no styling of
+       its own, so nothing is lost by removing its box. The reveal
+       animations live on the children, not the wrapper. */
+    .kzd-builder-copy { display: contents; }
+    .kzd-builder-grid > .kzd-builder-copy > h1 { order: 1; }
+    .kzd-builder-grid > .kzd-builder-copy > .kzd-hero-checklist { order: 2; }
+    .kzd-builder-grid > .kzd-builder-copy > .kzd-prompt-bar { order: 3; }
+    .kzd-builder-demo { order: 4; margin-top: 4px; }
+    .kzd-builder-grid > .kzd-builder-copy > .kzd-chip-row { order: 5; }
+    .kzd-builder-grid > .kzd-builder-copy > .kzd-hero-trust { order: 6; }
+    /* The grid's own row gap now sits between every one of these, so
+       the stack's own top margins would double it up. */
+    .kzd-builder-grid { gap: 10px !important; }
+    .kzd-builder-grid > .kzd-builder-copy > .kzd-hero-checklist,
+    .kzd-builder-grid > .kzd-builder-copy > .kzd-prompt-bar,
+    .kzd-builder-grid > .kzd-builder-copy > .kzd-chip-row,
+    .kzd-builder-grid > .kzd-builder-copy > .kzd-hero-trust { margin-top: 0 !important; }
+    .kzd-builder-grid > .kzd-builder-copy > .kzd-hero-trust { margin-bottom: 0 !important; }
+}
+
+/* Header nav collapse — the desktop row (logo + 4 nav links + ZAR/
+   sign-in/get-started) has no room to breathe below ~920px; found
+   live as "Support" running off the edge of a phone viewport with
+   nothing to wrap or hide it. Below the breakpoint the inline nav
+   and actions hide in favour of a hamburger that opens a stacked
+   panel with the same links — real per-device testing (375/768/
+   1280/1920px), not just a shrink. */
+/* 44px, not 38: this is the only way to reach navigation below
+   1024px, and 38 is under every touch-target floor (WCAG 2.5.5 and
+   Apple's HIG both put the minimum at 44). */
+.kzd-mobile-toggle {
+    display: none; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 10px; border: 1px solid rgba(26, 26, 26,0.12);
+    background: #FFFFFF; color: #1A1A1A; cursor: pointer; flex: none;
+}
+.kzd-mobile-toggle .icon { width: 20px; height: 20px; }
+.kzd-mobile-panel { flex-direction: column; gap: 4px; max-width: 1240px; margin: 0 auto; padding: 4px 32px 18px; }
+.kzd-mobile-panel.is-open { display: flex; }
+.kzd-mobile-panel-link {
+    display: block; padding: 13px 4px; font-size: 15px; font-weight: 700; color: #1A1A1A;
+    text-decoration: none; text-align: left; background: none; border: 0; border-bottom: 1px solid rgba(26, 26, 26,0.06); cursor: pointer;
+}
+@media (max-width: 1023px) {
+    .kzd-header-nav, .kzd-header-actions { display: none !important; }
+    .kzd-mobile-toggle { display: flex; }
+}
+
+/* Living gradient atmosphere — a real, layered CSS mesh (large blurred
+   radial blobs in KZD's two brand colors, drifting slowly), the same
+   technique Stripe and Vercel use behind their marketing pages, built
+   here in pure CSS since the page has no WebGL/canvas runtime. Confined
+   to the top of the page (header through builder) as one continuous
+   atmosphere, rather than a flat white page with thin accent lines. */
+.kzd-mesh-zone { position: relative; isolation: isolate; }
+/* Separate from .kzd-mesh-layer's own element on purpose: that layer
+   already runs a CSS transform animation (kzd-mesh-drift) for its
+   slow ambient rotation — a JS-driven inline transform on the SAME
+   element would be overridden by the running animation every frame.
+   This wrapper carries the cursor-parallax offset instead, so both
+   transforms compose (parent's JS offset + child's own CSS drift)
+   rather than fighting over one property. */
+.kzd-mesh-parallax { position: absolute; inset: 0; transition: transform 400ms var(--ease-out, ease); }
+.kzd-mesh-layer {
+    position: absolute; inset: -15% -15% auto -15%; height: 1650px;
+    z-index: -1; pointer-events: none; opacity: 0.95;
+    /* Monochrome (design doc palette): a barely-there Light Silver wash,
+       the way Apple lets a white page breathe. It was a coloured mesh;
+       at full strength in grey it read as smudges. */
+    background:
+        radial-gradient(750px 620px at 10% 12%, rgba(217, 217, 217, 0.55), transparent 62%),
+        radial-gradient(680px 580px at 92% 4%, rgba(217, 217, 217, 0.4), transparent 60%),
+        radial-gradient(820px 700px at 62% 48%, rgba(217, 217, 217, 0.45), transparent 62%),
+        radial-gradient(560px 500px at 18% 78%, rgba(217, 217, 217, 0.3), transparent 60%),
+        radial-gradient(600px 520px at 78% 82%, rgba(217, 217, 217, 0.35), transparent 60%);
+    filter: blur(50px);
+    animation: kzd-mesh-drift 22s ease-in-out infinite alternate;
+}
+@keyframes kzd-mesh-drift {
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    50% { transform: translate(-2%, 3%) scale(1.06) rotate(3deg); }
+    100% { transform: translate(3%, -2%) scale(1.02) rotate(-2deg); }
+}
+@media (prefers-reduced-motion: reduce) { .kzd-mesh-layer { animation: none; } }
+.kzd-btn-gradient {
+    display: inline-flex; align-items: center; gap: 9px; padding: 11px 20px;
+    /* Same shape and type as .kzd-tab-btn (the Domains button): every
+       button on the page is a pill, by the owner's call for consistency,
+       overriding the design doc's 16px button radius. */
+    border-radius: 999px;
+    background: #1A1A1A;
+    font-family: var(--kzd-font-display), 'Inter Tight', system-ui, sans-serif;
+    color: #FFFFFF; border: 1px solid #1A1A1A; font-size: 14px; font-weight: 700; letter-spacing: normal;
+    transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+    white-space: nowrap;
+}
+.kzd-btn-gradient:hover { background: #1A1A1A; transform: translateY(-1px); box-shadow: 0 14px 30px -12px rgba(26, 26, 26,0.55); }
+.kzd-glass { background: rgba(255,255,255,0.66); backdrop-filter: blur(10px) saturate(1.5); -webkit-backdrop-filter: blur(10px) saturate(1.5); }
+
+/* Pricing/domain cards, redesigned — the old version carried a busy
+   all-over dot texture plus a giant faded icon "watermark" bled off
+   the bottom corner (read as a dated decorative ring, not premium).
+   Both are gone. A premium SaaS card (Stripe/Linear pricing-page
+   convention) earns its depth from restraint: a clean flat surface,
+   a border that's barely there until hover, and a lift + soft colour
+   halo on interaction — no texture, no ornament competing with the
+   price. The featured plan gets a real tinted wash instead of just a
+   coloured border, so it reads as chosen, not just outlined. */
+.kzd-domain-card {
+    position: relative;
+    background: #FFFFFF;
+    border: 1px solid rgba(26, 26, 26,0.09);
+    border-radius: 16px;
+    box-shadow: 0 1px 2px rgba(26, 26, 26,0.04);
+    transition: border-color 220ms ease, box-shadow 260ms ease, transform 260ms ease;
+}
+.kzd-domain-card-bar { transform: scaleX(0); transform-origin: 0 50%; transition: transform 320ms cubic-bezier(0.16,1,0.3,1); border-radius: 16px 16px 0 0; }
+/* Simple pricing card (domains / email / hosting panels) — one shared
+   premium-SaaS treatment: a near-invisible resting border, a tinted
+   (navy, not flat black) shadow that only appears on hover, and a
+   spring-like ease so the lift feels weighted rather than linear. */
+.kzd-domain-card-simple {
+    position: relative; background: #FFFFFF;
+    border: 1px solid rgba(26, 26, 26,0.08); border-radius: 16px;
+    transition: border-color 280ms cubic-bezier(0.16,1,0.3,1), box-shadow 280ms cubic-bezier(0.16,1,0.3,1), transform 280ms cubic-bezier(0.16,1,0.3,1);
+}
+.kzd-domain-card-simple:hover {
+    border-color: rgba(26, 26, 26,0.28);
+    box-shadow: 0 24px 48px -20px rgba(26, 26, 26,0.22), 0 8px 16px -8px rgba(26, 26, 26,0.1);
+    transform: translateY(-4px);
+}
+.kzd-domain-card-simple.is-featured {
+    background: #F4F5F7; border: 1.5px solid #1A1A1A;
+    box-shadow: 0 1px 2px rgba(26, 26, 26,0.04);
+}
+.kzd-domain-card-simple.is-featured:hover {
+    border-color: #1A1A1A;
+    box-shadow: 0 28px 52px -20px rgba(26, 26, 26,0.28), 0 8px 16px -8px rgba(26, 26, 26,0.14);
+}
+.kzd-domain-card-simple .kzd-price-mark { font-size: 0.6em; font-weight: 600; margin-right: 1px; vertical-align: 0.1em; color: #6B6B6B; }
+.kzd-domain-card:hover {
+    border-color: transparent;
+    box-shadow: 0 30px 60px -32px rgba(26, 26, 26,0.28);
+    transform: translateY(-3px);
+}
+.kzd-domain-card:hover .kzd-domain-card-bar { transform: scaleX(1); }
+.kzd-domain-card.is-featured {
+    background:
+        radial-gradient(120% 140% at 0% 0%, rgba(26, 26, 26,0.1), transparent 60%),
+        radial-gradient(120% 140% at 100% 100%, rgba(26, 26, 26,0.06), transparent 60%),
+        #FFFFFF;
+    border-color: rgba(26, 26, 26,0.28);
+    box-shadow: 0 30px 60px -32px rgba(26, 26, 26,0.3);
+}
+.kzd-domain-card.is-featured .kzd-domain-card-bar { transform: scaleX(1); }
+.kzd-domain-icon {
+    position: relative; z-index: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 10px;
+    color: #1A1A1A; background: rgba(26, 26, 26,0.07);
+    transition: background 220ms ease, color 220ms ease;
+}
+.kzd-domain-card:hover .kzd-domain-icon { background: #1A1A1A; color: #FFFFFF; }
+
+/* Promise-grid ("Real service from real people") redesign — the
+   small flat icon badge + thin cut-off-looking underline read as
+   generic. Bigger, more crafted icon (52px, soft gradient-tinted
+   square, icon itself picks up the tint colour instead of flat
+   gray/navy) and the underline is dropped here in favour of the
+   spotlight hover glow doing the interactive work — a card shouldn't
+   need both a moving glow AND a growing line competing for attention. */
+.kzd-promise-icon {
+    position: relative; z-index: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 14px;
+    background: linear-gradient(135deg, rgba(26, 26, 26,0.12), rgba(107, 107, 107,0.1));
+    border: 1px solid rgba(26, 26, 26,0.1);
+}
+.kzd-promise-icon svg { width: 22px; height: 22px; color: #1A1A1A; }
+.kzd-card-plain::after { content: none !important; }
+.kzd-card-plain .kzd-domain-card-bar { display: none; }
+
+/* Domain search bar -- a bare `display:flex; flex-wrap:wrap` row with
+   no breakpoint used to let the button run out of room and wrap onto
+   its own line while the input+TLD select stayed paired above it, so
+   it read as an orphaned, undersized afterthought instead of part of
+   one control. Real SaaS domain-search bars (Namecheap, Squarespace)
+   either stay one fused row or -- once there's truly no room -- drop
+   every control to full width together, never just the button alone.
+   Mobile-first: stacked full-width by default, fused into one row
+   from the tablet breakpoint up. */
+/* Stacking the field, the extension and the submit into three
+   full-width rows is what a phone layout looks like when it has only
+   been shrunk, not designed: it cost three rows of height for one
+   action and read as three unrelated controls. They are one control,
+   so they sit in one pill at every width — the same shape every
+   real domain search uses on mobile. The submit is icon-only below
+   560px and takes its label back above that, where there is room.
+
+   width:100% is load-bearing, not redundant: this form is a grid
+   item (.kzd-tab-panel is display:grid) and a grid item with
+   `margin: 0 auto` does NOT stretch to its cell — auto inline
+   margins suppress justify-self:stretch, so it sized to fit-content
+   instead, 230px inside a 326px cell on a 390px phone. */
+.kzd-domain-search-form {
+    display: flex; flex-direction: row; align-items: center; gap: 6px;
+    width: 100%; max-width: 640px; margin: 0 auto 24px;
+    background: #FFFFFF; border: 1px solid rgba(26, 26, 26,0.16);
+    border-radius: 999px; padding: 6px 6px 6px 14px;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.kzd-domain-search-form:focus-within {
+    border-color: #1A1A1A; box-shadow: 0 0 0 4px rgba(26, 26, 26,0.08);
+}
+/* Hidden on the narrowest phones: it is decorative affordance, and on
+   a 360px screen the 17px glyph plus its gap is width the field
+   itself needs far more — without it the input goes from fitting
+   about eight characters to fitting a real domain name. */
+.kzd-domain-search-icon { display: none; }
+@media (min-width: 420px) {
+    .kzd-domain-search-icon {
+        display: block; flex: none; width: 17px; height: 17px; color: #6B6B6B;
+    }
+}
+.kzd-domain-search-input {
+    flex: 1 1 auto; min-width: 0; width: auto;
+    border: 0; background: transparent; outline: none;
+    font-size: 15px; color: #1A1A1A; padding: 11px 0;
+}
+/* The extension is typed into the field now (no dropdown); a domain the
+   site cannot sell, or one missing its ending, is explained here. */
+.kzd-domain-search-error {
+    max-width: 640px; margin: -14px auto 24px; padding: 10px 16px;
+    border-radius: 14px; background: #FFF8EB; color: #5B4410;
+    font-size: 14px; line-height: 1.45; text-align: center;
+}
+/* Selector is form+button (not .kzd-domain-search-btn alone) because
+   `.kzd-home button { color: inherit; }` (a global reset, specificity
+   0,1,1) otherwise beats a single class (0,1,0) and silently wins the
+   text colour back to near-black. */
+.kzd-domain-search-form .kzd-domain-search-btn {
+    flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    width: 44px; height: 44px; padding: 0; border-radius: 999px;
+    border: 0; background: #1A1A1A; color: #FFFFFF;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.03em; cursor: pointer;
+}
+.kzd-domain-search-form .kzd-domain-search-btn:hover { background: #3A3A3A; }
+.kzd-domain-search-btn-icon { width: 17px; height: 17px; }
+.kzd-domain-search-btn-label { display: none; }
+@media (min-width: 560px) {
+    .kzd-domain-search-form { padding: 7px 7px 7px 18px; }
+    .kzd-domain-search-input { font-size: 15.5px; padding: 12px 0; }
+    .kzd-domain-search-form .kzd-domain-search-btn { width: auto; height: 46px; padding: 0 26px; }
+    .kzd-domain-search-btn-label { display: inline; }
+    .kzd-domain-search-btn-icon { display: none; }
+}
+
+/* TLD cards. On a phone these were 32px-padded centred stacks — four
+   lines of vertical rhythm each for two facts (which extension, what
+   it costs), so a list of six filled several screens of scrolling.
+   A row puts the extension against its price on one line and turns
+   each card into a scannable price list, which is what it actually
+   is. The centred stack returns at 560px where the grid gives each
+   card its own column and the height is shared, not stacked. */
+.kzd-tld-card {
+    display: flex; flex-direction: row; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 16px 18px; text-decoration: none; text-align: left;
+}
+.kzd-tld-card-id { display: flex; flex-direction: column; min-width: 0; }
+.kzd-tld-card-name {
+    font-weight: 700; font-size: 19px; letter-spacing: -0.02em; margin: 0; color: #1A1A1A;
+}
+.kzd-tld-card-label {
+    margin-top: 2px; font-size: 12px; font-weight: 600; color: #6B6B6B;
+}
+.kzd-tld-card-price { display: flex; flex-direction: column; align-items: flex-end; flex: none; }
+.kzd-tld-card-amount {
+    font-size: 22px; font-weight: 700; letter-spacing: -0.02em;
+    color: #1A1A1A; font-variant-numeric: tabular-nums;
+}
+/* #6B6B6B, not the #6B6B6B used on plain white: the featured card sits
+   on a tinted surface where #6B6B6B landed exactly on 4.5:1 and tipped
+   under it depending on rounding. */
+.kzd-tld-card-term {
+    margin-top: 1px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: #6B6B6B;
+}
+@media (min-width: 560px) {
+    .kzd-tld-card {
+        flex-direction: column; align-items: center; justify-content: flex-start;
+        text-align: center; padding: 32px 24px; gap: 0;
+    }
+    .kzd-tld-card-id { align-items: center; }
+    .kzd-tld-card-name { font-size: 23px; }
+    .kzd-tld-card-label { margin-top: 8px; }
+    .kzd-tld-card-price { align-items: center; margin-top: 20px; }
+    .kzd-tld-card-amount { font-size: 26px; }
+    .kzd-tld-card-term { margin-top: 2px; }
+}
+
+/* The panel wrapping the Index sidebar + pricing cards used to sit on
+   flat #FFFFFF -- fine with a full grid, but a short TLD/category list
+   leaves large blank white gaps around the cards once you scroll to
+   it, reading as empty rather than premium. A faint dot-grid plus two
+   soft navy blooms (top-left and bottom-right, the same hue as
+   .kzd-gradient-bar) fills that space with real depth instead of a
+   flatter page background -- deliberately subtle so it never competes
+   with the opaque white cards sitting on top of it, only shows in the
+   gaps around and between them. */
+.kzd-solutions-panel {
+    background:
+        radial-gradient(circle, rgba(26, 26, 26,0.05) 1.2px, transparent 1.2px) 0 0 / 24px 24px,
+        radial-gradient(circle at 4% -10%, rgba(26, 26, 26,0.07), transparent 42%),
+        radial-gradient(circle at 103% 115%, rgba(26, 26, 26,0.06), transparent 46%),
+        linear-gradient(175deg, #FFFFFF 0%, #F4F5F7 100%);
+}
+
+/* Real product-demo video, framed in the same browser chrome as the
+   rest of the section. A small pause control since the video loops
+   indefinitely — auto-playing motion needs to be stoppable. */
+.kzd-builder-video-frame { overflow: hidden; }
+.kzd-builder-video { background: #1A1A1A; }
+.kzd-video-toggle {
+    position: absolute; bottom: 20px; right: 20px; z-index: 2;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; padding: 0; border-radius: 50%;
+    background: rgba(26, 26, 26,0.55); backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: #FFFFFF; cursor: pointer;
+    transition: background 180ms ease, transform 180ms ease;
+}
+.kzd-video-toggle:hover { background: rgba(26, 26, 26,0.8); transform: scale(1.06); }
+/* padding-block so a 10.5px uppercase link clears the 24px touch
+   floor — these sit inside the mega-menus, which is exactly the UI a
+   phone visitor has to navigate with. */
+.kzd-cta-text { display: inline-block; padding-top: 5px; padding-bottom: 5px; transition: color 160ms ease, border-color 160ms ease; }
+.kzd-cta-text:hover { color: #1A1A1A !important; border-color: #1A1A1A !important; }
+.kzd-check-btn { transition: background 160ms ease, color 160ms ease; }
+.kzd-check-btn:hover { background: #1A1A1A !important; color: #FFFFFF !important; }
+.kzd-check-btn-solid { transition: background 160ms ease, color 160ms ease, border-color 160ms ease; }
+.kzd-check-btn-solid:hover { background: #FFFFFF !important; color: #1A1A1A !important; border-color: #FFFFFF !important; }
+/* Horizontal pill switcher — replaces the old vertical "Index" sidebar,
+   which read as a settings-panel list, not a marketing page. A
+   segmented pill row (the real Stripe/Linear pricing-page convention)
+   lets the card grid below use the section's full width instead of
+   giving up a whole column to navigation. */
+/* .kzd-home prefix: `.kzd-home button { font: inherit }` outranks a bare
+   class and was silently turning these into 17.76px regular, so they no
+   longer matched the other pill buttons. */
+.kzd-home .kzd-tab-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 999px; cursor: pointer; background: #FFFFFF; border: 1px solid rgba(26, 26, 26,0.12); font-family: var(--kzd-font-display), 'Inter Tight', system-ui, sans-serif; font-weight: 700; font-size: 14px; color: #3A3A3A; transition: color 180ms ease, background 180ms ease, border-color 180ms ease, box-shadow 180ms ease; }
+.kzd-tab-btn:hover { border-color: rgba(26, 26, 26,0.3); }
+.kzd-tab-btn.is-active { color: #FFFFFF; background: #1A1A1A; border-color: #1A1A1A; box-shadow: 0 10px 24px -12px rgba(26, 26, 26,0.5); }
+.kzd-tab-tick { display: none; }
+.kzd-tab-panel { display: none !important; }
+/* minmax(0, 1fr), not the implicit `auto`: an auto column is floored at
+   its widest item's min-content, so one item that cannot shrink drags
+   the whole column past the panel — measured at 406px inside a 326px
+   panel on a 390px phone. Capping the minimum at 0 keeps the column
+   inside its container and lets the items wrap instead. */
+.kzd-tab-panel.is-active { display: grid !important; grid-template-columns: minmax(0, 1fr); }
+.kzd-product-cta { transition: color 160ms ease; }
+.kzd-product-cta:hover { color: #1A1A1A !important; }
+.kzd-product-cta svg.icon { transition: transform 200ms ease; }
+.kzd-product-cta:hover svg.icon { transform: translateX(3px); }
+.kzd-price-card { box-shadow: 0 2px 14px rgba(26, 26, 26,0.07); }
+.kzd-cta-white { transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease; }
+.kzd-cta-white:hover { background: #6B6B6B !important; transform: translateY(-2px); box-shadow: 0 14px 28px -14px rgba(0,0,0,0.5); }
+.kzd-cta-outline { transition: border-color 160ms ease, color 160ms ease; }
+.kzd-cta-outline:hover { border-color: #6B6B6B !important; color: #6B6B6B !important; }
+/* inline-block + vertical padding so these clear the 24px touch-target
+   floor (WCAG 2.2, 2.5.8) on a phone — as bare inline links they
+   measured 20-22px tall, below the minimum and fiddly to hit in a
+   dense footer column. Padding only; the text metrics are unchanged. */
+.kzd-footer-link { display: inline-block; padding: 5px 0; color: #A7A7A7; transition: color 160ms ease; }
+.kzd-footer-link:hover { color: #FFFFFF; }
+.kzd-legal-link { display: inline-block; padding: 5px 2px; color: #A7A7A7; transition: color 160ms ease; }
+.kzd-legal-link:hover { color: #FFFFFF; }
+
+/* Footer grid — brand block, three link groups and the newsletter
+   card as siblings in one auto-flowing grid. auto-fit/minmax instead
+   of a fixed column template: the same rule that already proved
+   itself responsive across the rest of the page (see the 768px
+   accordion switch below for the one deliberate departure from it). */
+.kzd-footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 40px; align-items: start; }
+.kzd-footer-col-head {
+    all: unset; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; width: 100%; cursor: default; margin: 0 0 20px;
+}
+.kzd-footer-col-head h3 {
+    font-family: var(--kzd-font-display), 'Inter Tight', system-ui, sans-serif; font-size: 12px; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase; color: #A7A7A7; margin: 0;
+}
+.kzd-footeracc-icon { display: none; }
+.kzd-footeracc-inner { display: flex; flex-direction: column; gap: 12px; font-size: 14px; }
+
+/* Newsletter card — the one contrasting surface in the grid, same
+   "card, not button" radius as the rest of the site's panels (pills
+   are reserved for buttons; see kzd-footer-newsletter-btn below). */
+.kzd-footer-newsletter {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(244,244,244,0.12);
+    border-radius: 20px; padding: 26px;
+}
+.kzd-footer-newsletter h3 {
+    font-family: var(--kzd-font-display), 'Inter Tight', system-ui, sans-serif; font-size: 12px; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase; color: #FFFFFF; margin: 0 0 10px;
+}
+.kzd-footer-newsletter p { font-size: 13px; line-height: 1.6; color: #A7A7A7; margin: 0 0 18px; }
+.kzd-footer-newsletter-form { display: flex; flex-direction: column; gap: 10px; }
+.kzd-footer-newsletter-input {
+    width: 100%; box-sizing: border-box; background: #1A1A1A; color: #FFFFFF;
+    border: 1px solid rgba(244,244,244,0.18); border-radius: 999px; padding: 11px 16px; font-size: 14px;
+    font-family: inherit;
+}
+.kzd-footer-newsletter-input::placeholder { color: #6B6B6B; }
+.kzd-footer-newsletter-input:focus { outline: 2px solid #D9D9D9; outline-offset: 2px; }
+.kzd-footer-newsletter-btn {
+    background: #FFFFFF; color: #1A1A1A; border: 0; border-radius: 999px; padding: 11px 20px;
+    font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; transition: opacity 160ms ease;
+}
+.kzd-footer-newsletter-btn:hover { opacity: 0.85; }
+
+/* Bottom bar — copyright, legal links, the Paystack trust line and a
+   back-to-top action, wrapping cleanly instead of the old two-item
+   space-between (which had nowhere to put the two new items). */
+.kzd-footer-bottom {
+    margin-top: 56px; padding: 24px 0 28px; border-top: 1px solid rgba(244,244,244,0.16);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px 28px;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.02em; color: #A7A7A7;
+}
+.kzd-footer-bottom-legal { display: flex; gap: 24px; font-size: 13px; }
+.kzd-footer-bottom-secure { display: inline-flex; align-items: center; gap: 7px; color: #A7A7A7; }
+.kzd-footer-backtotop {
+    display: inline-flex; align-items: center; gap: 8px; background: transparent; color: #FFFFFF;
+    border: 1px solid rgba(244,244,244,0.24); border-radius: 999px; padding: 9px 18px; font-size: 13px;
+    font-weight: 600; font-family: inherit; cursor: pointer; transition: background 160ms ease, border-color 160ms ease;
+    margin-left: auto;
+}
+.kzd-footer-backtotop:hover { background: rgba(255,255,255,0.06); border-color: rgba(244,244,244,0.4); }
+
+/* Footer, mobile: brand block centred up top (logo/tagline read as a
+   masthead, not a column, once nothing sits beside them), each link
+   group collapsed into a click-to-expand accordion row instead of a
+   column of its own (three always-open lists back to back was most
+   of a thumb-scroll before the newsletter card or the legal bar ever
+   appeared), and the newsletter card stays a full-width card. Placed
+   after the base footer rules on purpose -- the base .kzd-footer-col-
+   head etc. rules above are equal specificity (one class each) with
+   no !important, so a copy of this block placed EARLIER in the file
+   (its previous home, among this file's other mobile overrides) lost
+   the cascade to those later base rules regardless of which media
+   query actually matched the viewport; found live as every link
+   group's heading losing its padding/border-top and stacking flush
+   against the next one on an actual phone. */
+@media (max-width: 767px) {
+    .kzd-footer-grid { grid-template-columns: 1fr !important; gap: 0 !important; }
+    .kzd-footer-brand { text-align: center; display: flex; flex-direction: column; align-items: center; padding-bottom: 28px; }
+    .kzd-footer-brand > div:first-child { justify-content: center; }
+    .kzd-footer-brand p { max-width: none !important; }
+
+    .kzd-footer-col-head {
+        cursor: pointer; padding: 18px 0; border-top: 1px solid rgba(244,244,244,0.12); margin: 0;
+    }
+    .kzd-footeracc-icon {
+        display: block; font-size: 20px; font-weight: 400; line-height: 1; color: #6B6B6B; flex: none;
+        transition: transform 300ms ease;
+    }
+    .kzd-footer-col.is-open .kzd-footeracc-icon { transform: rotate(45deg); }
+    .kzd-footeracc-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 350ms cubic-bezier(0.16,0.84,0.44,1); }
+    .kzd-footer-col.is-open .kzd-footeracc-panel { grid-template-rows: 1fr; }
+    /* padding-bottom is part of the box, not overflowing content --
+       overflow:hidden alone does not clip it, so a closed panel with
+       grid-template-rows:0fr still reserved its own padding-bottom's
+       worth of height (found live: closed groups overlapped the next
+       group's heading by exactly that padding). Gating the padding on
+       .is-open removes the reserved space entirely while closed. */
+    .kzd-footeracc-inner { min-height: 0; overflow: hidden; padding-bottom: 0; }
+    .kzd-footer-col.is-open .kzd-footeracc-inner { padding-bottom: 18px; }
+    /* Buttons in the list default to centred text; the anchors beside
+       them are left-aligned, and a mixed row reads as a mistake. */
+    .kzd-footer-grid .kzd-footer-link-btn { text-align: left; }
+
+    .kzd-footer-newsletter { margin-top: 28px; }
+
+    /* 64/44 is the desktop rhythm. Stripe's footer is 64px 24px and
+       Linear's 64px 32px, both at desktop; on a 390px screen that much
+       vertical air is most of a thumb-scroll before any content. */
+    footer.kzd-footer, footer { padding-top: 44px !important; }
+    .kzd-footer-bottom { flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 32px !important; padding-bottom: 32px; }
+    .kzd-footer-backtotop { margin-left: 0; align-self: flex-start; }
+}
+
+/* ============================================================
+   Editorial/modernist section system (proof band, CTA band, KB
+   grid, FAQ) — built from a client-supplied static reference file
+   (Archivo black-weight type, hairline dividers instead of cards,
+   tabular-nums stat digits, a solid-fill CTA band, a CSS
+   grid-template-rows FAQ accordion). Implemented structurally as
+   given; recoloured to KZD's own navy/orange instead of the
+   reference's red, on the site's own white canvas. Namespaced
+   kzd-ed- (editorial) so it never collides with the card-based
+   system the rest of the homepage uses. ============================================================ */
+.kzd-ed, .kzd-ed * { font-family: var(--kzd-font-display), 'Inter Tight', system-ui, sans-serif; }
+.kzd-ed-eyebrow {
+    display: flex; align-items: center; gap: 12px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: #6B6B6B;
+}
+.kzd-ed-divider-top { border-top: 2px solid rgba(26, 26, 26,0.14); }
+
+.kzd-ed-h2 { font-size: clamp(34px, 5.2vw, 64px); font-weight: 900; letter-spacing: -0.03em; line-height: 1.02; margin: 0; color: #1A1A1A; }
+.kzd-ed-link {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: #1A1A1A; text-decoration: none;
+    border-bottom: 2px solid #1A1A1A; padding-top: 6px; padding-bottom: 6px; transition: color 200ms ease;
+}
+.kzd-ed-link:hover { color: #1A1A1A; }
+
+/* KB cards — real elevated white cards (border + shadow + radius)
+   instead of the old borderless-grid-with-vertical-hairlines layout.
+   That old layout's mobile fix (swapping a left-divider for a
+   top-divider once the grid collapsed to one column) was a patch on
+   a structurally fragile approach: spacing came from asymmetric
+   per-card padding keyed off loop.first, which also meant every card
+   had zero horizontal padding on mobile (the whole
+   icon/title/excerpt block ran edge-to-edge with no side gutter at
+   all). A real CSS grid `gap` plus each card owning its own padding
+   fixes both at once — the gutter is never dependent on column
+   count, so nothing needs a mobile-specific override. */
+.kzd-kb-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: clamp(18px, 2.4vw, 24px); margin-top: clamp(28px, 3.5vw, 44px);
+}
+.kzd-kb-card {
+    display: flex; flex-direction: column; text-decoration: none; color: #1A1A1A;
+    background: #FFFFFF; border: 1px solid rgba(26, 26, 26,0.08); border-radius: 16px;
+    padding: clamp(22px, 2.6vw, 28px) clamp(20px, 2.4vw, 26px) clamp(20px, 2.2vw, 24px);
+    box-shadow: 0 1px 2px rgba(26, 26, 26,0.04);
+    transition: border-color 280ms cubic-bezier(0.16,1,0.3,1), box-shadow 280ms cubic-bezier(0.16,1,0.3,1), transform 280ms cubic-bezier(0.16,1,0.3,1);
+}
+.kzd-kb-card:hover {
+    border-color: rgba(26, 26, 26,0.28);
+    box-shadow: 0 24px 48px -20px rgba(26, 26, 26,0.22), 0 8px 16px -8px rgba(26, 26, 26,0.1);
+    transform: translateY(-4px);
+}
+/* The shared .kzd-reveal-card underline is a square-cornered 2px bar at
+   bottom:-1px. On a 16px-radius card it ran straight past both rounded
+   corners and sat a pixel proud of the edge, so every card ended in a
+   hard flat line that did not belong to its own shape. Clipping to the
+   card keeps the reveal animation and lets the radius cut it. */
+.kzd-kb-card { overflow: hidden; }
+.kzd-kb-card::after { bottom: 0; }
+/* The 52px gradient tile is gone. It was the card's largest element and
+   carried no information — a decorative slab that pushed the title down
+   and, with no body text beneath it, produced the empty middle. The icon
+   now rides inside the category chip at label size, where it tags the
+   card without competing with the title for first read. */
+.kzd-kb-card-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap;
+}
+.kzd-kb-card-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 10px 5px 8px; border-radius: 999px;
+    background: rgba(26, 26, 26,0.06); border: 1px solid rgba(26, 26, 26,0.1);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #1A1A1A;
+}
+.kzd-kb-card-chip-icon { width: 13px; height: 13px; flex: none; color: #1A1A1A; }
+.kzd-kb-card-time {
+    font-size: 12px; font-weight: 600; color: #6B6B6B;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+/* 22px/500 with -0.3px tracking, not 21px/800: at weight 800 the title
+   competed with the section heading above it and read as a shout rather
+   than a link. The lighter weight is what makes a documentation card
+   feel like a place to read rather than a banner. */
+.kzd-kb-card-title {
+    margin: 14px 0 0; font-size: clamp(17px, 1.5vw, 22px); font-weight: 500;
+    letter-spacing: -0.3px; line-height: 1.25; color: #1A1A1A;
+}
+.kzd-kb-card-body {
+    margin: 8px 0 0; font-size: 14px; line-height: 1.5; color: #6B6B6B; flex: 1;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+/* No top rule. The hairline drew a second horizontal line inside a card
+   that already has a border, which is what made these read as three
+   stacked strips rather than one surface. */
+.kzd-kb-card-cta {
+    margin-top: 18px;
+    display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #1A1A1A;
+}
+.kzd-kb-card-cta span[data-arrow] { display: inline-block; transition: transform 350ms cubic-bezier(0.16,0.84,0.44,1); }
+.kzd-kb-card:hover .kzd-kb-card-cta span[data-arrow] { transform: translateX(6px); }
+
+/* ------------------------------------------------------------------
+   Phone: one divided list, not three sparse cards.
+
+   Measured before this: 143px per card holding a chip, a title and a
+   CTA, with ~480px of stacked mostly-empty white for three articles.
+   The card reserves space for an excerpt and a reading time that never
+   render -- the KB list API does not expose article content, and the
+   template correctly refuses to invent any. A card built around a body
+   that will never arrive is the wrong shape for the data.
+
+   So: the grid becomes a single panel, each article a row with its
+   title first, its category beneath, and a chevron. This is how Stripe,
+   Linear and Intercom present the same title-only content, and it fits
+   three articles into roughly the height one card used.
+   ------------------------------------------------------------------ */
+@media (max-width: 767px) {
+    .kzd-kb-grid {
+        display: block; margin-top: 24px;
+        background: #FFFFFF;
+        border: 1px solid rgba(26, 26, 26,0.08);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 1px 2px rgba(26, 26, 26,0.04);
+    }
+    .kzd-kb-card {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas: "title chev" "meta chev";
+        align-items: center;
+        column-gap: 14px; row-gap: 3px;
+        padding: 15px 16px;
+        border: 0; border-radius: 0;
+        border-bottom: 1px solid rgba(26, 26, 26,0.07);
+        box-shadow: none;
+    }
+    .kzd-kb-card:last-child { border-bottom: 0; }
+    /* A row cannot lift off a surface it is part of. */
+    .kzd-kb-card:hover {
+        transform: none; box-shadow: none;
+        border-color: rgba(26, 26, 26,0.07);
+        background: rgba(26, 26, 26,0.035);
+    }
+    /* The reveal underline belonged to a detached card; between divided
+       rows it reads as a second, heavier separator. */
+    .kzd-kb-card::after { display: none; }
+
+    .kzd-kb-card-title {
+        grid-area: title; margin: 0;
+        font-size: 15px; font-weight: 600; letter-spacing: -0.2px; line-height: 1.3;
+    }
+    .kzd-kb-card-meta { grid-area: meta; gap: 8px; }
+    /* Category as a quiet caption, not a pill: at row scale the bordered
+       chip was heavier than the title it was labelling. */
+    .kzd-kb-card-chip {
+        padding: 0; border: 0; background: none; border-radius: 0;
+        font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+        color: #6B6B6B; gap: 5px;
+    }
+    .kzd-kb-card-chip-icon { width: 12px; height: 12px; color: #6B6B6B; }
+    .kzd-kb-card-time { font-size: 11px; color: #6B6B6B; }
+    .kzd-kb-card-body { display: none; }
+    /* The label goes; the arrow becomes the affordance, as it is on
+       every row list of this kind. */
+    .kzd-kb-card-cta {
+        grid-area: chev; margin: 0;
+        font-size: 15px; color: #6B6B6B; letter-spacing: 0;
+    }
+    .kzd-kb-card-cta span:not([data-arrow]) { display: none; }
+    .kzd-kb-card:hover .kzd-kb-card-cta { color: #1A1A1A; }
+    .kzd-kb-card:hover .kzd-kb-card-cta span[data-arrow] { transform: translateX(3px); }
+}
+
+/* FAQ cards — plain white rounded cards, independent toggle (any
+   number can be open at once, unlike a classic single-open
+   accordion), default all closed. Reuses the same grid-template-rows
+   height-animation trick as the rest of this file's accordions. */
+.kzd-faqcard-title {
+    text-align: center; font-family: var(--kzd-font-display), 'Inter Tight', system-ui, sans-serif;
+    font-weight: 700; font-size: clamp(22px, 2.4vw, 30px); color: #1A1A1A; margin: 0 0 28px;
+}
+.kzd-faqcard-list { display: flex; flex-direction: column; gap: 14px; }
+.kzd-faqcard {
+    background: #FFFFFF; border: 1px solid rgba(26, 26, 26,0.08); border-radius: 14px;
+    box-shadow: 0 2px 10px -4px rgba(26, 26, 26,0.08); overflow: hidden;
+}
+.kzd-faqcard-btn {
+    width: 100%; display: flex; gap: 16px; align-items: center; justify-content: space-between;
+    text-align: left; background: transparent; border: 0; padding: 20px 26px; cursor: pointer;
+    font-family: inherit; color: #1A1A1A;
+}
+.kzd-faqcard-q { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.4; }
+.kzd-faqcard-icon { font-size: 20px; font-weight: 400; line-height: 1; color: #6B6B6B; flex: none; transition: transform 300ms ease; }
+.kzd-faqcard.is-open .kzd-faqcard-icon { transform: rotate(45deg); }
+.kzd-faqcard-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 400ms cubic-bezier(0.16,0.84,0.44,1); }
+.kzd-faqcard.is-open .kzd-faqcard-panel { grid-template-rows: 1fr; }
+.kzd-faqcard-a { margin: 0; padding: 0 26px 22px; max-width: 68ch; font-size: 14.5px; line-height: 1.65; color: #3A3A3A; }
+
+/* Scroll reveal: light fade-up for section headings/intros */
+.kzd-reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+}
+.kzd-reveal.is-visible { opacity: 1; transform: none; }
+
+/* Scroll reveal: dramatic tilt + blur + scale for cards, plus a hover lift and a navy accent line that draws in */
+.kzd-reveal-card {
+    position: relative;
+    opacity: 0;
+    transform: perspective(1100px) rotateX(-26deg) translateY(38px) scale(0.95);
+    transform-origin: 50% 0%;
+    filter: blur(7px);
+    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), filter 0.75s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease, color 160ms ease;
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform, filter;
+}
+.kzd-reveal-card::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 2px;
+    width: 0%;
+    background: #1A1A1A;
+    transition: width 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: calc(var(--reveal-delay, 0ms) + 380ms);
+}
+.kzd-reveal-card.is-visible {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+}
+.kzd-reveal-card.is-visible::after { width: 100%; }
+.kzd-reveal-card.is-visible:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 28px 52px -26px rgba(26, 26, 26,0.4);
+    border-color: #1A1A1A !important;
+}
+
+/* Builder promo: gentle floating cards + a slow ambient light sweep, so the
+   section feels alive rather than a static screenshot. */
+@keyframes kzd-float-a { 0%, 100% { transform: translateY(0) rotate(0.3deg); } 50% { transform: translateY(-9px) rotate(-0.2deg); } }
+@keyframes kzd-float-b { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-12px) rotate(-1.6deg); } }
+@keyframes kzd-float-c { 0%, 100% { transform: translateY(0) rotate(1.2deg); } 50% { transform: translateY(-10px) rotate(1.8deg); } }
+@keyframes kzd-sweep { 0% { transform: translate(-10%, -10%); } 100% { transform: translate(10%, 10%); } }
+.kzd-float-a { animation: kzd-float-a 6.5s ease-in-out infinite; }
+.kzd-float-b { animation: kzd-float-b 7.5s ease-in-out infinite; animation-delay: -2.4s; }
+.kzd-float-c { animation: kzd-float-c 5.8s ease-in-out infinite; animation-delay: -4.1s; }
+.kzd-builder-sweep { animation: kzd-sweep 9s ease-in-out infinite alternate; }
+
+/* Terminal cursor on the product-preview panel — the exact blink
+   rhythm used inside the real AI Website Builder app itself. */
+@keyframes kzd-blink { 50% { opacity: 0; } }
+.kzd-cursor-blink { animation: kzd-blink 1s step-end infinite; }
+
+/* Prompt line types itself in once the panel scrolls into view, instead
+   of sitting static — the one motion detail a visitor would remember. */
+@keyframes kzd-typing-reveal { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+.kzd-reveal-card.is-visible .kzd-typing-text { animation: kzd-typing-reveal 1.3s steps(30, end) 0.55s both; }
+
+/* Builder promo: premium-SaaS prompt bar (glowing focus ring, no
+   native textarea scrollbar, lifted submit button). */
+/* ---- Prompt bar that follows the page, phones only ----
+   Hidden and inert by default at every width; the media query below
+   switches it on, and JS adds .is-pinned once the hero prompt leaves
+   the viewport. Kept out of the tab order and out of the accessibility
+   tree until it is actually on screen, so it never becomes a duplicate
+   form for a keyboard or screen-reader user. */
+.kzd-pinned-prompt { display: none; }
+@media (max-width: 767.98px) {
+    .kzd-pinned-prompt {
+        display: flex;
+        position: fixed;
+        top: var(--kzd-pinned-top, 64px);
+        left: 12px; right: 12px;
+        /* Under the sticky header (40); page content is all z-auto, so this
+           clears it -- but only because the JS lifts this element to <body>
+           first. Inside .kzd-mesh-zone (isolation:isolate) no value works. */
+        z-index: 39;
+        align-items: center;
+        gap: 8px;
+        /* Matched to .kzd-prompt-bar's own inline styles -- same pill, same
+           hairline, same shadow. This is the hero bar in a second position,
+           not a second design. */
+        padding: 6px 6px 6px 18px;
+        border-radius: 999px;
+        background: #FFFFFF;
+        border: 1px solid rgba(26, 26, 26,0.12);
+        box-shadow: 0 1px 2px rgba(26, 26, 26,0.04), 0 18px 38px -18px rgba(26, 26, 26,0.42);
+        /* Parked above the viewport and non-interactive until pinned --
+           visibility, not just opacity, so it cannot swallow a tap. */
+        transform: translateY(calc(-100% - var(--kzd-pinned-top, 64px) - 16px));
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: transform 320ms cubic-bezier(0.16,1,0.3,1), opacity 220ms ease, visibility 0s linear 320ms;
+    }
+    .kzd-pinned-prompt.is-pinned {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition: transform 320ms cubic-bezier(0.16,1,0.3,1), opacity 220ms ease, visibility 0s linear 0s;
+    }
+    .kzd-pinned-prompt-icon {
+        width: 15px; height: 15px; flex: none; color: #6B6B6B;
+    }
+    .kzd-pinned-prompt input {
+        flex: 1; min-width: 0;
+        border: 0; outline: none; background: transparent;
+        font-family: inherit; font-size: 15.5px; font-weight: 500;
+        color: #1A1A1A; padding: 11px 0;
+        text-overflow: ellipsis;
+    }
+    .kzd-pinned-prompt input::placeholder { color: #6B6B6B; }
+    .kzd-pinned-prompt-btn {
+        flex: none;
+        width: 42px; height: 42px;
+        display: flex; align-items: center; justify-content: center;
+        border: 0; border-radius: 50%;
+        background: #1A1A1A; color: #FFFFFF;
+        cursor: pointer;
+    }
+    .kzd-pinned-prompt-btn .icon { width: 15px; height: 15px; }
+    @media (prefers-reduced-motion: reduce) {
+        .kzd-pinned-prompt { transition: opacity 120ms ease, visibility 0s linear 120ms; transform: none; }
+        .kzd-pinned-prompt.is-pinned { transition: opacity 120ms ease, visibility 0s linear 0s; }
+    }
+}
+
+.kzd-prompt-bar { transition: box-shadow 220ms ease, border-color 220ms ease, transform 220ms ease; }
+.kzd-prompt-bar:hover { box-shadow: 0 1px 2px rgba(26, 26, 26,0.05), 0 26px 48px -22px rgba(26, 26, 26,0.4); }
+.kzd-prompt-bar:focus-within {
+    border-color: #1A1A1A !important;
+    box-shadow: 0 0 0 4px rgba(26, 26, 26,0.12), 0 26px 48px -22px rgba(26, 26, 26,0.4);
+}
+.kzd-prompt-submit { transition: transform 200ms ease, box-shadow 200ms ease, background 200ms ease; }
+.kzd-prompt-submit:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 14px 26px -12px rgba(26, 26, 26,0.55); background: #3A3A3A !important; }
+.kzd-prompt-cursor { display: inline-block; width: 1.5px; height: 17px; margin-left: 2px; background: #1A1A1A; animation: kzd-prompt-cursor-blink 1s step-end infinite; }
+@keyframes kzd-prompt-cursor-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .kzd-prompt-cursor { animation: none; } }
+.kzd-chip { transition: transform 180ms ease, border-color 180ms ease, background 180ms ease; }
+.kzd-chip:hover { transform: translateY(-2px); border-color: rgba(26, 26, 26,0.35); background: #FFFFFF !important; }
+/* Cursor-reactive spotlight — the signature 2024-premium-SaaS card
+   interaction (Linear, Vercel, Stripe docs all use this): a soft glow
+   tracks the cursor inside the card instead of a flat hover state.
+   --mx/--my are set by JS as percentages; the glow only shows once
+   set (avoids a glow sitting in the top-left corner before any
+   mousemove has happened). */
+.kzd-spotlight { position: relative; }
+.kzd-spotlight::before {
+    content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    border-radius: inherit;
+    background: radial-gradient(360px circle at var(--mx, -999px) var(--my, -999px), rgba(26, 26, 26,0.14), transparent 62%);
+    opacity: 0; transition: opacity 260ms var(--ease-out, ease);
+}
+.kzd-spotlight:hover::before { opacity: 1; }
+.kzd-spotlight > * { position: relative; z-index: 1; }
+
+/* Shimmering gradient text — the hero's accent phrase gets a slow
+   continuous sheen instead of a static gradient fill. Subtle: a full
+   cycle takes 6s, so it reads as "alive," not distracting. */
+.kzd-gradient-text { background-size: 220% auto; animation: kzd-text-shimmer 7s ease-in-out infinite; }
+@keyframes kzd-text-shimmer { 0%, 100% { background-position: 0% center; } 50% { background-position: 100% center; } }
+
+/* Magnetic primary CTA — the button drifts a few px toward the cursor
+   when it's nearby, snapping back on leave. JS sets --mag-x/--mag-y. */
+.kzd-magnetic { transform: translate(var(--mag-x, 0), var(--mag-y, 0)); transition: transform 260ms var(--ease-out, ease); }
+
+/* Hero cascade — each hero element gets its own .kzd-reveal instance
+   with an increasing --reveal-delay (set inline), so the opening
+   viewport cascades in piece by piece on load instead of arriving as
+   one flat block. Same transition the rest of the page already uses,
+   just applied per-element instead of to one wrapper. */
+@media (prefers-reduced-motion: reduce) { .kzd-home * { animation: none !important; transition: none !important; } }
+
+/* Coverflow, third build -- explicitly requested back a second time,
+   knowing the risk. This attempt changes the actual mechanism, not
+   just the numbers: the first two builds had JS writing a new inline
+   `transform` to each card on a 3800ms interval (plus a CSS
+   `transition` smoothing the move) -- meaning the main thread was
+   recalculating style and re-triggering paint/composite on a timer.
+   This version has ZERO JS. Every card runs the exact same
+   `@keyframes` timeline on an infinite CSS animation, phase-shifted
+   per card via `animation-delay` (a negative delay on nth-child(2)/
+   (3) starts them partway into the same cycle) -- driven entirely by
+   the compositor thread's own animation timeline, nothing on the
+   main thread ever touches these elements after first paint. If the
+   white-gap bug was in any way tied to the JS/style-recalc path,
+   this removes that path entirely; if it's a pure GPU/rasterization
+   issue independent of what drives the transform, this won't fix it
+   -- that's the open question this build is actually testing.
+   Per-card responsive values (gap distance, side-card scale, tilt
+   angle) are CSS custom properties on .kzd-coverflow-stage, redefined
+   per breakpoint, and read inside the keyframes via var() -- lets one
+   shared @keyframes rule serve all three breakpoints. */
+.kzd-coverflow-stage {
+    position: relative; max-width: 1320px; margin: 0 auto;
+    height: 340px; padding: 20px 0;
+    --kzd-cf-gap: 300px; --kzd-cf-side-scale: 0.78; --kzd-cf-rotate: 9deg;
+}
+/* Five cards, one per pill in the bar below. Per-card duration stays
+   3800ms, so the full cycle is 5 * 3800ms = 19000ms.
+   The delays run BACKWARDS (-15200, -11400, -7600, -3800) rather than
+   forwards: a negative delay starts the animation already advanced, so
+   -3800 * i would bring the cards to the front in the order 1, 5, 4, 3,
+   2 -- which looked fine alone, but sends the bar's notch jumping about
+   the strip instead of walking along it. */
+.kzd-cf-card {
+    position: absolute; top: 50%; left: 50%;
+    width: 500px; height: 261px; margin-left: -250px; margin-top: -130.5px;
+    will-change: transform;
+    animation: kzd-cf-cycle 19000ms cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+.kzd-cf-card:nth-child(2) { animation-delay: -15200ms; }
+.kzd-cf-card:nth-child(3) { animation-delay: -11400ms; }
+.kzd-cf-card:nth-child(4) { animation-delay: -7600ms; }
+.kzd-cf-card:nth-child(5) { animation-delay: -3800ms; }
+.kzd-cf-card:hover { z-index: 20 !important; }
+@keyframes kzd-cf-cycle {
+    0%, 9.72% {
+        transform: translateX(0) scale(1) rotate(0deg);
+        opacity: 1; z-index: 10;
+    }
+    12%, 85.72% {
+        transform: translateX(calc(var(--kzd-cf-gap) * -1)) scale(0.6) rotate(calc(var(--kzd-cf-rotate) * -1));
+        opacity: 0; z-index: 5;
+    }
+    88%, 97.72% {
+        transform: translateX(var(--kzd-cf-gap)) scale(var(--kzd-cf-side-scale)) rotate(var(--kzd-cf-rotate));
+        opacity: 1; z-index: 9;
+    }
+    100% {
+        transform: translateX(0) scale(1) rotate(0deg);
+        opacity: 1; z-index: 10;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .kzd-cf-card { animation: none; }
+    .kzd-cf-card:not(:first-child) { opacity: 0; }
+}
+.kzd-template-card {
+    position: absolute; inset: 0; border-radius: 18px;
+    /* A hairline light edge as well as the dark one: against a dark
+       screenshot the outer border alone vanished and the card lost its
+       shape. */
+    border: 1px solid rgba(26, 26, 26,0.10); background: #FFFFFF;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.10);
+    overflow: hidden;
+    box-shadow: 0 36px 70px -26px rgba(26, 26, 26,0.4), 0 14px 28px -10px rgba(26, 26, 26,0.2);
+}
+.kzd-tpl-real-shot {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: top center;
+    display: block;
+}
+/* A small frosted plate in one corner, NOT a gradient over the artwork.
+   The previous version rose to 60% of the card height at 0.35 alpha and
+   greyed out the bottom half of every screenshot -- the one thing the
+   card exists to show -- and landed the name on top of whatever the
+   template had there (on the fintech card, its own "Start free trial"
+   button). The screenshot is the product; nothing gets painted over it. */
+.kzd-template-label {
+    position: absolute; left: 12px; bottom: 12px; right: auto; z-index: 2;
+    display: inline-flex; align-items: baseline; gap: 7px;
+    max-width: calc(100% - 24px);
+    padding: 8px 12px;
+    border-radius: 11px;
+    background: rgba(26, 26, 26, 0.66);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 6px 18px -6px rgba(0,0,0,0.45);
+    font-size: 12.5px; font-weight: 700; letter-spacing: -0.01em; color: #FFFFFF;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+/* One line, not two: stacked, this chip covered a third of the card at
+   phone size. */
+.kzd-template-label-category {
+    display: inline; margin: 0; font-size: 11px; font-weight: 500;
+    color: rgba(255,255,255,0.74); letter-spacing: 0;
+}
+.kzd-template-label-category::before {
+    content: '\00B7'; margin-right: 7px; color: rgba(255,255,255,0.38);
+}
+/* Browsers without backdrop-filter get a solid plate rather than a
+   translucent one that would leave the text sitting on raw artwork. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .kzd-template-label { background: rgba(26, 26, 26, 0.9); }
+}
+/* ------------------------------------------------------------------
+   Phone: a scroll-snap carousel, not a scaled-down coverflow.
+
+   The coverflow transforms every card to scale ~0.6, which rendered a
+   900px screenshot at about 208px wide -- too small to read a website
+   design, which is the only thing this section is for. The transform
+   also animates, so the browser scales a composited texture instead of
+   rasterising the image at final size, and the artwork came out soft.
+
+   Removing the transform fixes the sharpness and one card at 82% of the
+   viewport roughly doubles the usable artwork. Swipe replaces the
+   automatic cycle, which is what a phone affords anyway.
+   ------------------------------------------------------------------ */
+@media (max-width: 767px) {
+    #templates-strip { padding: 24px 0 48px !important; overflow: visible !important; }
+    .kzd-coverflow-stage {
+        display: flex !important;
+        height: auto !important;
+        gap: 14px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scroll-padding: 0 20px;
+        padding: 6px 20px 18px;
+        scrollbar-width: none;
+        perspective: none;
+    }
+    .kzd-coverflow-stage::-webkit-scrollbar { display: none; }
+    .kzd-cf-card {
+        position: relative !important;
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+        flex: 0 0 82%;
+        width: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+        aspect-ratio: 16 / 10;
+        scroll-snap-align: center;
+        z-index: auto !important;
+    }
+    /* The label leaves the artwork. At 287px the frosted chip covered
+       about 60% of the card and sat over the design it was naming; with
+       room beneath the image there is no reason to overlay at all. */
+    .kzd-cf-card {
+        display: flex;
+        flex-direction: column;
+        aspect-ratio: auto !important;
+    }
+    .kzd-template-card {
+        position: relative !important;
+        inset: auto !important;
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        flex: none;
+    }
+    .kzd-template-label {
+        position: static !important;
+        left: auto; bottom: auto;
+        margin: 11px 2px 0;
+        max-width: 100%;
+        padding: 0 !important;
+        background: none !important;
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        color: #1A1A1A;
+        font-size: 13.5px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+    }
+    .kzd-template-label-category {
+        color: #6B6B6B;
+        font-size: 12.5px;
+        font-weight: 400;
+    }
+    .kzd-template-label-category::before { color: #A7A7A7; }
+
+    /* The last card needs trailing room or it snaps flush to the edge. */
+    .kzd-cf-card:last-child { margin-right: 20px !important; }
+}
+/* The reduced-motion rule hid every card but the first, which was right
+   for an auto-cycling stack and wrong for a carousel the visitor drives
+   themselves -- there is no motion to reduce once the animation is off. */
+@media (prefers-reduced-motion: reduce) and (max-width: 767px) {
+    .kzd-cf-card:not(:first-child) { opacity: 1; }
+}
+
+@media (max-width: 767px) {
+    .kzd-coverflow-stage {
+        height: 260px;
+        --kzd-cf-gap: 155px; --kzd-cf-side-scale: 0.7; --kzd-cf-rotate: 7deg;
+    }
+    .kzd-cf-card {
+        width: 420px; height: 220px; margin-left: -210px; margin-top: -110px;
+    }
+    .kzd-template-label {
+        left: 10px; bottom: 10px; padding: 6px 10px; gap: 6px;
+        font-size: 11.5px; border-radius: 9px;
+    }
+    .kzd-template-label-category { font-size: 11px; }
+    .kzd-template-label-category::before { margin-right: 6px; }
+}
+@media (max-width: 480px) {
+    .kzd-coverflow-stage {
+        height: 210px;
+        --kzd-cf-gap: 100px; --kzd-cf-side-scale: 0.65; --kzd-cf-rotate: 6deg;
+    }
+    .kzd-cf-card {
+        width: 310px; height: 165px; margin-left: -155px; margin-top: -82.5px;
+    }
+    /* Was 10px/8.5px. The card shrinks with the viewport but the type
+       can't follow it all the way down — 8.5px is below anything
+       legible on a phone, and this label is what names the template. */
+    .kzd-template-label { font-size: 11px; padding: 16px 10px 8px; }
+    .kzd-template-label-category { font-size: 11px; }
+}
+/* ---- Type indicator for the coverflow ----
+   Not a control: it reports which of the sliding cards is front and
+   centre. The notch is one absolutely positioned element that slides
+   between pills -- a background on each pill could only ever cut
+   instantly, and the travel is the whole point. It is measured from the
+   active pill's own offsetLeft/offsetWidth, so translated labels and a
+   scrolled track both stay correct. */
+.kzd-types-tabs-wrap { display: flex; justify-content: center; margin: clamp(18px, 2.4vw, 28px) 0 0; }
+
+.kzd-types-tabs {
+    position: relative; display: flex; align-items: center; gap: 2px;
+    padding: 4px; border-radius: 999px; background: #F4F5F7;
+    /* Five pills do not fit a phone; the track scrolls and the active
+       pill is kept centred rather than wrapped or hidden. */
+    overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
+    max-width: 100%;
+}
+.kzd-types-tabs::-webkit-scrollbar { display: none; }
+/* Fades only the edge that still has pills behind it, so a track scrolled
+   to its end does not fade into empty track. Both classes are set from the
+   track's own scroll position. */
+.kzd-types-tabs.has-start.has-end {
+    mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%);
+}
+.kzd-types-tabs.has-end:not(.has-start) {
+    mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent 100%);
+}
+.kzd-types-tabs.has-start:not(.has-end) {
+    mask-image: linear-gradient(90deg, transparent 0, #000 28px);
+}
+.kzd-types-notch {
+    position: absolute; top: 4px; bottom: 4px; left: 0; width: 0;
+    border-radius: 999px; background: #1A1A1A; pointer-events: none;
+    /* No transition: every frame's position comes from the cards' own
+       animation clock, so the notch is already moving continuously. A
+       transition on top of that would lag the cards it is tracking. */
+}
+.kzd-types-tab {
+    position: relative; z-index: 1; flex: none;
+    padding: 11px 20px; border-radius: 999px; white-space: nowrap;
+    font-size: 14px; font-weight: 700; letter-spacing: -0.01em; color: #3A3A3A;
+    transition: color 300ms ease;
+}
+.kzd-types-tab[aria-current="true"] { color: #FFFFFF; }
+
+@media (max-width: 767px) {
+    .kzd-types-tabs-wrap { margin-top: 4px; }
+    .kzd-types-tab { padding: 10px 16px; font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    /* The cards stop cycling under reduced motion, so the notch has
+       nothing to track and simply rests on the card left showing. */
+    .kzd-types-notch { transition: none; }
+}
+/* ---- Hosting plans ----
+   Researched on Refero, then synthesised (not copied):
+   - Open Collective ("Raise") is the foundation: white canvas, navy
+     type, a single navy reserved for actions, hairline borders, pill
+     buttons and roomy card padding.
+   - Vercel lends the ring-shadow card (a 1px ring plus a 2px soft drop,
+     no heavy blur) and the pill segmented billing control.
+   - Kit and OpenAI lend the structure: billing control opposite the
+     heading, every plan visible at once, and what all plans share lifted
+     out of the cards so each card shows only what differs.
+   The recommended plan is marked the design doc's way -- a 2px navy
+   selected ring and a badge -- not by inverting it into a dark block.
+   pp-* names are kept for the rest of the board (the knowledge-base
+   section below still uses them). */
+.kzd-pp {
+    --pp-ink: #1A1A1A;
+    --pp-ink-dim: #6B6B6B;
+    --pp-navy: #1A1A1A;
+    --pp-muted: #6B6B6B;
+    --pp-muted-2: #6B6B6B;
+    --pp-line: rgba(26, 26, 26,0.09);
+    --pp-surface: #F4F5F7;
+}
+/* One family site-wide -- KZD_Solutions_Reusable_Design_System.docx
+   section 4. */
+.pp-mono, .pp-display, .pp-body, .kzd-pp { font-family: var(--kzd-font-display), 'Inter Tight', sans-serif; }
+.pp-grid { display: flex; align-items: stretch; gap: 20px; width: 100%; }
+
+.kzd-tier-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 32px; flex-wrap: wrap; margin-bottom: clamp(32px, 4vw, 48px);
+}
+.kzd-tier-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px; margin-bottom: 14px;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--pp-navy);
+}
+.kzd-tier-eyebrow::before {
+    content: ''; width: 6px; height: 6px; border-radius: 999px; background: var(--pp-navy);
+    box-shadow: 0 0 0 3px rgba(26, 26, 26,0.12);
+}
+.kzd-tier-title {
+    margin: 0; font-size: clamp(32px, 4vw, 48px); line-height: 1.08;
+    font-weight: 700; letter-spacing: -0.025em; color: var(--pp-ink); text-wrap: balance;
+}
+.kzd-tier-lede { margin: 12px 0 0; font-size: 16px; line-height: 1.6; color: var(--pp-muted); max-width: 46ch; }
+
+/* Billing: a pill track with the chosen term filled navy -- the same
+   active treatment as the Domains / Business Email tabs. */
+.kzd-tier-billing { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.kzd-tier-toggle {
+    display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px;
+    background: #FFFFFF; box-shadow: 0 0 0 1px var(--pp-line), 0 1px 2px rgba(26, 26, 26,0.04);
+}
+.kzd-tier-toggle button {
+    cursor: pointer; border: 0; border-radius: 999px; padding: 9px 18px;
+    background: transparent; color: var(--pp-muted);
+    font-family: inherit; font-size: 14px; font-weight: 600; white-space: nowrap;
+    transition: background 180ms ease, color 180ms ease;
+}
+.kzd-tier-toggle button:hover { color: var(--pp-ink); }
+.kzd-tier-toggle button[aria-pressed="true"] { background: var(--pp-navy); color: #FFFFFF; }
+.kzd-tier-toggle button:focus-visible { outline: 2px solid var(--pp-navy); outline-offset: 2px; }
+/* A badge, so full radius is allowed (design doc section 7). Hidden on
+   monthly, where there is no saving to claim, but it keeps its height so
+   switching terms does not nudge the cards. */
+.kzd-tier-saving {
+    display: inline-flex; align-items: center; min-height: 26px; padding: 0 12px; border-radius: 999px;
+    background: rgba(26, 26, 26,0.07); color: var(--pp-navy); font-size: 12.5px; font-weight: 600;
+}
+.kzd-tier-saving:empty { visibility: hidden; }
+
+.kzd-tier-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+/* Subgrid: every card's six parts (name, description, price, note,
+   button, features) sit on rows shared across the whole row of cards,
+   so a description that wraps one line longer in one card cannot push
+   that card's price and button below its neighbours'. */
+.kzd-tier-card {
+    position: relative; display: grid; grid-row: span 6; grid-template-rows: subgrid; row-gap: 0; min-width: 0;
+    align-content: start;
+    padding: 28px; border-radius: 16px; background: #FFFFFF;
+    box-shadow: 0 0 0 1px var(--pp-line), 0 1px 2px rgba(26, 26, 26,0.04);
+    transition: box-shadow 200ms ease, transform 200ms ease;
+}
+.kzd-tier-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 1px rgba(26, 26, 26,0.18), 0 16px 32px -16px rgba(26, 26, 26,0.22);
+}
+.kzd-tier-card.is-best { box-shadow: 0 0 0 2px var(--pp-navy), 0 16px 36px -18px rgba(26, 26, 26,0.35); }
+.kzd-tier-card.is-best:hover { box-shadow: 0 0 0 2px var(--pp-navy), 0 22px 40px -18px rgba(26, 26, 26,0.4); }
+@media (prefers-reduced-motion: reduce) { .kzd-tier-card, .kzd-tier-card:hover { transform: none; } }
+
+.kzd-tier-name-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 26px; }
+.kzd-tier-name { margin: 0; font-size: 19px; font-weight: 700; letter-spacing: -0.01em; color: var(--pp-ink); }
+.kzd-tier-badge {
+    flex: none; padding: 5px 10px; line-height: 16px; border-radius: 999px; white-space: nowrap;
+    background: var(--pp-navy); color: #FFFFFF; font-size: 11.5px; font-weight: 700; letter-spacing: 0.01em;
+}
+.kzd-tier-desc { margin: 8px 0 0; font-size: 14px; line-height: 1.5; color: var(--pp-muted); }
+/* Subgrid already gives every description the same row height; the
+   fixed minimum is only a fallback where subgrid is unsupported. */
+@supports not (grid-template-rows: subgrid) { .kzd-tier-desc { min-height: 42px; } }
+
+.kzd-tier-amount-row { display: flex; align-items: baseline; gap: 4px; margin-top: 24px; flex-wrap: wrap; }
+.kzd-tier-rand { font-size: 20px; font-weight: 700; color: var(--pp-ink); align-self: flex-start; margin-top: 6px; }
+.kzd-tier-amount {
+    font-size: clamp(38px, 3.4vw, 46px); line-height: 1; font-weight: 700; letter-spacing: -0.03em;
+    color: var(--pp-ink); font-variant-numeric: tabular-nums;
+}
+.kzd-tier-per { font-size: 14px; color: var(--pp-muted); }
+.kzd-tier-note { margin-top: 8px; min-height: 18px; font-size: 13px; color: var(--pp-muted-2); font-variant-numeric: tabular-nums; }
+
+/* Same pills as the rest of the page: outline for the plans, filled
+   navy -- the homepage "Get started" -- for the recommended one only. */
+.kzd-tier-cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 46px; margin: 22px 0 24px; padding: 0 20px; border-radius: 999px;
+    border: 1px solid rgba(26, 26, 26,0.28); background: #FFFFFF; color: var(--pp-navy);
+    font-size: 14px; font-weight: 700; text-decoration: none;
+    transition: background 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+.kzd-tier-cta:hover { background: var(--pp-navy); border-color: var(--pp-navy); color: #FFFFFF; }
+.kzd-tier-cta:focus-visible { outline: 2px solid var(--pp-navy); outline-offset: 3px; }
+.kzd-tier-card.is-best .kzd-tier-cta { background: var(--pp-navy); border-color: var(--pp-navy); color: #FFFFFF; }
+.kzd-tier-card.is-best .kzd-tier-cta:hover { background: var(--pp-ink); border-color: var(--pp-ink); box-shadow: 0 14px 30px -12px rgba(26, 26, 26,0.55); }
+.kzd-tier-cta svg { transition: transform 200ms ease; }
+.kzd-tier-cta:hover svg { transform: translateX(3px); }
+
+/* Only what differs between plans. The figure leads each line in bold
+   tabular digits, so reading across the row compares the plans. */
+.kzd-tier-feats {
+    list-style: none; margin: 0; padding: 20px 0 0; border-top: 1px solid var(--pp-line);
+    display: flex; flex-direction: column; gap: 11px;
+}
+.kzd-tier-feats li { display: flex; align-items: baseline; gap: 10px; font-size: 14px; line-height: 1.4; color: #3A3A3A; }
+.kzd-tier-feats svg { flex: none; color: var(--pp-navy); position: relative; top: 2px; }
+.kzd-tier-feats strong { color: var(--pp-ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.kzd-tier-shared {
+    display: flex; align-items: center; gap: 12px 28px; flex-wrap: wrap;
+    margin-top: 16px; padding: 18px 24px; border-radius: 16px; background: var(--pp-surface);
+}
+.kzd-tier-shared-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--pp-navy); white-space: nowrap;
+}
+.kzd-tier-shared ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 24px; }
+.kzd-tier-shared li { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: #3A3A3A; }
+.kzd-tier-shared svg { flex: none; color: var(--pp-navy); }
+
+.pp-foot { max-width: 760px; font-size: 13px; line-height: 1.7; color: var(--pp-muted-2); margin: 20px 0 0; }
+
+/* Swipe controls: only exist below the four-across width. */
+.kzd-tier-nav { display: none; }
+
+/* Below four-across: a swipe row that always shows the plans in pairs,
+   with a slice of the next card peeking in so it reads as "more this
+   way". Still one grid (auto-flow column), so the subgrid keeps every
+   card's price and button level across the row. Snaps card by card;
+   arrows and dots under it for mouse users. */
+@media (max-width: 1100px) {
+    .kzd-tier-grid {
+        --tier-gap: 12px; --tier-peek: 28px;
+        grid-template-columns: none;
+        grid-auto-flow: column;
+        grid-auto-columns: calc((100% - var(--tier-gap) - var(--tier-peek)) / 2);
+        gap: var(--tier-gap);
+        overflow-x: auto; overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory; scroll-behavior: smooth;
+        scrollbar-width: none;
+        /* room for the selected ring and hover lift, which a scroller
+           would otherwise clip */
+        padding: 6px 4px 14px; margin: -6px -4px -14px;
+        scroll-padding-inline: 4px;
+    }
+    .kzd-tier-grid::-webkit-scrollbar { display: none; }
+    .kzd-tier-card { scroll-snap-align: start; }
+    .kzd-tier-card:hover { transform: none; }
+    .kzd-tier-nav {
+        display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 14px;
+    }
+    .kzd-tier-arrow {
+        width: 40px; height: 40px; border-radius: 999px; flex: none;
+        display: inline-flex; align-items: center; justify-content: center;
+        border: 1px solid rgba(26, 26, 26,0.2); background: #FFFFFF; color: #1A1A1A; cursor: pointer;
+        transition: background 160ms ease, color 160ms ease, opacity 160ms ease;
+    }
+    .kzd-tier-arrow:hover:not(:disabled) { background: #1A1A1A; color: #FFFFFF; }
+    .kzd-tier-arrow:disabled { opacity: 0.35; cursor: default; }
+    .kzd-tier-arrow:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 2px; }
+    .kzd-tier-dots { display: flex; gap: 6px; }
+    .kzd-tier-dots span {
+        width: 7px; height: 7px; border-radius: 999px; background: rgba(26, 26, 26,0.2);
+        transition: width 200ms ease, background 200ms ease;
+    }
+    .kzd-tier-dots span.is-on { width: 18px; background: #1A1A1A; }
+}
+@media (max-width: 640px) {
+    /* The section's 32px gutter is too much at phone width; the row
+       runs to the screen edge so a pair of cards gets every pixel. */
+    #plans { padding-left: 16px !important; padding-right: 16px !important; }
+    .kzd-tier-head { flex-direction: column; align-items: stretch; gap: 20px; }
+    .kzd-tier-billing { align-items: flex-start; }
+    .kzd-tier-toggle { width: 100%; }
+    .kzd-tier-toggle button { flex: 1; padding: 10px 6px; font-size: 13.5px; }
+    .kzd-tier-grid { --tier-gap: 10px; --tier-peek: 22px; }
+    /* Compact card: a pair has to fit on a 360px screen. */
+    .kzd-tier-card { padding: 16px 14px; }
+    .kzd-tier-name-row { flex-direction: column-reverse; align-items: flex-start; gap: 6px; min-height: 0; }
+    .kzd-tier-name { font-size: 16px; }
+    .kzd-tier-badge { font-size: 11px; padding: 3px 8px; line-height: 14px; }
+    .kzd-tier-desc { font-size: 12.5px; line-height: 1.45; min-height: 0;
+        display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .kzd-tier-amount-row { margin-top: 14px; gap: 2px; }
+    .kzd-tier-rand { font-size: 15px; margin-top: 3px; }
+    .kzd-tier-amount { font-size: 30px; }
+    .kzd-tier-per { font-size: 12px; }
+    .kzd-tier-note { font-size: 11.5px; margin-top: 6px; min-height: 16px; }
+    .kzd-tier-cta { min-height: 44px; margin: 14px 0 16px; padding: 0 10px; font-size: 13px; gap: 6px; }
+    .kzd-tier-feats { padding-top: 14px; gap: 8px; }
+    .kzd-tier-feats li { font-size: 12.5px; gap: 7px; }
+    .kzd-tier-feats svg { width: 12px; height: 12px; }
+    .kzd-tier-shared { padding: 16px 18px; }
+}
+
+/* ---- Hosting guides ----
+   Researched on Refero: Faire's "Featured guides" is the base -- each
+   card names its topic, states the question, and previews the answer in
+   two lines so a visitor knows what is inside before clicking. Square's
+   help centre lends the closing "can't find it?" strip that routes to a
+   person. Cards, pills and type match the pricing section above. */
+.kzd-guides-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap; margin-bottom: clamp(28px, 3.4vw, 40px);
+}
+.kzd-guides-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px; margin-bottom: 14px;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #1A1A1A;
+}
+.kzd-guides-eyebrow::before {
+    content: ''; width: 6px; height: 6px; border-radius: 999px; background: #1A1A1A;
+    box-shadow: 0 0 0 3px rgba(26, 26, 26,0.12);
+}
+.kzd-guides-title {
+    margin: 0; font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1;
+    font-weight: 700; letter-spacing: -0.025em; color: #1A1A1A; max-width: 720px; text-wrap: balance;
+}
+.kzd-guides-lede { margin: 12px 0 0; font-size: 16px; line-height: 1.6; color: #6B6B6B; max-width: 52ch; }
+.kzd-guides-all {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 20px;
+    border-radius: 999px; border: 1px solid rgba(26, 26, 26,0.28); background: #FFFFFF;
+    color: #1A1A1A; font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap;
+    transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+.kzd-guides-all:hover { background: #1A1A1A; border-color: #1A1A1A; color: #FFFFFF; }
+.kzd-guides-all:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 3px; }
+/* `.kzd-home button { color: inherit; }` (specificity 0,1,1) otherwise
+   beats `.kzd-kb-search button` from kzd-overrides.css (also 0,1,1) and
+   wins the Search button's text back to near-black-on-black. */
+.kzd-home .kzd-kb-search button { color: #FFFFFF; }
+
+/* The card-grid-with-thumbnail treatment that used to live here
+   (.kzd-guides-grid, .kzd-guide, .kzd-guide-thumb, .kzd-guides-help,
+   etc.) is gone — this section now reuses the .kzd-kb-* classes
+   already shipped in kzd-overrides.css (the same ones /support/kb
+   itself runs on) instead of a bespoke homepage-only treatment. See
+   the HTML comment above this section's markup for why.
+   .kzd-guides-head/-eyebrow/-title/-lede/-all above are still used
+   (the section's own heading row, kept as-is). */
+
+/* kzd-next port: on FOSSBilling every block after the parallax layer was
+   positioned (sticky header, relative hero), so they painted over it. Here
+   plain sections follow it, so the backdrop is sent behind them explicitly
+   (still inside .kzd-mesh-zone's isolated stacking context). */
+.kzd-mesh-parallax { z-index: -1; pointer-events: none; }
+
+/* kzd-next port: the extension price list used by /domains/pricing and
+   /domains/tld-extensions. No such table exists on the FOSSBilling
+   homepage, so it is assembled from that page's own parts: the FAQ cards'
+   2px top rule and hairline dividers, the tier cards' type and tabular
+   figures, and .kzd-tier-cta as the row button. */
+.kzd-tld-table { border-top: 2px solid rgba(26, 26, 26,0.14); }
+.kzd-tld-row {
+    display: grid; grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)) 140px;
+    align-items: center; gap: 16px; padding: 16px 4px;
+    border-bottom: 1px solid rgba(26, 26, 26,0.1);
+    font-size: 15px; font-weight: 600; color: #1A1A1A; font-variant-numeric: tabular-nums;
+}
+.kzd-tld-row:has(> span:nth-child(5)) { grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)) 140px; }
+.kzd-tld-row:not(:has(> span:nth-child(5))) { grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)) 140px; }
+.kzd-tld-row small { margin-left: 2px; font-size: 12px; font-weight: 500; color: #6B6B6B; }
+.kzd-tld-row-head {
+    padding-top: 12px; padding-bottom: 12px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6B6B6B;
+}
+.kzd-tld-row-ext { display: flex; flex-direction: column; min-width: 0; }
+.kzd-tld-row-ext strong { font-family: var(--kzd-font-display), 'Inter Tight', system-ui, sans-serif; font-size: 19px; font-weight: 700; letter-spacing: -0.02em; }
+.kzd-tld-row-ext small { margin: 2px 0 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kzd-tld-row-cta .kzd-tier-cta { margin: 0; padding-top: 10px; padding-bottom: 10px; }
+.kzd-tld-empty { padding: 24px 4px; color: #6B6B6B; font-size: 14.5px; }
+.kzd-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 720px) {
+    .kzd-tld-row, .kzd-tld-row:has(> span:nth-child(5)), .kzd-tld-row:not(:has(> span:nth-child(5))) {
+        grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px;
+    }
+    .kzd-tld-row-head { display: none; }
+    .kzd-tld-row-ext { grid-column: 1 / -1; }
+    .kzd-tld-row > [data-label]::before {
+        content: attr(data-label); display: block; font-size: 11px; font-weight: 700;
+        letter-spacing: 0.08em; text-transform: uppercase; color: #6B6B6B;
+    }
+    .kzd-tld-row-cta { grid-column: 1 / -1; }
+}
+
+/* Two-column body used by /domains/transfer: the form beside the reasons. */
+.kzd-split { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+@media (max-width: 900px) { .kzd-split { grid-template-columns: minmax(0, 1fr); } }
+.kzd-notes { margin: 0; padding: 0 0 0 18px; font-size: 14.5px; line-height: 1.8; color: #3A3A3A; }

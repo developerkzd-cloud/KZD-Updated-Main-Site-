@@ -13,6 +13,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getJob, getJobs, type Job } from "@/lib/content";
+import ApplicationForm from "./ApplicationForm";
 import JobTabs from "./JobTabs";
 import ShareJob from "./ShareJob";
 import styles from "./job.module.css";
@@ -195,28 +196,17 @@ export default async function JobPage(props: PageProps<"/careers/[id]">) {
 
   const apply = (
     <div className={styles.inner}>
-      <div className={styles.notice}>
-        <p className={styles.noticeTitle}>
-          {open ? "The application form is not on this build yet" : "This role has been filled"}
-        </p>
-        <p className={styles.noticeBody}>
-          {open ? (
-            <>
-              The careers form, account creation and CV upload are being ported in the next phase of
-              the migration. In the meantime, apply by email at{" "}
-              <a href={`mailto:info@kzdsolutions.co.za?subject=Application: ${job.title}`}>
-                info@kzdsolutions.co.za
-              </a>
-              .
-            </>
-          ) : (
-            <>
-              We are no longer accepting applications for this role. Other openings are on the{" "}
-              <Link href="/careers">careers page</Link>.
-            </>
-          )}
-        </p>
-      </div>
+      {open ? (
+        <ApplicationForm jobId={job.id} jobTitle={job.title} />
+      ) : (
+        <div className={styles.notice}>
+          <p className={styles.noticeTitle}>This role has been filled</p>
+          <p className={styles.noticeBody}>
+            We are no longer accepting applications for this role. Other openings are on the{" "}
+            <Link href="/careers">careers page</Link>.
+          </p>
+        </div>
+      )}
     </div>
   );
 
@@ -231,7 +221,7 @@ export default async function JobPage(props: PageProps<"/careers/[id]">) {
         <div className={styles.inner}>
           <Link className={styles.back} href="/careers">
             <Icon name="arrow-left" size="dense" />
-            All openings
+            All positions
           </Link>
           <div className={styles.headIn}>
             <h1 className={styles.title}>{job.title}</h1>

@@ -1,56 +1,57 @@
 /* ==========================================================================
-   Mobile drawer — ported from the .kzd-mnav block in css/kzd-nav.css.
-
-   The old version needed zoom: 1.1111 to cancel body { zoom: .9 }, or the panel
-   covered only 90% of the screen and every 44px target really measured 39.6.
-   That compensation is gone with the zoom, so these are true pixels.
+   Mobile drawer — a full-screen sheet that slides down from the top
+   (transform only), black & white. Numbered links 01-05 stagger in on
+   open; Services expands into the same six services as the desktop
+   dropdown, height-animated with the grid-template-rows 0fr->1fr technique
+   so nothing but transform/opacity is ever animated on an already-open
+   panel (the accordion open/close itself does animate a grid track, which
+   is the one explicitly allowed exception in the brief).
    ========================================================================== */
 
 .scrim {
   position: fixed;
   inset: 0;
   z-index: 1400;
-  background: rgba(4, 9, 26, 0.55);
+  background: rgb(0 0 0 / 0.55);
   opacity: 0;
-  transition: opacity var(--kzd-dur-micro) cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity var(--duration-slow) var(--ease-standard);
 }
 .scrimOpen { opacity: 1; }
 
 .panel {
   position: fixed;
-  top: 0;
-  right: 0;
+  inset: 0;
   z-index: 1500;
   /* dvh, not vh — vh is wrong on mobile Safari once the address bar hides. */
   width: 100dvw;
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  background: var(--kzd-navy-500);
-  transform: translateX(100%);
+  background: var(--color-ink);
+  transform: translateY(-100%);
   visibility: hidden;
-  transition: transform var(--kzd-dur-micro) cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 280ms;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 300ms;
 }
 
 .panelOpen {
-  transform: translateX(0);
+  transform: translateY(0);
   visibility: visible;
-  transition: transform var(--kzd-dur-micro) cubic-bezier(0.16, 1, 0.3, 1), visibility 0s;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), visibility 0s;
 }
 
 .head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--kzd-space-12);
+  gap: var(--space-3);
   flex: none;
-  padding: var(--kzd-space-12) var(--kzd-space-16) var(--kzd-space-12) var(--kzd-space-24);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-5);
+  border-bottom: 1px solid rgb(255 255 255 / 0.12);
 }
 
-.brand { display: flex; align-items: center; gap: var(--kzd-space-8); min-height: 44px; }
-.mark { width: var(--kzd-logo-40); height: var(--kzd-logo-40); object-fit: contain; }
-.word { font-family: var(--kzd-type-display); font-size:  var(--kzd-text-body); font-weight: 700; color: var(--kzd-white); }
+.brand { display: flex; align-items: center; gap: var(--space-2); min-height: 44px; }
+.mark { width: 40px; height: 40px; object-fit: contain; }
+.word { font-family: var(--kzd-type-display); font-size: 17px; font-weight: 700; color: var(--color-white); }
 
 .close {
   display: grid;
@@ -59,13 +60,14 @@
   flex: none;
   padding: 0;
   border: 0;
-  border-radius: var(--kzd-radius-12);
+  border-radius: 12px;
   background: none;
+  color: var(--color-white);
   cursor: pointer;
 }
-.close svg { width: var(--kzd-icon-dense); height: var(--kzd-icon-dense); fill: none; stroke: var(--kzd-white); stroke-width: 2; stroke-linecap: round; }
+.close svg { width: 20px; height: 20px; }
 
-/* The panel scrolls, so a long submenu stays reachable. */
+/* The panel scrolls, so a long expanded submenu stays reachable. */
 .body {
   flex: 1 1 auto;
   min-height: 0;
@@ -76,223 +78,164 @@
 
 .list { list-style: none; }
 
-/* Every row identical — the Services row is a <button>, so its centring and
-   width are reset explicitly rather than left to inherit. */
+.list > li {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 400ms var(--ease-standard), transform 400ms var(--ease-standard);
+  transition-delay: calc(var(--d, 0) * 50ms);
+}
+.panel.panelOpen .list > li {
+  opacity: 1;
+  transform: none;
+}
+
 .row {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  gap: var(--space-3);
   width: 100%;
   min-height: 56px;
-  padding: 0 var(--kzd-space-24);
+  padding: 0 var(--space-5);
   border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
   background: none;
   text-align: left;
   font-family: var(--kzd-type-display);
-  font-size:  var(--kzd-text-body);
+  font-size: 20px;
   font-weight: 500;
   line-height: 1.3;
-  color: var(--kzd-white);
+  color: var(--color-white);
   cursor: pointer;
   appearance: none;
 }
 
-.row:hover { background: color-mix(in srgb, var(--kzd-navy-200) 12%, transparent); color: var(--kzd-white); }
+.num {
+  font-family: var(--kzd-type-label);
+  font-size: 12px;
+  color: var(--color-muted);
+  flex: none;
+}
 
-/* Current page gets an ember edge, never a dim — dim reads as disabled. */
+.rowArrow {
+  margin-left: auto;
+  flex: none;
+  opacity: 0.6;
+}
+
+.row[aria-current="page"] {
+  color: var(--color-white);
+}
 .row[aria-current="page"]::before {
   content: "";
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 3px;
-  background: var(--kzd-accent-ink);
+  background: var(--color-white);
 }
 
-.trigger { justify-content: space-between; }
+.trigger { justify-content: flex-start; }
 
 .caret {
-  width: var(--kzd-icon-dense); height: var(--kzd-icon-dense);
-  flex: none;
+  width: 20px; height: 20px;
   margin-left: auto;
+  flex: none;
   fill: none;
   stroke: currentColor;
   stroke-width: 2.2;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition: transform var(--kzd-dur-micro) ease;
+  transition: transform var(--duration-base) var(--ease-standard);
 }
 .trigger[aria-expanded="true"] .caret { transform: rotate(180deg); }
 
-/* A lighter navy so the submenu reads as a nested layer, not a hole. */
+/* Accordion: height animates via a grid track, not the `height` property
+   itself (grid-template-rows is not one of width/height/top). */
 .sub {
-  background: var(--kzd-navy-500);
-  border-left: 2px solid color-mix(in srgb, var(--kzd-navy-200) 45%, transparent);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: var(--kzd-space-8);
+  display: grid;
+  grid-template-rows: 0fr;
+  background: rgb(255 255 255 / 0.04);
+  transition: grid-template-rows 250ms var(--ease-standard);
 }
-.sub ul { list-style: none; }
+.sub[data-open="true"] { grid-template-rows: 1fr; }
 
-.subHead {
-  margin: 0;
-  padding: var(--kzd-space-16) var(--kzd-space-24) var(--kzd-space-8);
-  font-family: var(--kzd-type-label);
-  font-size:  var(--kzd-text-label-sm);
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--kzd-navy-400);
-}
+.subInner { overflow: hidden; min-height: 0; }
+.subInner ul { list-style: none; }
 
-/* --kzd-surface-200 on --kzd-navy-500 measures 11.06:1. NOT --kzd-blue: that was the original
-   bug, blue-on-navy at about 1:1. */
 .subLink {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
   min-height: 48px;
-  padding: 0 var(--kzd-space-24) 0 var(--kzd-space-40);
+  padding: 0 var(--space-5) 0 var(--space-8);
   font-family: var(--kzd-type-sans);
-  font-size:  var(--kzd-text-body);
-  color: var(--kzd-white);
+  font-size: 16px;
+  color: var(--color-white);
+  border-bottom: 1px solid rgb(255 255 255 / 0.06);
 }
-.subLink:hover { color: var(--kzd-white); background: color-mix(in srgb, var(--kzd-navy-200) 12%, transparent); }
+.subMeta {
+  flex: none;
+  font-family: var(--kzd-type-label);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
 
 .actions {
   flex: none;
   display: flex;
   flex-direction: column;
-  gap: var(--kzd-space-12);
-  padding: var(--kzd-space-24);
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-top: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.authRow {
+  display: flex;
+  gap: var(--space-3);
 }
 
 .btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 50px;
-  border-radius: var(--kzd-radius-12);
-  font-size:  var(--kzd-text-body);
+  flex: 1;
+  height: 48px;
+  border-radius: var(--radius-md);
+  font-family: var(--kzd-type-sans);
+  font-size: 15px;
   font-weight: 500;
   line-height: 1;
+  transition: background-color var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard);
 }
+.btnGhost {
+  background: transparent;
+  border: 1.5px solid var(--color-white);
+  color: var(--color-white);
+}
+.btnGhost:hover { background: rgb(255 255 255 / 0.08); }
+.btnPrimary {
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+.btnPrimary:hover { background: var(--color-surface); }
 
-.btnGhost { border: 1px solid rgba(255, 255, 255, 0.28); color: var(--kzd-white); }
-.btnEmber { background: var(--kzd-accent-ink); color: var(--kzd-black); }
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+.contact a { color: var(--color-muted); }
+.contact a:hover { color: var(--color-white); }
+
+.socials { color: var(--color-white); }
 
 @media (min-width: 1101px) {
   .panel, .scrim { display: none; }
 }
 
-/* ---- Design system: buttons (KZD Reusable Design System) ----------------------------
-   Appended last so it settles the cascade within this module. Height 44,
-   radius 16, no vertical padding: the label is centred by inline-flex +
-   align-items:center + line-height:1. One primary per view; repeated card
-   and row actions are outline; consultation/contact is the silver accent.
-   ------------------------------------------------------------------------- */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--kzd-space-8);
-  height: var(--kzd-control);
-  min-height: var(--kzd-control);
-  padding: 0 var(--kzd-space-24);
-  border-width: var(--kzd-border);
-  border-style: solid;
-  border-radius: var(--kzd-radius-16);
-  font-family: var(--kzd-type-sans);
-  font-size: var(--kzd-text-label-lg);
-  font-weight: 600;
-  letter-spacing: 0;
-  line-height: 1;
-  text-transform: none;
-  box-shadow: none;
-  background-image: none;
-  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
-  background-color: transparent;
-  border-color: var(--kzd-black);
-  color: var(--kzd-black);
-}
-.btn:hover {
-  background-color: var(--kzd-surface-100);
-  border-color: var(--kzd-black);
-  color: var(--kzd-black);
-}
-.btn:active { transform: translateY(1px); }
-
-.btnEmber {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--kzd-space-8);
-  height: var(--kzd-control);
-  min-height: var(--kzd-control);
-  padding: 0 var(--kzd-space-24);
-  border-width: var(--kzd-border);
-  border-style: solid;
-  border-radius: var(--kzd-radius-16);
-  font-family: var(--kzd-type-sans);
-  font-size: var(--kzd-text-label-lg);
-  font-weight: 600;
-  letter-spacing: 0;
-  line-height: 1;
-  text-transform: none;
-  box-shadow: none;
-  background-image: none;
-  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
-  background-color: var(--kzd-silver);
-  border-color: var(--kzd-silver);
-  color: var(--kzd-black);
-}
-.btnEmber:hover {
-  background-color: var(--kzd-silver-light);
-  border-color: var(--kzd-silver-light);
-  color: var(--kzd-black);
-}
-.btnEmber:active { transform: translateY(1px); }
-
-.btnGhost {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--kzd-space-8);
-  height: var(--kzd-control);
-  min-height: var(--kzd-control);
-  padding: 0 var(--kzd-space-24);
-  border-width: var(--kzd-border);
-  border-style: solid;
-  border-radius: var(--kzd-radius-16);
-  font-family: var(--kzd-type-sans);
-  font-size: var(--kzd-text-label-lg);
-  font-weight: 600;
-  letter-spacing: 0;
-  line-height: 1;
-  text-transform: none;
-  box-shadow: none;
-  background-image: none;
-  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
-  background-color: transparent;
-  border-color: var(--kzd-black);
-  color: var(--kzd-black);
-}
-.btnGhost:hover {
-  background-color: var(--kzd-surface-100);
-  border-color: var(--kzd-black);
-  color: var(--kzd-black);
-}
-.btnGhost:active { transform: translateY(1px); }
-
-.close {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: var(--kzd-control);
-  min-height: var(--kzd-control);
-  padding-top: 0;
-  padding-bottom: 0;
-  line-height: 1;
-  border-radius: var(--kzd-radius-8);
-}
+/* On this dark surface the selection inverts: white with black type. */
+.panel ::selection { background: var(--color-white); color: var(--color-ink); }

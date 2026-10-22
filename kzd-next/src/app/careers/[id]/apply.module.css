@@ -1,0 +1,248 @@
+/* ==========================================================================
+   Careers Application tab — Penpot "Application — Junior Web Developer".
+
+   One narrow left-aligned column (the board's form is ~460px of a 1240px
+   page). Colours come from the new black & white tokens (tokens.css); the
+   blue on the drop-zone title and the privacy link is the page's own
+   --j-blue, matching the active tab above it. Inputs are 16px on phones so
+   iOS does not zoom into them on focus.
+   ========================================================================== */
+
+.form { max-width: 560px; }
+
+.group {
+  min-width: 0;
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* A <legend> is not a flex item of its fieldset, so the group's gap does
+   not reach it: the space below it is its own margin. */
+.legend { display: flex; flex-direction: column; gap: 2px; padding: 0; margin-bottom: var(--space-5); }
+
+.h2 {
+  margin: 0;
+  font-family: var(--kzd-type-display);
+  font-size: clamp(26px, 22px + 1vw, 32px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  color: var(--color-ink);
+}
+
+.sub { font-size: 13px; line-height: 1.4; color: var(--color-secondary); }
+
+.rule { height: 1px; margin: var(--space-2) 0 var(--space-6); border: 0; background: var(--color-border); opacity: 0.6; }
+
+/* Fields --------------------------------------------------------------------- */
+
+.field { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+
+.label { font-size: 13px; font-weight: 500; line-height: 1.3; color: var(--color-ink); }
+
+.req { color: #C4361C; }
+
+.input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid #E8E8EA;
+  border-radius: 10px;
+  background: var(--color-surface);
+  font-family: var(--kzd-type-sans);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-ink);
+  transition: border-color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard);
+}
+
+.input::placeholder { color: var(--color-muted); opacity: 1; }
+.input:hover { border-color: var(--color-border); }
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-ink);
+  background: var(--color-white);
+}
+
+.input:focus-visible { box-shadow: 0 0 0 3px rgb(26 26 26 / 0.08); }
+
+.input[aria-invalid="true"] { border-color: #C4361C; background: #FFF8F6; }
+
+.textarea { min-height: 96px; resize: vertical; }
+
+/* Keeps the native date picker's height in line with the text fields. */
+.date { min-height: 44px; }
+
+.error { margin: 0; font-size: 12.5px; font-weight: 500; line-height: 1.4; color: #B4311A; }
+
+/* Uploads -------------------------------------------------------------------- */
+
+.drop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 108px;
+  padding: var(--space-5) var(--space-4);
+  border: 1.5px dashed #D4D4D8;
+  border-radius: 12px;
+  background: var(--color-surface);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard);
+}
+
+.drop:hover, .dropOver { border-color: var(--color-ink); background: var(--color-white); }
+.drop:focus-within { border-color: var(--color-ink); box-shadow: 0 0 0 3px rgb(26 26 26 / 0.08); }
+.dropInvalid { border-color: #C4361C; background: #FFF8F6; }
+
+.dropIcon { width: 18px; height: 18px; margin-bottom: 4px; fill: var(--color-secondary); }
+.dropTitle { font-size: 14px; font-weight: 500; color: var(--j-blue, var(--color-ink)); }
+.dropHint { font-size: 12px; color: var(--color-secondary); }
+
+/* Visually hidden but still focusable, so the zone is reachable by keyboard. */
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.files { display: flex; flex-direction: column; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+
+.fileRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 52px;
+  padding: 6px 6px 6px 14px;
+  border: 1px solid #E8E8EA;
+  border-radius: 10px;
+  background: var(--color-white);
+  font-size: 14px;
+}
+
+.fileIcon { flex: none; width: 18px; height: 18px; fill: var(--color-secondary); }
+.fileName { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-ink); font-weight: 500; }
+.fileSize { flex: none; font-size: 12px; color: var(--color-secondary); }
+
+.fileRemove {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--color-secondary);
+  cursor: pointer;
+}
+
+.fileRemove svg { width: 14px; height: 14px; fill: currentColor; }
+.fileRemove:hover { background: var(--color-surface); color: var(--color-ink); }
+
+/* Checkboxes ----------------------------------------------------------------- */
+
+.checks { display: flex; flex-direction: column; gap: 2px; }
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 32px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-strong);
+  cursor: pointer;
+}
+
+.check input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--color-ink);
+  cursor: pointer;
+}
+
+.check input[aria-invalid="true"] { outline: 2px solid #C4361C; outline-offset: 1px; }
+
+.link { color: var(--j-blue, var(--color-ink)); text-decoration: underline; text-underline-offset: 2px; }
+
+/* What happens next ---------------------------------------------------------- */
+
+.next { margin-top: var(--space-2); padding: var(--space-4) var(--space-5); border-radius: 12px; background: var(--color-surface); }
+.nextTitle { margin: 0; font-size: 14px; font-weight: 600; color: var(--color-ink); }
+.nextBody { margin: 6px 0 0; font-size: 13px; line-height: 1.6; color: var(--color-secondary); }
+
+/* Submit --------------------------------------------------------------------- */
+
+.footnote { margin: 0 0 var(--space-5); font-size: 12px; color: var(--color-secondary); }
+
+.submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 176px;
+  height: 48px;
+  padding: 0 var(--space-6);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-ink);
+  font-family: var(--kzd-type-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-white);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard);
+}
+
+.submit:hover { background: var(--color-strong); }
+.submit:active { transform: translateY(1px); }
+.submit:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 3px; }
+.submit:disabled { opacity: 0.6; cursor: progress; }
+
+.status { min-height: 1.4em; margin: var(--space-3) 0 0; font-size: 13px; font-weight: 500; color: #B4311A; }
+
+/* Sent ----------------------------------------------------------------------- */
+
+.done {
+  max-width: 560px;
+  padding: var(--space-8) var(--space-6);
+  border: 1px solid #E8E8EA;
+  border-radius: 16px;
+  background: var(--color-white);
+  outline: none;
+}
+
+.doneIcon { width: 32px; height: 32px; margin-bottom: var(--space-4); fill: var(--color-ink); }
+.doneBody { margin: var(--space-3) 0 0; font-size: 15px; line-height: 1.65; color: var(--color-strong); }
+
+/* Phones --------------------------------------------------------------------- */
+
+@media (max-width: 560px) {
+  .form, .done { max-width: none; }
+  .input { font-size: 16px; }
+  .submit { width: 100%; }
+  .done { padding: var(--space-6) var(--space-5); }
+  .next { padding: var(--space-4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input, .drop, .submit { transition: none; }
+  .submit:active { transform: none; }
+}

@@ -8,7 +8,10 @@
      - the files are fingerprinted and served from the app's own origin
      - a size-adjusted fallback face is generated automatically, which removes
        the layout shift the static site takes on every first paint
-     - preload hints are emitted for the faces a route actually uses
+     - no preload hints: preloading forced all seven files (about 160 KB) to
+       download at high priority on every page, ahead of the hero photo.
+       Without them the browser fetches only the faces a page renders, and
+       display: swap plus the matched fallback keep text visible meanwhile
 
    Each family exposes a CSS variable so the existing token system can keep
    referring to --kzd-font-display / --kzd-font-body / --kzd-font-mono exactly
@@ -26,6 +29,7 @@ export const interTight = localFont({
   ],
   variable: "--kzd-font-display",
   display: "swap",
+  preload: false,
   fallback: ["system-ui", "-apple-system", "Segoe UI", "sans-serif"],
 });
 
@@ -36,6 +40,7 @@ export const inter = localFont({
   ],
   variable: "--kzd-font-body",
   display: "swap",
+  preload: false,
   fallback: ["system-ui", "-apple-system", "Segoe UI", "sans-serif"],
 });
 
@@ -45,6 +50,7 @@ export const jetbrainsMono = localFont({
   ],
   variable: "--kzd-font-mono",
   display: "swap",
+  preload: false,
   fallback: ["ui-monospace", "Cascadia Mono", "Consolas", "monospace"],
 });
 

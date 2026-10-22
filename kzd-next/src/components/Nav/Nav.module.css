@@ -1,23 +1,20 @@
 /* ==========================================================================
-   Nav — ported from css/kzd-nav.css.
+   Nav — redesigned to the new black & white system (no navy anywhere).
 
-   Two differences from the static site, both deliberate:
-
-   1. It no longer sits on top of the theme's Bootstrap navbar. The old nav
-      inherited layout from a purchased template and then fought it with
-      overrides; this one owns its own box.
-
-   2. Sizes are TRUE pixels. The static site ran body { zoom: .9 }, so every
-      touch target had to be written as ~49px to land at 44. That zoom is gone,
-      so the same targets are written as 44px and measure 44px.
+   Structure: Home / Services (dropdown) / Hosting / Domains / Contact,
+   confirmed against Penpot's Hero and Coming-Soon boards' NavLinks. Sizes
+   are true pixels (44px targets measure 44px, no static-site zoom to
+   compensate for).
    ========================================================================== */
 
 .header {
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 1000;
-  background: var(--kzd-white);
-  border-bottom: 1px solid var(--kzd-line);
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard);
 }
 
 /* Over a dark hero the bar is transparent with white text, as on the homepage. */
@@ -26,30 +23,36 @@
   border-bottom-color: transparent;
 }
 
+.header.dark {
+  background: rgb(15 15 15 / 0.82);
+  border-bottom-color: rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(10px);
+}
+
 .inner {
   display: flex;
   align-items: center;
-  gap: var(--kzd-space-24);
+  gap: var(--space-5);
   height: 84px;
-  max-width: calc(1400px + var(--kzd-pad-page) * 2);
+  max-width: calc(1400px + var(--container-gutter) * 2);
   margin-inline: auto;
-  padding-inline: var(--kzd-pad-page);
+  padding-inline: var(--container-gutter);
 }
 
-@media (max-width: 1240px) { .inner { padding-inline: var(--kzd-space-32); } }
-@media (max-width: 560px)  { .inner { padding-inline: var(--kzd-space-16); height: 72px; } }
+@media (max-width: 1240px) { .inner { padding-inline: var(--space-6); } }
+@media (max-width: 560px)  { .inner { padding-inline: var(--space-4); height: 72px; } }
 
 /* Brand ------------------------------------------------------------------- */
 
 .brand {
   display: flex;
   align-items: center;
-  gap: var(--kzd-space-12);
+  gap: var(--space-3);
   flex: none;
   min-height: 44px;
 }
 
-.brandMark { width: var(--kzd-logo-40); height: var(--kzd-logo-40); object-fit: contain; }
+.brandMark { width: 40px; height: 40px; object-fit: contain; }
 
 /* The source PNG is white-on-transparent. On the light bar it has to be
    blackened; over a dark hero it is left alone. */
@@ -57,27 +60,23 @@
 
 .brandWord {
   font-family: var(--kzd-type-display);
-  font-size:  var(--kzd-text-title);
+  font-size: 22px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--kzd-navy-500);
+  color: var(--color-ink);
   white-space: nowrap;
 }
 
-.header.transparent .brandWord { color: var(--kzd-white); }
+.header.transparent .brandWord { color: var(--color-white); }
 
 /* Desktop list ------------------------------------------------------------ */
 
-/* The auto margins belong on the <nav>, not the <ul> inside it: <nav> is the
-   flex child of .inner, so centring the <ul> within a nav that only hugs its
-   own content did nothing — the links bunched up beside the brand and the
-   account actions sat mid-bar instead of at the right edge. */
 .navWrap { margin-inline: auto; }
 
 .list {
   display: flex;
   align-items: center;
-  gap: var(--kzd-space-4);
+  gap: var(--space-1);
   list-style: none;
 }
 
@@ -85,116 +84,305 @@
 
 .link,
 .trigger {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: var(--kzd-space-4);
+  gap: var(--space-1);
   height: 44px;
-  padding: 0 var(--kzd-space-16);
+  padding: 0 var(--space-4);
   border: 0;
-  border-radius: var(--kzd-radius-8);
+  border-radius: 8px;
   background: none;
   font-family: var(--kzd-type-sans);
-  font-size:  var(--kzd-text-body);
+  font-size: 16px;
   font-weight: 500;
   line-height: 1;
-  color: var(--kzd-navy-500);
+  color: var(--color-ink);
   white-space: nowrap;
   cursor: pointer;
+  transition: color var(--duration-base) var(--ease-standard);
 }
 
 .header.transparent .link,
-.header.transparent .trigger { color: var(--kzd-white); }
+.header.transparent .trigger { color: var(--color-white); }
 
 .link:hover,
-.trigger:hover { color: var(--kzd-navy-400); }
+.trigger:hover { color: var(--color-secondary); }
 .header.transparent .link:hover,
-.header.transparent .trigger:hover { color: var(--kzd-navy-100); }
+.header.transparent .trigger:hover { color: var(--color-border); }
 
-.link[aria-current="page"] { color: var(--kzd-navy-400); }
+.link[aria-current="page"] { color: var(--color-secondary); }
+.header.transparent .link[aria-current="page"],
+.header.transparent .trigger[aria-current="page"] { color: var(--color-white); }
 
-.caret {
-  width: var(--kzd-icon-dense);
-  height: var(--kzd-icon-dense);
-  flex: none;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform var(--kzd-dur-micro) ease;
+/* Hover/open underline — grows in from the left under the link's own
+   label width (inset to match the text padding, not the full hit area). */
+.link::after,
+.trigger::after {
+  content: "";
+  position: absolute;
+  left: var(--space-4);
+  right: var(--space-4);
+  bottom: 6px;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-base) var(--ease-motion);
 }
 
-.trigger[aria-expanded="true"] .caret { transform: rotate(180deg); }
+.link:hover::after,
+.link:focus-visible::after,
+.link[aria-current="page"]::after,
+.trigger:hover::after,
+.trigger:focus-visible::after,
+.trigger[aria-current="page"]::after,
+.item[data-open="true"] .trigger::after {
+  transform: scaleX(1);
+}
 
-/* Mega panel -------------------------------------------------------------- */
+/* The Services link stops 2px after its label so the caret button sits
+   beside it without overlapping (each keeps a full, separate tap target). */
+.trigger { padding-right: 2px; }
+.trigger::after { right: 2px; }
+
+/* Separate from .trigger: toggles the panel without navigating, for touch
+   (and for anyone who wants to open the panel without following the link). */
+.caretBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 44px;
+  border: 0;
+  background: none;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+.header.transparent .caretBtn { color: var(--color-white); }
+
+.caret {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  transition: transform var(--duration-base) var(--ease-motion);
+}
+
+.caretBtn[aria-expanded="true"] .caret { transform: rotate(180deg); }
+
+/* The dropdown's own <li> is static so the panel positions off the fixed
+   header (centred on the page) rather than off the "Services" link. */
+.item.servicesItem { position: static; }
+
+/* Scrim behind the open dropdown — dims the page 35%. z-index -1 inside the
+   header's stacking context: above the page, below the nav's own links. */
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-black);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-slow) var(--ease-standard);
+}
+.scrim.scrimOpen { opacity: 0.35; pointer-events: auto; }
+
+/* Services dropdown panel --------------------------------------------------
+   Matches the Penpot screenshot: centred on the page (not on the trigger),
+   white shell, dark feature card left, 2x3 numbered grid right, a notch
+   pointing up at "Services". */
 
 .mega {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 8px);
   left: 50%;
   z-index: 1200;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--kzd-space-4) var(--kzd-space-24);
-  width: 660px;
-  padding: var(--kzd-space-24) var(--kzd-space-24);
-  border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-16);
-  background: var(--kzd-white);
-  box-shadow: 0 22px 48px -18px rgba(16, 26, 46, 0.3);
-  list-style: none;
+  grid-template-columns: 282px 1fr;
+  gap: var(--space-4);
+  width: min(905px, calc(100vw - 48px));
+  padding: 12px;
+  border-radius: 18px;
+  background: var(--color-white);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.22);
   opacity: 0;
   visibility: hidden;
-  transform: translate(-50%, 6px);
-  transition: opacity var(--kzd-dur-micro) ease, transform var(--kzd-dur-micro) ease, visibility 0s linear 180ms;
+  transform: translate(-50%, 8px);
+  transition: opacity 220ms var(--ease-motion), transform 220ms var(--ease-motion),
+    visibility 0s linear 220ms;
 }
 
 .item[data-open="true"] .mega {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, 0);
-  transition: opacity var(--kzd-dur-micro) ease, transform var(--kzd-dur-micro) ease, visibility 0s;
+  transition: opacity 220ms var(--ease-motion), transform 220ms var(--ease-motion), visibility 0s;
 }
 
 /* Bridges the gap between the trigger and the panel so hover does not drop. */
 .mega::before {
   content: "";
   position: absolute;
-  inset: -14px 0 auto 0;
-  height: 14px;
+  inset: -36px 0 auto 0;
+  height: 36px;
 }
 
-.megaGroup { min-width: 0; list-style: none; }
+/* Notch — a small rotated square peeking above the panel, under "Services". */
+.mega::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: var(--notch-x, 50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--color-white);
+  transform: translateX(-50%) rotate(45deg);
+}
 
-.megaHead {
-  margin: 0 0 var(--kzd-space-8);
-  padding-left: var(--kzd-space-12);
-  font-family: var(--kzd-type-label);
-  font-size:  var(--kzd-text-label-sm);
+.featureCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-radius: 14px;
+  background: var(--color-ink);
+}
+
+.featureEyebrow {
+  margin: 0;
+  font-family: var(--kzd-font-mono);
+  font-size: 10px;
   font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--kzd-text-muted);
+  color: var(--color-accent);
+}
+
+.featureTitle {
+  margin: 0;
+  font-family: var(--kzd-font-display);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.8px;
+  color: var(--color-white);
+}
+
+.featureBody {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--color-muted);
+}
+
+.viewAll {
+  align-self: flex-start;
+  margin-top: auto;
+  height: 42px;
+  padding-inline: var(--space-5);
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+}
+
+.itemList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-content: center;
+  gap: var(--space-1) var(--space-3);
+  list-style: none;
 }
 
 .megaLink {
-  display: block;
-  padding: var(--kzd-space-12) var(--kzd-space-12);
-  border-radius: var(--kzd-radius-8);
-  font-size:  var(--kzd-text-label-lg);
-  line-height: 1.35;
-  color: var(--kzd-navy-500);
-  transition: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 96px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  transition: background-color 250ms var(--ease-motion);
 }
 
-.megaLink:hover { background: var(--kzd-surface-100); color: var(--kzd-navy-400); }
+.megaLink:hover,
+.megaLink:focus-visible { background: var(--color-surface); }
+
+.megaLinkNum {
+  font-family: var(--kzd-font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--color-muted);
+}
+
+.megaLinkName {
+  margin-top: var(--space-2);
+  padding-right: 36px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+  color: var(--color-ink);
+}
+
+.megaLinkDesc {
+  margin-top: var(--space-1);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--color-secondary);
+}
+
+/* Top-right corner slot: a "Soon" chip for not-yet-live services, or (on
+   hover/focus, any card) the dark arrow disc — never both at once. */
+.soon {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  font-family: var(--kzd-font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+  transition: opacity 250ms var(--ease-motion);
+}
+.megaLink:hover .soon,
+.megaLink:focus-visible .soon { opacity: 0; }
+
+.arrowDisc {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-pill);
+  background: var(--color-ink);
+  color: var(--color-white);
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 250ms var(--ease-motion), transform 250ms var(--ease-motion);
+}
+.arrowDisc :global(.kzd-icon) { width: 14px; height: 14px; }
+.megaLink:hover .arrowDisc,
+.megaLink:focus-visible .arrowDisc {
+  opacity: 1;
+  transform: scale(1);
+}
 
 /* Account actions --------------------------------------------------------- */
 
 .auth {
   display: flex;
   align-items: center;
-  gap: var(--kzd-space-4);
+  gap: var(--space-1);
   flex: none;
   list-style: none;
 }
@@ -203,19 +391,24 @@
   display: inline-flex;
   align-items: center;
   height: 44px;
-  padding: 0 var(--kzd-space-12);
-  border-radius: var(--kzd-radius-8);
-  font-size:  var(--kzd-text-body);
+  padding: 0 var(--space-3);
+  border-radius: 8px;
+  font-size: 16px;
   font-weight: 500;
   line-height: 1;
-  color: var(--kzd-navy-500);
+  color: var(--color-ink);
   white-space: nowrap;
+  transition: color var(--duration-base) var(--ease-standard);
 }
 
-.header.transparent .authLink { color: var(--kzd-white); }
-.authLink:hover { color: var(--kzd-navy-400); }
+.header.transparent .authLink { color: var(--color-white); }
+.authLink:hover { color: var(--color-secondary); }
+.header.transparent .authLink:hover { color: var(--color-border); }
 
-/* Burger ------------------------------------------------------------------ */
+/* Burger -------------------------------------------------------------------
+   Three bars that morph into an X: the two outer bars rotate ±45deg and
+   recentre, the middle bar fades out. All driven from one [data-open]
+   attribute on the button so the animation needs no extra markup. */
 
 .burger {
   display: none;
@@ -225,24 +418,53 @@
   flex: none;
   margin-left: auto;
   padding: 0;
-  border: 0;
-  border-radius: var(--kzd-radius-12);
-  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
   cursor: pointer;
 }
 
-.burgerBar {
-  display: block;
-  width: 22px;
-  height: 2px;
-  margin: var(--kzd-space-4) 0;
-  border-radius: var(--kzd-radius-8);
-  background: var(--kzd-navy-500);
+/* Mobile — Home: a frosted circle over the hero photo. */
+.header.transparent .burger {
+  border-color: rgb(255 255 255 / 0.35);
+  background: rgb(255 255 255 / 0.16);
+  backdrop-filter: blur(6px);
 }
 
-.header.transparent .burgerBar { background: var(--kzd-white); }
+.burgerBars {
+  position: relative;
+  width: 22px;
+  height: 16px;
+}
+
+.burgerBar {
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 2px;
+  border-radius: 8px;
+  background: var(--color-ink);
+  transition: transform 250ms var(--ease-standard), opacity 250ms var(--ease-standard), top 250ms var(--ease-standard);
+}
+.header.transparent .burgerBar { background: var(--color-white); }
+
+.burgerBar:nth-child(1) { top: 0; }
+.burgerBar:nth-child(2) { top: 7px; }
+.burgerBar:nth-child(3) { top: 14px; }
+
+.burger[data-open="true"] .burgerBar:nth-child(1) { top: 7px; transform: rotate(45deg); }
+.burger[data-open="true"] .burgerBar:nth-child(2) { opacity: 0; }
+.burger[data-open="true"] .burgerBar:nth-child(3) { top: 7px; transform: rotate(-45deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .burgerBar { transition: none; }
+}
 
 @media (max-width: 1100px) {
   .list, .auth { display: none; }
   .burger { display: grid; }
 }
+
+/* On this dark surface the selection inverts: white with black type. */
+.featureCol ::selection,
+.header.transparent ::selection { background: var(--color-white); color: var(--color-ink); }

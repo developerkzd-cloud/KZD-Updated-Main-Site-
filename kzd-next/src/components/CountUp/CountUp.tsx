@@ -17,7 +17,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const DURATION_MS = 500; // design-system section transition ceiling (300-500ms)
+const DURATION_MS = 1200; // animation brief: "count up once when visible (1.2s ease-out)"
 
 export default function CountUp({
   to,
@@ -54,10 +54,9 @@ export default function CountUp({
           break;
         }
       },
-      /* Deliberately high: the run should start as the figure comes into
-         view, not after it has been sitting on screen already showing the
-         final number. */
-      { threshold: 0.9 }
+      /* Global scroll-reveal rule from the animation brief: runs once at
+         25% visibility. */
+      { threshold: 0.25 }
     );
     observer.observe(el);
 

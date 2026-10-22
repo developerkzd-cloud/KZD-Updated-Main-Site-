@@ -1,153 +1,280 @@
 /* ==========================================================================
-   Footer — ported from css/kzd-footer.css.
-
-   ONE component replaces BOTH variants the static site carried: the new
-   .kzd-footer on 7 pages and the purchased theme's footer on the other 11.
-   Those two had drifted apart — different markup, different link sets, and the
-   Blog link had to be added to each separately.
-
-   Tap targets are expanded with a pseudo-element rather than by growing the
-   text, so the visible design is unchanged while the hit area clears 44px.
+   Footer — black & white system. Desktop: brand column + three columns.
+   Tablet (641–1200): a left-aligned 2x2 grid. Mobile: centred, columns
+   become accordions.
    ========================================================================== */
 
 .footer {
-  position: relative;
-  padding: var(--kzd-space-64) 0 0;
-  background: var(--kzd-surface-50);
-  border-top: 1px solid var(--kzd-line);
+  background: var(--color-ink);
+  color: var(--color-white);
 }
 
-.inner { max-width: calc(1240px + var(--kzd-pad-page) * 2); margin-inline: auto; padding-inline: var(--kzd-pad-page); }
-
-/* Band 1 — contact ---------------------------------------------------------- */
-
-.band1 { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--kzd-space-32); flex-wrap: wrap; }
-
-.label {
-  margin: 0 0 var(--kzd-space-4);
-  font-family: var(--kzd-type-label);
-  font-size:  var(--kzd-text-label-sm);
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--kzd-text-muted);
-}
-
-.email, .phone {
-  position: relative;
-  display: inline-block;
-  font-family: var(--kzd-type-display);
-  font-size:  var(--kzd-text-headline);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--kzd-ink);
-}
-
-.email { border-bottom: 2px solid var(--kzd-accent-ink); }
-.email:hover, .phone:hover { color: var(--kzd-navy-400); }
-
-/* Hit area only — the text keeps its drawn size. */
-.email::after, .phone::after, .brand::after, .list a::after, .social::after {
-  content: "";
-  position: absolute;
-  /* Centred with a min-width, not left:0/right:0 — the latter inherits the
-     element's own width, so a short label like "Blog" was only 31.6px wide. */
-  left: 50%;
-  top: 50%;
-  min-width: 44px;
+.inner {
   width: 100%;
-  min-height: 44px;
-  height: 100%;
-  transform: translate(-50%, -50%);
+  max-width: calc(var(--container-max) + var(--container-gutter) * 2);
+  margin-inline: auto;
+  padding: 40px var(--container-gutter) 18px;
 }
 
-.rule { margin: var(--kzd-space-40) 0; border: 0; border-top: 1px solid var(--kzd-line); }
+/* Desktop: brand + the three link columns form one centred row with the
+   same gap between every column, so the outer margins match left and right
+   (FooterColumns' wrapper steps aside via display: contents). */
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  column-gap: clamp(48px, 7vw, 112px);
+  row-gap: var(--space-8);
+}
 
-/* Band 2 — brand + columns -------------------------------------------------- */
+/* ---------------------------------------------------------------- brand */
+.brand { display: inline-flex; align-items: center; gap: 12px; }
+.mark { width: 30px; height: 30px; object-fit: contain; }
+.wordmark { font-family: var(--kzd-font-display); font-size: 21px; font-weight: 700; letter-spacing: -0.4px; color: var(--color-white); }
 
-.band2 { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(2, minmax(0, 1fr)); gap: var(--kzd-space-40); }
+.tagline {
+  margin: 16px 0 0;
+  font-family: var(--kzd-font-display);
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.4px;
+  color: var(--color-white);
+}
 
-.brand { position: relative; display: inline-flex; align-items: center; gap: var(--kzd-space-12); min-height: 44px; }
-/* The source PNG is white-on-transparent; blacken it against the light footer. */
-.mark { width: var(--kzd-logo-40); height: var(--kzd-logo-40); object-fit: contain; filter: brightness(0) opacity(0.88); }
-.wordmark { font-family: var(--kzd-type-display); font-size:  var(--kzd-text-title); font-weight: 600; color: var(--kzd-navy-500); }
-
-.tagline { margin: var(--kzd-space-12) 0 0; max-width: 30ch; font-size:  var(--kzd-text-body); line-height: 1.6; color: var(--kzd-text-muted); }
-
-.socials { display: flex; gap: var(--kzd-space-12); margin-top: var(--kzd-space-24); list-style: none; }
+.socials { display: flex; gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; }
 
 .social {
-  position: relative;
   display: grid;
   place-items: center;
-  width: 38px; height: 38px;
-  border-radius: var(--kzd-radius-full);
-  background: var(--kzd-white);
-  border: 1px solid var(--kzd-line);
-  color: var(--kzd-navy-500);
-  transition: none;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-pill);
+  background: rgb(255 255 255 / 0.1);
+  color: var(--color-white);
+  transition: background-color 250ms var(--ease-motion), transform 250ms var(--ease-motion);
 }
-.social::after { width: 44px; height: 44px; }
-.social svg { width: var(--kzd-icon-dense); height: var(--kzd-icon-dense); fill: currentColor; }
-.social:hover { color: var(--kzd-navy-400); }
+.social:hover,
+.social:focus-visible { color: var(--color-ink); background: var(--color-white); }
+@media (hover: hover) { .social:hover { transform: translateY(-2px); } }
+
+/* -------------------------------------------------------------- columns */
+.cols { display: contents; }
+.brandCol,
+.col { flex: none; }
 
 .colHead {
-  margin: 0 0 var(--kzd-space-16);
-  font-family: var(--kzd-type-label);
-  font-size:  var(--kzd-text-label-sm);
+  margin: 0;
+  font-family: var(--kzd-font-mono);
+  font-size: 10px;
   font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.16em;
+  letter-spacing: 2.4px;
   text-transform: uppercase;
-  color: var(--kzd-text-muted);
+  color: var(--color-muted);
 }
 
-.list { list-style: none; }
-.list li { margin-bottom: var(--kzd-space-12); }
-.list a { position: relative; display: inline-block; font-size:  var(--kzd-text-body); color: var(--kzd-text-muted); }
-.list a:hover { color: var(--kzd-navy-400); }
+.colToggle { display: none; }
+
+.panel { display: grid; grid-template-rows: 1fr; }
+.panelInner { min-height: 0; overflow: hidden; }
+
+.list { display: flex; flex-direction: column; gap: 10px; margin: 14px 0 0; padding: 0; list-style: none; }
+.list li { display: flex; align-items: center; gap: 10px; }
+
+.list a,
+.list span:not(.hot) {
+  font-size: 14px;
+  color: rgb(255 255 255 / 0.88);
+  transition: color 200ms var(--ease-motion);
+}
+.list a:hover,
+.list a:focus-visible { color: var(--color-white); text-decoration: underline; text-underline-offset: 4px; }
 
 .hot {
-  display: inline-block;
-  margin-left: var(--kzd-space-8);
-  padding: 2px var(--kzd-space-8);
-  border-radius: var(--kzd-radius-full);
-  background: var(--kzd-accent-ink);
-  font-family: var(--kzd-type-label);
-  font-size:  var(--kzd-text-label-sm);
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-secondary);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--kzd-white);
-  vertical-align: middle;
+  color: var(--color-white);
 }
 
-/* Band 3 — bottom ----------------------------------------------------------- */
+.contactList { gap: 12px; }
+.contactList :global(.kzd-icon) { color: var(--color-white); }
 
-.band3 {
+.ctaDesktop {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  margin-top: 16px;
+  padding: 0 22px;
+  border: 1.5px solid var(--color-white);
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-white);
+  transition: background-color 250ms var(--ease-motion), color 250ms var(--ease-motion), transform 250ms var(--ease-motion);
+}
+.ctaDesktop svg { transition: translate 250ms var(--ease-motion); }
+.ctaDesktop:hover,
+.ctaDesktop:focus-visible { background: var(--color-white); color: var(--color-ink); }
+@media (hover: hover) {
+  .ctaDesktop:hover { transform: translateY(-2px); }
+  .ctaDesktop:hover svg { translate: 4px 0; }
+}
+
+.ctaMobile { display: none; }
+
+/* --------------------------------------------------------------- bottom */
+.bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--kzd-space-16);
-  flex-wrap: wrap;
-  padding: var(--kzd-space-24) 0 var(--kzd-space-24);
-  font-family: var(--kzd-type-label);
-  font-size:  var(--kzd-text-label-sm);
-  font-weight: 500;
-  letter-spacing: 0.10em;
-  color: var(--kzd-text-muted);
+  gap: var(--space-4);
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+  font-size: 12px;
+  color: var(--color-muted);
 }
-.loc { text-transform: uppercase; }
+.bottom p { margin: 0; }
 
-@media (max-width: 900px) {
-  .band2 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--kzd-space-32); }
-  .email, .phone { font-size:  var(--kzd-text-title); }
+.legal { display: flex; align-items: center; gap: 14px; }
+.legalSep { width: 1px; height: 12px; background: rgb(255 255 255 / 0.25); }
+
+.desktopBreak { display: inline; }
+
+/* --------------------------------------------------------------- tablet
+   Four columns no longer fit one row, and the phone accordion wastes the
+   width, so: a left-aligned 2x2 grid (brand | Company, Services | Get in
+   touch), white headings with a short underline, everything open. */
+@media (min-width: 641px) and (max-width: 1200px) {
+  .inner { padding: 48px var(--container-gutter) 20px; }
+
+  .top {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(32px, 6vw, 72px);
+    row-gap: 44px;
+  }
+
+  .tagline { max-width: 26ch; font-size: 17px; }
+
+  .colHead {
+    display: inline-block;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--color-white);
+    font-family: var(--kzd-font-body);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--color-white);
+  }
+
+  /* Roomier rows: these are tap targets on a tablet. */
+  .list { gap: 14px; margin-top: 20px; }
+  .list a,
+  .list span:not(.hot) { font-size: 15px; }
+  .contactList { gap: 16px; }
+  .ctaDesktop { margin-top: 22px; }
+
+  .bottom { margin-top: 40px; padding-top: 18px; }
 }
 
-@media (max-width: 560px) {
-  .footer { padding-top: var(--kzd-space-48); }
-  .band1 { flex-direction: column; align-items: flex-start; gap: var(--kzd-space-24); }
-  .band2 { grid-template-columns: minmax(0, 1fr); }
-  .email, .phone { font-size:  var(--kzd-text-title); }
-  .band3 { flex-direction: column; align-items: flex-start; gap: var(--kzd-space-4); }
+/* --------------------------------------------------------------- mobile */
+@media (max-width: 640px) {
+  .inner { padding: 36px var(--container-gutter) 20px; text-align: center; }
+  .top { flex-direction: column; align-items: stretch; gap: 22px; }
+  .brandCol { display: flex; flex-direction: column; align-items: center; }
+  .wordmark { font-size: 24px; }
+  .mark { width: 36px; height: 36px; }
+  .tagline { margin-top: 12px; font-family: var(--kzd-font-body); font-size: 16px; font-weight: 400; letter-spacing: 0; color: var(--color-muted); }
+  .desktopBreak { display: none; }
+  .socials { gap: 12px; margin-top: 18px; }
+  .social { width: 44px; height: 44px; background: rgb(255 255 255 / 0.12); }
+  .social :global(.kzd-icon) { width: 19px; height: 19px; }
+
+  .cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .col { display: flex; flex-direction: column; align-items: center; }
+
+  .colToggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0 9px;
+    border: 0;
+    border-bottom: 2px solid var(--color-white);
+    background: none;
+    font-family: var(--kzd-font-body);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--color-white);
+    cursor: pointer;
+  }
+  .colToggle:focus-visible { outline: 2px solid var(--color-white); outline-offset: 4px; }
+
+  /* "+" built from two bars; the vertical one rotates flat into a "−". */
+  .colSign { position: relative; width: 10px; height: 10px; }
+  .colSign::before,
+  .colSign::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 10px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform 250ms var(--ease-motion);
+  }
+  .colSign::after { transform: rotate(90deg); }
+  .col[data-open] .colSign::after { transform: rotate(0deg); }
+
+  .panel {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition: grid-template-rows 250ms var(--ease-motion), visibility 0s linear 250ms;
+  }
+  .col[data-open] .panel {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition: grid-template-rows 250ms var(--ease-motion), visibility 0s;
+  }
+
+  .list { align-items: center; gap: 9px; margin: 12px 0 6px; }
+  .contactList li { justify-content: center; }
+  .ctaDesktop { display: none; }
+
+  .ctaMobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: 52px;
+    margin-top: 22px;
+    border-radius: var(--radius-pill);
+    background: var(--color-white);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--color-ink);
+    transition: transform 250ms var(--ease-motion);
+  }
+  .ctaMobile:hover,
+  .ctaMobile:focus-visible { color: var(--color-ink); }
+
+  .bottom { flex-direction: column; gap: 6px; margin-top: 20px; padding-top: 14px; font-size: 13px; }
+  .legal { gap: 12px; }
+  .legalSep { width: 3px; height: 3px; border-radius: var(--radius-pill); background: var(--color-muted); }
 }
+
+/* On this dark surface the selection inverts: white with black type. */
+.footer ::selection { background: var(--color-white); color: var(--color-ink); }

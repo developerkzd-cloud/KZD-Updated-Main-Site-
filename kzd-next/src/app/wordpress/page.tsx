@@ -5,7 +5,7 @@ import ComingSoon from "@/components/ComingSoon/ComingSoon";
 export const metadata: Metadata = {
   title: "WordPress hosting | Coming soon",
   description: "WordPress hosting at KZD Solutions is coming soon.",
-  robots: { index: false },
+  alternates: { canonical: "/wordpress" },
 };
 
 export default function Page() {

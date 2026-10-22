@@ -22,6 +22,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
+import { isComingSoonPath } from "@/lib/comingSoon";
 import styles from "./Nav.module.css";
 
 /* Matches the static site's `window.scrollY > 50`. */
@@ -29,7 +30,8 @@ const SOLID_AFTER_PX = 50;
 
 export default function NavShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const overHero = pathname === "/";
+  /* Pages that open on a full-bleed dark photo hero. */
+  const overHero = pathname === "/" || pathname === "/services" || pathname === "/contact" || pathname === "/careers";
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -48,10 +50,13 @@ export default function NavShell({ children }: { children: ReactNode }) {
     };
   }, [overHero]);
 
-  const transparent = overHero && !scrolled;
+  /* The black coming-soon pages: white text at all times, over a dark bar
+     with a hairline, never the white bar. */
+  const dark = isComingSoonPath(pathname);
+  const transparent = dark || (overHero && !scrolled);
 
   return (
-    <header className={`${styles.header} ${transparent ? styles.transparent : ""}`}>
+    <header className={`${styles.header} ${transparent ? styles.transparent : ""} ${dark ? styles.dark : ""}`}>
       <div className={styles.inner}>{children}</div>
     </header>
   );

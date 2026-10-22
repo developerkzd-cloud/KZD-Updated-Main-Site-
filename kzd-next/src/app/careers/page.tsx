@@ -11,6 +11,7 @@
 
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { getJobs, getReviews } from "@/lib/content";
 import { WHY_CARDS, HIRING_STEPS } from "./content";
@@ -20,7 +21,7 @@ import styles from "./careers.module.css";
 import Icon from "@/components/Icon/Icon";
 
 const DESCRIPTION =
-  "Work at KZD Solutions — a small Durban team building websites, software and systems for South African businesses.";
+  "Work at KZD Solutions, a small Durban team building websites, software and systems for South African businesses.";
 
 export const metadata: Metadata = {
   title: "Careers",
@@ -43,8 +44,19 @@ export default function CareersPage() {
 
   return (
     <main className={styles.car}>
-      <section className={styles.hero}>
-        <div className={styles.wash} aria-hidden="true" />
+      <section className={styles.hero} data-hero-full>
+        <div className={styles.heroMedia}>
+          <Image
+            src="/images/careers-team-hands.jpg"
+            alt=""
+            fill
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            className={styles.heroImg}
+          />
+          <div className={styles.heroOverlay} aria-hidden="true" />
+        </div>
         <div className={styles.inner}>
           <span className={styles.eyebrow}>
             <span className={styles.dot} aria-hidden="true" />
@@ -58,12 +70,35 @@ export default function CareersPage() {
             businesses. If you want to do real work early and learn from people who will actually
             explain things, we would like to meet you.
           </p>
-          {/* Client-only leaf: opens the (prototype, localStorage) applicant
-              sign-in modal, either from this trigger or automatically when
-              /profile bounces a signed-out visitor here with ?signin=1. */}
-          <Suspense fallback={null}>
-            <CareersAuthGate />
-          </Suspense>
+        </div>
+        <svg className={`${styles.curve} ${styles.curveDesktop}`} viewBox="0 0 1440 26" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,26 L0,22 C360,2 1080,2 1440,22 L1440,26 Z" fill="var(--color-white)" />
+        </svg>
+        <svg className={`${styles.curve} ${styles.curveMobile}`} viewBox="0 0 390 30" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,30 C80,4 310,4 390,30 Z" fill="var(--color-white)" />
+        </svg>
+      </section>
+
+      {/* Client-only leaf: opens the (prototype, localStorage) applicant
+          sign-in modal when /profile bounces a signed-out visitor here with
+          ?signin=1. Renders nothing otherwise. */}
+      <Suspense fallback={null}>
+        <CareersAuthGate />
+      </Suspense>
+
+      <section className={styles.how} aria-labelledby="car-how">
+        <div className={styles.inner}>
+          <h2 className={styles.h2} id="car-how">How hiring works</h2>
+          <div className={styles.steps}>
+            {HIRING_STEPS.map((step, i) => (
+              <Reveal className={styles.step} key={step.title}>
+                <p className={styles.stepNo}>{String(i + 1).padStart(2, "0")}</p>
+                <hr className={styles.stepRule} />
+                <h3 className={styles.stepTitle}>{step.title}</h3>
+                <p className={styles.stepBody}>{step.body}</p>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -140,22 +175,6 @@ export default function CareersPage() {
                 <span className={styles.whyRule} aria-hidden="true" />
                 <h3 className={styles.whyTitle}>{card.title}</h3>
                 <p className={styles.whyBody}>{card.body}</p>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.how} aria-labelledby="car-how">
-        <div className={styles.inner}>
-          <h2 className={styles.h2} id="car-how">How hiring works</h2>
-          <div className={styles.steps}>
-            {HIRING_STEPS.map((step, i) => (
-              <Reveal className={styles.step} key={step.title}>
-                <p className={styles.stepNo}>{String(i + 1).padStart(2, "0")}</p>
-                <hr className={styles.stepRule} />
-                <h3 className={styles.stepTitle}>{step.title}</h3>
-                <p className={styles.stepBody}>{step.body}</p>
               </Reveal>
             ))}
           </div>

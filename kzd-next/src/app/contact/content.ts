@@ -1,6 +1,5 @@
-/* Office locations, ported from the Organization JSON-LD and services boxes
-   in contact.html. Coordinates are approximate centre points for the two
-   addresses, used only to place map markers. */
+/* The office: KZD Solutions is based at Smart Xchange, Durban. Kept as a
+   list so another office is a data edit. */
 
 export type Location = {
   name: string;
@@ -19,13 +18,5 @@ export const LOCATIONS: Location[] = [
     phoneLabel: "(031) 005 3129",
     lat: -29.8579,
     lng: 31.0292,
-  },
-  {
-    name: "Durban DUT - ML Sultan Campus",
-    address: "Durban University of Technology, ML Sultan Campus, Greyville, Berea, 4023",
-    phoneHref: "tel:+27704563015",
-    phoneLabel: "(070) 456 3015",
-    lat: -29.8317,
-    lng: 31.0027,
   },
 ];

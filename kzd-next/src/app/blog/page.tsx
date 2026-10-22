@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import ComingSoon from "@/components/ComingSoon/ComingSoon";
+import ServiceComingSoon from "@/components/ServiceComingSoon/ServiceComingSoon";
+import { COMING_SOON } from "@/lib/comingSoon";
 
-/* Parked while it is rebuilt: the previous page is in git history. */
+/* Parked while it is rebuilt: the previous page is in git history. Uses the
+   same black coming-soon page as the parked services. */
 export const metadata: Metadata = {
   title: "Blog | Coming soon",
   description: "Blog at KZD Solutions is coming soon.",
-  robots: { index: false },
+  alternates: { canonical: "/blog" },
 };
 
 export default function Page() {
-  return <ComingSoon section="Blog" />;
+  return <ServiceComingSoon page={COMING_SOON.blog} />;
 }

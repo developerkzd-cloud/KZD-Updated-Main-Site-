@@ -90,7 +90,7 @@ const PACKAGES: PackageDef[] = [
   {
     key: "pkgHigh",
     name: "Governance & Growth Package",
-    desc: "Your foundation is strong — but governance and strategic refinement may still be needed.",
+    desc: "Your foundation is strong, but governance and strategic refinement may still be needed.",
     desc2: "We help you optimise, protect and scale safely.",
     cta: "Strengthen Governance",
   },
@@ -135,9 +135,9 @@ function getRecommendedPackageByScore(checked: number): PackageKey {
 }
 
 const BUSINESS_TYPES = ["Individual / Sole Trader", "Startup", "Registered Company", "Non-Profit"];
-const BUSINESS_SIZES = ["Just me (1 person)", "2–5 employees", "6–20 employees", "20+ employees"];
-const MONTHLY_REVENUES = ["Pre-revenue", "Under R50k", "R50k – R250k", "R250k – R1M", "R1M+"];
-const CHECKLIST_RESULTS = ["0–5 ticks", "6–10 ticks", "11–16 ticks"];
+const BUSINESS_SIZES = ["Just me (1 person)", "2 to 5 employees", "6 to 20 employees", "20+ employees"];
+const MONTHLY_REVENUES = ["Pre-revenue", "Under R50k", "R50k to R250k", "R250k to R1M", "R1M+"];
+const CHECKLIST_RESULTS = ["0 to 5 ticks", "6 to 10 ticks", "11 to 16 ticks"];
 
 type FormStatus = { kind: "idle" | "sending" | "success" | "error"; message: string };
 

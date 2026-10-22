@@ -1,41 +1,51 @@
 "use client";
 
-/* The only client code on this route besides Map.tsx. Everything else —
-   locations, channels, copy — stays server-rendered. Submits JSON to
-   /api/contact rather than a native form POST, so we can show a loading /
-   success / error state without a full page reload. */
+/* "Looking for any help?" — posts JSON to /api/contact so we can show a
+   sending / sent / error state without a page reload. Includes a service
+   picker listing everything KZD offers. */
 
 import { useId, useState, type FormEvent } from "react";
+import Icon, { type IconName } from "@/components/Icon/Icon";
+import ArrowIcon from "@/components/ArrowIcon/ArrowIcon";
+import { SERVICES } from "@/lib/services";
 import styles from "./contact.module.css";
 
 type Status = "idle" | "loading" | "success" | "error";
 
-const FIELDS = [
-  { name: "first_name", label: "First Name", type: "text", autoComplete: "given-name" },
-  { name: "surname", label: "Surname", type: "text", autoComplete: "family-name" },
-  { name: "phone", label: "Phone Number", type: "tel", autoComplete: "tel" },
-  { name: "email", label: "Email Address", type: "email", autoComplete: "email" },
-] as const;
+const FIELDS: { name: string; label: string; type: string; autoComplete: string; icon: IconName }[] = [
+  { name: "first_name", label: "First name", type: "text", autoComplete: "given-name", icon: "person" },
+  { name: "surname", label: "Surname", type: "text", autoComplete: "family-name", icon: "person-vcard" },
+  { name: "phone", label: "Phone number", type: "tel", autoComplete: "tel", icon: "telephone" },
+  { name: "email", label: "Email address", type: "email", autoComplete: "email", icon: "envelope" },
+];
+
+/* The full list: the six services, plus the consulting and web offerings
+   from the Services page. */
+const SERVICE_OPTIONS = [
+  ...SERVICES.map((s) => s.name),
+  "Consulting",
+  "Web Design",
+  "Web Hosting",
+  "Domain Registration",
+  "Something else",
+];
 
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
-  const idPrefix = useId();
+  const id = useId();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
+    if (!form.reportValidity()) return;
     setStatus("loading");
     setMessage("");
 
-    const form = event.currentTarget;
     const data = new FormData(form);
-    const payload = {
-      first_name: String(data.get("first_name") ?? ""),
-      surname: String(data.get("surname") ?? ""),
-      phone: String(data.get("phone") ?? ""),
-      email: String(data.get("email") ?? ""),
-      comment: String(data.get("comment") ?? ""),
-    };
+    const payload = Object.fromEntries(
+      ["first_name", "surname", "phone", "email", "service", "comment"].map((k) => [k, String(data.get(k) ?? "")])
+    );
 
     try {
       const res = await fetch("/api/contact", {
@@ -44,7 +54,6 @@ export default function ContactForm() {
         body: JSON.stringify(payload),
       });
       const result: { success: boolean; message: string } = await res.json();
-
       if (res.ok && result.success) {
         setStatus("success");
         setMessage(result.message);
@@ -63,70 +72,70 @@ export default function ContactForm() {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit} noValidate>
-      <div className={styles.fieldRow}>
-        {FIELDS.slice(0, 2).map((field) => (
-          <div className={styles.field} key={field.name}>
-            <label className={styles.label} htmlFor={`${idPrefix}-${field.name}`}>
-              {field.label}
-            </label>
+      {FIELDS.map((f) => (
+        <div className={styles.field} key={f.name}>
+          <label className={styles.label} htmlFor={`${id}-${f.name}`}>
+            {f.label} *
+          </label>
+          <div className={styles.control}>
             <input
               className={styles.input}
-              id={`${idPrefix}-${field.name}`}
-              name={field.name}
-              type={field.type}
-              autoComplete={field.autoComplete}
-              placeholder={`Enter your ${field.label.toLowerCase()}`}
+              id={`${id}-${f.name}`}
+              name={f.name}
+              type={f.type}
+              autoComplete={f.autoComplete}
+              placeholder={`Enter your ${f.label.toLowerCase()}`}
               required
             />
+            <Icon name={f.icon} size="dense" className={styles.fieldIcon} />
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
 
-      <div className={styles.fieldRow}>
-        {FIELDS.slice(2).map((field) => (
-          <div className={styles.field} key={field.name}>
-            <label className={styles.label} htmlFor={`${idPrefix}-${field.name}`}>
-              {field.label}
-            </label>
-            <input
-              className={styles.input}
-              id={`${idPrefix}-${field.name}`}
-              name={field.name}
-              type={field.type}
-              autoComplete={field.autoComplete}
-              placeholder={`Enter your ${field.label.toLowerCase()}`}
-              required
-            />
-          </div>
-        ))}
+      <div className={styles.field}>
+        <label className={styles.label} htmlFor={`${id}-service`}>
+          Service you need
+        </label>
+        <div className={styles.control}>
+          <select className={`${styles.input} ${styles.select}`} id={`${id}-service`} name="service" defaultValue="">
+            <option value="" disabled>
+              Select a service
+            </option>
+            {SERVICE_OPTIONS.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+          <Icon name="chevron-down" size="dense" className={styles.fieldIcon} />
+        </div>
       </div>
 
       <div className={styles.field}>
-        <label className={styles.label} htmlFor={`${idPrefix}-comment`}>
-          Your Message
+        <label className={styles.label} htmlFor={`${id}-comment`}>
+          Your message
         </label>
-        <textarea
-          className={styles.textarea}
-          id={`${idPrefix}-comment`}
-          name="comment"
-          rows={4}
-          placeholder="Describe your project"
-        />
+        <div className={styles.control}>
+          <textarea
+            className={`${styles.input} ${styles.textarea}`}
+            id={`${id}-comment`}
+            name="comment"
+            rows={4}
+            placeholder="Describe your project"
+          />
+          <Icon name="chat-left-text" size="dense" className={`${styles.fieldIcon} ${styles.fieldIconTop}`} />
+        </div>
       </div>
 
       <div className={styles.actions}>
-        <p className={styles.consent}>
-          We will never collect information about you without your explicit consent.
-        </p>
+        <p className={styles.consent}>We will never collect information about you without your explicit consent.</p>
         <button className={styles.submit} type="submit" disabled={loading}>
-          {loading ? "Sending…" : "Send message"}
+          {loading ? "Sending" : "Send message"} <ArrowIcon />
         </button>
       </div>
 
       <p
-        className={`${styles.status} ${status === "success" ? styles.statusOk : ""} ${
-          status === "error" ? styles.statusErr : ""
-        }`}
+        className={`${styles.status} ${status === "success" ? styles.statusOk : ""} ${status === "error" ? styles.statusErr : ""}`}
         role="status"
         aria-live="polite"
       >

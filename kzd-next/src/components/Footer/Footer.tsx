@@ -1,21 +1,24 @@
 /* ==========================================================================
-   Footer — a Server Component, with no client boundary at all.
+   Footer — a Server Component; only the column accordions are client-side
+   (FooterColumns).
 
-   It replaces BOTH footers the static site carried: the newer .kzd-footer on 7
-   pages and the purchased theme's on the other 11. Those had already drifted
-   (different markup and different link sets), and every change — adding Blog,
-   removing About — had to be made twice against two different shapes.
+   Desktop: brand + tagline + socials, then Company / Services / Get in touch
+   columns, a "Let's Work Together" button, and a bottom bar.
+   Mobile: everything centred; the three columns become accordions (one open
+   at a time) and the button is a full-width white pill.
 
-   Social marks are inline SVG paths from src/lib/nav.ts, never hotlinked: an
-   external logo URL can move or vanish, adds a third-party request to every
-   page load, and can trip CORS.
+   Social marks are inline SVG paths from the shared icon set, never
+   hotlinked.
    ========================================================================== */
 
 import Image from "next/image";
 import Link from "next/link";
-import { CONTACT, FOOTER_COMPANY, FOOTER_SERVICES, SOCIALS } from "@/lib/nav";
-import styles from "./Footer.module.css";
+import { CONTACT, FOOTER_COMPANY, SOCIALS } from "@/lib/nav";
+import { SERVICES, serviceHref } from "@/lib/services";
 import Icon from "@/components/Icon/Icon";
+import ArrowIcon from "@/components/ArrowIcon/ArrowIcon";
+import FooterColumns from "./FooterColumns";
+import styles from "./Footer.module.css";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -23,32 +26,16 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
-        {/* Band 1 — contact */}
-        <div className={styles.band1}>
-          <div>
-            <p className={styles.label}>Need support?</p>
-            <a className={styles.email} href={`mailto:${CONTACT.email}`}>
-              {CONTACT.email}
-            </a>
-          </div>
-          <div>
-            <p className={styles.label}>Call us directly?</p>
-            <a className={styles.phone} href={CONTACT.phoneHref}>
-              {CONTACT.phoneLabel}
-            </a>
-          </div>
-        </div>
-
-        <hr className={styles.rule} />
-
-        {/* Band 2 — brand and columns */}
-        <div className={styles.band2}>
-          <div>
-            <Link className={styles.brand} href="/" aria-label="KZD Solutions — home">
+        <div className={styles.top}>
+          <div className={styles.brandCol}>
+            <Link className={styles.brand} href="/" aria-label="KZD Solutions home">
               <Image className={styles.mark} src="/Assets/logos/kzd-mark.png" width={96} height={95} alt="" />
               <span className={styles.wordmark}>KZD Solutions</span>
             </Link>
-            <p className={styles.tagline}>{CONTACT.tagline}</p>
+            <p className={styles.tagline}>
+              From big problems <br className={styles.desktopBreak} />
+              to simple solutions.
+            </p>
 
             <ul className={styles.socials}>
               {SOCIALS.map((s) => (
@@ -67,37 +54,31 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div>
-            <p className={styles.colHead}>Company</p>
-            <ul className={styles.list}>
-              {FOOTER_COMPANY.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href}>{link.label}</Link>
-                  {link.hot && <span className={styles.hot}>Hot</span>}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <p className={styles.colHead}>Services</p>
-            <ul className={styles.list}>
-              {FOOTER_SERVICES.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href}>{link.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
+          <FooterColumns
+            company={FOOTER_COMPANY}
+            services={SERVICES.map((s) => ({ label: s.name, href: serviceHref(s) }))}
+            contact={{
+              email: CONTACT.email,
+              phoneHref: CONTACT.phoneHref,
+              phoneLabel: CONTACT.phoneLabel,
+              location: CONTACT.location,
+            }}
+          />
         </div>
 
-        <hr className={styles.rule} />
+        <Link className={styles.ctaMobile} href="/contact">
+          Let&rsquo;s Work Together <ArrowIcon />
+        </Link>
 
-        {/* Band 3 — bottom bar */}
-        <div className={styles.band3}>
-          <p>&copy; Copyright KZD Solutions {year}.</p>
-          <p className={styles.loc}>{CONTACT.location}</p>
+        <div className={styles.bottom}>
+          <p>&copy; {year} KZD Solutions. All rights reserved.</p>
+          {/* No privacy or terms pages exist yet — plain text until they do,
+              rather than links that 404. */}
+          <p className={styles.legal}>
+            <span>Privacy Policy</span>
+            <span className={styles.legalSep} aria-hidden="true" />
+            <span>Terms of Service</span>
+          </p>
         </div>
       </div>
     </footer>

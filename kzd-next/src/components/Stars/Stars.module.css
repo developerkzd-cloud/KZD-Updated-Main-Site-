@@ -1,0 +1,15 @@
+.stars {
+  display: inline-flex;
+  font-family: var(--kzd-type-sans); /* Inter, confirmed */
+  font-size: 16px;
+  letter-spacing: 2px; /* confirmed on the Google-rating chip */
+  line-height: 1.2;
+}
+
+.filled {
+  color: var(--color-gold);
+}
+
+.empty {
+  color: var(--color-border);
+}

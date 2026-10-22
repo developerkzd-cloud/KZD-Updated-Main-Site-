@@ -12,16 +12,14 @@
    safeNext() below, so the parameter cannot bounce someone to another site
    right after they sign in.
 
-   Also renders the page's own "Sign in" trigger — the legacy site only ever
-   reached this modal from a nav link or a ?signin=1 URL; this app's nav is a
-   different, unrelated (FOSSBilling) login, so /careers needs its own way in.
+   There is no visible trigger on the page any more: the modal only opens
+   from that ?signin=1 URL.
    ========================================================================== */
 
 import { useCallback, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import AuthModal, { type AuthMode } from "@/components/AuthModal/AuthModal";
+import AuthModal from "@/components/AuthModal/AuthModal";
 import { getSession } from "@/lib/kzdStore";
-import styles from "./careers.module.css";
 
 /** Only a same-origin relative path shaped like this app's routes: a leading
     "/", no scheme, no protocol-relative "//", and no ".." segment anywhere in
@@ -50,32 +48,10 @@ export default function CareersAuthGate() {
   // the URL said when this component first mounted is what decides whether
   // it auto-opens — a later change to the query string does not reopen it.
   const [open, setOpen] = useState(() => searchParams.get("signin") === "1" && !getSession());
-  const [mode, setMode] = useState<AuthMode>("signin");
-
   const handleDone = useCallback(() => {
     setOpen(false);
     if (next) router.replace(next);
   }, [next, router]);
 
-  return (
-    <>
-      <button
-        type="button"
-        className={styles.signInTrigger}
-        onClick={() => {
-          setMode("signin");
-          setOpen(true);
-        }}
-      >
-        Sign in to apply
-      </button>
-      {open && (
-        <AuthModal
-          mode={mode}
-          onDone={handleDone}
-          onClose={() => setOpen(false)}
-        />
-      )}
-    </>
-  );
+  return open ? <AuthModal mode="signin" onDone={handleDone} onClose={() => setOpen(false)} /> : null;
 }

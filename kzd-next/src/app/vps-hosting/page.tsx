@@ -5,7 +5,7 @@ import ComingSoon from "@/components/ComingSoon/ComingSoon";
 export const metadata: Metadata = {
   title: "VPS hosting | Coming soon",
   description: "VPS hosting at KZD Solutions is coming soon.",
-  robots: { index: false },
+  alternates: { canonical: "/vps-hosting" },
 };
 
 export default function Page() {

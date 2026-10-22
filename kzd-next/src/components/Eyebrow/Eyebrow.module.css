@@ -1,0 +1,28 @@
+.label {
+  margin: 0;
+  font-family: var(--kzd-type-label);
+  font-size: var(--text-eyebrow-size);
+  font-weight: var(--text-eyebrow-weight);
+  letter-spacing: var(--text-eyebrow-tracking);
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+  white-space: nowrap;
+}
+
+.withRules {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.rule {
+  flex: 1;
+  height: 1px;
+  /* Not yet pixel-confirmed (the Penpot tab went idle before this could be
+     read numerically) — a 1px hairline in the border colour is the safe,
+     non-creative default; re-check exact colour/length once reconfirmed. */
+  background: var(--color-border);
+  max-width: 48px;
+}

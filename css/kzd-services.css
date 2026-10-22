@@ -1,349 +1,440 @@
 /* ==========================================================================
-   KZD Solutions — Services (light theme)
-   New section, inserted between Creative Approach and Problems We Solve.
+   KZD Solutions — Services (homepage, option A: index list)
 
-   SELF-CONTAINED AND SCOPED. Namespaced under .kzd-services with --kzd-s-
-   prefixed properties. No bare element, :root, body or existing site class is
-   targeted, so it cannot affect other sections or the other 17 pages.
+   Desktop with a fine pointer (>= 1024px): a sticky left column and a
+   numbered list of full-row links. The hovered / focused row fills black
+   (a wipe up from the bottom), its tag swaps for an arrow circle, and a
+   decorative preview card follows the cursor.
+   Touch devices and < 1024px: the same services as an accordion.
 
-   ELEVATION REPLACES FILL CONTRAST. On the dark board these cards were LIGHTER
-   than their background. That trick does not invert — a card slightly darker
-   than white just looks dirty. On paper the drop shadow is what separates the
-   card from the page, so it is load-bearing, not decoration.
-
-   Board geometry (1440 x 1000, 1240 content column):
-     H2            centred, two lines, 52 / 1.115 / -0.03em
-     sub           y=242
-     cards         y=330, 397 x 500, 24px gaps  (397*3 + 24*2 = 1239)
-     arrows        y=853, two 46px circles, 10px apart, right edge x=1340
+   Motion animates transform, opacity, clip-path and colour only.
+   Values come from css/kzd-tokens.css.
    ========================================================================== */
 
 .kzd-services {
-  /* Light palette */
-  --kzd-s-paper:      var(--kzd-white);
-  --kzd-s-card:       var(--kzd-surface-50);
-  --kzd-s-ink:        var(--kzd-black);
-  --kzd-s-muted:      var(--kzd-gray);
-  --kzd-s-line:       var(--kzd-line);
-  --kzd-s-ember:      var(--kzd-navy-200);   /* dots, next-arrow fill */
-  --kzd-s-ember-dk:   var(--kzd-navy-300);   /* icon strokes only */
-  --kzd-s-ring-fill:  var(--kzd-surface-100);
-  --kzd-s-ring-line:  color-mix(in srgb, var(--kzd-navy-200) 25%, transparent);
-  --kzd-s-grad-from:  var(--kzd-black);
-  --kzd-s-grad-to:    var(--kzd-gray);
-
-  --kzd-s-display: var(--kzd-type-display);
-  --kzd-s-body:    var(--kzd-type-sans);
-  --kzd-s-mono:    var(--kzd-type-label);
-
-  --kzd-s-ease: cubic-bezier(.22, .61, .36, 1);
-
+  --sv-ease: var(--kzd-ease-out-expo);
   position: relative;
-  isolation: isolate;
-  background: var(--kzd-s-paper);
-  padding-top: 120px;
-  padding-bottom: 100px;
-  overflow: hidden;
+  padding: var(--kzd-sv-pad-y) var(--kzd-space-80);
+  background: var(--kzd-white);
+  color: var(--kzd-black);
+}
+.kzd-services ul { list-style: none; margin: 0; padding: 0; }
+.kzd-services p,
+.kzd-services h2,
+.kzd-services h3 { margin: 0; }
+
+.kzd-services__wrap {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--kzd-space-24);
+  max-width: calc(var(--kzd-wrap) + var(--kzd-space-64));
+  margin: 0 auto;
 }
 
-/* Faint radial blue behind the header only. ~9% max — blue on white goes
-   muddy fast, so this stays weak and high up. */
-.kzd-services__wash {
+/* --------------------------------------------------------------------------
+   Left column
+   -------------------------------------------------------------------------- */
+.kzd-services__aside { grid-column: 1 / 5; }
+.kzd-services__sticky {
+  position: sticky;
+  top: var(--kzd-pb-top);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+.kzd-services__eyebrow {
+  font-family: var(--kzd-type-label);
+  font-size: var(--kzd-text-label-sm);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  line-height: var(--kzd-leading-label);
+  text-transform: uppercase;
+  color: var(--kzd-gray);
+}
+.kzd-services__title {
+  font-family: var(--kzd-type-display);
+  font-size: var(--kzd-sv-h2);
+  font-weight: 700;
+  line-height: 1.05 !important;
+  letter-spacing: -0.035em;
+  color: var(--kzd-black);
+}
+.kzd-services__intro {
+  font-family: var(--kzd-type-sans);
+  font-size: var(--kzd-sv-intro);
+  line-height: 1.6;
+  color: var(--kzd-charcoal);
+}
+
+/* Buttons: 48px tall, radius 12, Inter 500 15px, no vertical padding (the
+   label is centred by flex). */
+.kzd-services__all,
+.kzd-services__view {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kzd-space-8);
+  height: var(--kzd-control-lg);
+  padding: 0 var(--kzd-space-24);
+  border-radius: var(--kzd-radius-12);
+  font-family: var(--kzd-type-sans);
+  font-size: var(--kzd-sv-btn);
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--kzd-dur-micro) var(--sv-ease), color var(--kzd-dur-micro) var(--sv-ease);
+}
+.kzd-services__all { background: var(--kzd-black); color: var(--kzd-white); }
+.kzd-services__all:hover { background: var(--kzd-charcoal); color: var(--kzd-white); }
+.kzd-services__all--aside { margin-top: var(--kzd-space-12); }
+.kzd-services__all--block { display: none; }
+
+/* --------------------------------------------------------------------------
+   Right column: the index list (desktop with a fine pointer)
+   -------------------------------------------------------------------------- */
+.kzd-services__main { position: relative; grid-column: 6 / 13; }
+
+.kzd-services__list { position: relative; }
+/* the 1px top rule, drawn left to right on entrance */
+.kzd-services__list::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--kzd-border);
+  background: var(--kzd-black);
+  transform-origin: 0 50%;
+}
+
+.kzd-services__row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--kzd-space-24);
+  height: var(--kzd-sv-row-h);
+  padding: 0 20px;
+  border-bottom: var(--kzd-border) solid var(--kzd-silver-light);
+  color: var(--kzd-black);
+  text-decoration: none;
+  isolation: isolate;
+}
+/* the black fill: wipes up from the bottom on enter, out upward on leave */
+.kzd-services__row::before {
+  content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(
-    52% 42% at 50% 16%,
-    color-mix(in srgb, var(--kzd-navy-300) 9%, transparent) 0%,
-    color-mix(in srgb, var(--kzd-navy-300) 0%, transparent) 100%
-  );
+  background: var(--kzd-black);
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+  transition: transform 400ms var(--sv-ease);
 }
+.kzd-services__row.is-active::before { transform: scaleY(1); transform-origin: 50% 100%; }
 
-/* --------------------------------------------------------------------------
-   1. Header — centred, unlike most sections on this page
-   -------------------------------------------------------------------------- */
-
-.kzd-services__head { text-align: center; }
-
-/* Inverted gradient: the dark board ran --kzd-white -> --kzd-navy-200; this runs
-   --kzd-black -> --kzd-gray. */
-.kzd-services__title {
-  margin: 0;
-  font-family: var(--kzd-s-display);
-  font-weight: 600;
-  font-size:  var(--kzd-text-headline);
-  line-height: 1.115;
-  letter-spacing: -.03em;
-  color: var(--kzd-s-ink);          /* fallback if background-clip:text fails */
+.kzd-services__num {
+  flex: none;
+  width: var(--kzd-sv-num-w);
+  font-family: var(--kzd-type-label);
+  font-size: var(--kzd-text-label-sm);
+  color: var(--kzd-gray);
+  transition: color 250ms var(--sv-ease);
 }
-
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .kzd-services__title {
-    background-image: linear-gradient(180deg, var(--kzd-s-grad-from) 0%, var(--kzd-s-grad-to) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-}
-
-.kzd-services__sub {
-  /* Board: H2 box 120..236 (two lines at 52 x 1.115 = 58); sub box top = 242.
-     The 6px box gap reads as a much larger visual gap because of the leading. */
-  margin: var(--kzd-space-4) 0 0;
-  font-family: var(--kzd-s-body);
-  font-weight: 400;
-  font-size:  var(--kzd-text-body);
-  line-height: 1.7;
-  color: var(--kzd-s-muted);
-}
-
-/* --------------------------------------------------------------------------
-   2. Card row — a scroll-snap track at every width.
-   Three cards fit exactly at >=1200; below that the row overflows and the
-   arrows have something to do.
-   -------------------------------------------------------------------------- */
-
-.kzd-services__row {
-  /* Sub box ends at 271; the row carries 2px of top padding, so 57 lands the
-     card top on the board's y=330. */
-  margin-top: var(--kzd-space-64);
-  display: flex;
-  gap: var(--kzd-space-24);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  /* The track is a scroller, not a scrollbar UI. */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  /* Room for the drop shadow, which is clipped by the scroll box. The shadow
-     is 0 10px 26px -12px, so it bleeds ~11px below and ~1px sideways.
-     Horizontal padding must stay 0: scroll-snap aligns to the card's start
-     edge, so any left padding makes the resting scrollLeft non-zero and the
-     prev arrow never reads as "at the start". */
-  padding: 2px 0 var(--kzd-space-24);
-}
-
-.kzd-services__row::-webkit-scrollbar { display: none; }
-
-.kzd-services__card {
-  position: relative;
-  flex: 0 0 calc((100% - 48px) / 3);
-  min-height: 500px;
-  scroll-snap-align: start;
-  border-radius: var(--kzd-radius-24);
-  background: var(--kzd-s-card);
-  border: 1px solid var(--kzd-s-line);
-  /* Load-bearing: this is what lifts the card off the paper. */
-  box-shadow: 0 10px 26px -12px color-mix(in srgb, var(--kzd-navy-500) 26%, transparent);
-  opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity var(--kzd-dur-section) var(--kzd-s-ease), transform var(--kzd-dur-section) var(--kzd-s-ease);
-  transition-delay: calc(var(--kzd-s-i, 0) * 90ms);
-}
-
-.kzd-services__card.is-in {
-  opacity: 1;
-  transform: none;
-}
-
-.kzd-services__card:nth-child(1) { --kzd-s-i: 0; }
-.kzd-services__card:nth-child(2) { --kzd-s-i: 1; }
-.kzd-services__card:nth-child(3) { --kzd-s-i: 2; }
-
-/* --------------------------------------------------------------------------
-   3. Card internals — absolutely placed, straight off the board
-   -------------------------------------------------------------------------- */
-
-.kzd-services__dot {
-  position: absolute;
-  left: 32px;
-  top: 38px;
-  width: 8px;
-  height: 8px;
-  border-radius: var(--kzd-radius-full);
-  /* Dots stay at standard ember — only the icon strokes darken. */
-  background: var(--kzd-s-ember);
-}
-
-.kzd-services__index {
-  position: absolute;
-  left: 50px;
-  top: 34px;
-  margin: 0;
-  font-family: var(--kzd-s-mono);
-  font-weight: 500;
-  font-size:  var(--kzd-text-label-sm);
-  line-height: 1;
-  letter-spacing: .14em;
-  color: var(--kzd-s-muted);
-}
-
 .kzd-services__name {
-  position: absolute;
-  left: 32px;
-  top: 62px;
-  right: 32px;
-  margin: 0;
-  font-family: var(--kzd-s-display);
+  flex: 1;
+  min-width: 0;
+  font-family: var(--kzd-type-display);
+  font-size: var(--kzd-sv-name);
   font-weight: 600;
-  font-size:  var(--kzd-text-title);
-  line-height: 1.2;
-  letter-spacing: -.02em;
-  color: var(--kzd-s-ink);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  transition: color 250ms var(--sv-ease), transform 400ms var(--sv-ease);
 }
-
-/* On dark this ring was rgba(255,255,255,.06) — invisible on white, so it
-   becomes a soft ember disc instead. */
-.kzd-services__ring {
+.kzd-services__tag {
+  flex: none;
+  font-family: var(--kzd-type-label);
+  font-size: var(--kzd-sv-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--kzd-gray);
+  transition: opacity 300ms var(--sv-ease);
+}
+/* the arrow circle sits where the tag is; no layout change on hover */
+.kzd-services__go {
   position: absolute;
-  top: 186px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 88px;
-  height: 88px;
-  border-radius: var(--kzd-radius-full);
-  background: var(--kzd-s-ring-fill);
-  border: 1px solid var(--kzd-s-ring-line);
+  right: 20px;
+  top: 50%;
   display: grid;
   place-items: center;
+  width: var(--kzd-sv-go);
+  height: var(--kzd-sv-go);
+  margin-top: calc(var(--kzd-sv-go) / -2);
+  border-radius: var(--kzd-radius-full);
+  background: var(--kzd-white);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 300ms var(--sv-ease), transform 300ms var(--sv-ease);
 }
-
-.kzd-services__icon {
-  display: block;
-  width: 72px;
-  height: 72px;
-}
-
-/* Icon strokes are --kzd-navy-300, NOT --ember. Dark-on-light needs less weight than
-   light-on-dark to read at the same strength, hence 2.4 rather than 2.7. */
-.kzd-services__icon .kzd-draw {
+.kzd-services__go svg {
+  width: var(--kzd-space-16);
+  height: var(--kzd-space-16);
   fill: none;
-  stroke: var(--kzd-s-ember-dk);
-  stroke-width: 2.4;
+  stroke: var(--kzd-black);
+  stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-/* Draw-in. Every drawable carries pathLength="100" so one dasharray fits all. */
-.kzd-services__icon .kzd-draw {
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  transition: none;
-  transition-delay: calc(var(--kzd-s-i, 0) * 90ms + 260ms);
+.kzd-services__row.is-active .kzd-services__num { color: var(--kzd-silver); }
+.kzd-services__row.is-active .kzd-services__name { color: var(--kzd-white); transform: translateX(8px); }
+.kzd-services__row.is-active .kzd-services__tag { opacity: 0; }
+.kzd-services__row.is-active .kzd-services__go { opacity: 1; transform: none; transition-delay: 60ms; }
+
+.kzd-services .kzd-services__row:focus-visible {
+  outline: 2px solid var(--kzd-black) !important;
+  outline-offset: 2px !important;
+  box-shadow: none !important;
 }
 
-.kzd-services__card.is-in .kzd-services__icon .kzd-draw { stroke-dashoffset: 0; }
-
-/* Bottom-aligned, not flowing under the title — this is what makes the three
-   cards line up. */
-.kzd-services__copy {
+/* --------------------------------------------------------------------------
+   Floating preview card (decorative; follows the cursor via js)
+   -------------------------------------------------------------------------- */
+.kzd-services__preview {
   position: absolute;
-  left: 32px;
-  bottom: 40px;
-  width: 333px;
-  max-width: calc(100% - 64px);
-  margin: 0;
-  font-family: var(--kzd-s-body);
-  font-weight: 400;
-  font-size:  var(--kzd-text-body);
-  line-height: 1.68;
-  color: var(--kzd-s-muted);
-  text-wrap: wrap;
-}
-
-/* --------------------------------------------------------------------------
-   4. Carousel arrows — bottom right, right edge on the content column
-   -------------------------------------------------------------------------- */
-
-.kzd-services__nav {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--kzd-space-8);
-  margin-top: 1px;                  /* board: 853, i.e. 23px under the cards */
-}
-
-.kzd-services__arrow {
-  width: 46px;
-  height: 46px;
-  border-radius: var(--kzd-radius-full);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 0;
-  transition:
-    opacity var(--kzd-dur-micro) var(--kzd-s-ease), transform var(--kzd-dur-micro) var(--kzd-s-ease);
-}
-
-.kzd-services__arrow svg { width: var(--kzd-icon-dense); height: var(--kzd-icon-dense); }
-
-.kzd-services__arrow--prev {
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: grid;
+  width: var(--kzd-sv-preview-w);
+  padding: 20px;
+  border: var(--kzd-border) solid var(--kzd-black);
+  border-radius: var(--kzd-radius-16);
   background: var(--kzd-white);
-  border: 1px solid var(--kzd-s-line);
-  color: var(--kzd-s-ink);
+  box-shadow: 0 24px 48px color-mix(in srgb, var(--kzd-black) 18%, transparent);
+  pointer-events: none;
+  opacity: 0;
+  /* --x/--y set by js; scale lives on the inner wrapper-free transform */
+  transform: translate3d(var(--x, 0px), var(--y, 0px), 0) scale(var(--s, 0.92));
+  transform-origin: 0 0;
+  transition: opacity 250ms var(--sv-ease), --s 250ms var(--sv-ease);
+  will-change: transform;
 }
-.kzd-services__arrow--prev:hover:not(:disabled) { background: var(--kzd-surface-100); }
+.kzd-services__preview.is-shown { opacity: 1; --s: 1; }
+@property --s { syntax: "<number>"; inherits: false; initial-value: 0.92; }
 
-/* Solid ember stamp with a WHITE glyph — on the dark board this glyph was
-   near-black --kzd-black; on light it flips so the badge reads as a solid stamp. */
-.kzd-services__arrow--next {
-  background: var(--kzd-s-ember);
-  border: 1px solid var(--kzd-s-ember);
-  color: var(--kzd-white);
+/* all six content blocks stacked in one cell; only one is visible */
+.kzd-services__pv {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  opacity: 0;
+  transition: opacity 200ms var(--sv-ease);
 }
-.kzd-services__arrow--next:hover:not(:disabled) { background: var(--kzd-navy-300); border-color: var(--kzd-navy-300); }
+.kzd-services__pv.is-shown { opacity: 1; }
+.kzd-services__tile {
+  display: grid;
+  place-items: center;
+  width: var(--kzd-sv-tile);
+  height: var(--kzd-sv-tile);
+  border-radius: var(--kzd-radius-12);
+  background: var(--kzd-surface-card);
+}
+.kzd-services__tile svg {
+  width: var(--kzd-icon);
+  height: var(--kzd-icon);
+  fill: none;
+  stroke: var(--kzd-black);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.kzd-services__pv-text {
+  font-family: var(--kzd-type-sans);
+  font-size: var(--kzd-sv-body);
+  line-height: 1.5;
+  color: var(--kzd-charcoal);
+}
+.kzd-services__pv-cta {
+  font-family: var(--kzd-type-label);
+  font-size: var(--kzd-sv-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--kzd-gray);
+}
 
-.kzd-services__arrow:hover:not(:disabled) { transform: translateY(-2px); }
+/* The accordion is the touch / small-screen version. */
+.kzd-services__acc { display: none; }
 
-.kzd-services__arrow:disabled {
-  opacity: .45;
-  cursor: default;
+/* --------------------------------------------------------------------------
+   Touch devices and < 1024px: accordion
+   -------------------------------------------------------------------------- */
+@media (max-width: 1023px), (hover: none), (pointer: coarse) {
+  .kzd-services { padding: var(--kzd-space-64) 20px; }
+  .kzd-services__wrap { display: flex; flex-direction: column; gap: var(--kzd-space-32); max-width: 640px; }
+  .kzd-services__sticky { position: static; }
+  .kzd-services__eyebrow { font-size: var(--kzd-sv-mono); }
+  .kzd-services__title { font-size: var(--kzd-sv-h2-sm); line-height: 1.08 !important; }
+  .kzd-services__intro,
+  .kzd-services__all--aside,
+  .kzd-services__list,
+  .kzd-services__preview { display: none; }
+
+  .kzd-services__acc { display: block; position: relative; }
+  .kzd-services__acc::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--kzd-border);
+    background: var(--kzd-black);
+    transform-origin: 0 50%;
+  }
+  .kzd-services__acc-item {
+    position: relative;
+    padding: 0 var(--kzd-space-12);
+    border-bottom: var(--kzd-border) solid var(--kzd-silver-light);
+    isolation: isolate;
+  }
+  /* the open state's black card, drawn behind; no layout properties change */
+  .kzd-services__acc-item::before {
+    content: "";
+    position: absolute;
+    inset: 0 -4px;
+    z-index: -1;
+    border-radius: var(--kzd-radius-16);
+    background: var(--kzd-black);
+    opacity: 0;
+    transition: opacity 250ms var(--sv-ease);
+  }
+  .kzd-services__acc-item.is-open::before { opacity: 1; }
+  .kzd-services__acc-item.is-open { border-bottom-color: transparent; }
+  .kzd-services__acc-h { font-size: inherit; line-height: inherit; }
+  .kzd-services__acc-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--kzd-space-16);
+    width: 100%;
+    height: var(--kzd-sv-row-h-sm);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--kzd-black);
+    text-align: left;
+    cursor: pointer;
+    transition: color 250ms var(--sv-ease);
+  }
+  .kzd-services__acc-btn .kzd-services__num { width: auto; font-size: var(--kzd-sv-mono); }
+  .kzd-services__acc-name {
+    flex: 1;
+    font-family: var(--kzd-type-display);
+    font-size: var(--kzd-sv-name-sm);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .kzd-services__chev {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 320ms var(--sv-ease);
+  }
+  .kzd-services__acc-item.is-open .kzd-services__acc-btn { color: var(--kzd-white); }
+  .kzd-services__acc-item.is-open .kzd-services__num { color: var(--kzd-silver); }
+  .kzd-services__acc-item.is-open .kzd-services__chev { transform: rotate(180deg); }
+  .kzd-services .kzd-services__acc-btn:focus-visible {
+    outline: 2px solid var(--kzd-black) !important;
+    outline-offset: 2px !important;
+    box-shadow: none !important;
+  }
+  .kzd-services .kzd-services__acc-item.is-open .kzd-services__acc-btn:focus-visible { outline-color: var(--kzd-white) !important; }
+
+  /* height: grid rows 0fr -> 1fr; the content fades in after */
+  .kzd-services__acc-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 320ms var(--sv-ease);
+  }
+  .kzd-services__acc-item.is-open .kzd-services__acc-panel { grid-template-rows: 1fr; }
+  .kzd-services__acc-inner {
+    overflow: hidden;
+    min-height: 0;
+    opacity: 0;
+    transition: opacity 200ms var(--sv-ease);
+  }
+  .kzd-services__acc-item.is-open .kzd-services__acc-inner { opacity: 1; transition-delay: 80ms; }
+  .kzd-services__acc-text {
+    padding-bottom: var(--kzd-space-16);
+    font-family: var(--kzd-type-sans);
+    font-size: var(--kzd-sv-body);
+    line-height: 1.5;
+    color: var(--kzd-silver-light);
+  }
+  .kzd-services__view {
+    height: var(--kzd-control);
+    margin-bottom: 20px;
+    background: var(--kzd-white);
+    color: var(--kzd-black);
+  }
+  .kzd-services__view:hover { background: var(--kzd-silver-light); color: var(--kzd-black); }
+  .kzd-services .kzd-services__view:focus-visible { outline: 2px solid var(--kzd-white) !important; outline-offset: 2px !important; box-shadow: none !important; }
+
+  .kzd-services__all--block { display: flex; width: 100%; margin-top: var(--kzd-space-32); }
 }
 
 /* --------------------------------------------------------------------------
-   5. Responsive
+   Entrance (once): left column fades up 80ms apart, then the rows 60ms
+   apart, while the list's top rule draws left to right. Armed by js only,
+   so content shows without js.
    -------------------------------------------------------------------------- */
-
-@media (max-width: 1199px) {
-  .kzd-services { padding-top: var(--kzd-space-96); padding-bottom: var(--kzd-space-80); }
-  .kzd-services__title { font-size:  var(--kzd-text-headline); }
-  /* 2.4 cards visible — the row overflows, so the arrows do real work. */
-  .kzd-services__card { flex-basis: calc((100% - 48px) / 2.4); }
+.kzd-services.is-armed .kzd-services__in,
+.kzd-services.is-armed .kzd-services__li,
+.kzd-services.is-armed .kzd-services__acc-item {
+  opacity: 0;
+  transform: translateY(var(--rise, 24px));
 }
+.kzd-services.is-armed .kzd-services__li,
+.kzd-services.is-armed .kzd-services__acc-item { --rise: 16px; }
+.kzd-services.is-armed .kzd-services__list::before,
+.kzd-services.is-armed .kzd-services__acc::before { transform: scaleX(0); }
 
-@media (max-width: 991px) {
-  .kzd-services__card { flex-basis: calc((100% - 24px) / 1.7); }
-  /* Mobile: the row is a scroll-snap container and the arrows go away. */
-  .kzd-services__nav { display: none; }
+.kzd-services.is-entered .kzd-services__in,
+.kzd-services.is-entered .kzd-services__li,
+.kzd-services.is-entered .kzd-services__acc-item {
+  opacity: 1;
+  transform: none;
+  transition: opacity 600ms var(--sv-ease), transform 600ms var(--sv-ease);
+  transition-delay: calc(var(--d, 0) * 80ms);
 }
-
-@media (max-width: 767px) {
-  .kzd-services { padding-top: var(--kzd-space-64); padding-bottom: var(--kzd-space-64); }
-  .kzd-services__title { font-size:  var(--kzd-text-headline); }
-  .kzd-services__row { margin-top: var(--kzd-space-40); }
-  .kzd-services__card { flex-basis: min(86%, 340px); min-height: 470px; }
-  .kzd-services__ring { top: 168px; }
+.kzd-services.is-entered .kzd-services__li,
+.kzd-services.is-entered .kzd-services__acc-item {
+  transition-duration: 500ms;
+  transition-delay: calc(320ms + var(--d, 0) * 60ms);
+}
+.kzd-services.is-entered .kzd-services__list::before,
+.kzd-services.is-entered .kzd-services__acc::before {
+  transform: none;
+  transition: transform 700ms var(--sv-ease) 200ms;
 }
 
 /* --------------------------------------------------------------------------
-   6. Reduced motion
+   Reduced motion: states change instantly, nothing moves, all visible.
    -------------------------------------------------------------------------- */
-
 @media (prefers-reduced-motion: reduce) {
-  .kzd-services__row { scroll-behavior: auto; }
-
-  .kzd-services__card {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
-
-  .kzd-services__icon .kzd-draw {
-    stroke-dashoffset: 0 !important;
-    transition: none !important;
-  }
-
-  .kzd-services__arrow:hover:not(:disabled) { transform: none; }
+  .kzd-services *,
+  .kzd-services *::before { transition: none !important; }
+  .kzd-services__row.is-active .kzd-services__name { transform: none; }
+  .kzd-services.is-armed .kzd-services__in,
+  .kzd-services.is-armed .kzd-services__li,
+  .kzd-services.is-armed .kzd-services__acc-item { opacity: 1; transform: none; }
+  .kzd-services.is-armed .kzd-services__list::before,
+  .kzd-services.is-armed .kzd-services__acc::before { transform: none; }
 }

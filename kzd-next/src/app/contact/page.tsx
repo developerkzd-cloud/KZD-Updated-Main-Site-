@@ -1,24 +1,24 @@
 /* ==========================================================================
-   /contact — ported from contact.html.
+   /contact — Penpot "Contact — Revamped" and "Mobile — Contact".
 
-   Two locations (from the Organization JSON-LD), a "get in touch" section
-   with the contact channels plus form, and a map. The legacy Bootstrap
-   markup (services-box-style-02 rows, contact-form-style-03) is not reused —
-   this is the same content redesigned into the app's existing card language,
-   matching /careers.
-
-   Only the form (ContactForm.tsx) and the map (Map.tsx) are client
-   components; everything else here is static server-rendered markup.
+   Hero (the site's contact photo under the black overlay), our office at
+   Smart Xchange with a real map, then "Let's work together": the contact
+   channels and the enquiry form (ContactForm, the only client component),
+   on white. The map is Google's keyless embed in satellite view, mounted
+   only once it nears the viewport (MapEmbed).
    ========================================================================== */
 
 import type { Metadata } from "next";
+import Image from "next/image";
+import type { CSSProperties } from "react";
 import { CONTACT } from "@/lib/nav";
+import Reveal from "@/components/Reveal/Reveal";
+import Icon from "@/components/Icon/Icon";
+import ArrowIcon from "@/components/ArrowIcon/ArrowIcon";
 import { LOCATIONS } from "./content";
 import ContactForm from "./ContactForm";
-import Map from "./Map";
-import Reveal from "@/components/Reveal/Reveal";
+import MapEmbed from "./MapEmbed";
 import styles from "./contact.module.css";
-import Icon from "@/components/Icon/Icon";
 
 const DESCRIPTION =
   "Contact KZD Solutions today to discuss how we can help your business grow through innovative IT and digital solutions. Located in Durban, KwaZulu-Natal.";
@@ -36,109 +36,142 @@ export const metadata: Metadata = {
   },
 };
 
-function phoneIcon() {
-  return <Icon name="telephone" />;
-}
+const CHANNELS = [
+  { label: "Call us directly?", value: CONTACT.phoneLabel, href: CONTACT.phoneHref },
+  { label: "Need live support?", value: CONTACT.email, href: `mailto:${CONTACT.email}` },
+  { label: "Join our growing team?", value: "recruitment@kzdsolutions.co.za", href: "mailto:recruitment@kzdsolutions.co.za" },
+];
+
+const d = (n: number) => ({ "--d": n }) as CSSProperties;
 
 export default function ContactPage() {
   return (
     <main className={styles.con}>
-      <section className={styles.hero}>
-        <div className={styles.wash} aria-hidden="true" />
-        <div className={styles.inner}>
-          <span className={styles.eyebrow}>
-            <span className={styles.dot} aria-hidden="true" />
-            Contact
-          </span>
-          <h1 className={styles.h1}>Contact us</h1>
-          <p className={styles.intro}>
-            Call or visit us at one of our locations — we will always be happy to hear from you.
-          </p>
+      {/* Hero ------------------------------------------------------------- */}
+      <section className={styles.hero} data-hero-full>
+        <div className={styles.heroMedia}>
+          <Image
+            src="/images/overhead-view-cellphone-headphone-keyboard-with-coffee-cup.jpg"
+            alt=""
+            fill
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            className={styles.heroImg}
+          />
+          <div className={styles.heroOverlay} aria-hidden="true" />
         </div>
+        <div className={styles.heroInner}>
+          <Reveal style={d(0)}>
+            <p className={styles.heroEyebrow}>
+              <Icon name="megaphone" className={styles.heroEyebrowIcon} />
+              Grow your business with us
+            </p>
+          </Reveal>
+          <Reveal style={d(1)}>
+            <h1 className={styles.heroTitle}>Contact us</h1>
+          </Reveal>
+        </div>
+        <svg className={`${styles.curve} ${styles.curveDesktop}`} viewBox="0 0 1440 26" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,26 L0,22 C360,2 1080,2 1440,22 L1440,26 Z" fill="var(--color-white)" />
+        </svg>
+        <svg className={`${styles.curve} ${styles.curveMobile}`} viewBox="0 0 390 30" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,30 C80,4 310,4 390,30 Z" fill="var(--color-white)" />
+        </svg>
       </section>
 
-      <section className={styles.locations} aria-labelledby="con-locations">
-        <div className={styles.inner}>
-          <h2 className={styles.h2} id="con-locations">Our locations</h2>
+      {/* Locations --------------------------------------------------------- */}
+      <section className={styles.visit} aria-labelledby="con-visit">
+        <div className={styles.visitIntro}>
+          <Reveal style={d(0)}>
+            <p className={styles.eyebrow}>
+              <Icon name="chat-left-text" size="dense" className={styles.eyebrowIcon} />
+              Let&rsquo;s work together
+            </p>
+          </Reveal>
+          <Reveal style={d(1)}>
+            <h2 className={styles.title} id="con-visit">
+              Call or visit us at our Durban office.
+            </h2>
+          </Reveal>
+          <Reveal style={d(2)}>
+            <p className={styles.sub}>We will always be happy to hear from you.</p>
+          </Reveal>
+          <Reveal style={d(3)} className={styles.callWrap}>
+            <a className={styles.darkBtn} href={CONTACT.phoneHref}>
+              <Icon name="telephone" size="dense" />
+              Call us
+            </a>
+          </Reveal>
+        </div>
 
-          <div className={styles.locGrid}>
-            {LOCATIONS.map((loc) => (
-              <Reveal className={styles.locCard} key={loc.name}>
-                <span className={styles.locRule} aria-hidden="true" />
-                <h3 className={styles.locTitle}>{loc.name}</h3>
-                <p className={styles.locAddr}>{loc.address}</p>
-                <div className={styles.locFoot}>
+        <ul className={styles.locations}>
+          {LOCATIONS.map((loc, i) => (
+            <Reveal as="li" key={loc.name} from="right" style={d(i + 1)}>
+              <article className={styles.locCard}>
+                <div className={styles.mapFrame}>
+                  <MapEmbed
+                    className={styles.map}
+                    title={`Map: ${loc.name}`}
+                    src={`https://maps.google.com/maps?q=${encodeURIComponent(loc.address)}&t=k&z=17&output=embed`}
+                  />
+                </div>
+                <div className={styles.locBody}>
+                  <h3 className={styles.locName}>{loc.name}</h3>
+                  <p className={styles.locAddr}>{loc.address}</p>
                   <a
-                    className={styles.locMapLink}
+                    className={styles.locMap}
                     href={`https://www.google.com/maps?q=${encodeURIComponent(loc.address)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    View on map
+                    View on map <Icon name="arrow-up-right" size="dense" />
                   </a>
                   <a className={styles.locPhone} href={loc.phoneHref}>
-                    {phoneIcon()}
-                    {loc.phoneLabel}
+                    <span className={styles.locPhoneLabel}>Call us</span>
+                    <span className={styles.locPhoneValue}>
+                      <Icon name="telephone" size="dense" className={styles.locPhoneIcon} />
+                      {loc.phoneLabel}
+                    </span>
+                    <span className={styles.locPhoneDisc} aria-hidden="true">
+                      <Icon name="telephone" size="dense" />
+                    </span>
                   </a>
                 </div>
-              </Reveal>
+              </article>
+            </Reveal>
+          ))}
+        </ul>
+      </section>
+
+      {/* Let's work together ---------------------------------------------- */}
+      <section className={styles.help} aria-labelledby="con-help">
+        <Reveal from="left" className={styles.helpCard}>
+          <p className={styles.eyebrow}>
+            <Icon name="chat-left-text" size="dense" className={styles.eyebrowIcon} />
+            Let&rsquo;s work together
+          </p>
+          <h2 className={styles.helpTitle}>Ready to help you!</h2>
+          <p className={styles.sub}>We&rsquo;re here to help and answer any question you might have.</p>
+          <ul className={styles.channels}>
+            {CHANNELS.map((c) => (
+              <li key={c.label}>
+                <a className={styles.channel} href={c.href}>
+                  <span className={styles.channelLabel}>{c.label}</span>
+                  <span className={styles.channelValue}>{c.value}</span>
+                  <ArrowIcon className={styles.channelArrow} />
+                </a>
+              </li>
             ))}
-          </div>
-        </div>
-      </section>
+          </ul>
+        </Reveal>
 
-      <section className={styles.touch} aria-labelledby="con-touch">
-        <div className={styles.inner}>
-          <h2 className={styles.h2} id="con-touch">Looking for any help?</h2>
-
-          <div className={styles.touchGrid}>
-            <Reveal className={styles.channels}>
-              <span className={styles.channelsEyebrow}>Let&apos;s work together</span>
-              <h3 className={styles.channelsTitle}>Ready to help you!</h3>
-              <p className={styles.channelsBody}>
-                We&apos;re here to help and answer any question you might have.
-              </p>
-
-              <ul className={styles.channelList}>
-                <li>
-                  <p className={styles.channelLabel}>Call us directly?</p>
-                  <a className={styles.channelValue} href={CONTACT.phoneHref}>
-                    {CONTACT.phoneLabel}
-                  </a>
-                </li>
-                <li>
-                  <p className={styles.channelLabel}>Need live support?</p>
-                  <a className={styles.channelValue} href={`mailto:${CONTACT.email}`}>
-                    {CONTACT.email}
-                  </a>
-                </li>
-                <li>
-                  <p className={styles.channelLabel}>Join our growing team?</p>
-                  <a className={styles.channelValue} href="mailto:recruitment@kzdsolutions.co.za">
-                    recruitment@kzdsolutions.co.za
-                  </a>
-                </li>
-              </ul>
-            </Reveal>
-
-            <Reveal className={styles.formCard}>
-              <h3 className={styles.formTitle}>Send us a message</h3>
-              <p className={styles.formNote}>
-                Fill in the form below and we&apos;ll get back to you shortly.
-              </p>
-              <ContactForm />
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.mapSection} aria-labelledby="con-map">
-        <div className={styles.inner}>
-          <h2 className={styles.h2} id="con-map">Find us</h2>
-          <Reveal className={styles.mapCard}>
-            <Map locations={LOCATIONS} />
-          </Reveal>
-        </div>
+        <Reveal from="right" className={styles.formCard}>
+          <h2 className={styles.formTitle} id="con-help">
+            Looking for any help?
+          </h2>
+          <ContactForm />
+        </Reveal>
       </section>
     </main>
   );

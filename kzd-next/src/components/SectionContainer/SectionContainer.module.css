@@ -1,0 +1,21 @@
+.section {
+  position: relative;
+  width: 100%;
+}
+
+.fullHeight {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+}
+
+.fullHeight .inner {
+  width: 100%;
+}
+
+.inner {
+  max-width: calc(var(--container-max) + var(--container-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-gutter);
+}

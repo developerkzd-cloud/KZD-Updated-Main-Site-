@@ -1,27 +1,26 @@
 /* ==========================================================================
-   /services — ported from services.html.
+   /services — Penpot "Services — Revamped" and "Mobile — Services".
 
-   A Server Component. The two interactive bits — the accordion (which also
-   has to react to the /services#consulting and /services#development links
-   in the nav mega-menu and footer, see src/lib/nav.ts) and the scroll-reveal
-   on the product/client cards — are pushed out to client leaves
-   (ServicesAccordion, Reveal); everything else, including the client list and
-   product copy, is plain server-rendered HTML.
+   Hero (photo + black overlay), Our services (ServicesTabs, a client leaf),
+   Our products, then the same Testimonials and Our clients sections as the
+   homepage. The site footer comes from the layout.
    ========================================================================== */
 
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import type { CSSProperties } from "react";
 import Reveal from "@/components/Reveal/Reveal";
-import type { AccordionItem } from "@/components/Accordion/Accordion";
-import ClientShowcase from "@/components/ClientShowcase/ClientShowcase";
-import ServicesAccordion from "./ServicesAccordion";
-import { CONSULTING_LIST, DEVELOPMENT_LIST, PRODUCTS, CLIENTS } from "./content";
-import styles from "./services.module.css";
 import Icon from "@/components/Icon/Icon";
+import ArrowIcon from "@/components/ArrowIcon/ArrowIcon";
+import TestimonialsSection from "@/components/HomeSections/TestimonialsSection";
+import ClientsSection from "@/components/HomeSections/ClientsSection";
+import { caseStudyHref } from "@/lib/caseStudies";
+import ServicesTabs from "./ServicesTabs";
+import { PRODUCTS, SERVICE_TABS } from "./content";
+import styles from "./services.module.css";
 
 const DESCRIPTION =
-  "Explore KZD Solutions' services including business process optimization, custom software development, scalable digital platforms, and consulting for business growth.";
+  "Explore KZD Solutions' services including business process optimisation, custom software development, scalable digital platforms, and consulting for business growth.";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -36,181 +35,107 @@ export const metadata: Metadata = {
   },
 };
 
-const ACCORDION_ITEMS: AccordionItem[] = [
-  {
-    id: "consulting",
-    question: "Consulting",
-    answer: (
-      <>
-        <p className={styles.accDesc}>
-          We help businesses find waste, fix process and scale what already works.
-        </p>
-        <ul className={styles.accList}>
-          {CONSULTING_LIST.map((row) => (
-            <li className={styles.accRow} key={row}>{row}</li>
-          ))}
-        </ul>
-        <Link className={styles.accCta} href="/contact">Book a free consultation</Link>
-      </>
-    ),
-  },
-  {
-    id: "development",
-    question: "Development",
-    answer: (
-      <>
-        <p className={styles.accDesc}>
-          We build and maintain the software, sites and infrastructure your business runs on.
-        </p>
-        <ul className={styles.accList}>
-          {DEVELOPMENT_LIST.map((row) => (
-            <li className={styles.accRow} key={row}>{row}</li>
-          ))}
-        </ul>
-        <Link className={styles.accCta} href="/contact">Book a free consultation</Link>
-      </>
-    ),
-  },
-];
-
 export default function ServicesPage() {
   return (
     <main className={styles.svc}>
-      {/* 1. Hero ------------------------------------------------------- */}
-      <section className={styles.hero}>
+      {/* Hero ------------------------------------------------------------- */}
+      <section className={styles.hero} data-hero-full>
         <div className={styles.heroMedia}>
           <Image
             src="/Assets/photos/services-hero-1600.jpg"
             alt=""
             fill
             priority
+            fetchPriority="high"
             sizes="100vw"
             className={styles.heroImg}
           />
-          <div className={styles.heroWash} aria-hidden="true" />
+          <div className={styles.heroOverlay} aria-hidden="true" />
         </div>
+
         <div className={styles.heroInner}>
-          <span className={styles.eyebrow}>
-            <span className={styles.eyebrowDot} aria-hidden="true" />
-            World class business services
-          </span>
-          <h1 className={styles.h1}>Services</h1>
-        </div>
-      </section>
-
-      {/* 2. Story -------------------------------------------------------- */}
-      <section className={styles.story}>
-        <div className={styles.storyInner}>
-          <div className={styles.storyText}>
-            <h2 className={styles.storyTitle}>The Story Behind KZD Solutions.</h2>
-            <p className={styles.storyBody}>
-              We offer a range of services designed to help businesses improve efficiency,
-              scalability, and productivity.
+          <Reveal style={{ "--d": 0 } as CSSProperties}>
+            <p className={styles.heroEyebrow}>
+              <Icon name="megaphone" className={styles.heroEyebrowIcon} />
+              World class business services
             </p>
-          </div>
-          <figure className={styles.storyFigure}>
-            <div className={styles.storyImageWrap}>
-              <Image
-                src="/images/walking-up-stairs.jpeg"
-                alt=""
-                fill
-                sizes="(max-width: 900px) 100vw, 520px"
-                className={styles.storyImage}
-              />
-            </div>
-            <figcaption className={styles.storyStat}>
-              <span className={styles.storyStatNum}>
-                6<sub className={styles.storyStatPlus}>+</sub>
-              </span>
-              <span className={styles.storyStatLabel}>Years working experience</span>
-            </figcaption>
-          </figure>
+          </Reveal>
+          <Reveal style={{ "--d": 1 } as CSSProperties}>
+            <h1 className={styles.heroTitle}>Services</h1>
+          </Reveal>
         </div>
+
+        <svg className={`${styles.curve} ${styles.curveDesktop}`} viewBox="0 0 1440 26" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,20 C300,18,600,6,833,3 C1050,1,1250,6,1440,9 L1440,26 L0,26 Z" fill="var(--color-white)" />
+        </svg>
+        <svg className={`${styles.curve} ${styles.curveMobile}`} viewBox="0 0 390 30" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,30 C80,4 310,4 390,30 Z" fill="var(--color-white)" />
+        </svg>
       </section>
 
-      {/* 3. Services accordion --------------------------------------------- */}
-      <section className={styles.acc} aria-labelledby="svc-acc-title">
-        <div className={styles.accInner}>
-          <div className={styles.accHead}>
-            <span className={styles.eyebrow}>
-              <span className={styles.eyebrowDot} aria-hidden="true" />
-              Our services
-            </span>
-            <h2 className={styles.accTitle} id="svc-acc-title">
+      {/* Our services ------------------------------------------------------ */}
+      <section className={styles.services} aria-labelledby="svc-title">
+        <div className={styles.servicesHead}>
+          <Reveal style={{ "--d": 0 } as CSSProperties}>
+            <p className={styles.eyebrow}>Our services</p>
+          </Reveal>
+          <Reveal style={{ "--d": 1 } as CSSProperties}>
+            <h2 className={styles.title} id="svc-title">
               Everything you need to optimise and scale
             </h2>
-            <p className={styles.accSub}>Consulting and technology — all under one roof.</p>
-          </div>
-
-          <div className={styles.accWrap}>
-            <ServicesAccordion items={ACCORDION_ITEMS} defaultOpenId="consulting" />
-          </div>
+          </Reveal>
+          <Reveal style={{ "--d": 2 } as CSSProperties}>
+            <p className={styles.sub}>Consulting and technology, all under one roof.</p>
+          </Reveal>
         </div>
+        <ServicesTabs tabs={SERVICE_TABS} />
       </section>
 
-      {/* 4. Our Products ----------------------------------------------------- */}
-      <section className={styles.prod} aria-labelledby="svc-prod-title">
-        <div className={styles.prodInner}>
-          <div className={styles.prodHead}>
-            <span className={styles.eyebrow}>
-              <span className={styles.eyebrowDot} aria-hidden="true" />
-              What we&rsquo;ve built
-            </span>
-            <h2 className={styles.prodTitle} id="svc-prod-title">Our Products</h2>
-            <p className={styles.prodSub}>Products we&rsquo;ve designed, built and shipped.</p>
-          </div>
+      {/* Our products ------------------------------------------------------ */}
+      <section className={styles.products} aria-labelledby="svc-prod-title">
+        <div className={styles.productsHead}>
+          <Reveal style={{ "--d": 0 } as CSSProperties}>
+            <p className={`${styles.eyebrow} ${styles.eyebrowOnDark}`}>Our products</p>
+          </Reveal>
+          <Reveal style={{ "--d": 1 } as CSSProperties}>
+            <h2 className={`${styles.title} ${styles.titleOnDark}`} id="svc-prod-title">
+              Our Products
+            </h2>
+          </Reveal>
+          <Reveal style={{ "--d": 2 } as CSSProperties}>
+            <p className={`${styles.sub} ${styles.subOnDark}`}>Products we&rsquo;ve designed, built and shipped.</p>
+          </Reveal>
+        </div>
 
-          <div className={styles.prodGrid}>
-            {PRODUCTS.map((product) => (
-              <Reveal key={product.slug} className={styles.revealCard}>
-                <a
-                  className={styles.prodCard}
-                  href={product.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={product.alt}
-                >
-                  <span className={styles.prodTile}>
-                    <Image
-                      className={styles.prodShot}
-                      src={product.image}
-                      alt=""
-                      fill
-                      sizes="(max-width: 900px) 80vw, 360px"
-                    />
-                    <span className={styles.prodGo} aria-hidden="true">
-                      <Icon name="arrow-up-right" size="dense" />
-                    </span>
+        <ul className={styles.productGrid}>
+          {PRODUCTS.map((p, i) => (
+            <Reveal
+              as="li"
+              key={p.slug}
+              style={{ "--d": i, "--reveal-stagger": "120ms", "--reveal-distance": "32px" } as CSSProperties}
+            >
+              <a className={styles.product} href={caseStudyHref("apps", p.slug)}>
+                <span className={styles.productTile}>
+                  <Image className={styles.productImg} src={p.image} alt="" fill sizes="(max-width: 900px) 90vw, 360px" />
+                </span>
+                <span className={styles.productBody}>
+                  <span className={styles.productCat}>
+                    {String(i + 1).padStart(2, "0")} · {p.category}
                   </span>
-                  <h3 className={styles.prodName}>{product.name}</h3>
-                  <p className={styles.prodCopy}>{product.copy}</p>
-                </a>
-              </Reveal>
-            ))}
-          </div>
-        </div>
+                  <span className={styles.productName}>{p.name}</span>
+                  <span className={styles.productCopy}>{p.copy}</span>
+                  <span className={styles.productLink}>
+                    Case study <ArrowIcon />
+                  </span>
+                </span>
+              </a>
+            </Reveal>
+          ))}
+        </ul>
       </section>
 
-      {/* 5. Client showcase -------------------------------------------------- */}
-      <section className={styles.clients} aria-labelledby="svc-clients-title">
-        <div className={styles.clientsInner}>
-          <div className={styles.clientsHead}>
-            <span className={styles.eyebrow}>
-              <span className={styles.eyebrowDot} aria-hidden="true" />
-              Our clients
-            </span>
-            <h2 className={styles.clientsTitle} id="svc-clients-title">Live sites, real businesses.</h2>
-            <p className={styles.clientsSub}>
-              From salons to schools to online stores — businesses across South Africa taking
-              bookings, selling products and enrolling learners on sites we built.
-            </p>
-          </div>
-
-          <div className={styles.clientsRail}>
-            <ClientShowcase clients={CLIENTS} />
-          </div>
-        </div>
-      </section>
+      <TestimonialsSection />
+      <ClientsSection />
     </main>
   );
 }

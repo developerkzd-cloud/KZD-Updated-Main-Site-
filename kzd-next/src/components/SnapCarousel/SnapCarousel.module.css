@@ -1,0 +1,94 @@
+.root { position: relative; }
+
+.track {
+  display: flex;
+  gap: var(--snap-gap, 24px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  touch-action: pan-x pan-y;
+  cursor: grab;
+  border-radius: 4px;
+}
+.track::-webkit-scrollbar { display: none; }
+
+.track:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 6px;
+}
+
+/* While the mouse drags, snapping would fight the hand — switch it off. */
+.dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+.dragging * { pointer-events: none; }
+
+.slide {
+  flex: none;
+  scroll-snap-align: start;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  color: var(--color-ink);
+  box-shadow: 0 6px 18px rgb(26 26 26 / 0.12);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: opacity 250ms var(--ease-motion), transform 250ms var(--ease-motion);
+}
+.arrow:disabled { opacity: 0.35; cursor: default; }
+.prev { left: -22px; }
+.next { right: -22px; }
+
+@media (hover: hover) {
+  .arrow:not(:disabled):hover { transform: translateY(-50%) scale(1.06); }
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-top: calc(var(--space-5) - 9px);
+}
+
+/* A 24px-tall tap target (wider for the active pill) with the 6px dot
+   drawn inside it. */
+.dot {
+  display: grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 1px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.dot::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  transition: width 250ms var(--ease-motion), background-color 250ms var(--ease-motion);
+}
+.dot[aria-current="true"]::before { width: 22px; background: var(--color-ink); }
+.dot:focus-visible { outline: 2px solid var(--color-ink); outline-offset: -2px; border-radius: var(--radius-pill); }
+
+@media (max-width: 900px) {
+  .arrow { display: none; }
+}

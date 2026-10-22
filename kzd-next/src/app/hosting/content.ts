@@ -184,7 +184,7 @@ export const FAQ_ITEMS = [
     id: "hosting-faq-different",
     question: "What makes KZD Solutions web hosting different?",
     answer:
-      "Every plan runs on SSD storage with the DirectAdmin control panel, free SSL, and daily backups included as standard — not an upsell.",
+      "Every plan runs on SSD storage with the DirectAdmin control panel, free SSL, and daily backups included as standard, not as an upsell.",
   },
   {
     id: "hosting-faq-upgrade",

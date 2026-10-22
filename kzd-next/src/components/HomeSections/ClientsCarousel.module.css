@@ -1,0 +1,402 @@
+/* ---------------------------------------------------------------- rail --
+   Full-bleed, endless marquee. No scroll-snap: the drift is continuous, and
+   snapping would fight it. Scrollbar hidden; swipe/trackpad/drag all work. */
+.rail { --gap: 26px; }
+
+/* position: relative on the track and each card keeps absolutely
+   positioned children (the screen-reader "Preview" label) inside the
+   scroller, so they can never widen the page. */
+.track {
+  position: relative;
+  display: flex;
+  gap: var(--gap);
+  margin: 0;
+  padding: 6px 0 14px;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  touch-action: pan-x pan-y;
+  cursor: grab;
+}
+.track::-webkit-scrollbar { display: none; }
+.track:focus-visible { outline: 2px solid var(--color-ink); outline-offset: -2px; }
+
+.dragging { cursor: grabbing; user-select: none; }
+.dragging * { pointer-events: none; }
+
+.slide { flex: none; width: 340px; }
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  color: inherit;
+  cursor: inherit;
+}
+
+.card:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 4px; border-radius: 14px; }
+
+.window {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--color-surface);
+  border-radius: 14px;
+  background: var(--color-white);
+  box-shadow: 0 10px 28px rgb(26 26 26 / 0.08);
+  transition: transform 450ms var(--ease-motion), box-shadow 450ms var(--ease-motion);
+}
+
+.chrome {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 30px;
+  padding: 0 12px;
+  background: var(--color-surface);
+}
+
+.lights { display: inline-flex; gap: 6px; flex: none; }
+
+.light {
+  display: grid;
+  place-items: center;
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  font-size: 9px;
+  line-height: 1;
+  color: rgb(0 0 0 / 0.55);
+}
+.light > span { opacity: 0; transition: opacity 150ms var(--ease-motion); }
+.red { background: #FF5F57; }
+.yellow { background: #FEBC2E; }
+.green { background: #28C840; }
+
+.domain {
+  overflow: hidden;
+  font-size: 11px;
+  color: var(--color-secondary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.shot {
+  position: relative;
+  display: block;
+  aspect-ratio: 340 / 200;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.shotImg {
+  object-fit: cover;
+  object-position: top;
+  transition: transform 600ms var(--ease-motion);
+}
+
+/* Live / Coming soon chip — a frosted pill with a beacon that pulses: a
+   solid dot plus an expanding halo (transform + opacity only). */
+.status {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 26px;
+  padding: 0 12px 0 10px;
+  border: 1px solid rgb(255 255 255 / 0.7);
+  border-radius: var(--radius-pill);
+  background: rgb(255 255 255 / 0.86);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 0.12);
+  font-family: var(--kzd-font-mono);
+  font-size: 10px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.beacon {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: var(--radius-pill);
+  background: var(--beacon, #22C55E);
+  box-shadow: 0 0 8px var(--beacon, #22C55E);
+  animation: kzdBlink 1.6s ease-in-out infinite;
+}
+.beacon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--beacon, #22C55E);
+  animation: kzdHalo 1.6s ease-out infinite;
+}
+.statusLive { --beacon: #22C55E; }
+.statusSoon { --beacon: var(--color-accent); }
+
+@keyframes kzdBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+@keyframes kzdHalo {
+  0%   { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 0;   transform: scale(3.2); }
+}
+
+.cat {
+  margin-top: 22px;
+  font-family: var(--kzd-font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+.name {
+  margin-top: 8px;
+  font-family: var(--kzd-font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  color: var(--color-ink);
+}
+
+@media (hover: hover) {
+  .card:hover .window { transform: translateY(-4px); box-shadow: 0 18px 40px rgb(26 26 26 / 0.14); }
+  .card:hover .shotImg { transform: scale(1.04); }
+}
+
+/* Three dots, centred, tracking progress through one set of clients. */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-top: calc(var(--space-5) - 8px);
+}
+
+/* A 24px tap target with the 7px dot drawn inside it. */
+.dot {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: none;
+  cursor: pointer;
+}
+.dot::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  transition: background-color 250ms var(--ease-motion), transform 250ms var(--ease-motion);
+}
+.dot[aria-current="true"]::before { background: var(--color-ink); transform: scale(1.25); }
+.dot:focus-visible { outline: 2px solid var(--color-ink); outline-offset: -2px; }
+
+.swipeHint { display: none; }
+
+@media (max-width: 900px) {
+  .rail { --gap: 16px; }
+  .slide { width: min(76vw, 300px); }
+  .shot { aspect-ratio: 278 / 200; }
+  .name { font-size: 20px; }
+  .swipeHint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: var(--space-4) 0 0;
+    font-size: 14px;
+    color: var(--color-secondary);
+  }
+}
+
+/* --------------------------------------------------------------- modal -- */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: var(--space-5);
+  background: rgb(26 26 26 / 0.5);
+  backdrop-filter: blur(8px);
+  animation: kzdFadeIn 250ms var(--ease-motion) both;
+}
+.backdrop[data-state="closing"] { animation: kzdFadeOut 250ms var(--ease-motion) both; }
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  width: min(880px, 100%);
+  max-height: calc(100svh - 48px);
+  overflow: hidden;
+  border-radius: 22px;
+  background: var(--color-white);
+  box-shadow: 0 40px 90px rgb(0 0 0 / 0.35);
+  animation: kzdDialogIn 350ms var(--ease-motion) both;
+}
+.backdrop[data-state="closing"] .dialog { animation: kzdDialogOut 250ms var(--ease-motion) both; }
+
+.dialogChrome {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 50px;
+  padding: 0 14px 0 20px;
+  background: var(--color-surface);
+}
+.dialogChrome .light { width: 12px; height: 12px; }
+.dialogChrome .lights:hover .light > span,
+.dialogChrome .lights:focus-within .light > span { opacity: 1; }
+.dialogChrome .domain { flex: 1; font-size: 12px; }
+
+.chromeIcon,
+.close {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+.close { background: var(--color-border); }
+.chromeIcon:focus-visible,
+.close:focus-visible,
+.light:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
+
+.shots {
+  display: flex;
+  height: 392px;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.shotPanel {
+  position: relative;
+  flex: 1;
+  margin: 0;
+  overflow: hidden;
+  animation: kzdSlideIn 450ms var(--ease-motion) both;
+}
+.shotPanel + .shotPanel { border-left: 1px solid rgb(255 255 255 / 0.4); }
+
+.panelImg { object-fit: cover; object-position: top; transition: transform 600ms var(--ease-motion); }
+@media (hover: hover) { .shotPanel:hover .panelImg { transform: scale(1.04); } }
+
+.foot {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: 28px 40px 34px;
+}
+
+.footCat {
+  margin: 0;
+  font-family: var(--kzd-font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+.footName {
+  margin: 10px 0 0;
+  font-family: var(--kzd-font-display);
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--color-ink);
+}
+
+.footDesc {
+  max-width: 420px;
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-secondary);
+}
+
+.caseStudy {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  height: 48px;
+  margin-top: 18px;
+  padding: 0 24px;
+  border-radius: 10px;
+  background: var(--color-ink);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-white);
+  transition: transform 250ms var(--ease-motion);
+}
+.caseStudy :global(.kzd-icon) { transition: transform 250ms var(--ease-motion); }
+@media (hover: hover) {
+  .caseStudy:hover { transform: translateY(-2px); }
+  .caseStudy:hover :global(.kzd-icon) { transform: translate(3px, -3px); }
+}
+
+
+/* Hover: lift 2px + a soft light sheen sweeping across; text stays white. */
+.caseStudy { position: relative; overflow: hidden; isolation: isolate; box-shadow: 0 0 0 rgb(26 26 26 / 0); transition: transform 250ms var(--ease-motion), box-shadow 250ms var(--ease-motion), background-color 250ms var(--ease-motion); }
+.caseStudy::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.22) 50%, transparent 70%);
+  transform: translateX(-120%);
+}
+.caseStudy:hover, .caseStudy:focus-visible { color: var(--color-white); }
+@media (hover: hover) {
+  .caseStudy:hover { background: #000; box-shadow: 0 12px 28px rgb(26 26 26 / 0.28); }
+  .caseStudy:hover::after { transform: translateX(120%); transition: transform 700ms var(--ease-motion); }
+}
+
+@keyframes kzdFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes kzdFadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes kzdDialogIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes kzdDialogOut {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: translateY(16px) scale(0.96); }
+}
+@keyframes kzdSlideIn {
+  from { opacity: 0; transform: translateX(32px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Mobile: a bottom sheet; screenshots become a horizontal swipe strip. */
+@media (max-width: 700px) {
+  .backdrop { place-items: end stretch; padding: 0; }
+  .dialog { width: 100%; max-height: 92svh; border-radius: 22px 22px 0 0; }
+  @keyframes kzdDialogIn { from { transform: translateY(100%); } to { transform: none; } }
+  @keyframes kzdDialogOut { from { transform: none; } to { transform: translateY(100%); } }
+  .shots { height: 260px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .shotPanel { flex: 0 0 100%; scroll-snap-align: start; }
+  .shots[data-count="1"] .shotPanel { flex-basis: 100%; }
+  .foot { flex-direction: column; gap: var(--space-4); padding: 24px 22px 30px; }
+  .footName { font-size: 26px; }
+  .caseStudy { width: 100%; justify-content: center; margin-top: 0; }
+}

@@ -13,6 +13,7 @@ type ContactPayload = {
   surname?: string;
   phone?: string;
   email?: string;
+  service?: string;
   comment?: string;
 };
 
@@ -32,6 +33,7 @@ export async function POST(request: Request) {
   const surname = (body.surname ?? "").trim();
   const phone = (body.phone ?? "").trim();
   const email = (body.email ?? "").trim();
+  const service = (body.service ?? "").trim().slice(0, 80);
   const comment = (body.comment ?? "").trim();
 
   if (!first_name || !surname || !phone || !email) {
@@ -46,7 +48,7 @@ export async function POST(request: Request) {
   }
 
   // TODO(email): send this on to info@kzdsolutions.co.za.
-  console.log("[contact] submission received", { first_name, surname, phone, email, comment });
+  console.log("[contact] submission received", { first_name, surname, phone, email, service, comment });
 
-  return NextResponse.json({ success: true, message: "Thanks — we'll be in touch shortly." });
+  return NextResponse.json({ success: true, message: "Thanks, we'll be in touch shortly." });
 }

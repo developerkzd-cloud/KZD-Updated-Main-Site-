@@ -10,28 +10,9 @@
 
 .page { background: var(--kzd-white); }
 
-/* Shared eyebrow pill, reused by About / Problems / Clients heads. --------- */
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--kzd-space-8);
-  padding: var(--kzd-space-8) var(--kzd-space-16);
-  border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-full);
-  background: var(--kzd-white);
-  font-family: var(--kzd-type-label);
-  font-size:  var(--kzd-text-label-sm);
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--kzd-navy-400);
-}
-
-.eyebrowDot { width: 7px; height: 7px; border-radius: var(--kzd-radius-full); background: var(--kzd-accent-ink); flex: none; }
-
 /* --------------------------------------------------------------------------
-   1. Hero
+   1. Hero — Homepage — Revamped > Hero (confirmed). Colours/type/shape read
+   from tokens.css, which cites the exact Penpot path for each value.
    -------------------------------------------------------------------------- */
 
 .hero {
@@ -39,1094 +20,574 @@
   display: flex;
   align-items: center;
   /* Full-bleed: globals.css drops the below-nav padding for [data-hero-full],
-     so the nav's 84px is carried here instead and the photo reaches the top
-     of the viewport under the transparent bar. */
+     so the nav's own height is carried here instead and the photo reaches
+     the top of the viewport under the transparent bar. */
   min-height: min(100svh, 820px);
-  padding: var(--kzd-space-80) 0 100px;
+  padding: var(--space-10) 0 var(--space-8);
   overflow: hidden;
-  color: var(--kzd-white);
+  color: var(--color-white);
 }
 
 .heroMedia { position: absolute; inset: 0; }
 .heroImg { object-fit: cover; }
 
-.heroWash {
+.heroOverlay {
   position: absolute;
   inset: 0;
-  /* Same scrim as the static hero: white copy over the photo clears 4.5:1.
-     Weighted left where the copy sits, with a band along the top for the nav. */
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--kzd-navy-700) 60%, transparent) 0%, transparent 22%),
-    linear-gradient(90deg, color-mix(in srgb, var(--kzd-navy-700) 86%, transparent) 0%, color-mix(in srgb, var(--kzd-navy-700) 74%, transparent) 55%, color-mix(in srgb, var(--kzd-navy-700) 50%, transparent) 100%);
+  background: var(--hero-overlay);
 }
 
-/* The page's content column — same figure as .aboutInner/.tstInner/etc, so
-   the headline lines up with every section below instead of hugging the
-   viewport gutter. The static site got this from Bootstrap's .container. */
+/* The page's content column — hero content is centred at every width
+   (Penpot: Homepage — Revamped > Hero, and Mobile — Home). */
 .heroWrap {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: calc(1240px + var(--kzd-pad-page) * 2);
+  max-width: var(--container-max);
   margin-inline: auto;
-  padding-inline: var(--kzd-pad-page);
+  padding-inline: var(--container-gutter);
 }
 
-/* Roughly the legacy col-xl-6: the copy occupies the left of that column. */
-.heroInner { max-width: 640px; }
-
-/* Entrance, in place of the static site's data-anime stagger on this block
-   (translateY + scale + opacity, 300ms apart). Above the fold, so it runs on
-   load rather than waiting for an observer. */
-.heroEyebrow,
-.heroTitle,
-.heroSub,
-.heroCta {
-  animation: heroRise var(--kzd-dur-section) cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-
-.heroEyebrow { animation-delay: 80ms; }
-.heroTitle   { animation-delay: 200ms; }
-.heroSub     { animation-delay: 320ms; }
-.heroCta     { animation-delay: 440ms; }
-
-@keyframes heroRise {
-  from { opacity: 0; transform: translateY(26px) scale(1.04); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .heroEyebrow,
-  .heroTitle,
-  .heroSub,
-  .heroCta { animation: none; }
+.heroInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5); /* HeroContent rowGap: 24, confirmed */
+  max-width: 720px;
+  margin-inline: auto;
+  text-align: center;
 }
 
 .heroEyebrow {
   display: inline-flex;
   align-items: center;
-  gap: var(--kzd-space-8);
-  padding: var(--kzd-space-8) var(--kzd-space-16) var(--kzd-space-8) var(--kzd-space-12);
-  border-radius: var(--kzd-radius-full);
-  background: color-mix(in srgb, var(--kzd-navy-700) 45%, transparent);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  backdrop-filter: blur(4px);
-  font-family: var(--kzd-type-label);
-  font-size:  var(--kzd-text-label-sm);
-  font-weight: 500;
-  letter-spacing: 0.14em;
+  justify-content: center;
+  gap: 10px; /* Eyebrow columnGap: 10, confirmed */
+  font-family: var(--kzd-font-body);
+  font-size: var(--text-hero-eyebrow-size);
+  font-weight: var(--text-hero-eyebrow-weight);
+  letter-spacing: var(--text-hero-eyebrow-tracking);
   text-transform: uppercase;
-  color: var(--kzd-white);
+  color: var(--color-white);
 }
 
-.heroEyebrowDot { width: 7px; height: 7px; border-radius: var(--kzd-radius-full); background: var(--kzd-accent-ink); flex: none; }
+.heroEyebrowIcon { flex: none; width: 18px; height: 18px; }
 
 .heroTitle {
-  margin-top: var(--kzd-space-24);
-  color: var(--kzd-white);
-  font-size:  var(--kzd-text-display);
-  letter-spacing: -0.03em;
+  margin: 0;
+  max-width: 600px;
+  color: var(--color-white);
+  font-family: var(--kzd-font-display);
+  font-size: var(--text-hero-headline-size);
+  font-weight: var(--text-hero-headline-weight);
+  line-height: var(--text-hero-headline-leading);
+  letter-spacing: var(--text-hero-headline-tracking);
 }
 
 .heroSub {
-  margin-top: var(--kzd-space-16);
-  max-width: 480px;
-  font-size:  var(--kzd-text-body);
-  font-weight: 500;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.92);
+  margin: 0;
+  max-width: 440px;
+  font-size: var(--text-hero-lead-size);
+  font-weight: var(--text-hero-lead-weight);
+  line-height: var(--text-hero-lead-leading);
+  color: var(--color-white);
 }
 
-.heroCta {
+.heroCtas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.heroCtaPrimary,
+.heroCtaSecondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 52px;
-  margin-top: var(--kzd-space-32);
-  padding: 0 var(--kzd-space-32);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: var(--kzd-radius-full);
-  font-size:  var(--kzd-text-body);
-  font-weight: 500;
-  color: var(--kzd-white);
-  transition: none;
+  gap: 12px;
+  height: 46px;
+  padding: 0 var(--space-5);
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  transition: transform var(--duration-base) var(--ease-motion),
+    background-color var(--duration-base) var(--ease-motion);
 }
 
-.heroCta:hover,
-.heroCta:focus-visible {
-  background: var(--kzd-white);
-  border-color: var(--kzd-white);
-  color: var(--kzd-navy-500);
+/* "Contact us ✉" — white 60%-opacity glass, label then mail icon (confirmed). */
+/* "Contact us" — same specs and hover as the "All services" button:
+   ink fill, white label and icon, lift + a light sheen sweeping across. */
+.heroCtaPrimary {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  min-width: 200px;
+  background: var(--color-ink);
+  color: var(--color-white);
+  box-shadow: 0 0 0 rgb(0 0 0 / 0);
+}
+.heroCtaPrimary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.22) 50%, transparent 70%);
+  transform: translateX(-120%);
+}
+.heroCtaPrimary:hover,
+.heroCtaPrimary:focus-visible { color: var(--color-white); }
+.heroCtaPrimary .heroCtaIcon { transition: translate 250ms var(--ease-motion); }
+
+/* "✦ Build your website with AI [FREE]" — 1.5px white outline. */
+.heroCtaSecondary {
+  min-width: 305px;
+  border: var(--border-width) solid var(--color-white);
+  color: var(--color-white);
 }
 
-@media (max-width: 560px) {
-  .hero { min-height: 560px; padding-top: 110px; padding-bottom: var(--kzd-space-64); }
-  .heroSub { font-size:  var(--kzd-text-body); }
+.heroCtaIcon { width: 20px; height: 20px; }
+
+.heroCtaFree {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 10px;
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--color-ink);
 }
 
+/* BUTTONS everywhere: lift 2px, 250ms. No hover on touch. */
+@media (hover: hover) {
+  .heroCtaPrimary:hover,
+  .heroCtaSecondary:hover { transform: translateY(-2px); }
+  .heroCtaPrimary:hover { background: #000; box-shadow: 0 12px 28px rgb(0 0 0 / 0.35); }
+  .heroCtaPrimary:hover::after { transform: translateX(120%); transition: transform 700ms var(--ease-motion); }
+  .heroCtaPrimary:hover .heroCtaIcon { translate: 4px 0; }
+}
+
+
+/* "Build your website with AI" — luxury neon: a light trace orbits the
+   border, a soft glow breathes behind it and the sparkle twinkles. The
+   trace is a conic gradient on an oversized square that ROTATES inside a
+   masked ring (.neonRing), so the browser animates it on the compositor
+   instead of repainting a gradient every frame. The global reduced-motion
+   kill-switch freezes all three. */
+.heroCtaSecondary {
+  position: relative;
+  isolation: isolate;
+  border-color: rgb(255 255 255 / 0.28);
+  text-shadow: 0 0 12px rgb(255 255 255 / 0.45);
+}
+
+.neonRing {
+  position: absolute;
+  inset: calc(var(--border-width) * -1);
+  overflow: hidden;
+  border-radius: inherit;
+  padding: var(--border-width);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.neonRing::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 110%;
+  aspect-ratio: 1;
+  background: conic-gradient(
+    transparent 0deg,
+    rgb(255 255 255 / 0.95) 40deg,
+    rgb(240 168 28 / 0.9) 70deg,
+    transparent 120deg,
+    transparent 180deg,
+    rgb(255 255 255 / 0.9) 220deg,
+    transparent 280deg
+  );
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: kzdNeonOrbit 4s linear infinite;
+}
+
+.heroCtaSecondary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  box-shadow:
+    0 0 14px rgb(255 255 255 / 0.35),
+    0 0 36px rgb(255 255 255 / 0.18),
+    inset 0 0 14px rgb(255 255 255 / 0.14);
+  animation: kzdNeonBreathe 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.heroCtaSecondary .heroCtaIcon {
+  filter: drop-shadow(0 0 6px rgb(255 255 255 / 0.8));
+  animation: kzdTwinkle 2.4s ease-in-out infinite;
+}
+
+@keyframes kzdNeonOrbit { to { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes kzdNeonBreathe { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+@keyframes kzdTwinkle {
+  0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  50%      { opacity: 0.6; transform: scale(0.86) rotate(12deg); }
+}
+
+@media (hover: hover) {
+  .heroCtaSecondary:hover { background: rgb(255 255 255 / 0.1); color: var(--color-white); }
+  .heroCtaSecondary:hover::after { animation-duration: 1.2s; }
+  .heroCtaSecondary:hover .neonRing::before { animation-duration: 1.8s; }
+}
+
+/* Static curved edge closing the photo into the white About section below
+   (Hero > Curved Edge, confirmed — no animation). */
+.heroCurve {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 26px;
+  display: block;
+}
+.heroCurveMobile { display: none; }
+
+@media (max-width: 700px) {
+  .hero { min-height: 660px; padding-top: 168px; padding-bottom: 64px; align-items: flex-start; }
+  .heroInner { gap: var(--space-4); }
+  .heroInner > * { width: 100%; }
+  /* Mobile — Home: eyebrow is text only, no megaphone. */
+  .heroEyebrowIcon { display: none; }
+  .heroEyebrow { font-size: 13px; letter-spacing: 1px; }
+  .heroTitle { font-size: clamp(36px, 11.2vw, 46px); line-height: 1.05; letter-spacing: -1.4px; }
+  .heroSub { font-size: 16px; }
+  /* Full-width stacked pills. */
+  .heroCtas { flex-direction: column; align-items: stretch; width: 100%; gap: var(--space-3); margin-top: var(--space-3); }
+  .heroCtaPrimary,
+  .heroCtaSecondary { min-width: 0; width: 100%; height: 52px; padding-inline: 20px; border-radius: var(--radius-pill); font-size: 15px; white-space: nowrap; }
+  .heroCtaSecondary { justify-content: space-between; }
+  .heroCurve { display: none; }
+  .heroCurveMobile { display: block; height: 30px; }
+}
 /* --------------------------------------------------------------------------
-   2. About us
+   2. About us — Homepage — Revamped > About (desktop) and Mobile — Home.
    -------------------------------------------------------------------------- */
 
 .about {
   position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  padding-top: 120px;
-  padding-bottom: var(--kzd-space-96);
-  background: var(--kzd-white);
-}
-
-.aboutWash {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(58% 62% at 14% 22%, color-mix(in srgb, var(--kzd-navy-300) 9%, transparent) 0%, color-mix(in srgb, var(--kzd-navy-300) 0%, transparent) 100%);
+  background: var(--color-white);
+  padding: var(--space-12) 0;
 }
 
 .aboutInner {
   width: 100%;
-  max-width: calc(1240px + var(--kzd-pad-page) * 2);
+  max-width: var(--container-max);
   margin-inline: auto;
-  padding-inline: var(--kzd-pad-page);
+  padding-inline: var(--container-gutter);
 }
 
-.aboutLede {
+.aboutRow {
   display: grid;
-  grid-template-columns: minmax(0, 560fr) minmax(0, 600fr);
-  gap: var(--kzd-space-80);
-  align-items: start;
+  grid-template-columns: minmax(0, 560fr) minmax(0, 560fr);
+  gap: var(--space-12); /* AboutRow columnGap: 96, confirmed */
+  align-items: center;
 }
 
-.aboutPanel { display: block; }
-
-.aboutPanelFrame {
+/* The white stage (AboutImagePanel: 560x600, radius 24, white). */
+.aboutImagePanel {
   position: relative;
+  width: 100%;
+  max-width: 560px;
   aspect-ratio: 560 / 600;
-  border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-24);
-  overflow: hidden;
-  background: var(--kzd-white);
-  box-shadow: 0 10px 28px -12px color-mix(in srgb, var(--kzd-navy-500) 30%, transparent);
+  border: 1px solid var(--color-surface);
+  border-radius: 24px;
+  background: var(--color-white);
+  box-shadow: 0 20px 50px rgb(26 26 26 / 0.06);
 }
 
-.aboutPanelImg { object-fit: cover; }
-
-.aboutCopy { padding-top: var(--kzd-space-32); }
-
-.aboutTitle {
-  margin: var(--kzd-space-32) 0 0;
-  font-size:  var(--kzd-text-display);
-  line-height: 1.036;
-  letter-spacing: -0.03em;
-  color: var(--kzd-ink);
-  background-image: linear-gradient(180deg, var(--kzd-gray) 0%, var(--kzd-ink) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
+/* Floating chips — positioned as % of the panel so they track it. */
+.chipGrowth,
+.chipCost {
+  position: absolute;
+  z-index: 1;
+  padding: 18px 22px;
+  border-radius: var(--radius-md);
 }
 
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .aboutTitle { -webkit-text-fill-color: transparent; color: transparent; }
+.chipGrowth {
+  left: 4.3%;
+  top: 6.7%;
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  box-shadow: var(--shadow-card-light);
 }
 
-.aboutHl { display: block; }
+.chipGrowthTop { display: flex; align-items: center; gap: 12px; }
 
-.aboutBody {
-  margin: var(--kzd-space-24) 0 0;
-  max-width: 520px;
-  font-size:  var(--kzd-text-body);
-  line-height: 1.706;
-  color: var(--kzd-text-muted);
-}
-
-.aboutStats {
-  display: grid;
-  grid-template-columns: repeat(2, 260px);
-  gap: var(--kzd-space-40);
-  margin-top: var(--kzd-space-48);
-}
-
-.aboutStatValue {
-  display: flex;
-  align-items: flex-start;
+.chipGrowthValue,
+.chipCostValue {
   margin: 0;
-  font-family: var(--kzd-type-display);
-  line-height: 1;
+  font-family: var(--kzd-font-display);
+  font-size: var(--text-stat-size);
+  font-weight: var(--text-stat-weight);
+  line-height: var(--text-stat-leading);
+  letter-spacing: var(--text-stat-tracking);
+  color: var(--color-ink);
 }
 
-.aboutStatNum {
-  font-size:  var(--kzd-text-display);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--kzd-ink);
-  font-variant-numeric: tabular-nums;
+.chipCost {
+  right: 4.3%;
+  bottom: 4%;
+  min-width: 182px;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  background: var(--color-ink);
+  box-shadow: var(--shadow-card-dark);
 }
 
-.aboutStatPct { margin-left: var(--kzd-space-4); margin-top: var(--kzd-space-24); font-size:  var(--kzd-text-title); font-weight: 500; color: var(--kzd-text-muted); }
+.chipCostValue { color: var(--color-white); }
+
+/* The smaller grey "+" on the R1M+ chip (mixed-fill text in Penpot). The
+   About stats all use the full-size "+", like Years of experience. */
+.plusMuted {
+  margin-left: 1px;
+  font-size: 0.55em;
+  vertical-align: 0.05em;
+  color: var(--color-muted);
+}
+
+.chipLabel {
+  margin: 8px 0 0;
+  font-family: var(--kzd-font-mono);
+  font-size: var(--text-label-micro-size);
+  font-weight: var(--text-label-micro-weight);
+  line-height: var(--text-label-micro-leading);
+  letter-spacing: var(--text-label-micro-tracking);
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+.chipLabelOnDark { color: var(--color-muted); }
+
+/* "Google-rating + R1M cards float (6s loop, 6px) on desktop; static on
+   mobile/reduced-motion." The global reduced-motion kill-switch already
+   zeroes animation-duration, so only the desktop gate lives here. */
+@media (min-width: 901px) {
+  .chipGrowth,
+  .chipCost,
+  .aboutBadge { will-change: transform; }
+  .chipGrowth { animation: kzdFloatA 7.5s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+  /* Swings from the string's knot at its top centre, like a hanging tag. */
+  .chipCost {
+    transform-origin: 50% -14px;
+    animation: kzdHang 6.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    animation-delay: -1.8s;
+  }
+  .aboutBadge { animation: kzdBadgeBob 9s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+}
+
+/* Slow, sine-smooth drift with sway; each element on its own rhythm so
+   nothing moves in lockstep. Transform only. */
+@keyframes kzdFloatA {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  25%      { transform: translate3d(5px, -10px, 0) rotate(-1.4deg); }
+  50%      { transform: translate3d(8px, -20px, 0) rotate(-2deg); }
+  75%      { transform: translate3d(2px, -9px, 0) rotate(-0.6deg); }
+}
+@keyframes kzdHang {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(2.4deg); }
+  25%      { transform: translate3d(-4px, -9px, 0) rotate(0deg); }
+  50%      { transform: translate3d(-8px, -16px, 0) rotate(-2.4deg); }
+  75%      { transform: translate3d(-4px, -7px, 0) rotate(0deg); }
+}
+@keyframes kzdBadgeBob {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%      { transform: translate3d(0, -8px, 0) rotate(-0.8deg); }
+}
+
+/* The cord between the badge and the R1M card (drawn by ChipString). It
+   sits under both, so its ends tuck behind the pill and the card. */
+.chipString {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.chipStringCord {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  filter: drop-shadow(0 2px 2px rgb(26 26 26 / 0.18));
+}
+.chipStringPin { fill: var(--color-ink); }
+
+/* A small metal eyelet where the cord meets the card. */
+.chipCost::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--color-muted);
+  border-radius: var(--radius-pill);
+  background: var(--color-ink);
+  transform: translateX(-50%);
+}
+
+.aboutBadge {
+  position: absolute;
+  left: 14.3%;
+  top: 34.2%;
+  width: 71.4%;
+  aspect-ratio: 400 / 192;
+}
+
+.aboutBadgeArt { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.aboutBadgeLabel {
+  position: absolute;
+  left: 30%;
+  top: 32%;
+  width: 66%;
+  height: 52%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-family: var(--kzd-font-display);
+  font-size: clamp(26px, 3.1vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-ink);
+}
+
+.aboutText {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-5);
+}
+
+.aboutHeadline {
+  margin: 0;
+  font-family: var(--kzd-font-display);
+  font-size: var(--text-section-headline-size);
+  font-weight: var(--text-section-headline-weight);
+  line-height: var(--text-section-headline-leading);
+  letter-spacing: var(--text-section-headline-tracking);
+  color: var(--color-ink);
+}
+
+.aboutHeadlineMuted { color: var(--color-secondary); }
+
+.aboutIntro {
+  margin: 0;
+  max-width: 520px;
+  font-size: 15px;
+  font-weight: var(--text-body-lead-weight);
+  line-height: var(--text-body-lead-leading);
+  color: var(--color-strong);
+}
+
+/* Desktop: two columns of rule-topped rows, label left / figure right. */
+.aboutStatsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--space-5);
+  margin-top: var(--space-2);
+}
+
+.aboutStat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--stat-rule-color, var(--color-border));
+}
+.aboutStat[data-rule="dark"] { --stat-rule-color: var(--color-secondary); }
+.aboutStat[data-rule="light"] { --stat-rule-color: var(--color-surface); }
 
 .aboutStatLabel {
   margin: 0;
-  padding-top: var(--kzd-space-12);
-  font-family: var(--kzd-type-label);
-  font-size:  var(--kzd-text-label-sm);
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  white-space: nowrap;
+  font-family: var(--kzd-font-mono);
+  font-size: 9px;
+  font-weight: var(--text-label-micro-weight);
+  line-height: 1.4;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--kzd-text-muted);
+  color: var(--color-secondary);
 }
 
-.aboutTrack {
-  position: relative;
-  height: 2px;
-  margin-top: var(--kzd-space-12);
-  border-radius: var(--kzd-radius-8);
-  background: var(--kzd-line);
-  overflow: hidden;
-}
-
-.aboutBar {
-  position: absolute;
-  inset: 0 auto 0 0;
-  border-radius: var(--kzd-radius-8);
-  background: var(--kzd-navy-400);
-  transition: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .aboutBar { transition: none; }
-}
-
-.aboutRule { height: 1px; margin: var(--kzd-space-64) 0 0; border: 0; background: var(--kzd-line); }
-
-.aboutMetrics { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: var(--kzd-space-48); }
-
-.aboutMetric {
-  margin-right: var(--kzd-space-48);
-  padding-bottom: var(--kzd-space-24);
-  border-bottom: 1px solid var(--kzd-line);
-}
-
-.aboutMetricValue {
+.aboutStatValue {
   margin: 0;
-  font-size:  var(--kzd-text-display);
+  flex: none;
+  font-family: var(--kzd-font-display);
+  font-size: 32px;
+  font-weight: 600;
   line-height: 1;
-  letter-spacing: -0.03em;
-  color: var(--kzd-ink);
+  letter-spacing: -1.2px;
+  color: var(--color-ink);
   font-variant-numeric: tabular-nums;
 }
 
-.aboutMetricLabel { margin: 0; padding-top: var(--kzd-space-16); font-size:  var(--kzd-text-body); font-weight: 600; line-height: 1.35; color: var(--kzd-ink); }
-
-.aboutMetricDesc { margin: var(--kzd-space-8) 0 0; font-size:  var(--kzd-text-body); line-height: 1.6; color: var(--kzd-text-muted); }
-
-.aboutValues { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--kzd-space-16); margin-top: var(--kzd-space-80); }
-
-.aboutCard {
-  position: relative;
-  display: block;
-  min-height: 148px;
-  padding: var(--kzd-space-24) var(--kzd-space-24) var(--kzd-space-24);
-  border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-16);
-  background: var(--kzd-surface-50);
-  box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--kzd-navy-500) 20%, transparent);
-}
-
-.aboutCardHead { display: flex; align-items: flex-start; gap: var(--kzd-space-8); }
-
-.aboutIndex {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 20px;
-  margin-top: 2px;
-  border-radius: var(--kzd-radius-8);
-  background: var(--kzd-navy-50);
-  font-family: var(--kzd-type-label);
-  font-size:  var(--kzd-text-label-sm);
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  color: var(--kzd-navy-400);
-}
-
-.aboutCardTitle { margin: 0; font-size:  var(--kzd-text-title); line-height: 1.15; letter-spacing: -0.02em; color: var(--kzd-ink); }
-
-.aboutCardText {
-  margin: var(--kzd-space-12) 0 0 var(--kzd-space-40);
-  max-width: 514px;
-  font-size:  var(--kzd-text-body);
-  line-height: 1.67;
-  color: var(--kzd-text-muted);
-}
-
-.aboutCardText a { color: var(--kzd-navy-400); text-decoration: underline; text-underline-offset: 2px; }
-
-/* Travel and starting opacity live here so the breakpoints stay in CSS;
-   BrandReveal.tsx reads them on init and again on resize. Unitless, so the
-   script builds the percentage itself. */
-.aboutBrandMask {
-  position: relative;
-  /* Genuinely clips, rather than just fading: at progress 0 the block is
-     translated above this edge and is actually hidden. */
-  overflow: hidden;
-  margin-top: var(--kzd-space-96);
-  padding-bottom: var(--kzd-space-24);
-
-  --kzd-brand-travel: -68;
-  --kzd-brand-fade: 0.3;
-}
-
-/* Resting state is the FINAL state: no JS, blocked JS, or reduced motion all
-   render the block in place. The script pulls it back on its first frame. */
-.aboutBrand {
-  display: grid;
-  grid-template-columns: 330px minmax(0, 1fr);
-  column-gap: var(--kzd-space-48);
-  align-items: center;
-  min-height: 190px;
-  padding: var(--kzd-space-24);
-  border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-16);
-  background: var(--kzd-surface-50);
-  box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--kzd-navy-500) 20%, transparent);
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.aboutPlate {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--kzd-space-12);
-  height: 140px;
-  border-radius: var(--kzd-radius-16);
-  background: var(--kzd-navy-500);
-}
-
-.aboutPlateMark { flex: none; width: var(--kzd-logo-48); height: var(--kzd-logo-48); object-fit: contain; }
-
-.aboutPlateWord { font-size:  var(--kzd-text-title); font-weight: 700; line-height: 1; letter-spacing: -0.02em; color: var(--kzd-white); white-space: nowrap; }
-
-.aboutQuote { margin: 0; font-size:  var(--kzd-text-body); line-height: 1.68; color: var(--kzd-text); }
-.aboutQuoteBody { margin: 0; }
-
-.aboutAttrib {
-  display: block;
-  margin-top: var(--kzd-space-16);
-  font-style: normal;
-  font-family: var(--kzd-type-label);
-  font-size:  var(--kzd-text-label-sm);
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--kzd-text-muted);
-}
+.mobileOnly { display: none; }
 
 @media (max-width: 1200px) {
-  .about { padding-top: var(--kzd-space-96); padding-bottom: var(--kzd-space-80); }
-  .aboutLede { gap: var(--kzd-space-48); }
-  .aboutTitle { font-size:  var(--kzd-text-display); }
-  .aboutStats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--kzd-space-32); }
-  .aboutMetricValue { font-size:  var(--kzd-text-display); }
-  .aboutBrand { column-gap: var(--kzd-space-32); }
+  .about { padding: var(--space-10) 0; }
+  .aboutRow { gap: var(--space-8); }
+  .aboutHeadline { font-size: 42px; letter-spacing: -2px; }
 }
 
+/* Mobile — Home: no stage; the four stats plus the two chips become a
+   2-column grid of cards (light grey, last one dark). */
 @media (max-width: 900px) {
-  .about { padding-top: var(--kzd-space-80); padding-bottom: var(--kzd-space-64); }
-  .aboutLede { grid-template-columns: minmax(0, 1fr); gap: var(--kzd-space-32); }
-  .aboutPanelFrame { aspect-ratio: auto; height: 340px; }
-  .aboutCopy { padding-top: 0; }
-  .aboutTitle { font-size:  var(--kzd-text-headline); line-height: 1.08; }
-  .aboutHl { display: inline; }
-  .aboutHl::after { content: " "; }
-  .aboutBody { max-width: none; }
-  .aboutStats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--kzd-space-24); margin-top: var(--kzd-space-40); }
-  .aboutRule { margin-top: var(--kzd-space-48); }
-  .aboutMetrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--kzd-space-32) var(--kzd-space-24); margin-top: var(--kzd-space-40); }
-  .aboutMetric { margin-right: 0; }
-  .aboutMetricValue { font-size:  var(--kzd-text-headline); }
-  .aboutValues { grid-template-columns: minmax(0, 1fr); gap: var(--kzd-space-16); margin-top: var(--kzd-space-64); }
-  .aboutCard { min-height: 0; }
-  /* Shorter travel: the block fills most of a small screen, and a long
-     slide reads as a glitch rather than a reveal. */
-  .aboutBrandMask { --kzd-brand-travel: -45; --kzd-brand-fade: 0.4; margin-top: var(--kzd-space-64); }
-  .aboutBrand { grid-template-columns: minmax(0, 1fr); row-gap: var(--kzd-space-24); min-height: 0; padding: var(--kzd-space-24); }
-  .aboutPlate { height: 110px; width: 100%; }
-}
+  .about { padding: var(--space-8) 0 var(--space-10); }
+  .aboutRow { grid-template-columns: minmax(0, 1fr); }
+  .aboutImagePanel { display: none; }
+  .aboutHeadline { font-size: 34px; line-height: 1.08; letter-spacing: -1.4px; }
+  .aboutIntro { font-size: 15.5px; }
 
-@media (max-width: 560px) {
-  .about { padding-top: var(--kzd-space-64); padding-bottom: var(--kzd-space-48); }
-  .aboutCopy { text-align: center; }
-  .aboutTitle { font-size:  var(--kzd-text-title); line-height: 1.1; }
-  .aboutBody { margin-left: auto; margin-right: auto; }
-  .aboutPanelFrame { height: 260px; }
-  .aboutStats { grid-template-columns: minmax(0, 1fr); gap: var(--kzd-space-24); }
-  .aboutStatValue { justify-content: center; }
-  .aboutStatNum { font-size:  var(--kzd-text-headline); }
-  .aboutMetrics { grid-template-columns: minmax(0, 1fr); gap: var(--kzd-space-32); text-align: center; }
-  .aboutMetricValue { font-size:  var(--kzd-text-headline); }
-  .aboutCard { padding: var(--kzd-space-16); }
-  .aboutCardTitle { font-size:  var(--kzd-text-body); }
-  .aboutCardText { margin-left: var(--kzd-space-40); font-size:  var(--kzd-text-label-lg); text-align: left; }
-  .aboutBrandMask { --kzd-brand-travel: -28; --kzd-brand-fade: 0.55; }
-  .aboutBrand { padding: var(--kzd-space-16); }
-  .aboutPlate { height: 96px; gap: var(--kzd-space-12); }
-  .aboutPlateMark { width: var(--kzd-logo-40); height: var(--kzd-logo-40); }
-  .aboutPlateWord { font-size:  var(--kzd-text-body); }
-  .aboutQuote { font-size:  var(--kzd-text-body); }
-  .aboutAttrib { text-align: center; }
-}
-
-/* --------------------------------------------------------------------------
-   3. Services teaser
-   -------------------------------------------------------------------------- */
-
-.services {
-  position: relative;
-  isolation: isolate;
-  background: var(--kzd-white);
-  padding-top: 100px;
-  padding-bottom: var(--kzd-space-96);
-  overflow: hidden;
-}
-
-.servicesWash {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(52% 42% at 50% 16%, color-mix(in srgb, var(--kzd-navy-300) 9%, transparent) 0%, color-mix(in srgb, var(--kzd-navy-300) 0%, transparent) 100%);
-}
-
-.servicesInner { width: 100%; max-width: calc(var(--kzd-wrap) + var(--kzd-pad-page) * 2); margin-inline: auto; padding-inline: var(--kzd-pad-page); }
-
-.servicesHead { text-align: center; }
-
-.servicesTitle {
-  margin: 0;
-  font-size:  var(--kzd-text-headline);
-  line-height: 1.115;
-  letter-spacing: -0.03em;
-  color: var(--kzd-ink);
-  background-image: linear-gradient(180deg, var(--kzd-ink) 0%, var(--kzd-gray) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .servicesTitle { -webkit-text-fill-color: transparent; color: transparent; }
-}
-
-.servicesSub { margin: var(--kzd-space-8) 0 0; font-size:  var(--kzd-text-body); line-height: 1.7; color: var(--kzd-text-muted); }
-
-/* A scrollable strip, not a wrapping grid: the arrows advance it by one
-   card, which only means anything if the cards stay on one line and the
-   overflow is scrollable. Three cards fit on desktop (so the arrows sit
-   disabled there, as they did on the static site) and it scrolls once the
-   viewport can no longer hold them. */
-.servicesRow {
-  margin-top: var(--kzd-space-48);
-  display: flex;
-  gap: var(--kzd-space-24);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  /* Room for the cards' shadow, which a plain overflow would clip. */
-  padding: var(--kzd-space-4) 2px var(--kzd-space-8);
-}
-
-.servicesRow::-webkit-scrollbar { display: none; }
-
-.servicesCard {
-  position: relative;
-  /* Fixed basis, no shrinking: in a scrollable row a flexible card would
-     just squash to fit instead of overflowing, and the arrows would have
-     nothing to advance. */
-  flex: 0 0 clamp(300px, calc((100% - 48px) / 3), 397px);
-  min-height: 420px;
-  scroll-snap-align: start;
-  padding: var(--kzd-space-32) var(--kzd-space-32) var(--kzd-space-40);
-  border-radius: var(--kzd-radius-24);
-  background: var(--kzd-surface-50);
-  border: 1px solid var(--kzd-line);
-  box-shadow: 0 10px 26px -12px color-mix(in srgb, var(--kzd-navy-500) 26%, transparent);
-  display: flex;
-  flex-direction: column;
-}
-
-.servicesDot { position: absolute; left: 32px; top: 38px; width: 8px; height: 8px; border-radius: var(--kzd-radius-full); background: var(--kzd-accent-ink); }
-
-.servicesIndex { margin: 0; font-family: var(--kzd-type-label); font-size:  var(--kzd-text-label-sm); letter-spacing: 0.14em; color: var(--kzd-text-muted); }
-
-.servicesName { margin: var(--kzd-space-16) 0 0; font-size:  var(--kzd-text-title); letter-spacing: -0.02em; color: var(--kzd-ink); }
-
-.servicesRing {
-  display: grid;
-  place-items: center;
-  width: 88px;
-  height: 88px;
-  margin: var(--kzd-space-40) auto 0;
-  border-radius: var(--kzd-radius-full);
-  background: var(--kzd-navy-50);
-  border: 1px solid color-mix(in srgb, var(--kzd-navy-200) 25%, transparent);
-}
-
-.servicesIcon { display: block; width: 72px; height: 72px; }
-
-.servicesIcon :global(circle),
-.servicesIcon :global(path),
-.servicesIcon :global(rect) {
-  fill: none;
-  stroke: var(--kzd-navy-300);
-  stroke-width: 2.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  /* Draw-in: each shape carries pathLength={100}, so 100 is exactly its
-     length regardless of actual size — starts fully hidden, then Reveal's
-     data-revealed attribute (see Reveal.tsx) lets it draw in once on scroll. */
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  transition: none;
-}
-
-:global([data-revealed="true"]) .servicesIcon :global(circle),
-:global([data-revealed="true"]) .servicesIcon :global(path),
-:global([data-revealed="true"]) .servicesIcon :global(rect) {
-  stroke-dashoffset: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .servicesIcon :global(circle),
-  .servicesIcon :global(path),
-  .servicesIcon :global(rect) {
-    transition: none;
-    stroke-dashoffset: 0;
+  .aboutStatsGrid { gap: 12px; margin-top: var(--space-3); }
+  .aboutStat {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 12px;
+    min-height: 116px;
+    padding: 20px 18px;
+    border: 0;
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
   }
+  .aboutStatValue { font-size: 32px; letter-spacing: -1px; }
+  .aboutStatLabel { white-space: normal; font-size: 10px; letter-spacing: 1.2px; }
+  .aboutStatValue .plusMuted { font-size: inherit; vertical-align: baseline; color: inherit; margin: 0; }
+  .aboutStatDark { background: var(--color-ink); }
+  .aboutStatDark .aboutStatValue { color: var(--color-white); }
+  .aboutStatDark .aboutStatLabel { color: var(--color-muted); }
+  .ratingValue { display: flex; align-items: center; gap: 12px; }
+  .ratingValue > span { font-size: 14px; letter-spacing: 2px; }
+  .mobileOnly { display: flex; }
 }
 
-.servicesCopy { margin-top: auto; padding-top: var(--kzd-space-24); font-size:  var(--kzd-text-body); line-height: 1.68; color: var(--kzd-text-muted); }
-
-/* Arrow pair, as on the static site. */
-.servicesNav {
-  margin-top: var(--kzd-space-32);
-  display: flex;
-  justify-content: center;
-  gap: var(--kzd-space-12);
-}
-
-.servicesArrow {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-full);
-  background: var(--kzd-white);
-  color: var(--kzd-navy-500);
-  cursor: pointer;
-  transition: opacity var(--kzd-dur-micro) ease;
-}
-
-.servicesArrow:hover:not(:disabled),
-.servicesArrow:focus-visible:not(:disabled) { border-color: var(--kzd-navy-400); color: var(--kzd-navy-400); }
-
-/* Visibly dead rather than live-looking-but-inert, which is the whole point
-   of syncing them to the overflow. */
-.servicesArrow:disabled { opacity: 0.35; cursor: default; }
-
-.servicesArrow svg {
-  width: var(--kzd-icon-dense);
-  height: var(--kzd-icon-dense);
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-@media (max-width: 767px) {
-  .services { padding-top: var(--kzd-space-64); padding-bottom: var(--kzd-space-64); }
-  .servicesTitle { font-size:  var(--kzd-text-headline); }
-  .servicesRow { margin-top: var(--kzd-space-32); }
-  .servicesCard { min-height: 0; padding: var(--kzd-space-24) var(--kzd-space-24) var(--kzd-space-32); }
-}
-
-/* --------------------------------------------------------------------------
-   4. Problems We Solve
-   -------------------------------------------------------------------------- */
-
-.problems { position: relative; background: var(--kzd-white); padding-top: 100px; padding-bottom: 110px; }
-
-.problemsInner { width: 100%; max-width: calc(1240px + var(--kzd-pad-page) * 2); margin-inline: auto; padding-inline: var(--kzd-pad-page); }
-
-.problemsHead { display: grid; grid-template-columns: 660fr 470fr; column-gap: var(--kzd-space-32); align-items: start; }
-
-.problemsHeadline {}
-
-.problemsTitle {
-  margin: var(--kzd-space-24) 0 0;
-  font-size:  var(--kzd-text-headline);
-  line-height: 1.06;
-  letter-spacing: -0.03em;
-  color: var(--kzd-ink);
-  background-image: linear-gradient(180deg, var(--kzd-ink) 0%, var(--kzd-gray) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .problemsTitle { -webkit-text-fill-color: transparent; color: transparent; }
-}
-
-.problemsIntro { margin: var(--kzd-space-40) 0 0; font-size:  var(--kzd-text-body); font-weight: 500; line-height: 1.706; color: var(--kzd-text-muted); }
-
-.problemsGrid {
-  margin-top: var(--kzd-space-48);
-  display: grid;
-  grid-template-columns: 610fr 291fr 291fr;
-  grid-template-rows: 1fr 1fr;
-  gap: var(--kzd-space-24);
-  aspect-ratio: 1240 / 520;
-}
-
-.cellGaps { grid-column: 1; grid-row: 1 / span 2; }
-.cellAnalytics { grid-column: 2 / span 2; grid-row: 1; }
-.cellIneff { grid-column: 2; grid-row: 2; }
-.cellDigital { grid-column: 3; grid-row: 2; }
-
-.problemsCell {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  border-radius: var(--kzd-radius-16);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 10px 28px -12px color-mix(in srgb, var(--kzd-navy-500) 30%, transparent);
-}
-
-.problemsImg { object-fit: cover; }
-
-.problemsCell::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  /* Same scrim as the static site: captions sit from ~40% height on short cells. */
-  background: linear-gradient(180deg, transparent 8%, color-mix(in srgb, var(--kzd-navy-700) 68%, transparent) 42%, color-mix(in srgb, var(--kzd-navy-700) 94%, transparent) 100%);
-}
-
-.problemsCap { position: absolute; z-index: 2; left: 0; bottom: 0; }
-
-.problemsLabel { display: block; margin: 0; font-family: var(--kzd-type-label); font-weight: 500; line-height: 1; text-transform: uppercase; color: var(--kzd-white); }
-
-.problemsText { margin: 0; font-weight: 400; }
-
-.cellGaps .problemsCap,
-.cellAnalytics .problemsCap { padding: var(--kzd-space-32); }
-
-.cellGaps .problemsLabel,
-.cellAnalytics .problemsLabel { font-size:  var(--kzd-text-label-sm); letter-spacing: 0.18em; }
-
-.cellGaps .problemsText,
-.cellAnalytics .problemsText { margin-top: var(--kzd-space-24); max-width: 430px; font-size:  var(--kzd-text-body); line-height: 1.6; color: var(--kzd-silver-light); }
-
-.cellIneff .problemsCap,
-.cellDigital .problemsCap { padding: var(--kzd-space-24); }
-
-.cellIneff .problemsLabel,
-.cellDigital .problemsLabel { font-size:  var(--kzd-text-label-sm); letter-spacing: 0.16em; }
-
-.cellIneff .problemsText,
-.cellDigital .problemsText { margin-top: var(--kzd-space-24); max-width: 228px; font-size:  var(--kzd-text-label); line-height: 1.6; color: var(--kzd-navy-100); }
-
-@media (max-width: 1199px) {
-  .problems { padding-top: var(--kzd-space-96); padding-bottom: var(--kzd-space-96); }
-  .problemsTitle { font-size:  var(--kzd-text-headline); }
-}
-
-@media (max-width: 991px) {
-  .problemsHead { grid-template-columns: minmax(0, 1fr); }
-  .problemsIntro { margin-top: var(--kzd-space-16); }
-  .problemsGrid { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; aspect-ratio: auto; margin-top: var(--kzd-space-40); gap: var(--kzd-space-16); }
-  .cellGaps, .cellAnalytics, .cellIneff, .cellDigital { grid-column: 1; grid-row: auto; aspect-ratio: 4 / 3; }
-  .cellIneff .problemsCap, .cellDigital .problemsCap { padding: var(--kzd-space-32); }
-  .cellIneff .problemsLabel, .cellDigital .problemsLabel { font-size:  var(--kzd-text-label-sm); letter-spacing: 0.18em; }
-  .cellIneff .problemsText, .cellDigital .problemsText { max-width: 430px; font-size:  var(--kzd-text-body); }
-}
-
-@media (max-width: 767px) {
-  .problems { padding-top: var(--kzd-space-64); padding-bottom: var(--kzd-space-64); }
-  .problemsTitle { font-size:  var(--kzd-text-headline); }
-  .problemsCell { aspect-ratio: 3 / 2 !important; }
-  .problemsCap { padding: var(--kzd-space-24) !important; }
-  .problemsText { font-size:  var(--kzd-text-label-lg) !important; }
-}
-
-/* --------------------------------------------------------------------------
-   5. Testimonials
-   -------------------------------------------------------------------------- */
-
-.tst { position: relative; isolation: isolate; padding-top: var(--kzd-space-96); padding-bottom: 100px; background: var(--kzd-white); }
-
-.tstWash {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(62% 58% at 16% 8%, color-mix(in srgb, var(--kzd-navy-300) 8%, transparent) 0%, color-mix(in srgb, var(--kzd-navy-300) 0%, transparent) 100%);
-}
-
-.tstInner { width: 100%; max-width: calc(1240px + var(--kzd-pad-page) * 2); margin-inline: auto; padding-inline: var(--kzd-pad-page); }
-
-.tstHead { text-align: center; }
-
-.tstTitle {
-  margin: 0;
-  font-size:  var(--kzd-text-headline);
-  line-height: 1.15;
-  letter-spacing: -0.03em;
-  color: var(--kzd-ink);
-  background-image: linear-gradient(180deg, var(--kzd-gray) 0%, var(--kzd-ink) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .tstTitle { -webkit-text-fill-color: transparent; color: transparent; }
-}
-
-.tstSub { margin: var(--kzd-space-4) 0 0; font-size:  var(--kzd-text-body); line-height: 1.5; color: var(--kzd-text-muted); }
-
-.tstSummary {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--kzd-space-24);
-  min-height: 110px;
-  margin-top: var(--kzd-space-40);
-  padding: var(--kzd-space-16) var(--kzd-space-40);
-  border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-16);
-  background: var(--kzd-surface-50);
-  box-shadow: 0 8px 18px -10px color-mix(in srgb, var(--kzd-navy-500) 20%, transparent);
-}
-
-.tstSummaryMain { display: flex; flex-wrap: wrap; align-items: center; gap: var(--kzd-space-24); }
-
-.tstBrand { display: flex; align-items: center; gap: var(--kzd-space-8); }
-
-.tstGlogo { flex: none; width: 34px; height: 34px; display: block; }
-
-.tstBrandName { font-size:  var(--kzd-text-title); font-weight: 700; letter-spacing: -0.01em; color: var(--kzd-navy-500); }
-
-.tstRating { display: flex; align-items: center; gap: var(--kzd-space-8); }
-
-.tstScore { font-size:  var(--kzd-text-title); font-weight: 700; line-height: 1; color: var(--kzd-navy-500); }
-
-.tstStars { display: inline-flex; align-items: center; gap: var(--kzd-space-4); line-height: 0; }
-.tstStars svg { display: block; width: var(--kzd-icon-dense); height: var(--kzd-icon-dense); fill: var(--kzd-navy-200); }
-
-.tstCount { font-size:  var(--kzd-text-body); color: var(--kzd-text-muted); }
-
-.tstCta {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: var(--kzd-control);
-  padding: 0 var(--kzd-space-24);
-  border-radius: var(--kzd-radius-8);
-  background: var(--kzd-navy-400);
-  font-size:  var(--kzd-text-body);
-  font-weight: 500;
-  color: var(--kzd-white);
-  transition: none;
-}
-
-.tstCta:hover,
-.tstCta:focus-visible { background: var(--kzd-navy-300); color: var(--kzd-white); }
-
-/* Carousel container. The arrows sit outside the viewport edge on wide
-   screens and tuck back in under it when there is no room. */
-.tstCarousel {
-  position: relative;
-  margin-top: var(--kzd-space-40);
-}
-
-/* Equal-height slides, so a short review does not leave a stubby card next
-   to a long one. */
-.tstSwiper { padding-bottom: var(--kzd-space-40); }
-
-/* Swiper's wrapper defaults to align-items: normal, so each slide in a row
-   sits at its own content height instead of the row's tallest — which is
-   why the "Umkhumbi Tyres" card (a one-line quote) rode 58px higher than
-   its neighbours, with its author row stranded right under the quote
-   instead of pinned to the same baseline as the cards either side. Stretch
-   the row, then .tstSlide's height: 100% (below) fills it, and .tstCard's
-   own flex-column + margin-top: auto on .tstAuthor does the rest. */
-.tstSwiper :global(.swiper-wrapper) { align-items: stretch; }
-
-/* Swiper's own base CSS sets .swiper-slide { height: 100% } unconditionally
-   (swiper.css, not scoped to any autoHeight mode) — not `auto`, so flexbox
-   stretch above never got a chance to run: stretch only overrides a cross-
-   axis size that's computed as auto, and 100% of an intrinsically-sized
-   flex container just resolves back to the slide's own content height,
-   which is indistinguishable from not being stretched at all. A bare
-   `.tstSlide { height: auto }` has the same specificity as swiper's own
-   rule, so whichever stylesheet happened to load second silently won; this
-   is qualified by its `.tstSwiper` ancestor so it always wins. */
-.tstSwiper .tstSlide:global(.swiper-slide) { height: auto; }
-.tstSlide > * { height: 100%; }
-
-.tstPrev,
-.tstNext {
-  position: absolute;
-  top: 50%;
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  margin-top: calc(var(--kzd-space-40) * -1);
-  padding: 0;
-  border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-full);
-  background: var(--kzd-white);
-  color: var(--kzd-navy-500);
-  box-shadow: 0 6px 18px -8px color-mix(in srgb, var(--kzd-navy-500) 35%, transparent);
-  cursor: pointer;
-  transform: translateY(-50%);
-}
-
-.tstPrev { left: -8px; }
-.tstNext { right: -8px; }
-
-.tstPrev:hover:not(:disabled),
-.tstNext:hover:not(:disabled) { color: var(--kzd-navy-400); border-color: var(--kzd-navy-400); }
-
-/* Visibly dead rather than live-looking-but-inert — with three reviews and
-   three visible there is nothing to page to, which is exactly when the
-   legacy set aria-disabled on both arrows. */
-.tstPrev:disabled,
-.tstNext:disabled { opacity: 0.35; cursor: default; }
-
-.tstPrev svg,
-.tstNext svg {
-  width: var(--kzd-icon-dense);
-  height: var(--kzd-icon-dense);
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.tstCarousel :global(.swiper-pagination-bullet-active) { background: var(--kzd-navy-400); }
-
-/* No narrow-width override: at left/right: 0 the entire 42px arrow sat ON
-   the card with zero outward offset, landing squarely over the quote text
-   (the single mobile slide leaves no gap beside it for the arrow to hang
-   into). The base -8px is deliberately kept at every width instead — the
-   legacy carousel did the same at its own tightest breakpoint: the arrow
-   overlaps the card's own padding only, never reaching the text column. */
-
-.tstCard {
-  display: flex;
-  flex-direction: column;
-  min-height: 260px;
-  padding: var(--kzd-space-32) var(--kzd-space-24) var(--kzd-space-24);
-  border: 1px solid var(--kzd-line);
-  border-radius: var(--kzd-radius-16);
-  background: var(--kzd-white);
-  box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--kzd-navy-500) 22%, transparent);
-}
-
-.tstCardStars { display: inline-flex; align-items: center; gap: var(--kzd-space-4); line-height: 0; }
-.tstCardStars svg { display: block; width: var(--kzd-icon-dense); height: var(--kzd-icon-dense); fill: var(--kzd-navy-200); }
-
-.tstQuote { margin: var(--kzd-space-12) 0 0; font-size:  var(--kzd-text-body); line-height: 1.8; color: var(--kzd-text); }
-
-.tstAuthor { display: flex; align-items: center; gap: var(--kzd-space-12); margin-top: auto; padding-top: var(--kzd-space-16); }
-
-.tstAvatar {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--kzd-radius-full);
-  font-size:  var(--kzd-text-label-lg);
-  font-weight: 600;
-  color: var(--kzd-white);
-}
-
-.tstName { font-size:  var(--kzd-text-body); font-weight: 600; color: var(--kzd-navy-500); }
-
-@media (max-width: 900px) {
-  .tst { padding-top: var(--kzd-space-64); padding-bottom: var(--kzd-space-80); }
-  .tstTitle { font-size:  var(--kzd-text-headline); }
-  .tstSummary { flex-direction: column; align-items: stretch; padding: var(--kzd-space-24); }
-  .tstCta { width: 100%; }
-}
-
-@media (max-width: 560px) {
-  .tst { padding-top: var(--kzd-space-48); padding-bottom: var(--kzd-space-64); }
-  .tstTitle { font-size:  var(--kzd-text-title); }
-  .tstGrid { grid-template-columns: minmax(0, 1fr); }
-}
-
-/* --------------------------------------------------------------------------
-   6. Client showcase
-   -------------------------------------------------------------------------- */
-
-.clients { position: relative; background: var(--kzd-white); padding-top: 100px; padding-bottom: 110px; overflow: hidden; }
-
-.clientsWash {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(52% 42% at 84% 10%, color-mix(in srgb, var(--kzd-navy-300) 8%, transparent) 0%, color-mix(in srgb, var(--kzd-navy-300) 0%, transparent) 100%);
-}
-
-.clientsInner { width: 100%; max-width: calc(1240px + var(--kzd-pad-page) * 2); margin-inline: auto; padding-inline: var(--kzd-pad-page); }
-
-.clientsHead { max-width: 640px; }
-
-.clientsTitle {
-  margin: var(--kzd-space-24) 0 0;
-  font-size:  var(--kzd-text-headline);
-  line-height: 1.06;
-  letter-spacing: -0.03em;
-  color: var(--kzd-ink);
-  background-image: linear-gradient(180deg, var(--kzd-ink) 0%, var(--kzd-gray) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .clientsTitle { -webkit-text-fill-color: transparent; color: transparent; }
-}
-
-.clientsSub { margin: var(--kzd-space-16) 0 0; font-size:  var(--kzd-text-body); line-height: 1.7; color: var(--kzd-text-muted); }
-
-.clientsRail { margin-top: var(--kzd-space-48); }
-
-/* The client card visuals moved with the markup into
-   src/components/ClientShowcase/ClientShowcase.module.css when both this page
-   and /services stopped keeping their own copy of the same grid. */
-
-@media (max-width: 767px) {
-  .clients { padding-top: var(--kzd-space-64); padding-bottom: var(--kzd-space-64); }
-  .clientsTitle { font-size:  var(--kzd-text-headline); }
-  .clientsRail { margin-top: var(--kzd-space-32); }
-}
-
-/* ---- Design system: buttons (KZD Reusable Design System) ----------------------------
-   Appended last so it settles the cascade within this module. Height 44,
-   radius 16, no vertical padding: the label is centred by inline-flex +
-   align-items:center + line-height:1. One primary per view; repeated card
-   and row actions are outline; consultation/contact is the silver accent.
-   ------------------------------------------------------------------------- */
-.heroCta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--kzd-space-8);
-  height: var(--kzd-control);
-  min-height: var(--kzd-control);
-  padding: 0 var(--kzd-space-24);
-  border-width: var(--kzd-border);
-  border-style: solid;
-  border-radius: var(--kzd-radius-16);
-  font-family: var(--kzd-type-sans);
-  font-size: var(--kzd-text-label-lg);
-  font-weight: 600;
-  letter-spacing: 0;
-  line-height: 1;
-  text-transform: none;
-  box-shadow: none;
-  background-image: none;
-  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
-  background-color: var(--kzd-silver);
-  border-color: var(--kzd-silver);
-  color: var(--kzd-black);
-}
-.heroCta:hover {
-  background-color: var(--kzd-silver-light);
-  border-color: var(--kzd-silver-light);
-  color: var(--kzd-black);
-}
-.heroCta:active { transform: translateY(1px); }
-
-.tstCta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--kzd-space-8);
-  height: var(--kzd-control);
-  min-height: var(--kzd-control);
-  padding: 0 var(--kzd-space-24);
-  border-width: var(--kzd-border);
-  border-style: solid;
-  border-radius: var(--kzd-radius-16);
-  font-family: var(--kzd-type-sans);
-  font-size: var(--kzd-text-label-lg);
-  font-weight: 600;
-  letter-spacing: 0;
-  line-height: 1;
-  text-transform: none;
-  box-shadow: none;
-  background-image: none;
-  transition: transform var(--kzd-dur-micro) var(--kzd-ease);
-  background-color: transparent;
-  border-color: var(--kzd-black);
-  color: var(--kzd-black);
-}
-.tstCta:hover {
-  background-color: var(--kzd-surface-100);
-  border-color: var(--kzd-black);
-  color: var(--kzd-black);
-}
-.tstCta:active { transform: translateY(1px); }
-
-.servicesArrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: var(--kzd-control);
-  min-height: var(--kzd-control);
-  padding-top: 0;
-  padding-bottom: 0;
-  line-height: 1;
-  border-radius: var(--kzd-radius-full);
-}
-
-.tstPrev {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: var(--kzd-control);
-  min-height: var(--kzd-control);
-  padding-top: 0;
-  padding-bottom: 0;
-  line-height: 1;
-  border-radius: var(--kzd-radius-full);
-}
-
-.tstNext {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: var(--kzd-control);
-  min-height: var(--kzd-control);
-  padding-top: 0;
-  padding-bottom: 0;
-  line-height: 1;
-  border-radius: var(--kzd-radius-full);
-}
+/* On this dark surface the selection inverts: white with black type. */
+.hero ::selection,
+.chipCost ::selection { background: var(--color-white); color: var(--color-ink); }

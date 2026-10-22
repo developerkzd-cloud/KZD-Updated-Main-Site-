@@ -1,0 +1,160 @@
+/* Testimonials + Our clients, shared by / and /services. */
+
+/* --------------------------------------------------------------------------
+   Shared section helpers (Testimonials / Our clients)
+   -------------------------------------------------------------------------- */
+
+.secEyebrow {
+  margin: 0;
+  font-family: var(--kzd-font-mono);
+  font-size: var(--text-eyebrow-size);
+  font-weight: var(--text-eyebrow-weight);
+  letter-spacing: var(--text-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+.mobileShow { display: none; }
+
+@media (max-width: 900px) {
+  .desktopShow { display: none; }
+  .mobileShow { display: inline; }
+  p.mobileShow { display: block; }
+}
+
+/* --------------------------------------------------------------------------
+   5. Testimonials — desktop + Mobile — Home (white background on both)
+   -------------------------------------------------------------------------- */
+
+.tst {
+  background: var(--color-white);
+  padding: var(--space-12) 0;
+}
+
+.tstInner {
+  width: 100%;
+  max-width: calc(980px + var(--container-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-gutter);
+}
+
+.tstHead { text-align: center; }
+
+.tstTitle {
+  margin: 0;
+  font-family: var(--kzd-font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  color: var(--color-ink);
+}
+
+.tstSub { margin: 14px 0 0; font-size: 15px; color: var(--color-secondary); }
+
+.tstSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin: var(--space-8) 0 var(--space-6);
+  padding: 22px 34px;
+  border: 1px solid var(--color-surface);
+  border-radius: 18px;
+  background: var(--color-white);
+  box-shadow: 0 12px 34px rgb(26 26 26 / 0.07);
+}
+
+.tstSummaryMain { display: flex; flex-direction: column; gap: 6px; }
+
+.tstBrand { display: flex; align-items: center; gap: 10px; }
+.tstGlogo { width: 30px; height: 30px; flex: none; }
+.tstBrandName { font-family: var(--kzd-font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.6px; color: var(--color-ink); }
+
+.tstRating { display: flex; align-items: center; gap: 10px; }
+.tstScore { font-family: var(--kzd-font-display); font-size: 22px; font-weight: 700; color: var(--color-ink); }
+.tstRatingMeta { display: flex; align-items: center; gap: 8px; }
+.tstStars { font-size: 17px; letter-spacing: 3px; }
+.tstCount { font-size: 13px; color: var(--color-secondary); }
+
+.tstCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 20px;
+  border: 1px solid var(--color-ink);
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-ink);
+  transition: transform 250ms var(--ease-motion), background-color 250ms var(--ease-motion);
+}
+@media (hover: hover) {
+  .tstCta:hover { transform: translateY(-2px); background: var(--color-surface); }
+}
+
+@media (max-width: 900px) {
+  .tst { padding: var(--space-8) 0 var(--space-10); }
+  .tstHead { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .tstTitle { font-size: 34px; letter-spacing: -1.4px; }
+  .tstSub { margin: 0; font-size: 16px; }
+  /* Rating on top, a full-width feedback button underneath. */
+  .tstSummary {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    margin: var(--space-6) 0 var(--space-5);
+    padding: 20px;
+    border-color: var(--color-border);
+    box-shadow: none;
+  }
+  .tstRating { gap: 14px; }
+  .tstScore { font-size: 36px; line-height: 1; letter-spacing: -1.2px; }
+  .tstRatingMeta { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .tstStars { font-size: 15px; letter-spacing: 3px; line-height: 1; }
+  .tstCount { font-size: 13px; line-height: 1; }
+  .tstCta { justify-content: center; width: 100%; height: 46px; font-size: 15px; }
+  .tstBrand { display: none; }
+  .tstCount { white-space: nowrap; }
+  .tstSummaryMain { min-width: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   6. Our clients
+   -------------------------------------------------------------------------- */
+
+.clients {
+  background: var(--color-white);
+  padding: var(--space-10) 0 var(--space-12);
+  overflow: hidden;
+}
+
+.clientsHead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: calc(760px + var(--container-gutter) * 2);
+  margin: 0 auto var(--space-8);
+  padding-inline: var(--container-gutter);
+  text-align: center;
+}
+
+.clientsTitle {
+  margin: 0;
+  font-family: var(--kzd-font-display);
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  color: var(--color-ink);
+}
+
+.clientsSub { margin: 0; font-size: 16px; line-height: 1.6; color: var(--color-secondary); }
+
+@media (max-width: 900px) {
+  .clients { padding: var(--space-8) 0 var(--space-10); }
+  .clientsHead { gap: 12px; margin-bottom: var(--space-5); }
+  .clientsTitle { font-size: 34px; letter-spacing: -1.4px; }
+}

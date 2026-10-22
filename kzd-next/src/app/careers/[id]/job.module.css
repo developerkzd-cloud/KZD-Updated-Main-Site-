@@ -20,7 +20,9 @@
   --j-grad-end: var(--kzd-black);
   --j-gutter: 100px;
 
-  background: var(--j-paper2);
+  /* White, as in Penpot's "Application — Junior Web Developer" board; the
+     grey form fields and the bordered sidebar card read against it. */
+  background: var(--j-paper);
 }
 
 .inner {
@@ -235,7 +237,7 @@
 
 .tail { margin-top: var(--kzd-space-40); }
 
-/* The apply panel is a placeholder until the form is ported. */
+/* Shown in the apply panel once a role has been filled. */
 .notice {
   padding: var(--kzd-space-32) var(--kzd-space-24);
   border: 1px dashed var(--j-line);

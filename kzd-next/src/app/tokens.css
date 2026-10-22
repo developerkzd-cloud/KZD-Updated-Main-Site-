@@ -1,0 +1,183 @@
+/* ==========================================================================
+   KZD Solutions — Next.js design tokens (the NEW black & white system)
+
+   WHY THIS FILE EXISTS, SEPARATELY FROM css/kzd-tokens.css
+   The repo root has a css/kzd-tokens.css shared between the static site and
+   this app (imported one line below this comment, in globals.css). That file
+   belongs to the OLD design — greyscale plus a navy ramp — and the static
+   site still depends on it. The new Penpot redesign is explicitly black and
+   white, no navy anywhere, so that file cannot be edited for this work (it
+   would break the static site) and its navy tokens must not be used here.
+
+   This file is the single source of truth for the new system. Every value
+   below was read directly off the Penpot "— Revamped" boards (never the
+   "Design System" page, which turned out to predate this redesign — it still
+   has Navy #000D51 and a Source Sans Pro type scale, both explicitly banned
+   now). Nothing here is invented; where a value is a reasoned default rather
+   than a Penpot-confirmed number, the token says so in its comment.
+
+   HOW TO TELL THE TWO SYSTEMS APART
+     --kzd-*     the OLD, shared system (css/kzd-tokens.css). Only appears in
+                 components that have not been rebuilt yet. Being phased out
+                 page by page; the import will be deleted once nothing in
+                 this app references it any more.
+     (no prefix) the NEW system, defined here. Every new component in this
+                 redesign uses ONLY these.
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------- COLOUR
+     The whole site is black and white. These eight are the full palette;
+     do not add another neutral step without a confirmed reason. */
+  --color-white:     #FFFFFF;
+  --color-surface:   #F4F5F7;  /* card / section backgrounds */
+  --color-border:    #D9D9D9;  /* hairlines, dividers, input borders */
+  --color-muted:     #A7A7A7;  /* placeholder text, inactive icons */
+  --color-secondary: #6B6B6B;  /* secondary text, eyebrow labels */
+  --color-strong:    #3A3A3A;  /* body copy */
+  --color-ink:       #1A1A1A;  /* near-black: primary buttons, dark cards, footer */
+  --color-black:     #000000;  /* hero photo overlays only */
+
+  /* The two confirmed departures from pure greyscale. Both are used
+     sparingly — a controlled accent, never a rainbow. */
+  --color-gold:   #F5B301;  /* Testimonials / Google-rating stars (About section, ChipGrowth) */
+  --color-accent: #F0A81C;  /* the "About Us" stamp badge pill (About > AboutBadge > Pill) */
+
+  /* Hero photo overlay: black, top to bottom. Started from Penpot's
+     Homepage — Revamped > Hero > Overlay (82/64/36%) and deepened at the
+     user's request so every photo hero (home, services, contact) reads as
+     black rather than a wash. */
+  --hero-overlay: linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.86) 0%,
+    rgb(0 0 0 / 0.7) 50%,
+    rgb(0 0 0 / 0.6) 100%
+  );
+
+  /* --------------------------------------------------------------- SHAPE
+     Confirmed on every card and button inspected so far: radius 16, no
+     exceptions. Pills (badges, the FREE tag) are fully round. */
+  --radius-md:   16px;
+  --radius-pill: 9999px;
+
+  /* Two shadow recipes, one per card tone — confirmed on the About section's
+     floating cards (white Google-rating card vs. dark #1A1A1A stat card). */
+  --shadow-card-light: 0 12px 28px rgb(26 26 26 / 0.10);
+  --shadow-card-dark:  0 10px 24px rgb(0 0 0 / 0.25);
+
+  /* Outline-button stroke width — confirmed on the Hero's secondary CTA. */
+  --border-width: 1.5px;
+
+  /* ------------------------------------------------------------ SPACING
+     4/8-based step scale for component-level gaps (paddings, flex gaps).
+     Penpot's own gaps are ad hoc per component (6, 8, 10, 16, 24, 32, 38,
+     40, 56, 96px all appear) rather than a strict system, so this is a
+     practical scale that covers the values actually seen, not a fiction. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-8: 48px;
+  --space-10: 64px;
+  --space-12: 96px;
+
+  /* Section container: confirmed on About — its content row (AboutRow) sits
+     inset 112px from each edge of the 1440 board, giving a 1216px content
+     width (112 + 1216 + 112 = 1440). The mobile-width end of this clamp is a
+     reasoned default (not yet confirmed against the 390-wide mobile boards)
+     and will be checked against them in the mobile pass. */
+  --container-max: 1216px;
+  --container-gutter: clamp(20px, 7vw, 112px);
+
+  /* -------------------------------------------------------------- MOTION
+     Not yet sourced from an Implementation-notes board (each page's own
+     notes will be read before that page is built) — these are the
+     conventional, conservative defaults every transition starts from. */
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* The animation/interaction brief's one global easing curve — every
+     hover/open/close/reveal added under that pass uses this, not
+     --ease-standard above (which predates it and is kept only for
+     whatever still references it). */
+  --ease-motion: cubic-bezier(0.2, 0.7, 0.2, 1);
+  /* Scroll-reveal recipe from the same brief: fade + 16px rise, 600ms,
+     80ms stagger between siblings (see Reveal.module.css). */
+  --reveal-distance: 16px;
+  --reveal-duration: 600ms;
+  --reveal-stagger: 80ms;
+}
+
+/* --------------------------------------------------------------------------
+   Type recipes
+
+   Deliberately NOT a generic H1/H2/H3 scale: the two "heading-sized" texts
+   confirmed so far (the Hero headline and the About headline) are visually
+   different recipes — different family, weight and letter-spacing ratio —
+   not two sizes of one style. Each recipe below is named for the role it
+   was confirmed in and carries its own exact numbers. New recipes are added
+   here, never invented ad hoc in a component file, as later sections are
+   read from Penpot.
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Hero > HeroContent > Headline (confirmed) */
+  --text-hero-headline-size: 68px;
+  --text-hero-headline-weight: 600;
+  --text-hero-headline-leading: 1.1;
+  --text-hero-headline-tracking: -1px;
+
+  /* Hero > HeroContent > Subheading (confirmed) */
+  --text-hero-lead-size: 18px;
+  --text-hero-lead-weight: 500;
+  --text-hero-lead-leading: 1.45;
+
+  /* Hero > HeroContent > Eyebrow (confirmed; bold + wider than the section
+     eyebrow below because it sits directly on the photo) */
+  --text-hero-eyebrow-size: 13px;
+  --text-hero-eyebrow-weight: 700;
+  --text-hero-eyebrow-tracking: 0.8px;
+
+  /* The reusable Eyebrow component's default (confirmed on About > Eyebrow:
+     "ABOUT US"). JetBrains Mono, wide tracking, no pill — a hairline rule
+     flanks it on both sides (confirmed structurally on the Coming Soon
+     boards: Eyebrow / "Eyebrow rule L" / "Eyebrow rule R" as siblings). */
+  --text-eyebrow-size: 12px;
+  --text-eyebrow-weight: 500;
+  --text-eyebrow-tracking: 2.2px;
+
+  /* Section headline (confirmed on About > AboutText > Headline) */
+  --text-section-headline-size: 50px;
+  --text-section-headline-weight: 700;
+  --text-section-headline-leading: 1.05;
+  --text-section-headline-tracking: -2.6px;
+
+  /* Body / lead paragraph (confirmed on About > AboutText > Intro) */
+  --text-body-lead-size: 17px;
+  --text-body-lead-weight: 400;
+  --text-body-lead-leading: 1.6;
+
+  /* Big stat number, e.g. "4.9" / "R1M+" (confirmed on both About cards) */
+  --text-stat-size: 44px;
+  --text-stat-weight: 700;
+  --text-stat-leading: 1;
+  --text-stat-tracking: -2.2px;
+
+  /* Micro mono label under a stat, e.g. "GOOGLE RATING" (confirmed) */
+  --text-label-micro-size: 11px;
+  --text-label-micro-weight: 500;
+  --text-label-micro-leading: 1.4;
+  --text-label-micro-tracking: 1.5px;
+
+  /* Button label (confirmed at 16px on both Hero CTAs; standardised on the
+     body font — one of the two Hero buttons used Inter Tight for its label,
+     the other Inter, which reads as an authoring inconsistency rather than
+     two deliberate button-type families, so every Button variant uses the
+     same label recipe). */
+  --text-button-size: 16px;
+  --text-button-weight: 500;
+}

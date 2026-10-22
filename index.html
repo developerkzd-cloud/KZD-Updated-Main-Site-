@@ -1806,76 +1806,201 @@
         <!-- end about us section -->
 
         <!-- start services section -->
-        <section class="kzd-services">
-            <div class="kzd-services__wash" aria-hidden="true"></div>
-            <div class="container">
-
-                <div class="kzd-services__head">
-                    <h3 class="kzd-services__title">Everything you need to<br>build, launch and scale</h3>
-                    <p class="kzd-services__sub">We design, build and support &mdash; all under one roof.</p>
+        <!-- Services (option A): a numbered index list with a cursor-following
+             preview card on desktop, an accordion on touch / below 1024px.
+             Layout and motion: css/kzd-services.css; behaviour: js/kzd-services.js. -->
+        <section class="kzd-services" aria-labelledby="kzd-services-title">
+            <div class="kzd-services__wrap">
+                <div class="kzd-services__aside">
+                    <div class="kzd-services__sticky">
+                        <p class="kzd-services__eyebrow kzd-services__in">What we do</p>
+                        <h2 class="kzd-services__title kzd-services__in" id="kzd-services-title">Everything you need to build, launch and scale.</h2>
+                        <p class="kzd-services__intro kzd-services__in">We design, build and support &mdash; all under one roof.</p>
+                        <a class="kzd-services__all kzd-services__all--aside kzd-services__in" href="services.html">All services <svg class="kzd-icon kzd-icon--dense" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#arrow-right"></use></svg></a>
+                    </div>
                 </div>
 
-                <div class="kzd-services__row" tabindex="0" role="group" aria-label="Services">
+                <div class="kzd-services__main">
+                    <!-- Desktop (fine pointer, >= 1024px): full-row links -->
+                    <ul class="kzd-services__list">
+                        <li class="kzd-services__li" style="--i: 0">
+                            <a class="kzd-services__row" href="services.html#development" data-index="0">
+                                <span class="kzd-services__num">01</span>
+                                <span class="kzd-services__name">Website Development</span>
+                                <span class="kzd-services__tag">Build</span>
+                                <span class="kzd-services__go" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 12 12 4M6 4h6v6"/></svg></span>
+                            </a>
+                        </li>
+                        <li class="kzd-services__li" style="--i: 1">
+                            <a class="kzd-services__row" href="services.html#development" data-index="1">
+                                <span class="kzd-services__num">02</span>
+                                <span class="kzd-services__name">Software Development</span>
+                                <span class="kzd-services__tag">Build</span>
+                                <span class="kzd-services__go" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 12 12 4M6 4h6v6"/></svg></span>
+                            </a>
+                        </li>
+                        <li class="kzd-services__li" style="--i: 2">
+                            <a class="kzd-services__row" href="services.html#development" data-index="2">
+                                <span class="kzd-services__num">03</span>
+                                <span class="kzd-services__name">Web Design</span>
+                                <span class="kzd-services__tag">Design</span>
+                                <span class="kzd-services__go" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 12 12 4M6 4h6v6"/></svg></span>
+                            </a>
+                        </li>
+                        <li class="kzd-services__li" style="--i: 3">
+                            <a class="kzd-services__row" href="services.html#consulting" data-index="3">
+                                <span class="kzd-services__num">04</span>
+                                <span class="kzd-services__name">Process Improvement</span>
+                                <span class="kzd-services__tag">Consult</span>
+                                <span class="kzd-services__go" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 12 12 4M6 4h6v6"/></svg></span>
+                            </a>
+                        </li>
+                        <li class="kzd-services__li" style="--i: 4">
+                            <a class="kzd-services__row" href="services.html#consulting" data-index="4">
+                                <span class="kzd-services__num">05</span>
+                                <span class="kzd-services__name">Scaling and Automation</span>
+                                <span class="kzd-services__tag">Consult</span>
+                                <span class="kzd-services__go" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 12 12 4M6 4h6v6"/></svg></span>
+                            </a>
+                        </li>
+                        <li class="kzd-services__li" style="--i: 5">
+                            <a class="kzd-services__row" href="services.html#development" data-index="5">
+                                <span class="kzd-services__num">06</span>
+                                <span class="kzd-services__name">IT Support &amp; Maintenance</span>
+                                <span class="kzd-services__tag">Support</span>
+                                <span class="kzd-services__go" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 12 12 4M6 4h6v6"/></svg></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- Decorative: the row link is what gets clicked and read. -->
+                    <div class="kzd-services__preview" aria-hidden="true">
+                        <div class="kzd-services__pv is-shown" data-index="0">
+                            <span class="kzd-services__tile"><svg viewBox="0 0 24 24" focusable="false"><path d="M3 5h18v14H3zM3 9h18"/></svg></span>
+                            <p class="kzd-services__pv-text">We build and maintain the software, sites and infrastructure your business runs on.</p>
+                            <p class="kzd-services__pv-cta">View service &rarr;</p>
+                        </div>
+                        <div class="kzd-services__pv" data-index="1">
+                            <span class="kzd-services__tile"><svg viewBox="0 0 24 24" focusable="false"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg></span>
+                            <p class="kzd-services__pv-text">We build custom systems that fit the way your business actually runs.</p>
+                            <p class="kzd-services__pv-cta">View service &rarr;</p>
+                        </div>
+                        <div class="kzd-services__pv" data-index="2">
+                            <span class="kzd-services__tile"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg></span>
+                            <p class="kzd-services__pv-text">Fast, responsive sites built for search visibility, speed and conversion.</p>
+                            <p class="kzd-services__pv-cta">View service &rarr;</p>
+                        </div>
+                        <div class="kzd-services__pv" data-index="3">
+                            <span class="kzd-services__tile"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 12a8 8 0 0 1 14-5M20 12a8 8 0 0 1-14 5M18 3v4h-4M6 21v-4h4"/></svg></span>
+                            <p class="kzd-services__pv-text">We help businesses find waste, fix process and scale what already works.</p>
+                            <p class="kzd-services__pv-cta">View service &rarr;</p>
+                        </div>
+                        <div class="kzd-services__pv" data-index="4">
+                            <span class="kzd-services__tile"><svg viewBox="0 0 24 24" focusable="false"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span>
+                            <p class="kzd-services__pv-text">We help businesses find waste, fix process and scale what already works.</p>
+                            <p class="kzd-services__pv-cta">View service &rarr;</p>
+                        </div>
+                        <div class="kzd-services__pv" data-index="5">
+                            <span class="kzd-services__tile"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 4h16v6H4zM4 14h16v6H4zM8 7h.01M8 17h.01"/></svg></span>
+                            <p class="kzd-services__pv-text">We build and maintain the software, sites and infrastructure your business runs on.</p>
+                            <p class="kzd-services__pv-cta">View service &rarr;</p>
+                        </div>
+                    </div>
 
-                    <article class="kzd-services__card">
-                        <span class="kzd-services__dot" aria-hidden="true"></span>
-                        <p class="kzd-services__index" aria-hidden="true">01</p>
-                        <h4 class="kzd-services__name">UX/UI Design</h4>
-                        <span class="kzd-services__ring" aria-hidden="true">
-                            <svg class="kzd-services__icon" viewBox="0 0 72 72" focusable="false" aria-hidden="true">
-                                <circle class="kzd-draw" cx="19" cy="53" r="5.5" pathLength="100"/>
-                                <path class="kzd-draw" d="M23.5 48.5 L50 22" pathLength="100"/>
-                                <path class="kzd-draw" d="M38.5 21 H51 V33.5" pathLength="100"/>
-                            </svg>
-                        </span>
-                        <p class="kzd-services__copy">We design interfaces that feel effortless to use and hard to walk away from.</p>
-                    </article>
-
-                    <article class="kzd-services__card">
-                        <span class="kzd-services__dot" aria-hidden="true"></span>
-                        <p class="kzd-services__index" aria-hidden="true">02</p>
-                        <h4 class="kzd-services__name">Software Development</h4>
-                        <span class="kzd-services__ring" aria-hidden="true">
-                            <svg class="kzd-services__icon" viewBox="0 0 72 72" focusable="false" aria-hidden="true">
-                                <path class="kzd-draw" d="M26 25 L15 36 L26 47" pathLength="100"/>
-                                <path class="kzd-draw" d="M46 25 L57 36 L46 47" pathLength="100"/>
-                                <path class="kzd-draw" d="M40 22 L32 50" pathLength="100"/>
-                            </svg>
-                        </span>
-                        <p class="kzd-services__copy">We build custom systems that fit the way your business actually runs.</p>
-                    </article>
-
-                    <article class="kzd-services__card">
-                        <span class="kzd-services__dot" aria-hidden="true"></span>
-                        <p class="kzd-services__index" aria-hidden="true">03</p>
-                        <h4 class="kzd-services__name">Web Design</h4>
-                        <span class="kzd-services__ring" aria-hidden="true">
-                            <svg class="kzd-services__icon" viewBox="0 0 72 72" focusable="false" aria-hidden="true">
-                                <rect class="kzd-draw" x="12" y="17" width="48" height="38" rx="4.5" pathLength="100"/>
-                                <path class="kzd-draw" d="M12 27 H60" pathLength="100"/>
-                                <path class="kzd-draw" d="M17.5 22 h.01" pathLength="100"/>
-                                <path class="kzd-draw" d="M22.5 22 h.01" pathLength="100"/>
-                                <path class="kzd-draw" d="M27.5 22 h.01" pathLength="100"/>
-                                <rect class="kzd-draw" x="17" y="32" width="13" height="18" rx="2" pathLength="100"/>
-                                <path class="kzd-draw" d="M35 34.5 H55" pathLength="100"/>
-                                <path class="kzd-draw" d="M35 41 H55" pathLength="100"/>
-                                <path class="kzd-draw" d="M35 47.5 H47" pathLength="100"/>
-                            </svg>
-                        </span>
-                        <p class="kzd-services__copy">Fast, responsive sites built for search visibility, speed and conversion.</p>
-                    </article>
-
+                    <!-- Touch / below 1024px: accordion -->
+                    <ul class="kzd-services__acc">
+                        <li class="kzd-services__acc-item">
+                            <h3 class="kzd-services__acc-h">
+                                <button class="kzd-services__acc-btn" type="button" aria-expanded="false" aria-controls="kzd-svc-panel-0" id="kzd-svc-btn-0">
+                                    <span class="kzd-services__num">01</span>
+                                    <span class="kzd-services__acc-name">Website Development</span>
+                                    <svg class="kzd-services__chev" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4"/></svg>
+                                </button>
+                            </h3>
+                            <div class="kzd-services__acc-panel" id="kzd-svc-panel-0" role="region" aria-labelledby="kzd-svc-btn-0" inert>
+                                <div class="kzd-services__acc-inner">
+                                    <p class="kzd-services__acc-text">We build and maintain the software, sites and infrastructure your business runs on.</p>
+                                    <a class="kzd-services__view" href="services.html#development">View service</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="kzd-services__acc-item">
+                            <h3 class="kzd-services__acc-h">
+                                <button class="kzd-services__acc-btn" type="button" aria-expanded="false" aria-controls="kzd-svc-panel-1" id="kzd-svc-btn-1">
+                                    <span class="kzd-services__num">02</span>
+                                    <span class="kzd-services__acc-name">Software Development</span>
+                                    <svg class="kzd-services__chev" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4"/></svg>
+                                </button>
+                            </h3>
+                            <div class="kzd-services__acc-panel" id="kzd-svc-panel-1" role="region" aria-labelledby="kzd-svc-btn-1" inert>
+                                <div class="kzd-services__acc-inner">
+                                    <p class="kzd-services__acc-text">We build custom systems that fit the way your business actually runs.</p>
+                                    <a class="kzd-services__view" href="services.html#development">View service</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="kzd-services__acc-item">
+                            <h3 class="kzd-services__acc-h">
+                                <button class="kzd-services__acc-btn" type="button" aria-expanded="false" aria-controls="kzd-svc-panel-2" id="kzd-svc-btn-2">
+                                    <span class="kzd-services__num">03</span>
+                                    <span class="kzd-services__acc-name">Web Design</span>
+                                    <svg class="kzd-services__chev" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4"/></svg>
+                                </button>
+                            </h3>
+                            <div class="kzd-services__acc-panel" id="kzd-svc-panel-2" role="region" aria-labelledby="kzd-svc-btn-2" inert>
+                                <div class="kzd-services__acc-inner">
+                                    <p class="kzd-services__acc-text">Fast, responsive sites built for search visibility, speed and conversion.</p>
+                                    <a class="kzd-services__view" href="services.html#development">View service</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="kzd-services__acc-item">
+                            <h3 class="kzd-services__acc-h">
+                                <button class="kzd-services__acc-btn" type="button" aria-expanded="false" aria-controls="kzd-svc-panel-3" id="kzd-svc-btn-3">
+                                    <span class="kzd-services__num">04</span>
+                                    <span class="kzd-services__acc-name">Process Improvement</span>
+                                    <svg class="kzd-services__chev" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4"/></svg>
+                                </button>
+                            </h3>
+                            <div class="kzd-services__acc-panel" id="kzd-svc-panel-3" role="region" aria-labelledby="kzd-svc-btn-3" inert>
+                                <div class="kzd-services__acc-inner">
+                                    <p class="kzd-services__acc-text">We help businesses find waste, fix process and scale what already works.</p>
+                                    <a class="kzd-services__view" href="services.html#consulting">View service</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="kzd-services__acc-item">
+                            <h3 class="kzd-services__acc-h">
+                                <button class="kzd-services__acc-btn" type="button" aria-expanded="false" aria-controls="kzd-svc-panel-4" id="kzd-svc-btn-4">
+                                    <span class="kzd-services__num">05</span>
+                                    <span class="kzd-services__acc-name">Scaling and Automation</span>
+                                    <svg class="kzd-services__chev" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4"/></svg>
+                                </button>
+                            </h3>
+                            <div class="kzd-services__acc-panel" id="kzd-svc-panel-4" role="region" aria-labelledby="kzd-svc-btn-4" inert>
+                                <div class="kzd-services__acc-inner">
+                                    <p class="kzd-services__acc-text">We help businesses find waste, fix process and scale what already works.</p>
+                                    <a class="kzd-services__view" href="services.html#consulting">View service</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="kzd-services__acc-item">
+                            <h3 class="kzd-services__acc-h">
+                                <button class="kzd-services__acc-btn" type="button" aria-expanded="false" aria-controls="kzd-svc-panel-5" id="kzd-svc-btn-5">
+                                    <span class="kzd-services__num">06</span>
+                                    <span class="kzd-services__acc-name">IT Support &amp; Maintenance</span>
+                                    <svg class="kzd-services__chev" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4"/></svg>
+                                </button>
+                            </h3>
+                            <div class="kzd-services__acc-panel" id="kzd-svc-panel-5" role="region" aria-labelledby="kzd-svc-btn-5" inert>
+                                <div class="kzd-services__acc-inner">
+                                    <p class="kzd-services__acc-text">We build and maintain the software, sites and infrastructure your business runs on.</p>
+                                    <a class="kzd-services__view" href="services.html#development">View service</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <a class="kzd-services__all kzd-services__all--block" href="services.html">All services</a>
                 </div>
-
-                <div class="kzd-services__nav">
-                    <button class="kzd-services__arrow kzd-services__arrow--prev" type="button" aria-label="Previous service">
-                        <svg class="kzd-icon" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#chevron-left"></use></svg>
-                    </button>
-                    <button class="kzd-services__arrow kzd-services__arrow--next" type="button" aria-label="Next service">
-                        <svg class="kzd-icon" aria-hidden="true" focusable="false"><use href="/Assets/icons/kzd-icons.svg#chevron-right"></use></svg>
-                    </button>
-                </div>
-
             </div>
         </section>
         <!-- end services section -->
@@ -1885,67 +2010,105 @@
 
 
         <!-- start problems we solve section -->
-        <section class="kzd-problems">
-            <div class="container">
-
-                <div class="kzd-problems__head">
-                    <div class="kzd-problems__headline">
-                        <span class="kzd-problems__eyebrow">
-                            <span class="kzd-problems__dot" aria-hidden="true"></span>
-                            <span class="kzd-problems__eyebrow-text">What we fix</span>
-                        </span>
-                        <h3 class="kzd-problems__title">Problems We Solve.</h3>
+        <!-- Stacking-card section. Layout and motion: css/kzd-problems.css,
+             behaviour: js/kzd-problems.js. Steps for 01, 02 and 04 are
+             placeholder copy awaiting approval. -->
+        <section class="kzd-problems" aria-labelledby="kzd-problems-title" style="--n: 4">
+            <div class="kzd-problems__wrap">
+                <div class="kzd-problems__aside">
+                    <div class="kzd-problems__sticky">
+                        <p class="kzd-problems__eyebrow kzd-problems__in">What gets in the way</p>
+                        <h2 class="kzd-problems__title kzd-problems__in" id="kzd-problems-title">Problems <br class="kzd-problems__br">we solve.</h2>
+                        <p class="kzd-problems__intro kzd-problems__in">We strive to develop real-world web solutions that are ideal for small to large projects with your custom project requirements.</p>
+                        <div class="kzd-problems__rail-wrap kzd-problems__in">
+                            <span class="kzd-problems__rail-fill" aria-hidden="true"></span>
+                            <ol class="kzd-problems__rail" aria-label="Problems we solve">
+                        <li><a class="kzd-problems__rail-link is-active" href="#kzd-problem-gaps" aria-current="step" data-index="0"><span class="kzd-problems__rail-num">01</span><span class="kzd-problems__rail-name">Gaps</span></a></li>
+                        <li><a class="kzd-problems__rail-link" href="#kzd-problem-analytics" data-index="1"><span class="kzd-problems__rail-num">02</span><span class="kzd-problems__rail-name">Analytics</span></a></li>
+                        <li><a class="kzd-problems__rail-link" href="#kzd-problem-ineff" data-index="2"><span class="kzd-problems__rail-num">03</span><span class="kzd-problems__rail-name">Inefficiencies</span></a></li>
+                        <li><a class="kzd-problems__rail-link" href="#kzd-problem-digital" data-index="3"><span class="kzd-problems__rail-num">04</span><span class="kzd-problems__rail-name">Digital</span></a></li>
+                            </ol>
+                        </div>
                     </div>
-                    <p class="kzd-problems__intro">We strive to develop real-world web solutions that are ideal for small to large projects with your custom project requirements.</p>
                 </div>
 
-                <div class="kzd-problems__grid">
-
-                    <article class="kzd-problems__cell kzd-problems__cell--gaps">
-                        <picture>
-                            <source srcset="images/gaps.webp" type="image/webp">
-                            <img src="images/gaps.jpg" alt="" loading="lazy" decoding="async">
-                        </picture>
-                        <div class="kzd-problems__cap">
-                            <p class="kzd-problems__label">Gaps</p>
-                            <p class="kzd-problems__text">The blind spots between your systems, teams and tools &mdash; where work quietly falls through and nobody owns the fix.</p>
-                        </div>
-                    </article>
-
-                    <article class="kzd-problems__cell kzd-problems__cell--analytics">
-                        <picture>
-                            <source srcset="images/analytics.webp" type="image/webp">
-                            <img src="images/analytics.jpg" alt="" loading="lazy" decoding="async">
-                        </picture>
-                        <div class="kzd-problems__cap">
-                            <p class="kzd-problems__label">Analytics</p>
-                            <p class="kzd-problems__text">Numbers you collect but can&rsquo;t act on, because they never reach the people making the decisions.</p>
-                        </div>
-                    </article>
-
-                    <article class="kzd-problems__cell kzd-problems__cell--ineff">
-                        <picture>
-                            <source srcset="images/inefficiencies.webp" type="image/webp">
-                            <img src="images/inefficiencies.jpg" alt="" loading="lazy" decoding="async">
-                        </picture>
-                        <div class="kzd-problems__cap">
-                            <p class="kzd-problems__label">Inefficiencies</p>
-                            <p class="kzd-problems__text">Manual steps that quietly cost hours every week.</p>
-                        </div>
-                    </article>
-
-                    <article class="kzd-problems__cell kzd-problems__cell--digital">
-                        <picture>
-                            <source srcset="images/digital.webp" type="image/webp">
-                            <img src="images/digital.jpg" alt="" loading="lazy" decoding="async">
-                        </picture>
-                        <div class="kzd-problems__cap">
-                            <p class="kzd-problems__label">Digital</p>
-                            <p class="kzd-problems__text">Platforms that no longer match how customers buy.</p>
-                        </div>
-                    </article>
-
+                <div class="kzd-problems__bar" aria-hidden="true">
+                    <span class="kzd-problems__seg is-done"></span>
+                    <span class="kzd-problems__seg"></span>
+                    <span class="kzd-problems__seg"></span>
+                    <span class="kzd-problems__seg"></span>
                 </div>
+
+                <ol class="kzd-problems__cards">
+                    <li class="kzd-problems__item" id="kzd-problem-gaps" style="--i: 0">
+                        <article class="kzd-problems__card" aria-labelledby="kzd-problem-gaps-title">
+                            <div class="kzd-problems__card-top">
+                                <p class="kzd-problems__card-label">01 &middot; Gaps</p>
+                                <span class="kzd-problems__card-num" aria-hidden="true">01</span>
+                            </div>
+                            <div class="kzd-problems__card-body">
+                                <h3 class="kzd-problems__card-title" id="kzd-problem-gaps-title">The blind spots between your systems, teams and tools &mdash; where work quietly falls through and nobody owns the fix.</h3>
+                                <p class="kzd-problems__fix-label">How we fix it</p>
+                                <ol class="kzd-problems__steps">
+                                    <li><strong class="kzd-problems__step-name">Trace it</strong><span class="kzd-problems__step-text">Follow the work across every system and handover.</span></li>
+                                    <li><strong class="kzd-problems__step-name">Own it</strong><span class="kzd-problems__step-text">Give every step a clear owner.</span></li>
+                                    <li><strong class="kzd-problems__step-name">Connect it</strong><span class="kzd-problems__step-text">Link the tools so nothing falls between them.</span></li>
+                                </ol>
+                            </div>
+                        </article>
+                    </li>
+                    <li class="kzd-problems__item" id="kzd-problem-analytics" style="--i: 1">
+                        <article class="kzd-problems__card" aria-labelledby="kzd-problem-analytics-title">
+                            <div class="kzd-problems__card-top">
+                                <p class="kzd-problems__card-label">02 &middot; Analytics</p>
+                                <span class="kzd-problems__card-num" aria-hidden="true">02</span>
+                            </div>
+                            <div class="kzd-problems__card-body">
+                                <h3 class="kzd-problems__card-title" id="kzd-problem-analytics-title">Numbers you collect but can&rsquo;t act on, because they never reach the people making the decisions.</h3>
+                                <p class="kzd-problems__fix-label">How we fix it</p>
+                                <ol class="kzd-problems__steps">
+                                    <li><strong class="kzd-problems__step-name">Find it</strong><span class="kzd-problems__step-text">Pin down the numbers that drive your decisions.</span></li>
+                                    <li><strong class="kzd-problems__step-name">Shape it</strong><span class="kzd-problems__step-text">Turn raw data into reports people can read.</span></li>
+                                    <li><strong class="kzd-problems__step-name">Deliver it</strong><span class="kzd-problems__step-text">Put them in front of the people who decide.</span></li>
+                                </ol>
+                            </div>
+                        </article>
+                    </li>
+                    <li class="kzd-problems__item" id="kzd-problem-ineff" style="--i: 2">
+                        <article class="kzd-problems__card" aria-labelledby="kzd-problem-ineff-title">
+                            <div class="kzd-problems__card-top">
+                                <p class="kzd-problems__card-label">03 &middot; Inefficiencies</p>
+                                <span class="kzd-problems__card-num" aria-hidden="true">03</span>
+                            </div>
+                            <div class="kzd-problems__card-body">
+                                <h3 class="kzd-problems__card-title" id="kzd-problem-ineff-title">Manual steps that quietly cost hours every week.</h3>
+                                <p class="kzd-problems__fix-label">How we fix it</p>
+                                <ol class="kzd-problems__steps">
+                                    <li><strong class="kzd-problems__step-name">Map it</strong><span class="kzd-problems__step-text">Walk the process end to end with your team.</span></li>
+                                    <li><strong class="kzd-problems__step-name">Cut it</strong><span class="kzd-problems__step-text">Remove the steps that add no value.</span></li>
+                                    <li><strong class="kzd-problems__step-name">Automate it</strong><span class="kzd-problems__step-text">Build software for what&rsquo;s left.</span></li>
+                                </ol>
+                            </div>
+                        </article>
+                    </li>
+                    <li class="kzd-problems__item" id="kzd-problem-digital" style="--i: 3">
+                        <article class="kzd-problems__card" aria-labelledby="kzd-problem-digital-title">
+                            <div class="kzd-problems__card-top">
+                                <p class="kzd-problems__card-label">04 &middot; Digital</p>
+                                <span class="kzd-problems__card-num" aria-hidden="true">04</span>
+                            </div>
+                            <div class="kzd-problems__card-body">
+                                <h3 class="kzd-problems__card-title" id="kzd-problem-digital-title">Platforms that no longer match how customers buy.</h3>
+                                <p class="kzd-problems__fix-label">How we fix it</p>
+                                <ol class="kzd-problems__steps">
+                                    <li><strong class="kzd-problems__step-name">Audit it</strong><span class="kzd-problems__step-text">See where your platform loses customers.</span></li>
+                                    <li><strong class="kzd-problems__step-name">Rebuild it</strong><span class="kzd-problems__step-text">Design around how customers buy today.</span></li>
+                                    <li><strong class="kzd-problems__step-name">Grow it</strong><span class="kzd-problems__step-text">Measure, learn and keep improving.</span></li>
+                                </ol>
+                            </div>
+                        </article>
+                    </li>
+                </ol>
             </div>
         </section>
         <!-- end problems we solve section -->
@@ -2194,6 +2357,8 @@
         <!-- Testimonials: reads reviews.json, carousel + modal — no dependencies -->
         <script src="js/kzd-testimonials.js" defer></script>
         <!-- Problems We Solve entry animation — standalone, no dependencies -->
+        <script src="js/vendors/lenis.min.js" defer></script>
+        <!-- Problems We Solve: stacking cards, rail, entrance, smooth scroll -->
         <script src="js/kzd-problems.js" defer></script>
         <!-- Client showcase — marquee, carousel and modal, built from CLIENTS -->
         <script src="js/kzd-showcase.js" defer></script>

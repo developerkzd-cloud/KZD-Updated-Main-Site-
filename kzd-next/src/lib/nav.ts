@@ -1,14 +1,21 @@
-import type { IconName } from "@/components/Icon/Icon";
+import type { SocialLink } from "@/components/SocialIcons/SocialIcons";
+import { FOSSBILLING_ORIGIN } from "./kzd-integration";
+export type { SocialLink };
 /* ==========================================================================
-   Navigation data — one source for the desktop nav, the Services mega panel
-   and the mobile drawer.
+   Navigation data — one source for the desktop nav and the mobile drawer.
 
-   The static site duplicated this markup 18 times, once per HTML file, which
-   is why adding "Blog" to the footer earlier meant editing 18 files and why
-   removing "About" meant editing 17. Here it is a single array.
+   REDESIGN CHANGE (confirmed against Penpot's Homepage — Revamped Hero and
+   the Coming Soon boards, whose Nav > NavLinks reads: Home, Services,
+   Hosting, Domains, Contact): the primary nav is now five flat items, not
+   four with Services carrying three nested groups. Hosting and Domains used
+   to live inside the Services mega-panel's sub-groups; they are now their
+   own top-level links, and Services is a single dropdown of six individual
+   services (src/lib/services.ts), not three category groups.
 
-   About is deliberately absent: about.html was removed in Phase 2 and its
-   content now lives in the homepage About section at /#about.
+   Careers is no longer in the primary nav in the new design — it isn't in
+   either confirmed board's NavLinks. It's still a real page (its own
+   Penpot board exists and is still being built), just not linked from here
+   any more; it stays linked from the footer.
    ========================================================================== */
 
 export type NavLink = {
@@ -16,58 +23,25 @@ export type NavLink = {
   href: string;
 };
 
-export type NavGroup = {
-  heading: string;
-  links: NavLink[];
-};
-
-export type NavItem = NavLink & {
-  /** Present only on Services, which opens the mega panel. */
-  groups?: NavGroup[];
-};
-
-export const NAV_ITEMS: NavItem[] = [
+/** The five flat items. "Services" is rendered specially (ServicesDropdown),
+    everything else is a plain link. */
+export const NAV_ITEMS: NavLink[] = [
   { label: "Home", href: "/" },
-  {
-    label: "Services",
-    href: "/services",
-    groups: [
-      {
-        heading: "What we do",
-        links: [
-          { label: "Consulting", href: "/services#consulting" },
-          { label: "Development", href: "/services#development" },
-          { label: "Accounting", href: "/accounting" },
-        ],
-      },
-      {
-        heading: "Web hosting",
-        links: [
-          { label: "Web Hosting", href: "/hosting" },
-          { label: "Cloud Hosting", href: "/cloud" },
-          { label: "VPS Hosting", href: "/vps-hosting" },
-          { label: "WordPress Hosting", href: "/wordpress" },
-        ],
-      },
-      {
-        heading: "Domains",
-        links: [
-          { label: "Register Domain", href: "/domains/register" },
-          { label: "Transfer Domain", href: "/domains/transfer" },
-          { label: "Domain Pricing", href: "/domains/pricing" },
-          { label: "TLD Extensions", href: "/domains/tld-extensions" },
-        ],
-      },
-    ],
-  },
-  { label: "Careers", href: "/careers" },
+  { label: "Services", href: "/services" },
+  { label: "Hosting", href: "/hosting" },
+  /* No single Penpot-confirmed landing page for "Domains" as one nav click
+     target (register/transfer/pricing/tld-extensions are all separate
+     pages) — pointed at Register as the most common entry point. */
+  { label: "Domains", href: "/domains/register" },
   { label: "Contact", href: "/contact" },
 ];
 
-/** Account actions. Separate from navigation: these are verbs, not places. */
+/** Account actions. Separate from navigation: these are verbs, not places.
+    They live in FOSSBilling, so they follow FOSSBILLING_ORIGIN like every
+    other hand-off (local FOSSBilling in dev, see .env.local). */
 export const AUTH_LINKS: NavLink[] = [
-  { label: "Login", href: "https://my.kzdsolutions.co.za/login" },
-  { label: "Register", href: "https://my.kzdsolutions.co.za/signup" },
+  { label: "Login", href: `${FOSSBILLING_ORIGIN}/login` },
+  { label: "Register", href: `${FOSSBILLING_ORIGIN}/signup` },
 ];
 
 /* --------------------------------------------------------------------------
@@ -82,46 +56,20 @@ export const FOOTER_COMPANY: (NavLink & { hot?: boolean })[] = [
   { label: "Contact us", href: "/contact" },
 ];
 
-export const FOOTER_SERVICES: NavLink[] = [
-  { label: "Consulting", href: "/services#consulting" },
-  { label: "Development", href: "/services#development" },
-  { label: "Automation", href: "/services" },
-  { label: "Web Design", href: "/services" },
-];
-
 export const CONTACT = {
   email: "info@kzdsolutions.co.za",
   phoneHref: "tel:+27310053129",
-  phoneLabel: "(031) 005 3129",
+  phoneLabel: "(031) 005 3129",
   location: "Durban, South Africa",
-  tagline: "Gearing your company through an innovative strategy.",
+  tagline: "From big problems to simple solutions.",
 };
-
-export type Social = { name: string; href: string; icon: IconName; wide?: boolean };
 
 /* Glyphs come from the shared Bootstrap Icons set (components/Icon), inlined,
    never hotlinked: an external logo URL can move or vanish, costs a
    third-party request on every page load, and can trip CORS. */
-export const SOCIALS: Social[] = [
-  {
-    name: "Facebook",
-    href: "https://web.facebook.com/profile.php?id=61572728398709",
-    icon: "facebook",
-  },
-  {
-    name: "LinkedIn",
-    href: "https://www.linkedin.com/company/kzd-solutions/?viewAsMember=true",
-    icon: "linkedin",
-  },
-  {
-    name: "WhatsApp",
-    href: "https://wa.me/27704563015",
-    wide: true,
-    icon: "whatsapp",
-  },
-  {
-    name: "Instagram",
-    href: "https://www.instagram.com/kzdsolutions96",
-    icon: "instagram",
-  },
+export const SOCIALS: SocialLink[] = [
+  { name: "Instagram", href: "https://www.instagram.com/kzdsolutions96", icon: "instagram" },
+  { name: "Facebook", href: "https://web.facebook.com/profile.php?id=61572728398709", icon: "facebook" },
+  { name: "LinkedIn", href: "https://www.linkedin.com/company/kzd-solutions/?viewAsMember=true", icon: "linkedin" },
+  { name: "TikTok", href: "https://www.tiktok.com/@kzdsolutions", icon: "tiktok" },
 ];

@@ -1,0 +1,69 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 44px; /* confirmed ~42px on both Hero CTAs, rounded to the 44px
+                   accessible touch-target minimum */
+  padding: 0 var(--space-5);
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--kzd-type-sans);
+  font-size: var(--text-button-size);
+  font-weight: var(--text-button-weight);
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard),
+    opacity var(--duration-base) var(--ease-standard);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* primary — solid near-black, white label. Confirmed radius/height; this is
+   the default, context-agnostic button. */
+.primary {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+.primary:hover:not(:disabled) {
+  background: var(--color-strong);
+}
+
+/* secondary — outline in currentColor, so it reads correctly wherever it's
+   placed: dark outline on a light page (the ambient default), white outline
+   inside a wrapper that sets color:white (e.g. Hero content). Confirmed
+   stroke width on the Hero's secondary CTA. */
+.secondary {
+  background: transparent;
+  color: currentColor;
+  border: var(--border-width) solid currentColor;
+}
+.secondary:hover:not(:disabled) {
+  background: rgb(255 255 255 / 0.08);
+}
+
+/* light — solid white, dark label: for use on a dark background where
+   `primary` would disappear. */
+.light {
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+.light:hover:not(:disabled) {
+  background: var(--color-surface);
+}
+
+/* frosted — the specific glass treatment confirmed on the Hero CTA, which
+   sits over a photo rather than a flat dark colour. */
+.light.frosted {
+  background: rgb(255 255 255 / 0.6);
+}
+.light.frosted:hover:not(:disabled) {
+  background: rgb(255 255 255 / 0.75);
+}
