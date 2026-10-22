@@ -5,14 +5,13 @@
 {% set public_logo_url = company.logo_url %}
 {% set public_dark_logo_url = company.logo_url_dark %}
 {% set page_title = (settings.meta_title_prefix ~ ' ' ~ block('meta_title') ~ ' ' ~ settings.meta_title_suffix)|trim %}
-{% set meta_description = block('meta_description')|default(settings.meta_description) %}
 <html lang="{{ active_locale }}" data-bs-theme="{{ settings.theme|default('light') }}">
 <head>
     <meta charset="utf-8">
     <title>{{ page_title }}</title>
     <meta name="color-scheme" content="light dark">
 
-    <meta name="description" content="{% block meta_description %}{{ meta_description }}{% endblock %}">
+    <meta name="description" content="{% block meta_description %}{{ settings.meta_description }}{% endblock %}">
     <meta name="keywords" content="{{ settings.meta_keywords }}">
     <meta name="robots" content="{{ settings.meta_robots }}">
     <meta name="author" content="{{ settings.meta_author }}">
@@ -26,7 +25,7 @@
     {% block opengraph %}
         <meta property="og:title" content="{{ page_title }}" />
         <meta property="og:type" content="website" />
-        <meta property="og:description" content="{{ meta_description }}" />
+        <meta property="og:description" content="{{ block('meta_description') }}" />
         <meta property="og:url" content="{{ canonical_url }}" />
         <meta property="og:site_name" content="{{ guest.system_company.name }}" />
     {% endblock %}
@@ -65,6 +64,7 @@
     <script type="module" src="{{ 'build/js/huraga.js' | asset_url }}"></script>
     <script defer src="{{ 'build/js/kzd-reveal.js' | asset_url }}"></script>
     {{ include('partials/kzd_modals.html.twig') }}
+    {{ include('partials/kzd_password_toggle.html.twig') }}
     {% block head %}{% endblock %}
     {% block js %}
     <script>

@@ -39,6 +39,9 @@
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" href="#tab-custom-fields" data-bs-toggle="tab" role="tab">{{ 'Custom Fields'|trans }}</a>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" href="#tab-google" data-bs-toggle="tab" role="tab">{{ 'Google Sign-In'|trans }}</a>
+                </li>
             </ul>
             <form method="post" action="{{ 'extension/config_save'|api_url }}" {{ fb_api_form({message: 'Configuration Updated'|trans}) }}>
                 <input type="hidden" name="ext" value="mod_client">
@@ -128,10 +131,12 @@
                                             <label class="form-label" for="custom-field-title-{{ i }}">{{ 'Field Title'|trans }}</label>
                                             <input class="form-control mb-3" id="custom-field-title-{{ i }}" type="text" placeholder="{{ 'Field title'|trans }}" name="custom_fields[{{ field_name }}][title]" value="{{ custom_field.title|default('') }}">
                                             <div class="d-flex flex-column gap-2">
+                                                <input type="hidden" name="custom_fields[{{ field_name }}][active]" value="0">
                                                 <label class="form-check form-switch form-switch-2">
                                                     <input class="form-check-input" id="checkboxActive-{{ field_name }}" type="checkbox" name="custom_fields[{{ field_name }}][active]" value="1"{% if custom_field.active|default(false) %} checked{% endif %}>
                                                     <span class="form-check-label">{{ 'Active'|trans }}</span>
                                                 </label>
+                                                <input type="hidden" name="custom_fields[{{ field_name }}][required]" value="0">
                                                 <label class="form-check form-switch form-switch-2">
                                                     <input class="form-check-input" id="checkboxRequired-{{ field_name }}" type="checkbox" name="custom_fields[{{ field_name }}][required]" value="1"{% if custom_field.required|default(false) %} checked{% endif %}>
                                                     <span class="form-check-label">{{ 'Required'|trans }}</span>
@@ -141,6 +146,40 @@
                                     </section>
                                 </div>
                             {% endfor %}
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                            <input type="submit" value="{{ 'Update'|trans }}" class="btn btn-primary">
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="tab-google" role="tabpanel">
+                        <div class="card-body">
+                            <div class="alert alert-info" role="alert">
+                                <strong class="me-1">{{ 'Information:'|trans }}</strong>{{ 'Lets clients register/log in with a Google account instead of (not instead of -- in addition to) email and password. Requires an OAuth Client ID and Secret from the Google Cloud Console.'|trans }}
+                            </div>
+                            <div class="row row-cards">
+                                <div class="col-12">
+                                    <section class="card card-sm">
+                                        <div class="card-body">
+                                            <label class="form-check form-switch form-switch-2 mb-3">
+                                                <input class="form-check-input" name="google_oauth_enabled" type="checkbox" {% if params.google_oauth_enabled|default(false) %}checked="checked"{% endif %}>
+                                                <span class="form-check-label">{{ 'Enable "Continue with Google" on the login and signup pages'|trans }}</span>
+                                            </label>
+
+                                            <label class="form-label" for="google_client_id">{{ 'OAuth Client ID'|trans }}</label>
+                                            <input class="form-control mb-3" id="google_client_id" type="text" name="google_client_id" value="{{ params.google_client_id|default('') }}" autocomplete="off">
+
+                                            <label class="form-label" for="google_client_secret">{{ 'OAuth Client Secret'|trans }}</label>
+                                            <input class="form-control mb-3" id="google_client_secret" type="password" name="google_client_secret" value="{{ params.google_client_secret|default('') }}" autocomplete="off">
+
+                                            <small class="form-hint">
+                                                {{ 'In the Google Cloud Console, add this exact URL as an Authorized redirect URI on the OAuth Client:'|trans }}
+                                                <code>{{ 'client/oauth/google/callback'|url }}</code>
+                                            </small>
+                                        </div>
+                                    </section>
+                                </div>
                             </div>
                         </div>
                         <div class="card-footer text-end">

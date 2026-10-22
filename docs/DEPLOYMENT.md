@@ -140,6 +140,43 @@ panel update reset it), then look for any other root-run process touching
 this app (a manual `php -r "..."` run as root during troubleshooting will
 do the same thing — see `DEVELOPMENT_WORKFLOW.md`'s note about this).
 
+### Known incident: untracking a previously-committed file breaks the next `git pull`
+
+Hit when the GeoIP `.mmdb` files (`library/FOSSBilling/GeoIP/Databases/`,
+see `CUSTOMIZATIONS.md`) were removed from git tracking: the deploy
+script's `git pull origin main` aborted with `error: Your local changes to
+the following files would be overwritten by merge`, even though nobody
+had manually touched those files on the server — they'd just been
+silently self-updated by the app's own GeoIP-refresh cron
+(`System\Service::onBeforeAdminCronRun()`), so the server's working copy
+had genuinely diverged from git's last-known version of them. Git refuses
+to discard that divergence automatically, regardless of whether the
+incoming commit deletes, modifies, or untracks the path.
+
+**This isn't specific to GeoIP** — it'll happen again for *any* file that
+(a) is tracked in git, and (b) gets written to by the running application
+(self-updating caches, generated data, anything with its own
+refresh/cron). Deploying a commit that removes such a file from tracking
+needs one extra step on the server, run once, before the normal deploy:
+
+```bash
+cd /www/wwwroot/my.kzdsolutions.co.za
+rm -f <path to the file(s) being untracked>
+sudo /root/fossbilling-deploy.sh
+```
+
+Deleting it first means there's nothing for `git pull` to conflict with —
+it applies the untrack cleanly. If the file is something the app needs to
+exist on disk to function (GeoIP databases are — see the `MaxMindReader`
+constructor throwing in `CUSTOMIZATIONS.md`), re-trigger whatever
+regenerates it immediately afterward rather than waiting for its own
+cron, and fix its ownership if the regeneration ran as `root` over SSH
+(same `chown -R www:www <path>` pattern as the Doctrine incident above —
+`www` needs to be able to overwrite it again on the *next* self-refresh).
+This is a one-time step for the specific deploy that does the untracking;
+every deploy after that is unaffected, since git no longer tracks the
+path at all.
+
 ## Applying database changes (manual, every time)
 
 The `themes/kzd/data-seeds/` scripts are written to be re-run against any

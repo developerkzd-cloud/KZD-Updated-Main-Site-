@@ -27,7 +27,7 @@
         <div class="col-md-12">
             <div class="card mb-3">
                 <div class="card-header py-3">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
                         <div>
                             <h5 class="mb-2">{{ 'Ticket'|trans }} #{{ ticket.id }}</h5>
                         </div>
@@ -81,8 +81,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card {% if message.author.role == 'admin' %}border-primary{% endif %}">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center gap-2">
+                            <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+                                <div class="d-flex flex-wrap align-items-center gap-2">
                                     {{ avatar(message.author.email|default(''), 40, 'img-thumbnail d-none d-md-block', null, 'div') }}
                                     <div class="d-flex flex-column">
                                         <span class="text-muted">

@@ -29,10 +29,11 @@
                 <div class="card-body">
                     <h5 class="text-center m-4">{{ 'Create your account'|trans }}</h5>
                     {% set effective_redirect_uri = request_query.redirect_uri|default('/') %}
-                    {# Always shown: Google sign-in is a standard option on every login/signup.
-                       Until a Client ID + Secret are saved, /client/google-start returns the
-                       visitor here with "Sign in with Google is not available right now." #}
-                        <a class="btn btn-outline-secondary kzd-google-btn w-100 mb-3" href="{{ 'client/google-start'|url }}?redirect_uri={{ effective_redirect_uri|url_encode }}">
+                    {# Shown once a Client ID + Secret are saved under Client settings >
+                       Google Sign-In; until then client/oauth/google/start would only
+                       bounce the visitor to the login page. #}
+                    {% if guest.client_google_oauth_enabled %}
+                        <a class="btn btn-outline-secondary kzd-google-btn w-100 mb-3" href="{{ 'client/oauth/google/start'|url }}{% if effective_redirect_uri and effective_redirect_uri != '/' %}?redirect_uri={{ effective_redirect_uri|url_encode }}{% endif %}">
                             <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
                                 <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
                                 <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
@@ -42,6 +43,7 @@
                             {{ 'Continue with Google'|trans }}
                         </a>
                         <div class="kzd-auth-divider"><span>{{ 'or fill in your details'|trans }}</span></div>
+                    {% endif %}
                     <form method="post" action="{{ 'client/create'|api_url(role: 'guest') }}" class="auth" {{ fb_api_form({redirect: effective_redirect_uri|url}) }}>
                         {% set r = guest.client_required %}
 
@@ -175,13 +177,13 @@
 
                         {% set custom_fields = guest.client_custom_fields %}
                         {% for field_name, field in custom_fields %}
-                            {% if field.active %}
+                            {% if field.active|default(false) %}
                                 <div class="mb-3">
                                     <label class="form-label"
                                            for="{{ field_name }}">{{ field.title is not empty ? field.title : field_name|capitalize }}</label>
                                     <input class="form-control" id="{{ field_name }}" type="text"
                                            name="{{ field_name }}" value="{{ request.(field_name) }}"
-                                           {% if field.required %}required="required"{% endif %} />
+                                           {% if field.required|default(false) %}required="required"{% endif %} />
                                 </div>
                             {% endif %}
                         {% endfor %}

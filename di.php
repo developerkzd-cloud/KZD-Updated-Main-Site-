@@ -300,13 +300,6 @@ $di['rate_limiter'] = function () use ($di) {
     return $rateLimiter;
 };
 
-$di['google_oauth'] = function () use ($di) {
-    $googleOAuth = new FOSSBilling\Security\GoogleOAuth();
-    $googleOAuth->setDi($di);
-
-    return $googleOAuth;
-};
-
 /*
  *
  * @param void

@@ -54,9 +54,6 @@
                     <a class="nav-link" href="#tab-cache" data-bs-toggle="tab" role="tab">{{ 'Cache'|trans }}</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" href="#tab-google-oauth" data-bs-toggle="tab" role="tab">{{ 'Sign in with Google'|trans }}</a>
-                </li>
-                <li class="nav-item" role="presentation">
                     <a class="nav-link" href="#tab-about" data-bs-toggle="tab" role="tab">{{ 'About'|trans }}</a>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -272,31 +269,6 @@
                             </form>
                         </div>
                     </div>
-                </div>
-
-                <div class="tab-pane fade" id="tab-google-oauth" role="tabpanel">
-                    <form method="post" action="{{ 'system/update_params'|api_url }}" {{ fb_api_form({ message: 'Google Sign-In Settings Updated'|trans}) }}>
-                        <div class="card-body">
-                            <div class="alert alert-info" role="alert">
-                                <strong class="me-1">{{ 'Information:'|trans }}</strong>{{ 'Lets clients log in or sign up with their Google account instead of a password. Create an OAuth Client ID in the Google Cloud Console (APIs & Services > Credentials) with this exact Authorized redirect URI:'|trans }}
-                                <code>{{ 'client/google-callback'|url }}</code>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="google_oauth_client_id">{{ 'Client ID'|trans }}</label>
-                                    <input class="form-control" id="google_oauth_client_id" type="text" name="google_oauth_client_id" value="{{ params.google_oauth_client_id|default('') }}" autocomplete="off">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="google_oauth_client_secret">{{ 'Client Secret'|trans }}</label>
-                                    <input class="form-control" id="google_oauth_client_secret" type="password" name="google_oauth_client_secret" value="{{ params.google_oauth_client_secret|default('') }}" autocomplete="off">
-                                </div>
-                            </div>
-                            <p class="text-secondary mt-3 mb-0">{{ 'Leave both fields empty to hide the "Continue with Google" option on the login and signup pages.'|trans }}</p>
-                        </div>
-                        <div class="card-footer text-end">
-                            <button class="btn btn-primary" type="submit"{% if not can_update_params %} disabled aria-disabled="true"{% endif %}>{{ 'Save'|trans }}</button>
-                        </div>
-                    </form>
                 </div>
 
                 <div class="tab-pane fade" id="tab-about" role="tabpanel">

@@ -106,6 +106,18 @@
                         {% endfor %}
                     </div>
 
+                    {% set has_domain_billing_item = false %}
+                    {% for item in cart.items %}
+                        {% if item.type == 'domain' and item.action in ['register', 'transfer'] %}
+                            {% set has_domain_billing_item = true %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if has_domain_billing_item %}
+                        <p class="fs-7 text-muted mt-3 mb-3">
+                            {{ 'Domains need an annual payment to stay registered -- that\'s true whether a domain is transferred to us or registered new, not something specific to this order. The amount shown covers the first year; every year after, you\'ll simply see a normal annual renewal charge for the domain (never billed as a "transfer" again).'|trans }}
+                        </p>
+                    {% endif %}
+
                     {% set cross_sell_domain_item = null %}
                     {% set has_hosting_item = false %}
                     {% for item in cart.items %}

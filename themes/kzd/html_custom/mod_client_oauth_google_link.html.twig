@@ -1,0 +1,36 @@
+{% extends "layout_public.html.twig" %}
+
+{% block meta_title %}{{ 'Confirm Your Password'|trans }}{% endblock %}
+{% block meta_description %}{{ 'Confirm your existing account password to link it to your Google account.'|trans }}{% endblock %}
+
+{% block body_class %}page-login{% endblock %}
+{% block body %}
+<div class="kzd-auth-wrapper">
+    {{ include('partial_auth_panel.html.twig') }}
+    <div class="kzd-auth-form-side">
+        <div class="kzd-auth-form-inner">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="text-center m-4">{{ 'Confirm Your Password'|trans }}</h5>
+                    <p class="text-secondary text-center mb-4">
+                        {{ 'An account already exists for'|trans }} <strong>{{ google_link_email }}</strong>.
+                        {{ 'Enter its password once to link your Google account -- after that, you can use either to sign in.'|trans }}
+                    </p>
+                    <form method="post" action="{{ 'client/oauth_google_link_confirm'|api_url(role: 'guest') }}" class="auth" {{ fb_api_form({redirect: '/'|url}) }}>
+                        <div class="mb-3">
+                            <label class="form-label" for="password">{{ 'Password'|trans }}</label>
+                            <input class="form-control" id="password" type="password" placeholder="{{ 'Enter your account password'|trans }}" name="password" required="required" autofocus>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 mb-3">{{ 'Link Google Account & Continue'|trans }}</button>
+                    </form>
+                    <div class="row">
+                        <div class="col">
+                            <a class="btn btn-outline-primary mb-2 w-100" href="{{ 'login'|url }}">{{ 'Back to Login'|trans }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

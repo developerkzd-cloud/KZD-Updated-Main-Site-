@@ -512,6 +512,7 @@ class Service implements InjectionAwareInterface
 
             $details['aid'] = $model->aid;
             $details['auth_type'] = $model->auth_type;
+            $details['google_linked'] = $model->google_sub !== null;
             $details['created_at'] = $model->created_at;
             $details['group_id'] = $model->client_group_id;
             $details['ip'] = $model->ip;
@@ -613,6 +614,7 @@ class Service implements InjectionAwareInterface
         $client = $this->di['db']->dispense('Client');
 
         $client->auth_type = $data['auth_type'] ?? null;
+        $client->google_sub = $data['google_sub'] ?? null;
         $client->email = strtolower(trim((string) ($data['email'] ?? null)));
         $billingEmail = trim((string) ($data['billing_email'] ?? ''));
         $client->billing_email = $billingEmail !== '' ? strtolower($billingEmail) : null;
@@ -751,57 +753,6 @@ class Service implements InjectionAwareInterface
         return $client;
     }
 
-    /**
-     * Finds the client matching a verified Google account email, or creates
-     * one. Google has already verified the email address, so this skips
-     * FOSSBilling's own email-confirmation step and never touches a
-     * password -- the account is only ever usable via Google sign-in unless
-     * the client later sets a password from their profile.
-     *
-     * @throws InformationException if signups are disabled, the matching
-     *                               account isn't active, or Google didn't
-     *                               provide an email address
-     */
-    public function findOrCreateClientFromGoogleProfile(array $profile): \Model_Client
-    {
-        $email = strtolower(trim((string) ($profile['email'] ?? '')));
-        if ($email === '') {
-            throw new InformationException('Google did not provide an email address for this account.');
-        }
-        $email = $this->di['tools']->validateAndSanitizeEmail($email);
-
-        $existing = $this->di['db']->findOne('Client', 'email = :email', [':email' => $email]);
-        if ($existing instanceof \Model_Client) {
-            if ($existing->status !== \Model_Client::ACTIVE) {
-                throw new InformationException('This account is not active. Please contact support.');
-            }
-
-            return $existing;
-        }
-
-        $config = $this->di['mod_config']('client');
-        if (isset($config['disable_signup']) && $config['disable_signup']) {
-            throw new InformationException('New registrations are temporarily disabled');
-        }
-
-        $firstName = trim((string) ($profile['given_name'] ?? '')) ?: (trim((string) ($profile['name'] ?? '')) ?: 'Google');
-        $lastName = trim((string) ($profile['family_name'] ?? ''));
-
-        $client = $this->guestCreateClient([
-            'email' => $email,
-            'first_name' => $firstName,
-            'last_name' => $lastName,
-            'auth_type' => 'google',
-        ]);
-
-        // Google already verified this address -- don't make the client
-        // confirm it again via FOSSBilling's own email-confirmation flow.
-        $client->email_approved = 1;
-        $this->di['db']->store($client);
-
-        return $client;
-    }
-
     public function createPasswordResetRequestForClient(\Model_Client $client): string
     {
         $existingReset = $this->di['db']->findOne('ClientPasswordReset', 'client_id = ?', [$client->id]);
@@ -901,6 +852,147 @@ class Service implements InjectionAwareInterface
         $model = $this->di['db']->findOne('Client', 'email = ? AND status = ?', [$email, \Model_Client::ACTIVE]);
 
         return $this->di['auth']->authorizeUser($model, $plainTextPassword);
+    }
+
+    // -------------------------------------------------------------------------
+    // Google Sign-In
+    // -------------------------------------------------------------------------
+
+    public function isGoogleOAuthEnabled(): bool
+    {
+        $config = $this->di['mod_config']('client');
+
+        return !empty($config['google_oauth_enabled']) && !empty($config['google_client_id']) && !empty($config['google_client_secret']);
+    }
+
+    public function getGoogleClient(): GoogleClient
+    {
+        $config = $this->di['mod_config']('client');
+
+        if (empty($config['google_client_id']) || empty($config['google_client_secret'])) {
+            throw new InformationException('Google sign-in is not configured.');
+        }
+
+        return new GoogleClient(
+            $this->di['http_client'],
+            (string) $config['google_client_id'],
+            (string) $config['google_client_secret'],
+        );
+    }
+
+    public function findClientByGoogleSub(string $sub): ?\Model_Client
+    {
+        $client = $this->di['db']->findOne('Client', 'google_sub = ?', [$sub]);
+
+        return $client instanceof \Model_Client ? $client : null;
+    }
+
+    public function findClientByEmail(string $email): ?\Model_Client
+    {
+        $client = $this->di['db']->findOne('Client', 'email = ?', [$email]);
+
+        return $client instanceof \Model_Client ? $client : null;
+    }
+
+    /**
+     * Creates a brand-new client account from a verified Google profile
+     * (no existing account matched by google_sub or email). Mirrors
+     * guestCreateClient()'s event/logging shape, minus the password fields
+     * that don't apply here.
+     *
+     * @param array{sub: string, email: ?string, email_verified: bool, given_name: ?string, family_name: ?string, name: ?string} $profile
+     */
+    public function googleCreateClient(array $profile): \Model_Client
+    {
+        $ip = $this->di['request']->getClientIp();
+
+        $event_params = [
+            'email' => $profile['email'],
+            'ip' => $ip,
+        ];
+        $this->di['events_manager']->fire(['event' => 'onBeforeClientSignUp', 'params' => $event_params]);
+
+        $firstName = $profile['given_name'] ?: ($profile['name'] ?: 'Google');
+        $safeData = [
+            'ip' => $ip,
+            'status' => \Model_Client::ACTIVE,
+            'auth_type' => 'google',
+            'email' => $profile['email'],
+            'first_name' => $firstName,
+            'last_name' => $profile['family_name'] ?: '',
+            'google_sub' => $profile['sub'],
+        ];
+
+        $client = $this->createClient($safeData);
+
+        $event_params = [
+            'id' => $client->id,
+            'email' => $client->email,
+            'first_name' => $client->first_name,
+            'last_name' => $client->last_name,
+            'ip' => $ip,
+        ];
+        $this->di['events_manager']->fire(['event' => 'onAfterClientSignUp', 'params' => $event_params]);
+        $this->di['logger']->info('Client #%s signed up via Google', $client->id);
+
+        return $client;
+    }
+
+    /**
+     * Links a Google account to an existing, already password-verified client.
+     * Never call this without having first confirmed the caller controls the
+     * existing account (see Api\Guest::oauth_google_link_confirm()) -- linking
+     * purely off an email match, with no proof of ownership, would let anyone
+     * who registers a Google account with a matching email take over an
+     * existing FOSSBilling account.
+     */
+    public function linkGoogleAccount(\Model_Client $client, string $sub): void
+    {
+        $client->google_sub = $sub;
+        $client->updated_at = date('Y-m-d H:i:s');
+        $this->di['db']->store($client);
+        $this->di['logger']->info('Client #%s linked a Google account', $client->id);
+    }
+
+    /**
+     * Establishes an authenticated session for a client that was just resolved
+     * via Google sign-in (fresh signup, existing google_sub match, or a
+     * just-completed password-confirmed link) -- the same session-fixation-safe
+     * steps Api\Guest::login() takes after a successful password check.
+     */
+    public function establishClientLoginSession(\Model_Client $client): array
+    {
+        $oldSession = $this->di['session']->getId();
+        $this->di['session']->regenerateId();
+        $result = $this->toSessionArray($client);
+        $this->di['session']->set('client_id', $client->id);
+        $this->di['events_manager']->fire(['event' => 'onAfterClientLogin', 'params' => ['id' => $client->id, 'ip' => $this->di['request']->getClientIp()]]);
+        $this->di['logger']->info('Client #%s logged in', $client->id);
+        $this->di['session']->delete('redirect_uri');
+
+        if (!empty($client->lang)) {
+            $this->di['cookie_queue']->queue('fb_locale', (string) $client->lang, strtotime('+1 month'), '/');
+        }
+
+        $this->di['mod_service']('cart')->transferFromOtherSession($oldSession);
+
+        return $result;
+    }
+
+    /**
+     * Only ever allows a same-site relative path through -- the redirect_uri
+     * that survives the round trip to Google and back is untrusted input
+     * (it started life as a query parameter), so this guards against it being
+     * used for an open redirect.
+     */
+    public function sanitizeInternalRedirect(?string $path): string
+    {
+        $path = (string) $path;
+        if ($path === '' || $path[0] !== '/' || str_starts_with($path, '//') || str_contains($path, '://')) {
+            return '/';
+        }
+
+        return $path;
     }
 
     public function sendEmailConfirmationForClient(\Model_Client $client): void

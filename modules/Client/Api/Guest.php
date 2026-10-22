@@ -158,16 +158,6 @@ class Guest extends \FOSSBilling\Api\AbstractApi
     }
 
     /**
-     * Whether "Continue with Google" should be shown on the login/signup
-     * pages -- true once an admin has configured a Google OAuth Client ID
-     * and Secret under System Settings.
-     */
-    public function google_oauth_enabled(): bool
-    {
-        return $this->getDi()['google_oauth']->isConfigured();
-    }
-
-    /**
      * Password reset confirmation email will be sent to email.
      *
      * @throws \FOSSBilling\Exception
@@ -322,5 +312,62 @@ class Guest extends \FOSSBilling\Api\AbstractApi
         $config = $this->getDi()['mod_config']('client');
 
         return (bool) ($config['require_email_confirmation'] ?? false);
+    }
+
+    /**
+     * Whether the "Continue with Google" button should be shown on the
+     * login/signup pages.
+     */
+    public function google_oauth_enabled(): bool
+    {
+        return $this->getService()->isGoogleOAuthEnabled();
+    }
+
+    /**
+     * Confirms an existing FOSSBilling account's password to link it to the
+     * Google account from a just-completed Google sign-in whose email matched
+     * this account (see Controller\Client::get_oauth_google_callback()/
+     * get_oauth_google_link()). Requiring the password here -- rather than
+     * linking automatically off the matching email alone -- is what stops
+     * anyone who controls a Google account sharing this account's email
+     * address from taking it over.
+     *
+     * @return array - session data, same shape as login()
+     */
+    #[RequiredParams(['password' => 'Password required'])]
+    public function oauth_google_link_confirm($data)
+    {
+        $startedAt = microtime(true);
+
+        try {
+            $this->getDi()['rate_limiter']->consumeOrThrow('client_oauth_google_link_confirm_ip', (string) $this->getIp());
+
+            $pending = $this->getDi()['session']->get('oauth_google_pending_link');
+            if (!is_array($pending) || empty($pending['sub']) || empty($pending['email']) || ($pending['expires'] ?? 0) < time()) {
+                $this->getDi()['session']->delete('oauth_google_pending_link');
+
+                throw new \FOSSBilling\InformationException('Your Google sign-in request has expired. Please try again.');
+            }
+
+            $service = $this->getService();
+            $client = $this->getDi()['db']->findOne('Client', 'email = ? AND status = ?', [$pending['email'], \Model_Client::ACTIVE]);
+            $authorized = $this->getDi()['auth']->authorizeUser($client, (string) $data['password']);
+
+            if (!$authorized instanceof \Model_Client) {
+                $this->getDi()['logger']->setChannel('security')->info('Google account-link confirmation failed for email %s from IP %s: incorrect password', $pending['email'], $this->getIp());
+
+                throw new \FOSSBilling\InformationException('Incorrect password.', [], 401);
+            }
+
+            $service->linkGoogleAccount($authorized, (string) $pending['sub']);
+            $this->getDi()['session']->delete('oauth_google_pending_link');
+
+            $result = $service->establishClientLoginSession($authorized);
+            $this->getDi()['logger']->info('Client #%s linked their Google account after password confirmation', $authorized->id);
+
+            return $result;
+        } finally {
+            RandomizedTimeFloor::apply($startedAt);
+        }
     }
 }

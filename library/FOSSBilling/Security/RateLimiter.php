@@ -59,7 +59,6 @@ class RateLimiter implements InjectionAwareInterface
                 'staff_password_reset_confirm_ip' => ['policy' => 'fixed_window', 'limit' => 20, 'interval' => '60 seconds'],
                 'staff_password_reset_confirm_post_ip' => ['policy' => 'fixed_window', 'limit' => 20, 'interval' => '60 seconds'],
                 'client_signup' => ['policy' => 'fixed_window', 'limit' => 5, 'interval' => '1 hour'],
-                'client_google_oauth_ip' => ['policy' => 'fixed_window', 'limit' => 20, 'interval' => '1 hour'],
                 'guest_ticket_create' => ['policy' => 'fixed_window', 'limit' => 3, 'interval' => '1 hour'],
                 'order_generation_ip' => ['policy' => 'fixed_window', 'limit' => 15, 'interval' => '1 hour'],
                 'domain_lookup_ip' => ['policy' => 'fixed_window', 'limit' => 60, 'interval' => '1 hour'],
@@ -76,6 +75,9 @@ class RateLimiter implements InjectionAwareInterface
                 'client_email_resend_account' => ['policy' => 'fixed_window', 'limit' => 5, 'interval' => '1 hour'],
                 'profile_password_change_ip' => ['policy' => 'fixed_window', 'limit' => 30, 'interval' => '1 hour'],
                 'profile_password_change_account' => ['policy' => 'fixed_window', 'limit' => 5, 'interval' => '1 hour'],
+                'client_oauth_google_start_ip' => ['policy' => 'fixed_window', 'limit' => 30, 'interval' => '1 hour'],
+                'client_oauth_google_callback_ip' => ['policy' => 'fixed_window', 'limit' => 30, 'interval' => '1 hour'],
+                'client_oauth_google_link_confirm_ip' => ['policy' => 'fixed_window', 'limit' => 10, 'interval' => '1 hour'],
             ],
         ];
     }

@@ -53,7 +53,7 @@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" href="#tab-invoices" data-bs-toggle="tab" role="tab">{{ 'Invoices'|trans }}</a>
                     </li>
-                    {% if addons|length > 0 %}
+                    {% if addons is defined and addons|length > 0 %}
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" href="#tab-addons" data-bs-toggle="tab" role="tab">{{ 'Addons'|trans }}</a>
                     </li>
@@ -504,7 +504,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for i, addon in addons %}
+                                {% for i, addon in addons|default([]) %}
                                 <tr>
                                     <td>{{ addon.title }}</td>
                                     <td>{{ addon.period|period_title }}</td>

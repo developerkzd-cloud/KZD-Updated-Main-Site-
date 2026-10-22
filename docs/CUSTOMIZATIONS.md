@@ -21,6 +21,16 @@ touch stock code. **[core edit]** = a stock file was directly modified.
   "click to continue to Paystack" button mandatory instead of automatic, then
   fixed a jQuery dependency this theme doesn't have. See `PAYSTACK.md` for
   the full story — this one had two separate bugs stacked on each other.
+- **Paystack "Class not found" on one-click payment** (2026-10-17) — the
+  adapter file existed and was committed, but was never added to
+  `vendor/composer/autoload_static.php`/`autoload_classmap.php`'s baked
+  classmap (no `composer.json` is tracked in this repo, so `composer
+  dump-autoload` couldn't just be re-run — added the entry by hand
+  instead), and the one-click code referenced the class directly with no
+  fallback, unlike the regular checkout path. Also fixed a related gap
+  where a declined/failed one-click charge silently showed no error at
+  all. Full detail in `PAYSTACK.md`'s "Known gaps" and "One-click payment"
+  sections (`f0a7c49`, `3e59ff8`).
 
 ## Domain registrars
 
@@ -241,6 +251,44 @@ now sit inside the new layout rather than the old one.
   (spec Parts 9-12 of the original request) is a separate feature,
   planned as a follow-up once this one is verified live.
 
+## Domain registrant contact defaults to KZD's own address
+
+- **`modules/Servicedomain/Service.php::_getD()`** **[core edit]** — the
+  registrant/tech/billing/admin contact sent to HostAfrica for domain
+  register/transfer now defaults to KZD's own registered business address
+  rather than the client's profile. Priority order: an explicit per-order
+  contact override (`service_domain.contact_*`, set directly on that one
+  domain's record, not the client's) wins if staff ever set one; otherwise
+  KZD's company address (`_getCompanyContactDefaults()`, new private
+  method); the client's own profile address is consulted only as a
+  last-resort fallback below that.
+- **Why**: domains are deliberately registered under KZD's own reseller
+  account (nameservers repointed to the reseller, DirectAdmin account
+  created and connected — KZD retains operational control throughout the
+  hosting relationship, not the client), so the registrant contact should
+  be consistent regardless of whether a given client happened to fill in
+  their own address. Client signup never required a postal address in the
+  first place (`Client\Api\Guest::create()`'s `RequiredParams` is just
+  email/name/password), so relying on the client's profile meant domain
+  registration could fail outright — HostAfrica's EPP contact-create call
+  rejects blank `city`/`address`/`country`/`phone` — silently, after the
+  client had already paid, discovered only when staff happened to check.
+  See `CHANGELOG.md`'s "Existing-client onboarding incident" entry for the
+  two live signups (`sktradingstore.co.za`, `stylesbycebs.co.za`) this was
+  found and fixed for.
+- **Schema**: five new rows in the existing `setting` table (no new
+  columns) — `company_city`, `company_state`, `company_postcode`,
+  `company_country`, `company_phone_cc` — alongside the pre-existing
+  `company_address_1` and `company_tel`. Not exposed in the admin System
+  Settings UI (Admin → System Settings → Company only has a form for the
+  original fields); set directly via SQL for now. Edit these rows in the
+  `setting` table if the business address ever changes.
+- **Not done in this pass**: no admin UI to edit the five new
+  `company_*` settings (direct SQL only); no enforcement of a client-facing
+  "required address" flow at signup or checkout — client profile fields
+  remain optional, and now this doesn't matter for domain registration
+  either way since it isn't relied on.
+
 ## Hosting/Business Email ↔ domain association + domain→hosting cross-sell
 
 - **Goal**: non-technical customers buying a domain alone often don't
@@ -364,8 +412,23 @@ now sit inside the new layout rather than the old one.
 - **Not done yet**: hosting plan upgrade/downgrade between tiers (stock
   supports it, not specifically tested); general UI/UX polish,
   deliberately deferred to a later session.
-
-## Business Email DirectAdmin automation (type=hosting)
+- **`modules/Servicehosting/templates/admin/mod_servicehosting_manage.html.twig`**
+  **[core edit, surgical]** — reported live as a fatal error on
+  `/admin/order/manage/<id>` for a `type=hosting` order: `Impossible to
+  access an attribute ("server") on a null variable ... at line 3`
+  (`{% set server = service.server %}`). `Order\Service::getOrderServiceData()`
+  returns `null` whenever the order's linked `service_hosting` row is
+  missing (account never provisioned, or the row was otherwise removed)
+  — stock behaviour, same null-service shape as the `group_master`
+  admin order-manage bug further up this file. The stock template never
+  guarded against that, so this install's `strict_variables: true` Twig
+  config turned it into a hard crash instead of a blank field. Wrapped
+  the whole template body in `{% if not service %}` (shows a status
+  badge + a plain warning that the account couldn't be found) `{% else
+  %}` (original markup, unchanged) `{% endif %}`. Doesn't explain *why*
+  order #10's service row is missing in the first place — that's a data
+  question for whoever provisioned it, not a code bug — this only stops
+  the page from fatally erroring when it happens (`8db58b5`).
 
 - **Follow-up to the section above, using the same mechanism as the
   hosting automation section**: the 2 Business Email products (Business
@@ -395,6 +458,18 @@ now sit inside the new layout rather than the old one.
   Would be a genuine follow-up if clients struggle with DirectAdmin's own
   email-account screen — logged here so it isn't forgotten, not because
   it's currently planned.
+- **`unsuspendAccount()` erroring when the DirectAdmin account is already
+  active** (2026-10-15) — `library/Server/Manager/Directadmin.php`
+  **[core edit]**. Stock bug, not KZD-specific: `suspendAccount()` already
+  treats "already in the target state" as a success no-op (`return true`
+  if the account's already suspended), but `unsuspendAccount()` didn't —
+  it threw `"Account is not suspended"` instead, which blocked
+  `Servicehosting::action_unsuspend()` from ever syncing FOSSBilling's
+  local order status back to Active whenever the two had drifted apart
+  (e.g. the overdue-invoice cron auto-suspended the order locally, but
+  the DirectAdmin account was already active — found live on order #1,
+  `stylesbycebs.co.za`). Made `unsuspendAccount()` return `true` in that
+  case too, mirroring `suspendAccount()`'s existing pattern (`c3e028c`).
 
 ## Checkout copy + own-domain safeguard
 
@@ -537,6 +612,219 @@ now sit inside the new layout rather than the old one.
   instance actually observed/reported; same fix (an equivalent partial
   included in `admin_default`'s own layout) would close it.
 
+## Mobile UI fixes (domain configuration + wider audit)
+
+- **Root cause pattern, found in the domain/hosting order forms first**:
+  `mod_servicedomain_order_form.html.twig` and
+  `mod_servicehosting_order_form.html.twig` **[both html_custom overrides,
+  edited]** laid out the Register/Transfer/Own domain/Subdomain picker as
+  a permanent sidebar (`nav nav-pills flex-column border-end me-3`) next
+  to a search row (`d-flex gap-2` wrapping an `.input-group` with inline
+  `style="max-width:...; width:...;"` on the TLD select) — no mobile
+  breakpoint anywhere. Below ~500px combined width this clipped the TLD
+  select, crowded the Check button, and squeezed the sidebar pills. Never
+  built responsively in the first place, not a regression.
+- **Fix approach**: `nav-pills` is Bootstrap's normal *horizontal* pill
+  component — `flex-column` was the only thing forcing it vertical, so
+  making that `flex-md-column`/`flex-md-row` (Bootstrap's own responsive
+  utilities, confirmed present in the compiled bundle) mostly solves the
+  switcher on its own. Inline `max-width`/`width` styles moved into new
+  `.kzd-domain-*` classes in `themes/kzd/assets/build/css/kzd-overrides.css`
+  so mobile media queries can actually override them (inline styles beat
+  external CSS regardless of source order — `!important` was deliberately
+  avoided). One real bug found mid-fix: `.kzd-domain-tld-select` alone
+  lost to Bootstrap's own `.input-group > .form-select` rule on
+  specificity (a compound selector beats a single class regardless of
+  cascade order) — fixed by matching that same `.input-group > .x` shape.
+  Desktop field widths were intentionally *not* flattened to one value —
+  the hosting form's fields (320px) were already narrower than the
+  standalone domain form's (500px) before this fix; preserved via a
+  `--compact` modifier class rather than widened to match.
+- **Extended via a follow-up audit** (same session, explicitly requested)
+  to every other unresponsive pattern found across the client area and
+  admin panel:
+  - `mod_orderbutton_checkout.html.twig`, `mod_invoice_invoice.html.twig`
+    (×2 tables) **[html_custom, edited]** — bare `<table>` elements with no
+    `.table-responsive` wrapper, overflowing/clipping columns (confirmed
+    live on production via screenshot: the invoice line-items table's
+    "Total" column cut off at 360px).
+  - `mod_invoice_invoice.html.twig` payment-gateway row — unwrapped
+    `d-flex gap-3` of DB-configured, arbitrary-pixel-dimension logo
+    buttons; added `flex-wrap` plus a `.kzd-gateway-logo` max-width/
+    max-height cap (doesn't fight the existing inline `height`/`width` —
+    different properties, no specificity conflict).
+  - `mod_invoice_invoice.html.twig` card header, `mod_support_ticket.html.twig`
+    (×2 rows) — unwrapped title+buttons / avatar+name+badge+date+button
+    rows; added `flex-wrap`/responsive stacking classes.
+  - `modules/Servicedomain/templates/client/mod_servicedomain_manage.html.twig`
+    **[core edit, surgical]** — the domain "manage" page's Name/Expires/
+    Registered stat row (`justify-content-around`, `fs-4` domain name, no
+    wrap). Edited directly rather than copied into `html_custom` — this is
+    a 300+ line stock file and the actual change is ~14 lines; same
+    documented exception already used elsewhere in this file for exactly
+    this tradeoff (see the styled-confirmation-modals entry above and the
+    `html_custom`-override-mechanism note in `ARCHITECTURE.md`).
+  - `themes/admin_default/html/mod_index_dashboard.html.twig`
+    **[core edit, surgical]** — same reasoning (500+ line stock file, ~10
+    line change): the dashboard income-graph date-range input had an
+    inline `style="width: 16rem"` inside an unwrapped flex row; moved to a
+    `.kzd-admin-graph-range` class (`max-width` instead of a fixed
+    `width`) in `themes/admin_default/assets/build/css/kzd-admin-overrides.css`
+    — remember this whole `assets/build/` directory is gitignored except
+    this one force-added file (see `BRANDING.md`), so `git add -f` is
+    needed for any future edit here too.
+  - `themes/admin_default/html_custom/partial_admin_summary_card.html.twig`
+    **[new override]** — small enough (31 lines) to properly override
+    rather than surgically edit the stock file. Its header row (title/
+    subtitle + optional aside) had no wrap; the Client detail page's
+    112px avatar in that aside slot was the concrete instance found, but
+    this is a shared partial so any future page adding an aside inherits
+    the fix too.
+- **Verified via a real Twig parser**, not just "the page returned 200" —
+  every touched file was parsed with FOSSBilling's actual Twig library
+  (custom filters/functions stubbed) to catch structural syntax errors
+  that a stateless page load wouldn't necessarily reach (e.g. an error
+  deep in a conditional branch). `php -l` does **not** validate `.twig`
+  files (they're not PHP) despite superficially looking like it might —
+  worth remembering next time a template needs a quick correctness check
+  without a full authenticated page load.
+- **Not done in this pass**: no visual/screenshot tool was available in
+  the environment this work was done in — every fix was verified
+  structurally (parses correctly, classes render, no page errors) and
+  then confirmed visually by the client afterward via their own browser,
+  not by the implementer directly. Worth keeping in mind for any future
+  UI work done the same way — structural verification is necessary but
+  not sufficient on its own.
+
+## Invoice PDF fixes (2026-08-31)
+
+`modules/Invoice/templates/pdf/default-invoice.twig` /
+`default-invoice.css` **[core edit]**:
+
+- **Crash on a company address with only 2 lines filled in** — the admin
+  changed the company address from the demo placeholder text to a real
+  one, leaving `address_3` blank, and the invoice PDF started fataling
+  with `Key "address_3" ... does not exist`. `Invoice\Service::getFooterInfo()`
+  strips every empty field out of the array it hands to the template
+  (`foreach ($sourceData as $label => $data) { if (empty(trim($data)))
+  unset(...); }`), so an unfilled `address_3` isn't just an empty string
+  by the time the template sees it — the key doesn't exist at all, which
+  is fatal under `strict_variables: true`, not just falsy. Added
+  `|default('')` to every `footer.*` field the template reads without one
+  (`address_1`/`2`/`3`, `company_name`, `email`, `www`, `signature`) so a
+  blank company-setting field can't crash invoice generation again,
+  regardless of which fields get left empty in the future.
+- **Logo showing with no company name anywhere near it** — same
+  either/or-logo-replaces-name bug already fixed across the 19 rebranded
+  email templates (see "Branding" above), just never caught here since
+  nobody had looked at an invoice with the logo actually configured until
+  this incident surfaced it. Added `{{ footer.company_name }}` next to
+  the logo in the invoice header.
+- **The fix above then overlapped the logo and the name** — a genuine
+  Dompdf gotcha, not obvious from the markup alone:
+  `img.CompanyLogo { position: relative; left: 40px; top: 7px; }` in
+  `default-invoice.css` shifts the logo *visually* right by 40px while
+  its original box still occupies the unshifted space in the document
+  flow. With no text after it, that's invisible — but the company-name
+  text added right after it in source order renders starting from that
+  original unshifted spot, and the visually-shifted logo lands on top of
+  it. Fixed by moving the `position: relative; left: 40px; top: 7px`
+  rule onto a new wrapping `.CompanyHeader` div instead of the image
+  itself, so the logo and name lay out normally in flow inside it
+  (`52b728d`, following `f72effa`).
+
+## Client-portal crash fixes (strict_variables footguns, 2026-10-15 to 2026-10-17)
+
+A cluster of unrelated crashes, all the same underlying class of bug this
+install keeps running into: `strict_variables: true` (see
+`PRODUCTION_READINESS.md`) turns a missing array key or a null object
+reference into a hard fatal instead of FOSSBilling's stock "render
+blank" behaviour, and stock FOSSBilling's own templates — plus this
+project's `html_custom` overrides — weren't written defensively enough
+for that setting everywhere.
+
+- **Null `client` Twig global on the invoice page** —
+  `themes/kzd/html_custom/mod_invoice_invoice.html.twig` **[core edit]**.
+  `client` (`library/FOSSBilling/Twig/TwigFactory.php`) is `null` for
+  anyone not currently logged in as a client — which includes an admin
+  opening a client's invoice link directly, since `/invoice/:hash`
+  deliberately uses `api_guest` (`Invoice\Controller\Client::get_invoice()`)
+  so both guests and admin-previewing-as-guest can view it via the hash.
+  The one-click-payment block called `client.invoice_get_saved_card(...)`
+  unconditionally; guarded with `and client` alongside the existing
+  unpaid-status check. A follow-up audit (see further down) confirmed
+  this was the *only* unguarded `client.`/`admin.` usage anywhere in
+  `themes/kzd/**` or the stock `modules/*/templates/client/` trees —
+  every other usage was either already guarded or on a route that
+  enforces `is_client_logged` first, so `client` can't be null there
+  (`6a5fca0`).
+- **Client custom fields missing `active`/`required` keys** —
+  `modules/Client/templates/client/mod_client_profile.html.twig` and the
+  *stock* `modules/Page/templates/client/mod_page_signup.html.twig`
+  **[core edit, both]**. Same malformed-data shape as an earlier fix
+  (`c49e408`, see further up): a custom field saved with the Active/
+  Required checkboxes left unchecked (before that fix added a hidden-0
+  fallback to the admin form) saves as `{title: "..."}` with no
+  `active`/`required` keys at all — fatal under `strict_variables`, not
+  just falsy. That earlier fix patched the admin form and two client
+  templates but missed the client profile page, and separately missed
+  that the *stock* signup template (behind the already-fixed
+  `themes/kzd/html_custom/` override, so not normally rendered — but
+  still worth fixing for defense in depth) had the identical gap. Both
+  guarded with `|default(false)` (`297532d`).
+- **Circular self-reference in `layout_public.html.twig`'s `meta_description`
+  fallback** — `themes/kzd/html/layout_public.html.twig` **[core edit]**.
+  `{% set meta_description = block('meta_description')|default(...) %}`
+  computed the variable by calling `block('meta_description')` — but for
+  any page that doesn't override that block, Twig falls through to the
+  *parent template's own* definition of it, which was `{{ meta_description
+  }}` — i.e. the block, when not overridden, read the very variable being
+  assigned from calling it. Any page extending this layout without a
+  `meta_description` override hit `Variable "meta_description" does not
+  exist` the instant `block()` was evaluated. Found live on
+  `mod_client_set_new_password.html.twig` (the page a client lands on
+  after clicking the password-reset email link) — blocking an actual
+  password reset, not just a cosmetic error.
+  `modules/System/templates/client/mod_system_maintenance.html.twig` and
+  `modules/Orderbutton/templates/client/mod_orderbutton_index.html.twig`
+  extend the same layout without overriding the block either and would
+  have hit the identical crash eventually. Fixed at the root instead of
+  per-page: the block's fallback body now reads `settings.meta_description`
+  directly (no self-reference), and the one other `{{ meta_description }}`
+  read (the opengraph block) calls `block('meta_description')` instead of
+  the removed variable — safe for any current or future page that doesn't
+  bother overriding the block, not just the one that happened to get
+  reported (`297532d`).
+- **Password-reset `hash` never passed to its own template** —
+  `modules/Client/Controller/Client.php` **[core edit]**. Masked by the
+  bug directly above: `get_reset_password_confirm()` rendered
+  `mod_client_set_new_password` with no second argument at all, so the
+  template's `{{ hash }}` (populating a hidden form field the submit
+  button depends on) was always undefined — but the `meta_description`
+  crash fataled first, during `<head>` rendering, before execution ever
+  reached that line in `<body>`, so this second bug stayed invisible
+  until the first one was fixed. A client had already been manually
+  reset by an admin as a workaround before this was caught. Now passes
+  `['hash' => $hash]` through; also removed a client-side JS workaround
+  in the template that re-derived the hash from
+  `window.location.href.split('/').pop()` — a leftover patch for this
+  same gap that was now not just redundant but a latent risk in its own
+  right (an email client appending tracking params or a trailing slash
+  to the link would have corrupted an otherwise-correct value)
+  (`f0a7c49`, `3e59ff8`).
+- **Audit coverage**: the password-reset request → email → confirm →
+  update flow (`Client\Api\Guest.php`, `Client\Service.php`, rate-limiter
+  policies, both email templates' link URLs) was traced end-to-end after
+  the fixes above and found otherwise correct — hash format, 15-minute
+  expiry, session invalidation on reset, all consistent. The one-click
+  payment pipeline (JS → `Invoice\Api\Client` → `ServicePayGateway` →
+  `Paystack.php::chargeAuthorization()` → `ServiceTransaction::
+  createAndProcess()` → `verifyAndApply()`) was traced the same way and
+  verified executing for real (not just read) via FOSSBilling's actual
+  API dispatcher (`FOSSBilling\Api\Proxy`/`Dispatcher`) against local
+  dev — see `PAYSTACK.md` for what that surfaced (the classmap issue and
+  the silent-failure fix).
+
 ## Product catalog / pricing
 
 - **4 Shared Hosting products** (Starter/Basic/Standard/Business) — seeded
@@ -632,3 +920,17 @@ action="/build">`, no JS handoff involved.
   whole directory is normally excluded (regenerated Tabler build output),
   except one hand-maintained file
   (`kzd-admin-overrides.css`) which is force-added. See `BRANDING.md`.
+- **Untracked the auto-downloaded GeoIP databases** (2026-10-17) —
+  `library/FOSSBilling/GeoIP/Databases/{CC0-Country,PDDL-ASN}.mmdb` aren't
+  source; `FOSSBilling\GeoIP\Reader::updateDefaultDatabases()` re-downloads
+  them from GitHub releases whenever missing or >7 days old, fired every
+  admin cron run. They only ended up tracked because the original
+  baseline commit swept up the whole directory from an existing
+  FTP-uploaded install (this repo's history doesn't start from a clean
+  `git init`). Every cron refresh past that baseline snapshot showed up
+  as a permanent, unexplained "modified" binary diff. Added both to
+  `.gitignore` and untracked with `git rm --cached` (kept on disk, not
+  deleted). See `DEPLOYMENT.md`'s "Known incident: untracking a
+  previously-committed file breaks the next `git pull`" for the deploy-
+  time gotcha this specific kind of change runs into, and why it isn't
+  GeoIP-specific (`dd944b7`).

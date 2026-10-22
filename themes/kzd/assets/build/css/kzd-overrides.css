@@ -2767,6 +2767,77 @@ table > tbody > tr > td {
   }
 }
 
+/* Domain configuration picker (Register/Transfer/Own domain/Subdomain).
+   Used by mod_servicedomain_order_form.html.twig (Register/Transfer only)
+   and mod_servicehosting_order_form.html.twig (all four options). Mobile
+   default: nav-pills in its natural horizontal row (flex-md-column below
+   switches it to the desktop sidebar), divider under it instead of beside
+   it. flex-md-row/flex-md-column on the wrapper/nav themselves come from
+   Bootstrap directly -- only the divider needs a custom rule, since this
+   build's Bootstrap utilities aren't compiled with responsive border
+   variants. */
+.kzd-domain-picker-nav {
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--bs-border-color);
+  padding-bottom: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .kzd-domain-picker-nav {
+    flex-wrap: nowrap;
+    border-bottom: 0;
+    border-right: 1px solid var(--bs-border-color);
+    padding-bottom: 0;
+    padding-right: 1rem;
+  }
+}
+
+.kzd-domain-picker-content {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+/* Domain search row (SLD input + TLD select/input + Check button).
+   Desktop: the fixed max-width the input-group had inline before is now
+   here instead, so this same class can be widened per breakpoint without
+   fighting an inline style. TLD select/input sized to fit its own content
+   (".co.za") rather than the old fixed 30%/90-120px split, which is what
+   was clipping it at narrow widths. */
+.kzd-domain-input-group {
+  max-width: 500px;
+}
+
+/* Hosting form's Register/Transfer/Own domain fields were narrower (320px)
+   than the standalone domain form's (500px) -- preserved here rather than
+   flattened to one width, so desktop appearance is unchanged. */
+.kzd-domain-input-group--compact {
+  max-width: 320px;
+}
+
+/* Targets `.input-group > .kzd-domain-tld-select` (not just
+   `.kzd-domain-tld-select` alone) to match Bootstrap's own
+   `.input-group > .form-select` rule's specificity -- a single-class
+   selector here loses that fight regardless of source order, which is why
+   the TLD field was still splitting the row ~50/50 with the domain input
+   instead of shrinking to fit its own content. */
+.input-group > .kzd-domain-tld-select {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 4.5rem;
+  max-width: 6rem;
+}
+
+@media (max-width: 575.98px) {
+  .kzd-domain-input-group,
+  .kzd-domain-input-group--compact {
+    max-width: none;
+  }
+
+  .kzd-domain-check-btn {
+    width: 100%;
+  }
+}
+
 /* Bootstrap expands the navbar at exactly 768px, and at that width the
    brand plus the full link row measures 34px wider than the viewport —
    so every page using this header scrolls sideways on a tablet, the
@@ -4573,4 +4644,49 @@ body.dashboard .card .list-group-item:last-child { border-radius: 0 0 16px 16px 
   body.dashboard .container-fluid > .row,
   body:has(#sidebarMenu) .container-fluid > .row { padding-top: 16px; }
   .kzd-quick-actions .btn { flex: 1 1 calc(50% - 6px); }
+}
+/* Addon price column (mod_orderbutton_addons.html.twig): right-aligned
+   next to the title on wider screens, stacked underneath (left-aligned)
+   on narrow ones instead of staying text-nowrap and fighting the title
+   for width. */
+.kzd-addon-price {
+  text-align: left;
+}
+
+@media (min-width: 576px) {
+  .kzd-addon-price {
+    text-align: right;
+    margin-left: auto;
+  }
+}
+
+/* Invoice payment-gateway logo buttons (mod_invoice_invoice.html.twig).
+   Their exact height/width still comes from each gateway's DB-stored logo
+   dimensions (inline style, set per-gateway in admin) -- max-width/
+   max-height here don't fight that inline width/height (different
+   properties, no specificity conflict), they just stop an
+   admin-configured oversized logo from blowing out the row on narrow
+   screens. Combined with flex-wrap on the parent row (added inline), 3+
+   gateways wrap to a second line instead of overflowing. */
+.kzd-gateway-logo {
+  max-width: 90px;
+  max-height: 48px;
+}
+
+/* Domain "manage" page stat row (Name/Expires/Registered) --
+   modules/Servicedomain/templates/client/mod_servicedomain_manage.html.twig.
+   Long domain names at fs-4 plus two more stat blocks in one unwrapped
+   row can overflow a narrow screen; stacks below sm, row above (same
+   shape as the domain-picker fix). */
+.kzd-domain-stats {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+@media (min-width: 576px) {
+  .kzd-domain-stats {
+    flex-direction: row;
+    align-items: center;
+  }
 }
