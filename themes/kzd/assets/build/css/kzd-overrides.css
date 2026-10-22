@@ -1,69 +1,169 @@
 /*
  * KZD Solutions branding overrides.
  * Loaded after huraga.css so it cascades on top without touching the
- * compiled theme build. Maps the kzdsolutions-website design tokens
- * onto Bootstrap 5.3's CSS custom properties, which Huraga is built on.
- * Source of truth for these values: kzdsolutions-website/css/style.css
+ * compiled theme build. Maps the KZD premium SaaS system (monochrome
+ * black/white/gray, Inter Tight display + Inter body, sharp corners) onto
+ * Bootstrap 5.3's CSS custom properties across the whole client area — not
+ * just the marketing homepage and auth pages.
+ *
+ * Font family aligned 2026-10-22 to match kzd-next's design tokens
+ * (src/app/tokens.css + src/lib/fonts.ts in the Next.js marketing site this
+ * portal is merged under) -- was Hanken Grotesk display + IBM Plex Mono +
+ * Archivo, none of which the new site's design system uses. IBM Plex Mono
+ * and Archivo were pulled in but never actually referenced anywhere in this
+ * file, so they're dropped rather than swapped. kzd-next self-hosts its
+ * fonts (no layout shift, no CDN dependency); this file still loads from
+ * Google Fonts' CDN since self-hosting would mean copying font files across
+ * two separate apps/repos -- same typefaces, different delivery mechanism,
+ * worth revisiting if that CDN dependency ever becomes a problem.
  */
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&family=Inter:wght@400;500;600;700&display=swap');
 
 :root,
 [data-bs-theme=light] {
-  --bs-primary: #2946f3;
-  --bs-primary-rgb: 41, 70, 243;
-  --bs-primary-text-emphasis: #101d61;
-  --bs-primary-bg-subtle: #dde3fd;
-  --bs-primary-border-subtle: #aab7fa;
+  --bs-body-font-family: 'Inter Tight', 'Inter', system-ui, -apple-system, sans-serif;
+  --bs-body-bg: #FFFFFF;
+  --bs-body-bg-rgb: 255, 255, 255;
+  /* #F4F5F7 / #D9D9D9: exact hex match to kzd-next's --color-surface /
+     --color-border (src/app/tokens.css) -- was #F4F5F7 and a translucent
+     rgba() border that rendered close but not identical. */
+  --bs-tertiary-bg: #F4F5F7;
+  --bs-secondary-bg: #FFFFFF;
+  --bs-border-color: #D9D9D9;
+  --bs-secondary-color: #6B6B6B;
+  --bs-secondary-rgb: 107, 107, 107;
+  /* Design doc text roles: Rich Black for headings and emphasis, Charcoal
+     for body copy -- replaces Bootstrap's #212529 / pure black. */
+  --bs-body-color: #3A3A3A;
+  --bs-body-color-rgb: 58, 58, 58;
+  --bs-emphasis-color: #1A1A1A;
+  --bs-emphasis-color-rgb: 26, 26, 26;
+  --bs-heading-color: #1A1A1A;
 
-  --bs-link-color: #2946f3;
-  --bs-link-color-rgb: 41, 70, 243;
-  --bs-link-hover-color: #1c31c2;
-  --bs-link-hover-color-rgb: 28, 49, 194;
+  --bs-primary: #1A1A1A;
+  --bs-primary-rgb: 26, 26, 26;
+  --bs-primary-text-emphasis: #1A1A1A;
+  --bs-primary-bg-subtle: #F4F5F7;
+  --bs-primary-border-subtle: #A7A7A7;
 
-  --bs-border-radius: 0.5rem;
-  --bs-border-radius-sm: 0.375rem;
-  --bs-border-radius-lg: 0.75rem;
-  --bs-border-radius-xl: 1.25rem;
-  --bs-border-radius-2xl: 2rem;
+  --bs-link-color: #1A1A1A;
+  --bs-link-color-rgb: 26, 26, 26;
+  --bs-link-hover-color: #3A3A3A;
+  --bs-link-hover-color-rgb: 58, 58, 58;
+
+  --bs-success: #3E6B4F;
+  --bs-success-rgb: 62, 107, 79;
+  --bs-warning: #A8791F;
+  --bs-warning-rgb: 168, 121, 31;
+  --bs-danger: #9A3B2E;
+  --bs-danger-rgb: 154, 59, 46;
+  --bs-info: #4F7A6B;
+  --bs-info-rgb: 79, 122, 107;
+
+  --kzd-accent: #1A1A1A;
+  --kzd-accent-light: #6B6B6B;
+
+  /* The design doc's corner scale (section 7): 12px cards and inputs,
+     8px small controls, 16px primary cards, 24px hero panels. This was 0
+     everywhere, which left the client area square while the public pages
+     were rounded. Buttons are pills (end of file), by the owner's choice. */
+  --bs-border-radius: 12px;
+  --bs-border-radius-sm: 8px;
+  --bs-border-radius-lg: 16px;
+  --bs-border-radius-xl: 24px;
+  --bs-border-radius-2xl: 24px;
   --bs-border-radius-pill: 999px;
 
-  --bs-box-shadow: 0 20px 45px rgba(17, 24, 39, .08);
-  --bs-box-shadow-sm: 0 4px 12px rgba(17, 24, 39, .04);
-  --bs-box-shadow-lg: 0 28px 55px rgba(17, 24, 39, .12);
-
-  --kzd-navy: #000d51;
-  --kzd-accent-purple: #6b21a8;
-  --kzd-accent-purple-light: #9f5cff;
+  --bs-box-shadow: 0 20px 45px rgba(26, 26, 26, .10);
+  --bs-box-shadow-sm: 0 4px 14px rgba(26, 26, 26, .06);
+  --bs-box-shadow-lg: 0 28px 55px rgba(26, 26, 26, .14);
 }
 
+/* Dark mode, the design doc's neutrals inverted the way Apple does it:
+   Rich Black canvas with a one-step-lighter raised surface, Light Silver
+   body text, near-white headings, and Light Silver as the action colour
+   (with Rich Black text on filled buttons). Every pair clears WCAG AA. */
 [data-bs-theme=dark] {
-  --bs-primary: #6a83ff;
-  --bs-primary-rgb: 106, 131, 255;
-  --bs-primary-text-emphasis: #b7c3ff;
-  --bs-primary-bg-subtle: #1a2050;
-  --bs-primary-border-subtle: #33408f;
+  --bs-body-bg: #1A1A1A;
+  --bs-body-bg-rgb: 26, 26, 26;
+  --bs-tertiary-bg: #242424;
+  --bs-secondary-bg: #242424;
+  --bs-border-color: rgba(244, 244, 244, 0.14);
+  --bs-body-color: #D9D9D9;
+  --bs-body-color-rgb: 217, 217, 217;
+  --bs-emphasis-color: #F4F5F7;
+  --bs-emphasis-color-rgb: 244, 244, 244;
+  --bs-heading-color: #F4F5F7;
+  --bs-secondary-color: #A7A7A7;
+  --bs-secondary-rgb: 167, 167, 167;
 
-  --bs-link-color: #6a83ff;
-  --bs-link-color-rgb: 106, 131, 255;
-  --bs-link-hover-color: #8fa0ff;
-  --bs-link-hover-color-rgb: 143, 160, 255;
+  --bs-primary: #D9D9D9;
+  --bs-primary-rgb: 217, 217, 217;
+  --bs-primary-text-emphasis: #F4F5F7;
+  --bs-primary-bg-subtle: #242424;
+  --bs-primary-border-subtle: #3A3A3A;
 
-  --kzd-navy: #b9c3ff;
-  --kzd-accent-purple: #b088e0;
-  --kzd-accent-purple-light: #c9a3ff;
+  --bs-link-color: #D9D9D9;
+  --bs-link-color-rgb: 217, 217, 217;
+  --bs-link-hover-color: #FFFFFF;
+  --bs-link-hover-color-rgb: 255, 255, 255;
+
+  --kzd-accent: #D9D9D9;
+  --kzd-accent-light: #FFFFFF;
+}
+
+/* Site-wide tactile press feedback (Apple's own signature micro-interaction
+   on every button: a slight scale-down on :active, not just a color/shadow
+   change) -- previously only defined inside `.kzd-home`'s own local <style>
+   block on the marketing homepage, so every clickable CTA outside it (the
+   whole client area: checkout, order flow, dashboard) never got the same
+   tactile confirmation a tap actually registered. One global utility instead
+   of a homepage-only one, applied wherever `.kzd-press` is used. */
+.kzd-press {
+  transition: transform 120ms cubic-bezier(0, 0, 0.2, 1), background-color .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.kzd-press:active {
+  transform: scale(0.96);
+}
+@media (prefers-reduced-motion: reduce) {
+  .kzd-press:active { transform: none; }
+}
+
+h1, h2, h3, .kzd-serif-heading {
+  font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .btn {
-  transition: all .25s ease;
+  border-radius: 0;
+  font-weight: 600;
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
 }
 
 .btn-primary {
   --bs-btn-hover-transform: translateY(-2px);
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
 }
 
 .btn-primary:hover,
 .btn-primary:active {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(41, 70, 243, .25);
+  background-color: #1A1A1A;
+  border-color: #1A1A1A;
+  box-shadow: 0 10px 25px rgb(from var(--bs-primary) r g b / .25);
+}
+
+.btn-outline-primary {
+  color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  transform: translateY(-2px);
 }
 
 .kzd-brand-name {
@@ -72,57 +172,194 @@
 }
 
 .card {
+  border-radius: 0;
+  border-color: var(--bs-border-color);
   box-shadow: var(--bs-box-shadow-sm);
-  transition: transform .25s ease, box-shadow .25s ease;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
 
-/* Auth pages (login / signup / password reset): split layout with a branded side panel */
+.card-header {
+  background-color: var(--bs-tertiary-bg);
+  border-color: var(--bs-border-color);
+}
+
+/* Cards, list rows and buttons feel tactile: a gentle lift on hover instead of a flat, static block */
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--bs-box-shadow);
+  border-color: rgb(from var(--bs-primary) r g b / .35);
+}
+
+.list-group-item {
+  border-radius: 0 !important;
+}
+
+.list-group-item.list-group-item-action:hover {
+  background-color: var(--bs-tertiary-bg);
+}
+
+table > thead > tr > th {
+  border-bottom-width: 2px;
+  border-color: var(--bs-border-color);
+}
+
+table > tbody > tr {
+  transition: background-color .15s ease;
+}
+
+.table-hover > tbody > tr:hover > * {
+  background-color: var(--bs-tertiary-bg);
+}
+
+.badge {
+  border-radius: 0;
+  letter-spacing: 0.02em;
+}
+
+.form-control,
+.form-select {
+  border-radius: 0;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--kzd-accent);
+  box-shadow: 0 0 0 1px var(--kzd-accent);
+}
+
+.nav-link.active,
+.offcanvas-item.active > .nav-link {
+  color: var(--bs-primary) !important;
+}
+
+.offcanvas-item.active {
+  background: rgb(from var(--bs-primary) r g b / .08);
+  border-left: 2px solid var(--kzd-accent);
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: var(--bs-primary);
+}
+
+.page-item.active .page-link {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+
+.page-link {
+  border-radius: 0;
+  color: var(--bs-primary);
+}
+
+/* Gentle, consistent motion across the whole app: cards fade up into place once, respecting reduced-motion */
+.kzd-fx {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .55s cubic-bezier(0.16, 1, 0.3, 1), transform .55s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--kzd-fx-delay, 0ms);
+}
+
+.kzd-fx-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kzd-fx { transition: none !important; opacity: 1 !important; transform: none !important; }
+  .card:hover, .btn:hover { transform: none !important; }
+}
+
+/* A number of stock module templates pair a heading with a search box or
+   button using Bootstrap's d-flex + justify-content-between with no wrap,
+   which overflows on phones. Wrap them below the sm breakpoint site-wide. */
+@media (max-width: 576px) {
+  .d-flex.justify-content-between {
+    flex-wrap: wrap;
+    row-gap: 0.75rem;
+  }
+  .d-flex.justify-content-between > form,
+  .d-flex.justify-content-between > .input-group {
+    width: 100%;
+  }
+}
+
+/* Belt-and-braces: never let the page scroll horizontally on a phone, whatever the source.
+   Only on body (not html) so position: sticky headers elsewhere keep working. */
+body { overflow-x: hidden; }
+.card, .card-body { max-width: 100%; }
+p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
+
+/* Auth pages (login / signup / password reset): clean centered single
+   column, no side panel. This used to be a dark split-screen layout with
+   an animated mesh background, a floating AI-builder demo video, and an
+   eyebrow label promoting the builder — removed outright per direct
+   request. Nothing in that panel was helping someone sign in; it was
+   selling a different product at the one moment a returning customer
+   just wants the door to open. Sharp corners and the brand gradient top
+   bar are kept (the site's established visual language everywhere else),
+   the decorative motion is not — motion here would have no job to do. */
 .kzd-auth-wrapper {
-  display: flex;
   min-height: 100vh;
-}
-
-.kzd-auth-panel {
-  width: 42%;
-  max-width: 560px;
-  padding: 48px;
-  background-image: linear-gradient(180deg, rgba(0, 13, 81, .82), rgba(0, 13, 81, .88)), url("/public/branding/bg-auth.jpg");
-  background-size: cover;
-  background-position: center;
-  color: #fff;
-}
-
-.kzd-auth-panel-brand {
-  color: #fff;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
-.kzd-auth-panel-copy h2 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #fff;
-}
-
-.kzd-auth-panel-copy p {
-  color: rgba(255, 255, 255, .8);
-  font-size: 1rem;
-  max-width: 380px;
-}
-
-.kzd-auth-panel-footer small {
-  color: rgba(255, 255, 255, .6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  background:
+    radial-gradient(640px 420px at 50% -6%, rgba(26, 26, 26,0.05), transparent 62%),
+    radial-gradient(rgba(26, 26, 26,0.05) 1px, transparent 1px) 0 0/24px 24px,
+    #FFFFFF;
+  color-scheme: light;
+  font-family: 'Inter Tight', system-ui, sans-serif;
 }
 
 .kzd-auth-form-side {
-  flex: 1;
+  position: relative;
+  width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 40px 24px;
 }
 
+.kzd-auth-back-link {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto 20px;
+  display: flex;
+}
+
+.kzd-auth-form-inner-wide + .kzd-auth-back-link,
+.kzd-auth-back-link.kzd-auth-back-link-wide {
+  max-width: 560px;
+}
+
+.kzd-auth-back-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  /* Vertical padding only, to lift an 11px uppercase link off a 17px
+     tap height — under the 24px minimum, and it is the sole way back
+     out of the auth screen on a phone. */
+  padding: 7px 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6B6B6B;
+  text-decoration: none;
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.kzd-auth-back-link a:hover { color: #1A1A1A; transform: translateX(-2px); }
+.kzd-auth-back-link a svg { width: 13px; height: 13px; transition: transform 160ms ease; }
+.kzd-auth-back-link a:hover svg { transform: translateX(-2px); }
+
 .kzd-auth-form-inner {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 420px;
 }
@@ -131,11 +368,312 @@
   max-width: 560px;
 }
 
+/* Card + form controls: sharp corners, cream/forest-green/gold, matching the homepage language */
 .page-login .card,
 .page-signup .card,
 .page-password-reset .card {
-  border: none;
-  box-shadow: var(--bs-box-shadow-lg);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  border-radius: 0;
+  background: #FFFFFF;
+  box-shadow: 0 40px 80px -50px rgba(26, 26, 26, 0.35);
+}
+
+.page-login .card::before,
+.page-signup .card::before,
+.page-password-reset .card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1A1A1A 0%, #1A1A1A 45%, #6B6B6B 75%, #6B6B6B 100%);
+}
+
+.page-login .card-body,
+.page-signup .card-body,
+.page-password-reset .card-body {
+  padding: 3rem 2.5rem;
+}
+
+.page-login h5.text-center,
+.page-signup h5.text-center,
+.page-password-reset h5.text-center {
+  font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 2.1rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #1A1A1A;
+  margin-bottom: 1.75rem !important;
+}
+
+/* Phone: the desktop card spends 2.5rem (42px) of padding on each side,
+   which on a 390px screen left the form itself only 256px — narrow
+   enough that "Log in to your account" broke across three lines at the
+   2.1rem display size and the whole card read as cramped inside its own
+   margins. Tightening the gutter and stepping the heading down keeps the
+   card's proportions but gives the fields the width back. */
+@media (max-width: 600px) {
+  .page-login .card-body,
+  .page-signup .card-body,
+  .page-password-reset .card-body {
+    padding: 2.25rem 1.375rem;
+  }
+  .page-login h5.text-center,
+  .page-signup h5.text-center,
+  .page-password-reset h5.text-center {
+    font-size: 1.65rem;
+    /* The card-body's own padding already opens the card; the heading's
+       inherited top margin stacked another 25px on top of it, so the
+       title floated 63px below the card edge with nothing in between. */
+    margin-top: 0 !important;
+    margin-bottom: 1.35rem !important;
+    text-wrap: balance;
+  }
+}
+
+.page-login .form-label,
+.page-signup .form-label,
+.page-password-reset .form-label {
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #3A3A3A;
+  margin-bottom: 8px;
+}
+
+/* Password visibility toggle — a real usability win for anyone unsure
+   whether they typed their password correctly, not just decoration. */
+.kzd-password-field { position: relative; }
+.kzd-password-field .form-control { padding-right: 44px; }
+/* 40px square: at 30 this sat below the touch-target floor on a phone,
+   right next to the field edge where a mis-tap lands in the input
+   instead. The icon inside is unchanged — only the hit area grew, and
+   `right` drops by the same 5px the box gained so it stays optically
+   aligned where it was. */
+.kzd-password-toggle {
+  position: absolute; top: 50%; right: 7px; transform: translateY(-50%);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; padding: 0;
+  background: transparent; border: 0; color: #6B6B6B; cursor: pointer;
+  transition: color 160ms ease;
+}
+.kzd-password-toggle:hover { color: #1A1A1A; }
+
+/* Auth secondary actions — plain text links under the primary gradient
+   button, not equal-weight outline buttons competing with it. */
+.kzd-auth-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  text-align: center;
+  font-size: 13.5px;
+  color: #6B6B6B;
+}
+.kzd-auth-links a {
+  /* inline-block + padding so "Create one", "Forgot password?" and
+     "Need help signing in?" clear the 24px touch minimum — as bare
+     inline links they were 18-21px tall. These are the account-recovery
+     routes; on a phone they have to be comfortably hittable. The column
+     gap absorbs the extra height, so spacing is unchanged. */
+  display: inline-block;
+  padding: 4px 2px;
+  color: #1A1A1A;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.kzd-auth-links a:hover { color: #1A1A1A; }
+
+/* "Continue with Google" button + the "or" divider above the email/password
+   form. Kept visually secondary (outline, not the gradient primary button)
+   since password login is still the default path. */
+.kzd-google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 600;
+}
+.kzd-google-btn svg { flex-shrink: 0; }
+.kzd-auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 16px;
+  color: #9A9A9A;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.kzd-auth-divider::before,
+.kzd-auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #E5E5E5;
+}
+
+/* Utility row under the card — fills the space below the form with real
+   content (trust signals, a support link) instead of leaving it empty. */
+.kzd-auth-footer-note {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  margin: 28px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  /* #6B6B6B measured 3.77:1 on white — under AA for 12px text, and this
+     line is the page's security reassurance, so it has to be readable. */
+  color: #6B6B6B;
+}
+
+.kzd-auth-footer-note.kzd-auth-footer-note-wide { max-width: 560px; }
+
+.kzd-auth-footer-note span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kzd-auth-footer-note svg { width: 13px; height: 13px; color: #A7A7A7; }
+
+.kzd-auth-footer-note a {
+  /* Same 24px touch floor as .kzd-auth-links a — "Need help signing in?"
+     sits in this row rather than that one, so it needs its own padding. */
+  display: inline-block;
+  padding: 4px 2px;
+  color: #6B6B6B;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.kzd-auth-footer-note a:hover { color: #1A1A1A; }
+
+/* Long signup form: visually grouped into named sections instead of one
+   undifferentiated wall of fields, so it never feels overwhelming. */
+.kzd-form-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #1A1A1A;
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+}
+.kzd-form-section-label-spaced { margin-top: 28px; }
+
+.page-login .form-control,
+.page-login .form-select,
+.page-signup .form-control,
+.page-signup .form-select,
+.page-password-reset .form-control,
+.page-password-reset .form-select {
+  border: 1px solid rgba(26, 26, 26, 0.22);
+  border-radius: 0;
+  background: #FFFFFF;
+  color: #1A1A1A;
+  padding: 0.85rem 0.95rem;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+  font-size: 16px;
+  box-shadow: none;
+}
+
+.page-login .form-control:focus,
+.page-login .form-select:focus,
+.page-signup .form-control:focus,
+.page-signup .form-select:focus,
+.page-password-reset .form-control:focus,
+.page-password-reset .form-select:focus {
+  border-color: #1A1A1A;
+  box-shadow: 0 0 0 1px #1A1A1A;
+}
+
+.page-login .form-hint,
+.page-signup .form-hint,
+.page-password-reset .form-hint {
+  font-size: 12px;
+  /* #6B6B6B measured 3.77:1 on white — under AA at 12px, and this hint
+     carries the password rules, so it has to be readable to be useful. */
+  color: #6B6B6B;
+}
+
+.page-login .form-check-label,
+.page-signup .form-check-label,
+.page-password-reset .form-check-label {
+  font-size: 13.5px;
+  color: #3A3A3A;
+}
+
+.page-login .form-check-label a,
+.page-signup .form-check-label a,
+.page-password-reset .form-check-label a {
+  color: #1A1A1A;
+  text-decoration: underline;
+}
+
+.page-login .btn-primary,
+.page-signup .btn-primary,
+.page-password-reset .btn-primary {
+  background: #1A1A1A;
+  border: 1px solid #1A1A1A;
+  border-radius: 0;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 0.85rem 1rem;
+  box-shadow: none;
+}
+
+.page-login .btn-primary:hover,
+.page-login .btn-primary:active,
+.page-signup .btn-primary:hover,
+.page-signup .btn-primary:active,
+.page-password-reset .btn-primary:hover,
+.page-password-reset .btn-primary:active {
+  background: #1A1A1A;
+  border-color: #1A1A1A;
+  transform: none;
+  box-shadow: none;
+}
+
+.page-login .btn-outline-primary,
+.page-signup .btn-outline-primary,
+.page-password-reset .btn-outline-primary {
+  background: transparent;
+  border: 1px solid rgba(26, 26, 26, 0.3);
+  border-radius: 0;
+  color: #1A1A1A;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.75rem 1rem;
+}
+
+.page-login .btn-outline-primary:hover,
+.page-signup .btn-outline-primary:hover,
+.page-password-reset .btn-outline-primary:hover {
+  background: #1A1A1A;
+  border-color: #1A1A1A;
+  color: #FFFFFF;
+}
+
+.page-login a:not(.btn),
+.page-signup a:not(.btn),
+.page-password-reset a:not(.btn) {
+  color: #1A1A1A;
 }
 
 /* Dashboard: quick actions + overview stat cards, matching the website's card language */
@@ -151,41 +689,86 @@
   gap: 8px;
 }
 
+/* Primary action button — the one solid-navy moment, reserved for the
+   single most important action on a page (homepage "Get started", here the
+   dashboard's primary "New Order"). Matches the homepage's kzd-btn-gradient. */
+.kzd-btn-gradient {
+  background: #1A1A1A !important;
+  /* A same-colour 1px border, not none: matches the pill tab buttons'
+     1px border so both render at the same height. */
+  border: 1px solid #1A1A1A !important;
+  color: #FFFFFF !important;
+  transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease !important;
+}
+.kzd-btn-gradient:hover {
+  background: #1A1A1A !important;
+  border-color: #1A1A1A !important;
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px -12px rgba(26, 26, 26,0.55);
+}
+
 .kzd-stat-card {
-  border: none;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  transition: border-color 220ms ease, box-shadow 260ms ease, transform 260ms ease;
+}
+
+.kzd-stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1A1A1A 0%, #1A1A1A 45%, #6B6B6B 75%, #6B6B6B 100%);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 320ms cubic-bezier(0.16,1,0.3,1);
 }
 
 .kzd-stat-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--bs-box-shadow);
+  border-color: transparent;
 }
 
+.kzd-stat-card:hover::before { transform: scaleX(1); }
+
 .kzd-stat-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--bs-border-radius);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
   background: var(--bs-primary-bg-subtle);
   color: var(--bs-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  transition: background 220ms ease, color 220ms ease, transform 220ms ease;
+}
+
+.kzd-stat-card:hover .kzd-stat-icon {
+  background: var(--bs-primary);
+  color: #FFFFFF;
+  transform: scale(1.06);
 }
 
 .kzd-stat-icon .icon {
-  height: 22px;
-  width: 22px;
+  height: 21px;
+  width: 21px;
 }
 
 .kzd-stat-value {
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: 1.85rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
 }
 
 .kzd-stat-label {
   color: var(--bs-secondary-color);
-  font-size: .85rem;
+  font-size: .9rem;
+  font-weight: 600;
   margin-bottom: 4px;
 }
 
@@ -213,171 +796,6 @@
   transform: translateX(3px);
 }
 
-/* Guest landing hero + marketing feature cards */
-.kzd-guest-hero {
-  border-radius: var(--bs-border-radius-2xl);
-  padding: 64px 40px;
-  text-align: center;
-  color: #fff;
-  background-image: linear-gradient(180deg, rgba(0, 13, 81, .85), rgba(0, 13, 81, .9)), url("/public/branding/bg-auth.jpg");
-  background-size: cover;
-  background-position: center;
-}
-
-.kzd-guest-hero-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  border-radius: var(--bs-border-radius-pill);
-  background: rgba(255, 255, 255, .12);
-  color: #fff;
-  font-size: .8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .04em;
-  margin-bottom: 20px;
-}
-
-.kzd-guest-hero-eyebrow .icon {
-  height: 14px;
-  width: 14px;
-}
-
-.kzd-guest-hero h1 {
-  color: #fff;
-  font-size: 2.5rem;
-  font-weight: 700;
-  max-width: 700px;
-  margin: 0 auto 16px;
-}
-
-.kzd-guest-hero p {
-  color: rgba(255, 255, 255, .85);
-  font-size: 1.1rem;
-  max-width: 560px;
-  margin: 0 auto 32px;
-}
-
-.kzd-guest-hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-}
-
-.kzd-guest-hero-actions .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.kzd-feature-card {
-  border: none;
-  text-align: center;
-}
-
-.kzd-feature-card .card-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.kzd-feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--bs-box-shadow);
-}
-
-.kzd-feature-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: var(--bs-border-radius-lg);
-  background: var(--bs-primary-bg-subtle);
-  color: var(--bs-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-}
-
-.kzd-feature-icon .icon {
-  height: 26px;
-  width: 26px;
-}
-
-.kzd-feature-card h3 {
-  font-size: 1rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.kzd-feature-card p {
-  color: var(--bs-secondary-color);
-  font-size: .875rem;
-  margin-bottom: 0;
-}
-
-.kzd-quicklinks-header {
-  margin-bottom: 16px;
-}
-
-.kzd-quicklinks-header h2 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--bs-body-color);
-  margin-bottom: 0;
-}
-
-.kzd-quicklink-card {
-  border: none;
-  transition: transform .25s ease, box-shadow .25s ease;
-}
-
-.kzd-quicklink-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--bs-box-shadow);
-}
-
-.kzd-quicklink-card .card-body {
-  display: flex;
-  flex-direction: column;
-}
-
-.kzd-quicklink-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--bs-border-radius);
-  background: var(--bs-primary-bg-subtle);
-  color: var(--bs-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 14px;
-}
-
-.kzd-quicklink-icon .icon {
-  height: 22px;
-  width: 22px;
-}
-
-.kzd-quicklink-card h3 {
-  font-size: 1rem;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.kzd-quicklink-card p {
-  color: var(--bs-secondary-color);
-  font-size: .875rem;
-  flex-grow: 1;
-}
-
-.kzd-quicklink-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
 /* Sidebar navigation: grouping + pinned quick action */
 .kzd-sidebar-cta {
   display: flex;
@@ -403,76 +821,3756 @@
   border-radius: var(--bs-border-radius);
 }
 
-@media (max-width: 767px) {
-  .kzd-guest-hero {
-    padding: 40px 24px;
-  }
+/* Belt-and-braces: keep the order accordion (and any other accordion) on the
+   neutral/navy system regardless of which intermediate Bootstrap variable a
+   given state resolves through. */
+.accordion-button,
+.accordion-button.collapsed {
+  color: var(--bs-body-color);
+}
 
-  .kzd-guest-hero h1 {
-    font-size: 1.75rem;
+.accordion-button:not(.collapsed) {
+  color: var(--bs-primary);
+}
+
+.accordion-button:disabled,
+.accordion-button[disabled] {
+  color: var(--bs-secondary-color);
+  opacity: .6;
+}
+
+/* Secure-checkout header bar (mod_orderbutton_content.html.twig) -- bleeds
+   to the outer page card's edges via negative margins matching its own
+   padding exactly (see .kzd-order-page-card > .card-body below). */
+.kzd-secure-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #1A1A1A;
+  color: #fff;
+  padding: 0 24px;
+  height: 48px;
+  margin: -8px -24px 24px;
+  font-size: 13px;
+}
+@media (min-width: 768px) {
+  .kzd-secure-bar {
+    margin: -8px -40px 28px;
+    padding: 0 40px;
+    height: 52px;
+  }
+}
+.kzd-secure-bar-brand {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.kzd-secure-bar-divider {
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.22);
+  flex: none;
+}
+.kzd-secure-bar-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+}
+.kzd-secure-bar-trust {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+}
+.kzd-secure-bar-trust .icon {
+  width: 12px;
+  height: 12px;
+  flex: none;
+}
+/* Below ~620px the bar held two nowrap blocks — the brand and the trust
+   line — whose combined width runs about 50px past the bar, so "Payments
+   by Paystack" was cut off at the edge. The label goes first, then the
+   brand: the logo sits in the header immediately above this, whereas SSL
+   and the payment processor are the reassurance this strip exists to give
+   and the part a buyer actually needs on a checkout. */
+/* Keyed to the card, not the viewport. The bar lives inside the order
+   card, which is col-md-9 minus gutters -- about 528px at a 768px
+   viewport -- so a `@media (max-width: 620px)` rule never fired there and
+   "Payments by Paystack" was still being cut mid-word on a tablet. The
+   card declares a container below so the rule can see the width the bar
+   actually has. */
+@container kzd-order-card (max-width: 620px) {
+  .kzd-secure-bar-label,
+  .kzd-secure-bar-brand,
+  .kzd-secure-bar-divider {
+    display: none;
+  }
+  .kzd-secure-bar-trust {
+    margin-left: 0;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.85);
   }
 }
 
 /* Order flow step indicator (mod_orderbutton_content.html.twig) */
 .kzd-order-steps {
-  gap: 8px;
+  display: flex;
+  gap: 0;
+  margin-bottom: 8px;
 }
 
 .kzd-order-step {
+  position: relative;
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding-bottom: 12px;
-  border-bottom: 3px solid var(--bs-border-color);
+  padding: 0 8px 18px;
   color: var(--bs-secondary-color);
   min-width: 72px;
+}
+
+.kzd-order-step::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--bs-border-color);
 }
 
 .kzd-order-step-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: var(--bs-tertiary-bg);
-  margin-bottom: 6px;
+  border: 1px solid var(--bs-border-color);
+  margin-bottom: 8px;
+  transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease, box-shadow .2s ease;
 }
 
 .kzd-order-step-icon .icon {
-  width: 16px;
-  height: 16px;
+  width: 17px;
+  height: 17px;
 }
 
 .kzd-order-step-label {
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
-.kzd-order-step.is-done {
-  border-bottom-color: var(--bs-primary);
-  color: var(--bs-body-color);
+.kzd-order-step.is-done::after {
+  background: var(--bs-primary);
 }
 
 .kzd-order-step.is-done .kzd-order-step-icon {
   background: var(--bs-primary-bg-subtle);
+  border-color: var(--bs-primary-border-subtle);
   color: var(--bs-primary);
 }
 
-.kzd-order-step.is-active {
-  border-bottom-color: var(--bs-primary);
+.kzd-order-step.is-done .kzd-order-step-label {
   color: var(--bs-body-color);
+}
+
+.kzd-order-step.is-active::after {
+  background: var(--bs-primary);
 }
 
 .kzd-order-step.is-active .kzd-order-step-icon {
   background: var(--bs-primary);
+  border-color: var(--bs-primary);
   color: #fff;
+  transform: scale(1.08);
+  box-shadow: 0 6px 16px rgb(from var(--bs-primary) r g b / .3);
+}
+
+.kzd-order-step.is-active .kzd-order-step-label {
+  color: var(--bs-body-color);
 }
 
 @media (max-width: 575px) {
   .kzd-order-step-label {
     display: none;
   }
+}
+
+/* ==========================================================================
+   App interior: bigger type, more breathing room, clearer hierarchy.
+   The marketing homepage already reads premium; this brings the actual
+   app (dashboard, sidebar, order flow, tables, forms) up to the same bar
+   so it's comfortable and unambiguous at a glance, not just decorated.
+   ========================================================================== */
+
+html {
+  font-size: 111%;
+}
+
+body {
+  line-height: 1.55;
+}
+
+.card-header h1,
+.card-header .h1 {
+  font-size: 1.85rem;
+}
+
+.accordion-body h4,
+.card-body h4 {
+  font-family: var(--bs-body-font-family);
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: -0.005em;
+  margin-bottom: 4px;
+}
+
+.accordion-body > span {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--bs-secondary-color);
+  margin-bottom: 12px;
+}
+
+/* Sidebar: bigger, better-spaced nav so every link is an easy, unambiguous target */
+.kzd-sidebar-cta {
+  font-size: 1rem;
+  padding: 0.85rem 1rem;
+}
+
+#sidebarMenu .nav-link {
+  font-size: 1rem;
+  padding: 0.65rem 0.75rem;
+  gap: 12px !important;
+}
+
+#sidebarMenu .nav-link .icon {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+
+#sidebarMenu .kzd-nav-group-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.09em;
+  margin-top: 24px;
+}
+
+#sidebarMenu .offcanvas-item {
+  margin-bottom: 2px;
+}
+
+/* Portal header: a slim monochrome utility bar above the main navbar,
+   linking back to kzdsolutions.co.za (the separate Next.js marketing site --
+   see PROJECT_STRUCTURE.md) for continuity, since this is a different app
+   the client has landed in, not a section of that site. Kept minimal
+   (no duplicated marketing nav/dropdowns) because the only things that
+   matter once a client is in the portal are Dashboard/Order/Profile. */
+.kzd-portal-header-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 8px 24px;
+  background: #1A1A1A;
+}
+.kzd-portal-site-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #D9D9D9;
+  font-size: 12.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+.kzd-portal-site-link svg { width: 12px; height: 12px; }
+.kzd-portal-site-link:hover { color: #FFFFFF; }
+
+.kzd-portal-nav { padding: 20px 0; border-bottom: 1px solid var(--bs-border-color); }
+
+/* Top navbar: a touch more room and clarity */
+.navbar .nav-link {
+  font-size: 0.98rem;
+}
+
+.client-dropdown .nav-link.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 6px 14px 6px 6px;
+  transition: background-color 160ms ease;
+}
+.client-dropdown .nav-link.dropdown-toggle:hover,
+.client-dropdown .nav-link.dropdown-toggle[aria-expanded="true"] {
+  background: var(--bs-tertiary-bg);
+}
+.client-dropdown .nav-link.dropdown-toggle span {
+  font-weight: 600;
+}
+
+/* Buttons: bigger, easier to hit, still sharp-cornered */
+.btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.98rem;
+}
+
+.btn-sm {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.86rem;
+}
+
+.btn-lg {
+  padding: 0.85rem 1.6rem;
+  font-size: 1.08rem;
+}
+
+/* Accordion headers (order flow, KB, FAQs): bigger label, roomier click target */
+.accordion-button {
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 1.15rem 1.3rem;
+}
+
+.accordion-button .icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* List rows (product pickers, recent orders/tickets, KB articles): roomier and clearer */
+.list-group-item {
+  padding: 1rem 1.15rem;
+  font-size: 1rem;
+}
+
+.list-group-item.list-group-item-action {
+  font-weight: 500;
+}
+
+/* Form fields: bigger text and touch targets throughout the app, not just auth pages */
+.form-control,
+.form-select {
+  padding: 0.6rem 0.85rem;
+  font-size: 1rem;
+}
+
+.form-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+/* Tables: more breathing room per row */
+table > thead > tr > th,
+table > tbody > tr > td {
+  padding-top: 0.85rem;
+  padding-bottom: 0.85rem;
+}
+
+/* Badges: legible at a glance rather than a tiny pill */
+.badge {
+  font-size: 0.8rem;
+  padding: 0.4em 0.65em;
+}
+
+@media (max-width: 767px) {
+  html {
+    font-size: 105%;
+  }
+}
+
+/* Product picker (order flow): a grid of cards instead of a long stacked list */
+.kzd-order-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.kzd-order-product-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.95rem 1.1rem;
+  border: 1px solid var(--bs-border-color);
+  border-top: 3px solid var(--bs-primary);
+  background: var(--bs-body-bg, #fff);
+  text-decoration: none;
+  color: var(--bs-body-color);
+  font-weight: 600;
+  font-size: 0.98rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.kzd-order-product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 28px -16px rgba(26, 26, 26, 0.3);
+  border-color: var(--bs-primary);
+  color: var(--bs-body-color);
+}
+
+.kzd-order-product-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  background: var(--bs-primary-bg-subtle);
+  color: var(--bs-primary);
+}
+
+.kzd-order-product-icon .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.kzd-order-product-title {
+  flex: 1;
+  line-height: 1.3;
+}
+
+.kzd-order-product-arrow {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  color: var(--bs-secondary-color);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.kzd-order-product-card:hover .kzd-order-product-arrow {
+  transform: translateX(3px);
+  color: var(--bs-primary);
+}
+
+/* ==========================================================================
+   Order flow redesign — flattened 3-step wizard (Domain -> Account ->
+   Checkout), search-bar domain results, 2-column cart+payment. Scoped to
+   .kzd-order-shell (mod_orderbutton_content.html.twig's wrapper) so it only
+   touches the /order page. Every rule here targets classes added in the
+   matching mod_orderbutton_*.html.twig / mod_servicedomain_order_form
+   overrides — see those files for which ids/names must stay stable for the
+   embedded JS (never renamed here, only restyled). Sharp corners throughout
+   to match the site's --bs-border-radius: 0 system (this section used to
+   lean on rounded/pill shapes, which read as generic/off-brand against the
+   rest of the app).
+   ========================================================================== */
+
+/* Flatten the accordion chrome into plain page sections instead of a
+   clickable settings-panel wizard — steps advance by redirect/JS already,
+   there's nothing useful for a user to manually expand/collapse here. Each
+   step after the first gets a top divider + extra breathing room instead of
+   a flat uniform gap, so the page reads as distinct stages, not one long
+   scroll. */
+.kzd-order-shell .accordion-item {
+  border: none;
+  margin-bottom: 8px;
+}
+.kzd-order-shell .accordion-item + .accordion-item {
+  border-top: 1px solid var(--bs-border-color-translucent);
+  margin-top: 20px;
+  padding-top: 28px;
+}
+.kzd-order-shell .accordion-header {
+  margin-bottom: 0;
+}
+.kzd-order-shell .accordion-button {
+  display: flex;
+  align-items: center;
+  background: none;
+  box-shadow: none;
+  padding: 0 0 20px;
+  font-size: 1.1875rem;
+  font-weight: 700;
+  color: var(--bs-body-color);
+  cursor: default;
+  pointer-events: none;
+}
+.kzd-order-shell .accordion-button::after {
+  display: none;
+}
+.kzd-order-shell .accordion-button.collapsed {
+  color: var(--bs-secondary-color);
+  opacity: 0.65;
+}
+.kzd-order-shell .accordion-body {
+  padding: 0 0 4px;
+}
+
+/* The trailing "Payment" accordion item is a technical scaffold the JS
+   drops gateway-redirect HTML into (see onOrderCheckout in
+   mod_orderbutton_js.html.twig) — it's not a step a user ever chooses to
+   open, so keep it out of the flow entirely until it actually has content. */
+.kzd-order-shell .accordion-item:has(#payment-html-inner:empty) {
+  display: none;
+}
+
+.kzd-order-panel-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--bs-primary);
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  margin-right: 12px;
+  flex: none;
+}
+.kzd-order-gate-icon .icon {
+  width: 14px;
+  height: 14px;
+}
+.kzd-order-shell .accordion-button.collapsed .kzd-order-panel-step {
+  background: var(--bs-tertiary-bg);
+  border: 1px solid var(--bs-border-color);
+  color: var(--bs-secondary-color);
+}
+
+.kzd-order-cta-row {
+  margin-top: 28px;
+}
+.kzd-order-cta-row #config-next {
+  display: inline-flex;
+  align-items: center;
+  padding: 13px 30px;
+  font-size: 0.9375rem;
+}
+
+/* Domain search + results ------------------------------------------------ */
+.kzd-domain-tabs {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  margin-bottom: 20px;
+  background: var(--bs-tertiary-bg);
+  border: 1px solid var(--bs-border-color);
+}
+.kzd-domain-tab {
+  border: 0;
+  background: transparent;
+  padding: 9px 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--bs-secondary-color);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.kzd-domain-tab.active {
+  background: var(--bs-primary);
+  color: #fff;
+}
+
+.kzd-domain-search-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.kzd-domain-search-field {
+  /* 240, not 320: inside the order card there is ~448px to play with at a
+     768px viewport, and a 320px basis plus the Search button exceeded it,
+     dropping the button onto its own line at a third of the width on a
+     tablet. It still grows to fill whatever is left. */
+  flex: 1 1 240px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  background: #fff;
+  border: 1.5px solid var(--bs-border-color);
+  padding: 0 8px 0 18px;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.kzd-domain-search-field:focus-within {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 3px rgb(from var(--bs-primary) r g b / .12);
+}
+.kzd-domain-search-field .icon {
+  width: 18px;
+  height: 18px;
+  color: var(--bs-secondary-color);
+  flex: none;
+}
+.kzd-domain-search-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--bs-body-color);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  padding: 16px 0;
+}
+.kzd-domain-search-tld {
+  flex: none;
+  border: 0;
+  border-left: 1px solid var(--bs-border-color);
+  background: transparent;
+  color: var(--bs-body-color);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 16px 8px 16px 12px;
+  cursor: pointer;
+  /* Capped everywhere, not just on phones. Left to size itself the select
+     took 119px on a phone -- wider than the field you type the domain into
+     -- and at 768px it still ate enough of the row to truncate the
+     placeholder to "Enter a domain". Measured against the widest option
+     actually in the list (~77px of text) plus the native arrow. */
+  max-width: 116px;
+}
+.kzd-domain-search-btn {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: var(--bs-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  padding: 0 32px;
+  cursor: pointer;
+  transition: background-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.kzd-domain-search-btn:hover {
+  background: #1A1A1A;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgb(from var(--bs-primary) r g b / .25);
+}
+
+.kzd-domain-error {
+  margin-top: 18px;
+  padding: 18px 20px;
+  border: 1px solid var(--bs-border-color);
+  background: var(--bs-tertiary-bg);
+  font-size: 0.9375rem;
+}
+.kzd-domain-suggestions-label {
+  margin-top: 10px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--bs-secondary-color);
+}
+.kzd-domain-suggestions {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.kzd-domain-suggestion {
+  border: 1px solid var(--bs-border-color);
+  background: #fff;
+  padding: 9px 18px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.kzd-domain-suggestion:hover {
+  border-color: var(--bs-primary);
+  background: var(--bs-primary);
+  color: #fff;
+}
+
+.kzd-domain-result {
+  margin-top: 18px;
+  padding: 22px;
+  border: 1.5px solid var(--bs-primary-border-subtle);
+  background: var(--bs-primary-bg-subtle);
+}
+.kzd-domain-result-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.kzd-domain-result-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.kzd-domain-result-badge {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: var(--bs-primary);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.kzd-domain-result-name {
+  font-size: 1.125rem;
+  font-weight: 800;
+  word-break: break-all;
+}
+.kzd-domain-years {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  color: var(--bs-secondary-color);
+}
+.kzd-domain-years select {
+  min-width: 180px;
+  color: var(--bs-body-color);
+}
+.kzd-domain-ns-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--bs-border-color-translucent);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.kzd-domain-ns-grid {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.kzd-domain-transfer-price {
+  flex: none;
+  font-size: 0.875rem;
+  color: var(--bs-secondary-color);
+}
+.kzd-domain-transfer-price strong {
+  color: var(--bs-body-color);
+}
+.kzd-domain-epp-input {
+  margin-top: 16px;
+  width: 100%;
+  max-width: 360px;
+  border: 1px solid var(--bs-border-color);
+  background: #fff;
+  color: var(--bs-body-color);
+  padding: 11px 14px;
+  font-size: 0.875rem;
+}
+.kzd-domain-epp-hint {
+  margin-top: 8px;
+  max-width: 520px;
+  font-size: 0.8125rem;
+  color: var(--bs-secondary-color);
+}
+
+@media (max-width: 575px) {
+  .kzd-domain-result-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .kzd-domain-years {
+    width: 100%;
+  }
+  .kzd-domain-years select {
+    flex: 1;
+    min-width: 0;
+  }
+  .kzd-domain-ns-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Login/Register step segmented tabs (mod_orderbutton_client.html.twig) —
+   same visual language as the domain Register/Transfer tabs above. */
+.kzd-panel-tabs {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  margin-bottom: 24px;
+  background: var(--bs-tertiary-bg);
+  border: 1px solid var(--bs-border-color);
+}
+.kzd-panel-tab {
+  border: 0;
+  background: transparent;
+  padding: 9px 24px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--bs-secondary-color);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.kzd-panel-tab.active {
+  background: var(--bs-primary);
+  color: #fff;
+}
+
+/* Billing-period picker (product configuration step) ---------------------
+   Pill-toggle pattern adapted from Linear's pricing-tab-selected component
+   (rounded-pill, quiet-outline -> filled-navy on selection), the "Most
+   popular" tag from Notion's badge-popular convention, and tabular-nums
+   money typography from Stripe -- recoloured to KZD's own navy/black/
+   white, never the sources' own accent colours. */
+.kzd-period-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+.kzd-period-pill {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  min-width: 132px;
+  padding: 16px 18px 14px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(26, 26, 26, 0.12);
+  background: #fff;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+.kzd-period-pill:hover {
+  border-color: rgba(26, 26, 26, 0.4);
+  transform: translateY(-2px);
+}
+.kzd-period-pill input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.kzd-period-pill:has(input:checked) {
+  border-color: #1A1A1A;
+  background: #1A1A1A;
+  box-shadow: 0 16px 32px -18px rgba(26, 26, 26, 0.55);
+  transform: translateY(-2px);
+}
+.kzd-period-pill-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--bs-secondary-color);
+}
+.kzd-period-pill:has(input:checked) .kzd-period-pill-label {
+  color: rgba(255, 255, 255, 0.72);
+}
+.kzd-period-pill-price {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #1A1A1A;
+  font-variant-numeric: tabular-nums;
+}
+.kzd-period-pill:has(input:checked) .kzd-period-pill-price {
+  color: #fff;
+}
+.kzd-period-pill-save {
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #1A1A1A;
+  background: rgba(26, 26, 26, 0.1);
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+}
+.kzd-period-pill:has(input:checked) .kzd-period-pill-save {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+.kzd-period-pill-badge {
+  position: absolute;
+  top: -11px;
+  left: 14px;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  background: #1A1A1A;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.kzd-period-pill-popular {
+  border-color: rgba(26, 26, 26, 0.3);
+}
+
+/* Cart + payment (checkout) ---------------------------------------------- */
+/* The checkout step used to be pure white nested inside a pure white page
+   card, so the cart/summary panels had nothing to visibly sit on top of --
+   three stacked layers of the same white, told apart only by 1px hairlines.
+   This tray (the site's existing --bs-tertiary-bg soft-gray token, not a
+   new color) gives every white panel below a real ground to lift off of --
+   the same "surface ladder" reasoning that makes a flat-white admin panel
+   read as generic and an elevated-on-canvas one read as premium. */
+.kzd-checkout-grid {
+  display: grid;
+  /* The sidebar may shrink to 300px before the layout stacks. Pinned at a
+     rigid 360px it starved the main column to 203px at 1024 — narrow
+     enough that the cart item's own name overflowed it — because the
+     stacking breakpoint is 900px and everything between the two was being
+     served a desktop split it had no room for. minmax(0,1fr) on the main
+     column keeps it from being floored at its content's min-content. */
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+  gap: 28px;
+  align-items: start;
+  background: var(--bs-tertiary-bg);
+  border-radius: 20px;
+  padding: 24px;
+}
+/* 1100, not 900: between the two the sidebar still claims its full 360px
+   and the main column is left with about 200px — narrower than the cart
+   item's own product name, so it overflowed its column on any tablet in
+   landscape. One full-width column at 1024 beats two columns where one of
+   them does not fit its contents. */
+@media (max-width: 1100px) {
+  .kzd-checkout-grid {
+    /* minmax(0, 1fr), not a bare 1fr: 1fr is minmax(auto, 1fr) and `auto`
+       is floored at the column's min-content, so one item that cannot
+       shrink pins the whole column. Measured live at a fixed 304px on
+       every phone — wider than the 260px grid at 360px (so the card ran
+       past the screen edge) and narrower than it at 430px (so the layout
+       stopped growing and left dead space). Capping the minimum at 0 lets
+       the column track the viewport again. */
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px;
+    border-radius: 16px;
+  }
+  /* Same floor on the two columns themselves, so nothing inside them can
+     push back out once the track is free to shrink. */
+  .kzd-checkout-col-main,
+  .kzd-checkout-col-side { min-width: 0; }
+}
+
+/* Line items read as rows inside ONE elevated panel (Stripe/Etsy-style
+   receipt list) instead of each being its own separately-bordered card --
+   stacking a card per row on top of an already-boxed page was the "AI
+   slop" over-carding that made the whole step look noisy AND flat at once.
+   One real shadow on the panel does more premium work than five small ones. */
+.kzd-cart-items {
+  background: #fff;
+  border: 1px solid rgba(26, 26, 26, 0.07);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px -30px rgba(26, 26, 26, 0.35), 0 1px 2px rgba(26, 26, 26, 0.04);
+  overflow: hidden;
+}
+.kzd-cart-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.07);
+  transition: background 150ms ease;
+}
+.kzd-cart-item:last-child {
+  border-bottom: 0;
+}
+.kzd-cart-item:hover {
+  background: rgba(26, 26, 26, 0.025);
+}
+.kzd-cart-item-icon {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.12), rgba(107, 107, 107, 0.1));
+  border: 1px solid rgba(26, 26, 26, 0.1);
+}
+.kzd-cart-item-icon .icon {
+  width: 19px;
+  height: 19px;
+  color: #1A1A1A;
+}
+.kzd-cart-item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.kzd-cart-item-title {
+  font-weight: 700;
+  font-size: 0.9375rem;
+}
+.kzd-cart-item-period {
+  font-weight: 400;
+  color: var(--bs-secondary-color);
+  font-size: 0.8125rem;
+}
+.kzd-cart-item-setup {
+  font-size: 0.8125rem;
+  color: var(--bs-secondary-color);
+}
+.kzd-cart-item-formvalues {
+  font-size: 0.8125rem;
+  color: var(--bs-secondary-color);
+  margin: 0;
+}
+.kzd-cart-item-price {
+  flex: none;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Keyed to the COLUMN, not the viewport. This row carries an icon, a name,
+   a price and a remove button on one line, and the three fixed items plus
+   padding claim most of a narrow card — the name was wrapping one
+   character per line on a phone. But the checkout's main column is only
+   about 395px even at a 1280px viewport, so the same squeeze happened on a
+   full desktop: the card measured 393px, the name got 143px, and a domain
+   broke mid-word across four lines. A viewport media query cannot see
+   that; the column declares a container, so ask it instead.
+   Giving the name its own line is the only layout that survives the width
+   — the price moves beneath it, right-aligned, which is where a receipt
+   puts it anyway. overflow-wrap:anywhere so a long domain breaks when it
+   genuinely has to, rather than break-all splitting every word on
+   principle. */
+@container kzd-checkout-main (max-width: 520px) {
+  .kzd-cart-item {
+    flex-wrap: wrap;
+    /* Top, not centre: the name wraps to three lines at this width, and
+       centring floated the icon and the remove button into the middle of
+       that block instead of lining them up with the first line. */
+    align-items: flex-start;
+    gap: 10px 12px;
+    padding: 16px;
+  }
+  /* basis 0, so the name takes exactly the space left after the icon and
+     the remove button and stays on their row. A percentage basis made the
+     three together exceed the card and pushed the button onto a line of
+     its own, where it read as orphaned. */
+  .kzd-cart-item-info {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .kzd-cart-item-title { overflow-wrap: anywhere; }
+  .kzd-cart-item-remove { order: 2; flex: none; }
+  .kzd-cart-item-price {
+    order: 3;
+    flex: 1 0 100%;
+    text-align: right;
+    font-size: 1rem;
+  }
+}
+.kzd-cart-item-remove {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--bs-secondary-color);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.kzd-cart-item-remove:hover {
+  background: var(--bs-tertiary-bg);
+  color: var(--bs-danger);
+}
+.kzd-cart-item-remove .icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Plan-selection section (replaces the old boxed cross-sell callout) --
+   matches the reference redesign: a plain editorial headline (no card
+   chrome) with a thick brand-colour rule underneath, a real Monthly/Yearly
+   toggle, and four genuine selectable plan cards instead of a thin link
+   list. All copy/specs are real (see kzd_hosting_specs in the twig). */
+.kzd-plan-section {
+  margin-top: 8px;
+}
+.kzd-plan-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid #1A1A1A;
+}
+.kzd-plan-section-copy h2 {
+  margin: 0 0 8px;
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.kzd-plan-section-copy p {
+  margin: 0;
+  max-width: 46ch;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--bs-secondary-color);
+}
+.kzd-billing-toggle-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  flex: none;
+}
+.kzd-billing-toggle {
+  display: inline-flex;
+  border: 2px solid #1A1A1A;
+  background: #fff;
+}
+.kzd-billing-toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.kzd-billing-toggle label {
+  padding: 9px 18px;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: #1A1A1A;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.kzd-billing-toggle input:checked + label {
+  background: #1A1A1A;
+  color: #fff;
+}
+.kzd-billing-toggle-note {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--bs-primary);
+}
+
+/* .kzd-plan-grid's real available width is set by its parent column inside
+   the 1fr/360px .kzd-checkout-grid split, not the viewport -- a plain
+   viewport media query collapsed the columns far too late (the 1fr column
+   is already much narrower than the viewport at any breakpoint). A
+   container query measures the actual rendered column width instead. */
+.kzd-checkout-col-main {
+  container: kzd-checkout-main / inline-size;
+}
+.kzd-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+@container kzd-checkout-main (max-width: 640px) {
+  .kzd-plan-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@container kzd-checkout-main (max-width: 380px) {
+  .kzd-plan-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.kzd-plan-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+.kzd-plan-card.is-recommended {
+  border-color: #1A1A1A;
+  box-shadow: 0 12px 30px -18px rgba(26, 26, 26, 0.4);
+}
+.kzd-plan-card-ribbon {
+  background: #1A1A1A;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 6px 10px;
+}
+.kzd-plan-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 18px 16px 16px;
+}
+.kzd-plan-card-name {
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.kzd-plan-card-price {
+  margin-top: 16px;
+}
+.kzd-plan-price-monthly,
+.kzd-plan-price-yearly {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.kzd-plan-price-yearly,
+.kzd-plan-price-yearly-note {
+  display: none;
+}
+.kzd-plan-grid.is-yearly .kzd-plan-price-monthly {
+  display: none;
+}
+.kzd-plan-grid.is-yearly .kzd-plan-price-yearly {
+  display: flex;
+}
+.kzd-plan-grid.is-yearly .kzd-plan-price-yearly-note {
+  display: block;
+}
+.kzd-plan-price-currency {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--bs-secondary-color);
+}
+.kzd-plan-price-amount {
+  font-size: clamp(22px, 2.2vw, 26px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #1A1A1A;
+}
+.kzd-plan-price-period {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--bs-secondary-color);
+}
+.kzd-plan-price-yearly-note {
+  margin-top: 6px;
+  font-size: 0.6875rem;
+  color: var(--bs-secondary-color);
+}
+.kzd-plan-card-divider {
+  display: block;
+  height: 1px;
+  background: rgba(26, 26, 26, 0.08);
+  margin: 16px 0;
+}
+.kzd-plan-card-features {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.kzd-plan-card-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--bs-body-color);
+}
+.kzd-plan-card-features .icon {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  margin-top: 2px;
+  color: #1A1A1A;
+}
+.kzd-plan-card-cta {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 11px 14px;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: #1A1A1A;
+  background: var(--bs-tertiary-bg);
+  text-decoration: none;
+  transition: background .15s ease, color .15s ease;
+}
+.kzd-plan-card-cta:hover {
+  background: #1A1A1A;
+  color: #fff;
+}
+.kzd-plan-card-cta .icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+.kzd-plan-includes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  padding: 14px 18px;
+  margin-top: 16px;
+  border: 1px solid rgba(26, 26, 26, 0.08);
+  background: var(--bs-tertiary-bg);
+  font-size: 0.75rem;
+  color: var(--bs-secondary-color);
+}
+.kzd-plan-includes-label {
+  font-weight: 800;
+  color: #1A1A1A;
+  letter-spacing: 0.01em;
+}
+
+.kzd-promo-row {
+  margin-top: 24px;
+}
+.kzd-promo-link {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  /* 18px tall as a bare inline link, under the 24px touch minimum. */
+  display: inline-block;
+  padding: 5px 2px;
+}
+.kzd-promo-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  max-width: 360px;
+}
+.kzd-promo-form input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--bs-border-color);
+  background: #fff;
+  color: var(--bs-body-color);
+  padding: 9px 12px;
+  font-size: 0.875rem;
+}
+.kzd-promo-apply {
+  flex: none;
+  border: 0;
+  background: var(--bs-primary);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  padding: 0 18px;
+}
+.kzd-promo-remove {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+/* The summary is the one panel on this page a buyer's eye should land on
+   last before paying -- it gets the strongest elevation on the page (not
+   just the same 16px-radius/soft-shadow recipe as every other card) and a
+   thin navy top edge, the same "featured tier = one step up the surface
+   ladder" idea used for the annual-billing pill/most-popular badge. */
+.kzd-order-summary {
+  position: sticky;
+  top: 16px;
+  border: 1px solid rgba(26, 26, 26, 0.06);
+  border-radius: 16px;
+  padding: 32px 30px;
+  background: #fff;
+  box-shadow: 0 32px 60px -24px rgba(26, 26, 26, 0.35), 0 4px 12px rgba(26, 26, 26, 0.06);
+  overflow: hidden;
+}
+.kzd-order-summary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1A1A1A, #6B6B6B);
+}
+.kzd-order-summary h4 {
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0 0 18px;
+}
+/* What you're actually buying, named -- a bare "Total: R299" with nothing
+   above it is what read as empty/thin. A real receipt shows the line items
+   first; the total then reads as the sum of something concrete, not an
+   isolated number. */
+.kzd-summary-items {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0 0 18px;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.kzd-summary-items li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.875rem;
+}
+.kzd-summary-item-name {
+  font-weight: 600;
+  min-width: 0;
+}
+.kzd-summary-item-period {
+  font-weight: 400;
+  color: var(--bs-secondary-color);
+  margin-left: 4px;
+}
+.kzd-summary-item-price {
+  flex: none;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--bs-secondary-color);
+}
+.kzd-summary-table {
+  width: 100%;
+  font-size: 0.875rem;
+  margin-bottom: 24px;
+  font-variant-numeric: tabular-nums;
+}
+/* A money figure must never break across lines. Safe at every width: the
+   table's default auto layout sizes the column to fit it. */
+.kzd-summary-table td:last-child { white-space: nowrap; }
+.kzd-summary-table td {
+  padding: 7px 0;
+}
+.kzd-summary-table td:last-child {
+  text-align: right;
+}
+.kzd-summary-total td {
+  border-top: 1px solid var(--bs-border-color);
+  padding-top: 18px;
+}
+.kzd-summary-total td:first-child {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+.kzd-summary-total td:last-child {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #1A1A1A;
+}
+
+/* Phone: the summary is the screen's most-read block and it was carrying
+   desktop proportions into a 304px card — 30px of side padding left only
+   244px of content, and the total rendered at 42px, wide enough that
+   "Total" and "ZAR 299.00" collided on one line with the figure pressed
+   against the card edge. Tighter gutter, and the total set at a size that
+   still dominates the card without fighting its own label. */
+@media (max-width: 600px) {
+  .kzd-order-summary {
+    padding: 22px 18px;
+    border-radius: 14px;
+  }
+  /* fixed only here, where the total is stacked into block cells so the
+     even column split cannot reach it. Applying it at every width instead
+     squeezed the desktop total's 44px figure into half a row and, with
+     prices set not to wrap, pushed the whole page 34px wider than the
+     viewport at 768. */
+  .kzd-summary-table { table-layout: fixed; }
+  .kzd-summary-table td:first-child { overflow-wrap: anywhere; }
+  /* The total stacks: label over figure. Side by side under a fixed table
+     layout the amount only gets half the row, which at this type size was
+     not enough for "ZAR 349.00" — it wrapped mid-number to "ZAR 3 / 49.00".
+     Stacked, the figure gets the full width and stays one unbroken line,
+     which is also the stronger read for the one number that matters most
+     on the page. */
+  .kzd-summary-total { display: block; }
+  .kzd-summary-total td {
+    display: block;
+    border-top: 0;
+    padding-top: 0;
+    text-align: left;
+  }
+  .kzd-summary-total td:first-child {
+    border-top: 1px solid var(--bs-border-color);
+    padding-top: 14px;
+    color: var(--bs-secondary-color);
+  }
+  .kzd-summary-total td:last-child {
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    margin-top: 2px;
+  }
+  .kzd-summary-item-name,
+  .kzd-summary-item-price { font-size: 0.8125rem; }
+}
+
+.kzd-gateway-picker {
+  margin-bottom: 24px;
+}
+.kzd-gateway-heading {
+  margin-bottom: 14px;
+}
+.kzd-gateway-heading h4 {
+  font-size: 1.0625rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+.kzd-gateway-heading p {
+  font-size: 0.8125rem;
+  color: var(--bs-secondary-color);
+  margin: 0;
+  line-height: 1.5;
+}
+.kzd-gateway-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1.5px solid rgba(26, 26, 26, 0.1);
+  border-radius: 12px;
+  padding: 13px 16px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+.kzd-gateway-option + .kzd-gateway-option {
+  margin-top: 10px;
+}
+.kzd-gateway-option:hover {
+  border-color: rgba(26, 26, 26, 0.3);
+}
+.kzd-gateway-option:has(input:checked) {
+  border-color: var(--bs-primary);
+  background: var(--bs-primary-bg-subtle);
+  box-shadow: 0 8px 20px -14px rgba(26, 26, 26, 0.4);
+}
+.kzd-gateway-option input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.kzd-gateway-radio-dot {
+  flex: none;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 2px solid var(--bs-border-color);
+  position: relative;
+  transition: border-color .15s ease;
+}
+.kzd-gateway-option input:checked + .kzd-gateway-radio-dot {
+  border-color: var(--bs-primary);
+}
+.kzd-gateway-option input:checked + .kzd-gateway-radio-dot::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--bs-primary);
+}
+/* Matches .kzd-cart-item-icon's badge exactly -- the payment-method row was
+   the one element on this page without an icon badge, reading noticeably
+   flatter/lighter-weight than the cart items and cross-sell rows sitting
+   directly above it on the same screen. Same gradient chip, same radius. */
+.kzd-gateway-icon {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.12), rgba(107, 107, 107, 0.1));
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  transition: background .15s ease;
+}
+.kzd-gateway-icon .icon {
+  width: 17px;
+  height: 17px;
+  color: #1A1A1A;
+}
+.kzd-gateway-option:has(input:checked) .kzd-gateway-icon {
+  background: var(--bs-primary);
+}
+.kzd-gateway-option:has(input:checked) .kzd-gateway-icon .icon {
+  color: #fff;
+}
+.kzd-gateway-name {
+  flex: 1;
+  font-weight: 700;
+  font-size: 0.9375rem;
+}
+
+.kzd-balance-note,
+.kzd-login-message {
+  font-size: 0.8125rem;
+  color: var(--bs-secondary-color);
+  margin-bottom: 14px;
+}
+.kzd-tos-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.8125rem;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+.kzd-tos-implicit {
+  font-size: 0.75rem;
+  color: var(--bs-secondary-color);
+  margin-top: 14px;
+}
+
+.kzd-pay-now-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  background: var(--bs-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  letter-spacing: -0.01em;
+  padding: 18px;
+  cursor: pointer;
+  box-shadow: 0 20px 36px -18px rgba(26, 26, 26, 0.55);
+  transition: background-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.kzd-pay-now-btn:hover {
+  background: #1A1A1A;
+  transform: translateY(-2px);
+  box-shadow: 0 24px 40px -16px rgba(26, 26, 26, 0.6);
+}
+.kzd-pay-now-btn-arrow {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  transition: transform .2s ease;
+}
+.kzd-pay-now-btn:hover .kzd-pay-now-btn-arrow {
+  transform: translateX(3px);
+}
+.kzd-pay-now-btn[hidden] {
+  display: none;
+}
+.kzd-checkout-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 14px 0 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--bs-secondary-color);
+}
+.kzd-checkout-trust .icon {
+  width: 13px;
+  height: 13px;
+  flex: none;
+}
+
+/* Outer "Order" page card: real elevation + generous, responsive padding —
+   matching the site's card language — replacing the old cramped, flattened
+   double-card nesting (mod_orderbutton_content.html.twig no longer wraps
+   its content in a second nested .card, so this is the flow's only
+   container now). */
+.kzd-order-page-card {
+  border: 1px solid var(--bs-border-color);
+  box-shadow: var(--bs-box-shadow-sm);
+  /* So rules inside can respond to the card's width rather than the
+     viewport's -- see the secure bar. */
+  container: kzd-order-card / inline-size;
+}
+.kzd-order-page-header {
+  background: transparent;
+  border: 0;
+  padding: 24px 24px 12px !important;
+}
+.kzd-order-page-header h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+.kzd-order-page-card > .card-body {
+  padding: 8px 24px 32px;
+}
+@media (min-width: 768px) {
+  .kzd-order-page-header {
+    padding: 32px 40px 16px !important;
+  }
+  .kzd-order-page-card > .card-body {
+    padding: 8px 40px 40px;
+  }
+}
+
+/* Homepage hero prompt bar: example chips ("Restaurant", "Consulting", ...)
+   are real buttons now (mod_index_dashboard.html.twig) — a small hover
+   lift so they read as clickable, matching the tactile hover language
+   used on cards/buttons across the rest of the site. */
+.kzd-chip:hover {
+  border-color: rgba(26, 26, 26, 0.4) !important;
+  transform: translateY(-1px);
+}
+
+/* Knowledge Base article page (mod_support_kb_article.html.twig
+   [override]) — same card/icon-badge recipe as the homepage KB grid
+   (.kzd-kb-card) and dashboard (.kzd-stat-card): near-invisible resting
+   border, 16px radius (this site's one exception to border-radius:0,
+   reserved for cards), soft navy-tinted icon badges, tracked uppercase
+   meta labels. */
+.kzd-kb-article-eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #1A1A1A;
+  text-decoration: none;
+}
+.kzd-kb-article-eyebrow:hover {
+  text-decoration: underline;
+}
+.kzd-kb-article-title {
+  margin: 10px 0 0;
+  font-size: clamp(28px, 3.4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #1A1A1A;
+}
+.kzd-kb-article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #6B6B6B;
+}
+.kzd-kb-article-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.kzd-kb-article-meta .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.kzd-kb-article-card {
+  margin-top: 28px;
+  background: #FFFFFF;
+  border: 1px solid rgba(26, 26, 26, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04);
+  padding: clamp(24px, 3.5vw, 48px);
+}
+.kzd-kb-article-card .markdown-body {
+  font-family: 'Inter Tight', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #3A3A3A;
+}
+.kzd-kb-article-card .markdown-body h1,
+.kzd-kb-article-card .markdown-body h2,
+.kzd-kb-article-card .markdown-body h3,
+.kzd-kb-article-card .markdown-body h4 {
+  font-family: 'Inter Tight', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #1A1A1A;
+}
+.kzd-kb-article-card .markdown-body h2 {
+  border-bottom-color: rgba(26, 26, 26, 0.08);
+}
+.kzd-kb-article-card .markdown-body a {
+  color: #1A1A1A;
+  text-decoration: underline;
+  text-decoration-color: rgba(26, 26, 26, 0.35);
+  text-underline-offset: 0.2rem;
+}
+.kzd-kb-article-card .markdown-body a:hover {
+  text-decoration-color: #1A1A1A;
+}
+.kzd-kb-article-card .markdown-body code,
+.kzd-kb-article-card .markdown-body tt {
+  background: rgba(26, 26, 26, 0.07);
+  color: #1A1A1A;
+}
+.kzd-kb-article-card .markdown-body pre,
+.kzd-kb-article-card .markdown-body .highlight pre {
+  background: #F4F5F7;
+}
+.kzd-kb-article-card .markdown-body blockquote {
+  border-left-color: #1A1A1A;
+  color: #6B6B6B;
+}
+
+/* "Still need help?" prompt — a real icon-badge card instead of a bare
+   .bg-light box, using kzd-btn-gradient for its CTA since this is the
+   one primary action on the page (the same "single solid-navy moment"
+   rule the dashboard's "New Order" button follows). */
+.kzd-kb-help-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  margin-top: 24px;
+  padding: clamp(20px, 2.6vw, 28px);
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.05), rgba(107, 107, 107, 0.04));
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  border-radius: 16px;
+}
+.kzd-kb-help-icon {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.14), rgba(107, 107, 107, 0.12));
+  border: 1px solid rgba(26, 26, 26, 0.12);
+}
+.kzd-kb-help-icon .icon {
+  width: 22px;
+  height: 22px;
+  color: #1A1A1A;
+}
+.kzd-kb-help-text {
+  flex: 1;
+  min-width: 220px;
+}
+.kzd-kb-help-text h2 {
+  margin: 0 0 4px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #1A1A1A;
+}
+.kzd-kb-help-text p {
+  margin: 0;
+  font-size: 14px;
+  color: #6B6B6B;
+}
+.kzd-kb-help-card .btn {
+  flex: none;
+}
+
+.kzd-kb-article .d-flex.flex-wrap.gap-2 {
+  margin-top: 24px;
+}
+
+/* Sidebar: same resting-card recipe as the main content card, kept
+   compact for a narrower column. */
+.kzd-kb-side-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(26, 26, 26, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04);
+  padding: 22px;
+  margin-bottom: 20px;
+}
+.kzd-kb-side-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.12), rgba(107, 107, 107, 0.1));
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  margin-bottom: 12px;
+}
+.kzd-kb-side-icon .icon {
+  width: 19px;
+  height: 19px;
+  color: #1A1A1A;
+}
+.kzd-kb-side-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6B6B6B;
+}
+.kzd-kb-side-title {
+  display: block;
+  margin: 4px 0 16px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #1A1A1A;
+  text-decoration: none;
+}
+.kzd-kb-side-title:hover {
+  color: #1A1A1A;
+  text-decoration: underline;
+}
+.kzd-kb-side-heading {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #1A1A1A;
+}
+.kzd-kb-related-list {
+  margin-top: 12px;
+}
+.kzd-kb-related-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 2px;
+  border-top: 1px solid rgba(26, 26, 26, 0.07);
+  font-size: 14px;
+  font-weight: 600;
+  color: #3A3A3A;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+.kzd-kb-related-item:hover {
+  color: #1A1A1A;
+}
+.kzd-kb-related-item .icon {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  color: #6B6B6B;
+  transition: transform 200ms ease;
+}
+.kzd-kb-related-item:hover .icon {
+  transform: translateX(3px);
+  color: #1A1A1A;
+}
+.kzd-kb-side-empty {
+  margin: 12px 0 0;
+  font-size: 13.5px;
+  color: #6B6B6B;
+}
+
+@media (max-width: 767px) {
+  .kzd-kb-help-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .kzd-kb-help-card .btn {
+    width: 100%;
+  }
+}
+
+/* Bootstrap expands the navbar at exactly 768px, and at that width the
+   brand plus the full link row measures 34px wider than the viewport —
+   so every page using this header scrolls sideways on a tablet, the
+   checkout included. The row is flex-nowrap by default; letting it wrap
+   keeps it inside the viewport, and above ~1100px there is enough room
+   that it never wraps in practice. */
+.navbar-collapse { min-width: 0; }
+.navbar-collapse .navbar-nav { flex-wrap: wrap; }
+
+/* Back-to-top, phones. The labelled pill is 94x47 and fixed to the
+   bottom-right corner on every page, so it sits over page content — it was
+   covering a "Choose plan" CTA on the order page at 360 and 390px. Dropping
+   the label leaves a 44px circle: still a full touch target, roughly a
+   third of the footprint, and it reads as the standard floating action
+   rather than a button that wandered on top of the page. */
+/* Up to 991.98px, not 767.98: at 768 the content still fills the width and
+   the labelled pill was caught sitting on a "Choose plan" CTA. Past ~1024
+   the page has margin either side and it lands in empty space, so the
+   labelled version is kept there. */
+@media (max-width: 991.98px) {
+  .kzd-to-top {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .kzd-to-top .kzd-to-top-label { display: none; }
+  .kzd-to-top .icon { width: 18px; height: 18px; }
+}
+
+/* ==========================================================================
+   Order page, phones — reclaiming the width, then spending it.
+
+   Measured at a 390px viewport, 98px (25% of the screen) was going to
+   padding before any content rendered: the layout nests .container-fluid
+   inside .container-fluid, so Bootstrap's 12.6px gutter is charged twice,
+   and the order card adds 24px on top. The domain step was working with
+   290px. That is the whole reason it read as cramped -- the domain input
+   was 105px, narrower than the .com select beside it, the segmented tabs
+   wrapped "Register a / domain" onto two lines, and Search fell onto its
+   own line at a third of the width.
+
+   So: collapse the doubled gutter and trim the card, which returns ~47px,
+   then re-lay the pieces out for a phone rather than letting a desktop
+   row shrink into one.
+   ========================================================================== */
+@media (max-width: 575.98px) {
+  /* The inner container-fluid is inside the outer one; its gutter is pure
+     duplication on a phone. Scoped to the order flow rather than applied
+     site-wide, because the same nesting appears on pages not audited here. */
+  .order-index .container-fluid .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .kzd-order-page-header {
+    padding: 20px 16px 10px !important;
+  }
+  .kzd-order-page-card > .card-body {
+    padding: 8px 16px 28px;
+  }
+
+  /* Step indicator: the labels were hidden below 575px, which left two
+     unlabelled circles floating in 72px of vertical space -- it read as
+     something that had failed to load. There is room for them now. */
+  .kzd-order-step-label {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1.25;
+  }
+  .kzd-order-step {
+    padding: 0 4px 14px;
+    min-width: 0;
+  }
+  .kzd-order-step-icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 6px;
+  }
+
+  /* Register/Transfer: a full-width segmented control with each label on
+     one line, instead of an inline-flex pair squeezed to 139px each. */
+  .kzd-domain-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    margin-bottom: 14px;
+  }
+  .kzd-domain-tab {
+    padding: 11px 6px;
+    font-size: 0.8125rem;
+    white-space: nowrap;
+    min-height: 44px;
+  }
+
+  /* Search row: field on its own line, Search full-width beneath it. The
+     field's flex-basis is 320px, so on a phone it shrank AND still pushed
+     the button to the next line at a stub width -- the worst of both. */
+  .kzd-domain-search-row {
+    gap: 10px;
+  }
+  .kzd-domain-search-field {
+    flex: 1 1 100%;
+    padding: 0 6px 0 12px;
+    gap: 8px;
+  }
+  .kzd-domain-search-input {
+    font-size: 1rem;
+    padding: 14px 0;
+  }
+  /* Cap the TLD select: unconstrained it took 119px against the input's
+     105px, so the select for ".com" was wider than the field you type the
+     actual domain into. */
+  .kzd-domain-search-tld {
+    max-width: 104px;
+    padding: 14px 6px 14px 10px;
+    font-size: 0.875rem;
+  }
+  .kzd-domain-search-btn {
+    flex: 1 1 100%;
+    justify-content: center;
+    min-height: 50px;
+    padding: 0 20px;
+  }
+}
+
+/* Whether Search fits beside the field depends on the card, not the
+   viewport, and the two disagree: at a 620px viewport the card is full
+   width (570px), but at 768px col-md-9 takes over and the card SHRINKS to
+   529px. So the tablet had less room than the large phone, and the
+   "Enter a domain name" placeholder was truncated to "Enter a domain"
+   there and nowhere else. Below a 560px card there is not enough width
+   for the field to hold its placeholder and the button, so stack them. */
+@container kzd-order-card (max-width: 560px) {
+  .kzd-domain-search-field {
+    flex: 1 1 100%;
+  }
+  .kzd-domain-search-btn {
+    flex: 1 1 100%;
+    justify-content: center;
+    min-height: 50px;
+  }
+}
+
+/* Under ~400px the decorative magnifier is worth more as input width. */
+@media (max-width: 400px) {
+  .kzd-domain-search-field .icon {
+    display: none;
+  }
+  .kzd-domain-search-field {
+    padding-left: 14px;
+  }
+}
+
+/* Add-ons (mod_orderbutton_addons.html.twig). The stock checkbox renders
+   at 17x17, below the 24px WCAG 2.2 target minimum, and the price column
+   is text-nowrap -- on a phone it held ~100px hostage and forced the
+   add-on title to wrap three lines in what was left. */
+.kzd-addon-item .form-check-input {
+  width: 24px;
+  height: 24px;
+  margin-top: 0;
+}
+/* The description is run through markdown_to_html, so it arrives wrapped in
+   a <p> carrying a 16.8px bottom margin. That margin was the 25px of dead
+   air between the add-on copy and its price. */
+.kzd-addon-row label .fs-7 p:last-child {
+  margin-bottom: 0;
+}
+@media (max-width: 575.98px) {
+  .kzd-addon-item {
+    padding: 14px !important;
+  }
+  .kzd-addon-row {
+    flex-wrap: wrap;
+    gap: 8px 10px;
+  }
+  .kzd-addon-row > label {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  /* Price moves under the title and reads as one line, indented to line up
+     with the title rather than with the checkbox. */
+  .kzd-addon-price {
+    order: 3;
+    flex: 1 0 100%;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    text-align: left !important;
+    padding-left: 34px;
+  }
+  .kzd-addon-price .form-select {
+    width: 100%;
+  }
+}
+
+/* Two targets under the 24px WCAG 2.2 (2.5.8) minimum, found while
+   auditing the order page but present in the shared chrome: the navbar
+   theme toggle is `px-0` so it measures 20px wide, and breadcrumb links
+   come in at 23px tall. Both are one or four pixels short -- cheap to fix
+   and they apply on every page. */
+a.js-theme-toggler {
+  min-width: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.breadcrumb-item a {
+  display: inline-block;
+  padding-block: 2px;
+}
+
+
+/* The checkout panel's own 16px inset is redundant on a phone -- the order
+   card already provides the page gutter, and these 32px were coming
+   straight out of the plan column (299px of a 390px screen). */
+@media (max-width: 575.98px) {
+  .kzd-checkout-grid {
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+}
+
+/* ==========================================================================
+   CHECKOUT — MOBILE REDESIGN
+   Implements "Checkout Redesign — KZD Hosting.html" (mobile board, 390px).
+
+   Structure matched to the board: compact step header, cart card with the
+   price on its own ruled row, "Complete your setup" + pill billing toggle +
+   green savings note, plans as SELECTABLE ROWS (radio / name + inline specs
+   / price) instead of stacked cards, a 2x2 includes grid, then the summary
+   card -- line items with subtitles, promo link, subtotal, "Total due
+   today", payment method, Pay Now, trust line.
+
+   Done entirely in CSS against the existing markup, so every bit of backend
+   wiring (cart/add_item, the monthly/yearly plan hrefs, promo apply, gateway
+   ids, cart/checkout) is untouched.
+
+   Two deliberate divergences from the board, both consistency over literal
+   copying:
+   - The board sets Sora + IBM Plex Sans. This site is Hanken Grotesk
+     everywhere; a checkout in a different typeface from the header directly
+     above it reads as a broken page. Sizes, weights and spacing are matched
+     exactly -- only the family differs.
+   - The board's navy is #1A1A1A; the brand navy is #1A1A1A and is already on
+     this same page in the header, footer and secure bar. One navy per page.
+   The board's own neutrals, green and geometry are used as given.
+
+   The board itself overflows its 390px frame by 32px -- it sets width:390px
+   plus 16px side padding with no border-box, which is why its plan prices
+   clip. This implementation is fluid, so that cannot recur.
+   ========================================================================== */
+@media (max-width: 575.98px) {
+
+  /* Canvas: the board sits on #F4F5F7 with white cards on it. Bleed it to
+     the order card's edges (card-body is padded 16px at this width). */
+  .kzd-checkout-grid {
+    background: #F4F5F7;
+    margin: 0 -16px;
+    padding: 18px 16px 24px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    gap: 18px;
+  }
+
+  /* --- Step header: compact inline row, not the stacked progress bar --- */
+  .kzd-order-steps {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0;
+  }
+  .kzd-order-step {
+    flex: none;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    min-width: 0;
+  }
+  .kzd-order-step::after { display: none; }
+  .kzd-order-step + .kzd-order-step {
+    position: relative;
+    margin-left: 30px;
+  }
+  .kzd-order-step + .kzd-order-step::before {
+    content: "";
+    position: absolute;
+    left: -30px;
+    top: 50%;
+    width: 20px;
+    height: 1px;
+    background: #D9D9D9;
+  }
+  .kzd-order-step-icon {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 0;
+    background: #F4F5F7;
+    border: 0;
+    color: #6B6B6B;
+  }
+  .kzd-order-step-icon .icon { width: 11px; height: 11px; }
+  .kzd-order-step-label { font-size: 11.5px; font-weight: 500; color: #6B6B6B; }
+  .kzd-order-step.is-active .kzd-order-step-icon {
+    background: #1A1A1A;
+    color: #fff;
+    transform: none;
+    box-shadow: none;
+  }
+  .kzd-order-step.is-active .kzd-order-step-label { font-weight: 700; color: #1A1A1A; }
+  .kzd-order-step.is-done .kzd-order-step-icon { background: #F4F5F7; color: #6B6B6B; }
+
+  /* --- Cart card --- */
+  .kzd-cart-items {
+    border: 1px solid #D9D9D9;
+    border-radius: 14px;
+    box-shadow: none;
+  }
+  .kzd-cart-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "icon info remove"
+      "price price price";
+    align-items: flex-start;
+    gap: 0 12px;
+    padding: 16px;
+  }
+  .kzd-cart-item-icon {
+    grid-area: icon;
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    background: #F4F5F7;
+    color: #6B6B6B;
+    flex: none;
+  }
+  .kzd-cart-item-info { grid-area: info; min-width: 0; }
+  .kzd-cart-item-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1A1A1A;
+    overflow-wrap: anywhere;
+  }
+  .kzd-cart-item-period { font-size: 12px; color: #6B6B6B; margin-top: 2px; }
+  .kzd-cart-item-remove {
+    grid-area: remove;
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    border: 1px solid #D9D9D9;
+    background: #fff;
+    color: #6B6B6B;
+    flex: none;
+    order: 0;
+  }
+  /* Price on its own ruled row, right-aligned -- the board's move. */
+  .kzd-cart-item-price {
+    grid-area: price;
+    text-align: right;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #F4F5F7;
+  }
+
+  /* --- "Complete your setup" + billing toggle --- */
+  .kzd-plan-section-head { display: block; }
+  .kzd-plan-section-copy h4,
+  .kzd-plan-section-copy .h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 0 0 4px;
+  }
+  .kzd-plan-section-copy p {
+    font-size: 12.5px;
+    color: #6B6B6B;
+    margin: 0 0 14px;
+  }
+  .kzd-billing-toggle-wrap { display: block; width: 100%; }
+  .kzd-billing-toggle {
+    display: flex;
+    width: 100%;
+    background: #F4F5F7;
+    border: 0;
+    border-radius: 999px;
+    padding: 3px;
+    margin-bottom: 8px;
+  }
+  .kzd-billing-toggle label {
+    flex: 1 1 0;
+    text-align: center;
+    padding: 9px 0;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6B6B6B;
+    background: transparent;
+    border: 0;
+    min-height: 0;
+  }
+  .kzd-billing-toggle input:checked + label {
+    background: #fff;
+    color: #1A1A1A;
+    box-shadow: 0 1px 3px rgba(26, 26, 26, 0.12);
+  }
+  .kzd-billing-toggle-note {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6B6B6B;
+    margin: 0;
+  }
+
+  /* --- Plans as selectable rows --- */
+  .kzd-plan-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .kzd-plan-card {
+    position: relative;
+    border: 1px solid #D9D9D9;
+    border-radius: 12px;
+    box-shadow: none;
+    overflow: visible;
+  }
+  /* The radio affordance. Deliberately never drawn filled: nothing is
+     selected until the visitor picks a plan, and a pre-filled circle on the
+     recommended row would claim a choice they have not made. */
+  .kzd-plan-card::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    border: 1.5px solid #A7A7A7;
+    background: #fff;
+  }
+  .kzd-plan-card.is-recommended {
+    border: 2px solid #1A1A1A;
+    box-shadow: 0 8px 22px rgba(26, 26, 26, 0.12);
+  }
+  .kzd-plan-card-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "name  price"
+      "feats price";
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 2px;
+    padding: 13px 14px 13px 43px;
+  }
+  .kzd-plan-card-name {
+    grid-area: name;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+  /* Specs read as one inline "a / b / c" line, as on the board. */
+  .kzd-plan-card-features {
+    grid-area: feats;
+    display: block;
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #6B6B6B;
+  }
+  .kzd-plan-card-features li {
+    display: inline;
+    font-size: 11px;
+    color: #6B6B6B;
+  }
+  .kzd-plan-card-features li + li::before {
+    content: " \00B7  ";
+    color: #A7A7A7;
+  }
+  .kzd-plan-card-features .icon { display: none; }
+  .kzd-plan-card-divider { display: none; }
+  .kzd-plan-card-price {
+    grid-area: price;
+    margin-top: 0;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .kzd-plan-price-currency,
+  .kzd-plan-price-amount {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1A1A1A;
+    letter-spacing: 0;
+  }
+  .kzd-plan-price-monthly,
+  .kzd-plan-price-yearly {
+    display: block;
+    line-height: 1.15;
+  }
+  .kzd-plan-grid.is-yearly .kzd-plan-price-monthly { display: none; }
+  .kzd-plan-grid.is-yearly .kzd-plan-price-yearly { display: block; }
+  .kzd-plan-price-period {
+    display: block;
+    font-size: 10px;
+    font-weight: 400;
+    color: #6B6B6B;
+  }
+  .kzd-plan-price-yearly-note { display: none; }
+  .kzd-plan-card-ribbon {
+    position: absolute;
+    top: -9px;
+    left: 43px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 9px;
+    letter-spacing: 0.03em;
+    background: #1A1A1A;
+    color: #fff;
+  }
+  /* The whole row is the control: the "Choose plan" link is stretched over
+     the card and its label hidden, so the visible radio + row behaves the
+     way it looks. The link text stays in the accessibility tree. */
+  .kzd-plan-card-cta {
+    position: absolute;
+    inset: 0;
+    display: block;
+    z-index: 1;
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: 0;
+    border-radius: 12px;
+    min-height: 0;
+  }
+  .kzd-plan-card-cta:hover { background: none; transform: none; box-shadow: none; }
+  .kzd-plan-card-cta .icon { display: none; }
+  /* Standard visually-hidden, not text-indent: a -999em indent left the
+     link with a 13,935px scrollWidth inside a 329px card, which is both a
+     real overflow inside the row and something any clipped-text check will
+     flag forever. This keeps the accessible name with no geometry. */
+  .kzd-plan-card-cta > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* --- "Every plan includes" as a 2x2 grid with green checks --- */
+  .kzd-plan-includes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding-top: 14px;
+    margin-top: 16px;
+    border-top: 1px solid #D9D9D9;
+    background: none;
+  }
+  .kzd-plan-includes-label { display: none; }
+  .kzd-plan-includes > span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #6B6B6B;
+  }
+  /* Drawn rather than an inline SVG: the markup is a bare <span> per item
+     and this keeps it that way. */
+  .kzd-plan-includes > span::before {
+    content: "";
+    flex: none;
+    width: 5px;
+    height: 9px;
+    border: solid #6B6B6B;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin: 0 1px 2px 1px;
+  }
+
+  /* --- Order summary card --- */
+  .kzd-order-summary {
+    background: #fff;
+    border: 1px solid #D9D9D9;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 12px 32px rgba(26, 26, 26, 0.06);
+  }
+  .kzd-order-summary > h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 0 0 16px;
+  }
+  .kzd-summary-items { margin: 0; padding: 0; list-style: none; }
+  .kzd-summary-items li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 0;
+    border: 0;
+  }
+  .kzd-summary-item-name {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1A1A1A;
+    min-width: 0;
+  }
+  .kzd-summary-item-period {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 400;
+    color: #6B6B6B;
+    margin-top: 2px;
+  }
+  .kzd-summary-item-price {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1A1A1A;
+    white-space: nowrap;
+  }
+  .kzd-promo-row { margin: 0 0 16px; }
+  .kzd-promo-link {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6B6B6B;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .kzd-summary-table {
+    width: 100%;
+    table-layout: fixed;
+    border-top: 1px solid #D9D9D9;
+    margin-top: 0;
+  }
+  .kzd-summary-table td {
+    font-size: 12.5px;
+    color: #6B6B6B;
+    padding: 12px 0 0;
+    border: 0;
+  }
+  .kzd-summary-table td:last-child { text-align: right; white-space: nowrap; }
+  .kzd-summary-table tr.kzd-summary-total td {
+    border-top: 1px solid #D9D9D9;
+    padding: 14px 0 0;
+    vertical-align: baseline;
+  }
+  .kzd-summary-total td:first-child {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1A1A1A;
+  }
+  .kzd-summary-total td:last-child {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1A1A1A;
+    letter-spacing: -0.02em;
+  }
+
+  /* --- Payment method --- */
+  .kzd-gateway-picker { margin: 18px 0 0; }
+  .kzd-gateway-heading h4 {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6B6B6B;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin: 0 0 8px;
+  }
+  .kzd-gateway-heading p { display: none; }
+  .kzd-gateway-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid #1A1A1A;
+    background: #F4F5F7;
+    border-radius: 10px;
+    padding: 11px 12px;
+    margin: 0;
+  }
+  .kzd-gateway-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #D9D9D9;
+    color: #6B6B6B;
+    flex: none;
+  }
+  .kzd-gateway-icon .icon { width: 14px; height: 14px; }
+  .kzd-gateway-name { font-size: 13px; font-weight: 600; color: #1A1A1A; }
+
+  /* --- Pay Now + trust line --- */
+  .kzd-pay-now-btn {
+    width: 100%;
+    margin-top: 18px;
+    border: 0;
+    border-radius: 10px;
+    padding: 15px 0;
+    background: #1A1A1A;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .kzd-pay-now-btn-arrow { width: 15px; height: 15px; }
+  .kzd-checkout-trust {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 11px;
+    color: #6B6B6B;
+  }
+}
+
+/* ==========================================================================
+   CHECKOUT — DESKTOP REDESIGN
+   Implements the desktop board of "Checkout Redesign — KZD Hosting.html"
+   (1440px). Same two deliberate divergences as the mobile block above:
+   the site's Hanken Grotesk rather than the board's Sora/IBM Plex, and the
+   brand navy #1A1A1A rather than the board's #1A1A1A, because the header,
+   footer and secure bar on this same page already use it.
+
+   One further divergence, and it is a correctness point rather than taste:
+   the board draws the recommended plan in its SELECTED state -- dark fill,
+   a check disc and a "Selected" button. On the live page nothing is
+   selected yet; every card is still an offer. Labelling one "Selected"
+   before the visitor has chosen would state something untrue, so the
+   recommended card keeps the board's visual emphasis (dark border, badge,
+   filled button) while its button still reads "Choose plan".
+   ========================================================================== */
+@media (min-width: 576px) {
+
+  /* --- Section head --- */
+  .kzd-plan-section-copy h2 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #1A1A1A;
+    margin: 0 0 6px;
+  }
+  .kzd-plan-section-copy p {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: #6B6B6B;
+    margin: 0;
+    max-width: 42ch;
+  }
+  .kzd-billing-toggle-note {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #6B6B6B;
+  }
+
+  /* --- Plan cards --- */
+  .kzd-plan-card {
+    border: 1px solid #D9D9D9;
+    border-radius: 14px;
+    background: #fff;
+  }
+  .kzd-plan-card.is-recommended {
+    border: 2px solid #1A1A1A;
+    box-shadow: 0 14px 34px rgba(26, 26, 26, 0.13);
+  }
+  /* The board puts the badge INSIDE the card, top-left, as a dark pill --
+     not as a full-width ribbon above it. */
+  .kzd-plan-card-ribbon {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: auto;
+    padding: 3px 8px;
+    border-radius: 5px;
+    background: #1A1A1A;
+    color: #fff;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .kzd-plan-card.is-recommended .kzd-plan-card-body { padding-top: 40px; }
+  .kzd-plan-card-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+  .kzd-plan-card-price { margin-top: 10px; }
+  .kzd-plan-price-currency {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+  .kzd-plan-price-amount {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #1A1A1A;
+  }
+  .kzd-plan-price-period {
+    font-size: 11.5px;
+    font-weight: 400;
+    color: #6B6B6B;
+  }
+  .kzd-plan-price-yearly-note {
+    display: block;
+    margin-top: 4px;
+    font-size: 11px;
+    color: #6B6B6B;
+  }
+  .kzd-plan-card-divider {
+    margin: 14px 0;
+    background: #F4F5F7;
+  }
+  .kzd-plan-card-features { gap: 7px; margin-bottom: 16px; }
+  .kzd-plan-card-features li {
+    font-size: 12.5px;
+    color: #6B6B6B;
+  }
+  .kzd-plan-card-features .icon { color: #6B6B6B; }
+  /* Outline by default, filled on the recommended plan -- the board's
+     hierarchy, without claiming a selection that has not happened. */
+  .kzd-plan-card-cta {
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid #D9D9D9;
+    border-radius: 8px;
+    background: #fff;
+    color: #1A1A1A;
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 10px 14px;
+  }
+  .kzd-plan-card-cta .icon { display: none; }
+  .kzd-plan-card-cta:hover {
+    background: #F4F5F7;
+    color: #1A1A1A;
+  }
+  .kzd-plan-card.is-recommended .kzd-plan-card-cta {
+    background: #1A1A1A;
+    border-color: #1A1A1A;
+    color: #fff;
+  }
+  .kzd-plan-card.is-recommended .kzd-plan-card-cta:hover {
+    background: #1A1A1A;
+    border-color: #1A1A1A;
+    color: #fff;
+  }
+
+  /* --- "Every plan includes" strip --- */
+  .kzd-plan-includes {
+    border-top: 1px solid #D9D9D9;
+    background: none;
+    padding: 14px 0 0;
+    margin-top: 18px;
+    gap: 18px;
+    font-size: 12.5px;
+    color: #6B6B6B;
+  }
+  .kzd-plan-includes-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+  }
+
+  /* --- Summary card --- */
+  .kzd-order-summary {
+    background: #fff;
+    border: 1px solid #D9D9D9;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 14px 36px rgba(26, 26, 26, 0.07);
+  }
+  .kzd-order-summary > h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 0 0 18px;
+  }
+  .kzd-summary-items { margin: 0; padding: 0; list-style: none; }
+  .kzd-summary-items li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding: 0;
+    border: 0;
+  }
+  .kzd-summary-item-name {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #1A1A1A;
+    min-width: 0;
+  }
+  .kzd-summary-item-period {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #6B6B6B;
+  }
+  .kzd-summary-item-price {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #1A1A1A;
+    white-space: nowrap;
+  }
+  /* Promo link now lives inside the card, above the subtotal rule. */
+  .kzd-promo-row { margin: 2px 0 16px; }
+  .kzd-promo-link {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #6B6B6B;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .kzd-summary-table {
+    width: 100%;
+    border-top: 1px solid #D9D9D9;
+  }
+  .kzd-summary-table td {
+    font-size: 13px;
+    color: #6B6B6B;
+    padding: 13px 0 0;
+    border: 0;
+  }
+  .kzd-summary-table td:last-child {
+    text-align: right;
+    white-space: nowrap;
+  }
+  .kzd-summary-table tr.kzd-summary-total td {
+    border-top: 1px solid #D9D9D9;
+    padding: 16px 0 0;
+    vertical-align: baseline;
+  }
+  .kzd-summary-total td:first-child {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #1A1A1A;
+  }
+  .kzd-summary-total td:last-child {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #1A1A1A;
+  }
+
+  /* --- Payment method --- */
+  .kzd-gateway-picker { margin-top: 20px; }
+  .kzd-gateway-heading h4 {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #6B6B6B;
+    margin: 0 0 10px;
+  }
+  .kzd-gateway-option {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    border: 2px solid #1A1A1A;
+    background: #F4F5F7;
+    border-radius: 11px;
+    padding: 12px 14px;
+    margin: 0;
+  }
+  .kzd-gateway-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: #fff;
+    border: 1px solid #D9D9D9;
+    color: #6B6B6B;
+    flex: none;
+  }
+  .kzd-gateway-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #1A1A1A;
+  }
+
+  /* --- Pay Now + trust line --- */
+  .kzd-pay-now-btn {
+    width: 100%;
+    margin-top: 18px;
+    border: 0;
+    border-radius: 11px;
+    padding: 16px 0;
+    background: #1A1A1A;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .kzd-pay-now-btn:hover { background: #1A1A1A; }
+  .kzd-checkout-trust {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 13px;
+    font-size: 11.5px;
+    color: #6B6B6B;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Desktop redesign, corrections found by rendering it against the board.
+   -------------------------------------------------------------------------- */
+@media (min-width: 576px) {
+
+  /* 1. The board has no rule under the section head; the existing 2px navy
+        border read as a stray line across the page. */
+  .kzd-plan-section-head {
+    padding-bottom: 20px;
+    border-bottom: 0;
+  }
+
+  /* 2. Billing toggle as the board's pill: light track, white active tab,
+        not a hard-bordered box with a navy fill. */
+  .kzd-billing-toggle {
+    display: inline-flex;
+    border: 0;
+    background: #F4F5F7;
+    border-radius: 999px;
+    padding: 3px;
+  }
+  .kzd-billing-toggle label {
+    padding: 8px 20px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #6B6B6B;
+    background: transparent;
+  }
+  .kzd-billing-toggle input:checked + label {
+    background: #fff;
+    color: #1A1A1A;
+    box-shadow: 0 1px 3px rgba(26, 26, 26, 0.12);
+  }
+
+  /* 3. The yearly-equivalent note must only appear in yearly mode. The
+        desktop block set it to display:block unconditionally, so every card
+        showed "ZAR 990.00 billed yearly" underneath its MONTHLY price. */
+  .kzd-plan-price-yearly-note { display: none; }
+  .kzd-plan-grid.is-yearly .kzd-plan-price-yearly-note {
+    display: block;
+    margin-top: 4px;
+    font-size: 11px;
+    color: #6B6B6B;
+  }
+
+  /* 4. "Every plan includes" wraps to a second line at this column width
+        (our copy is longer than the board's). Make the wrap deliberate
+        rather than ragged. */
+  .kzd-plan-includes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 8px;
+    column-gap: 18px;
+  }
+}
+
+/* 5. Four plans across, as the board has them. The checkout's main column
+      is about 612px at a 1440px viewport -- col-md-9 minus the 360px summary
+      -- so the old 640px threshold dropped it to a 2x2 grid there. The board
+      fits four ~155px cards in that same space. Keyed to the container, like
+      every other rule on this grid. */
+@container kzd-checkout-main (min-width: 560px) {
+  .kzd-plan-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+}
+@container kzd-checkout-main (max-width: 559.98px) {
+  .kzd-plan-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Four plans across on a wide screen, as the board has them.
+
+   Measured first, because the obvious fix was the wrong one. The grid logic
+   was already correct: at a 1100px viewport the summary stacks, the plan
+   column gets 664px, and four cards land at 157px -- the board's own card
+   width, exactly. The problem is the column, not the breakpoint. The order
+   card is col-md-9 and the summary takes a fixed 360px, which leaves the
+   plan column just 515px at 1440 and 395px at 1280. Forcing four columns
+   into 515px would give 120px cards and wrap the prices.
+
+   So widen the order card on large screens instead. 1200px puts the plan
+   column at roughly 730px, which is the board's proportion (main ~640-660
+   beside a 360px summary) and lands cards back around 170px.
+   -------------------------------------------------------------------------- */
+@media (min-width: 1200px) {
+  /* .mx-auto is load-bearing here, not decoration. layout_default only adds
+     it when there is no sidebar (logged out, menu hidden), so it is what
+     distinguishes the centred order card from the signed-in content column
+     that shares its row with col-md-3. Without this scope the rule widened
+     that content column to 100%, it could no longer sit beside the sidebar,
+     and it wrapped underneath -- leaving the right-hand half of the client
+     area blank all the way down to the card. */
+  .order-index .col-md-9.mx-auto {
+    width: 100%;
+    max-width: 1200px;
+  }
+}
+
+/* With the column widened, four across fits from ~600px of plan column.
+   Below that it stays two up rather than cramming. */
+@container kzd-checkout-main (min-width: 600px) {
+  .kzd-plan-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+}
+@container kzd-checkout-main (max-width: 599.98px) {
+  .kzd-plan-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@container kzd-checkout-main (max-width: 380px) {
+  .kzd-plan-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Plan cards: close the dead space above the button.
+
+   The base rule gives .kzd-plan-card-cta `margin-top: auto`, which pins the
+   button to the BOTTOM of the card. Grid stretches every card to the tallest
+   one (the recommended card is taller -- it carries the badge and its extra
+   top padding), so on every other card that auto margin opened a block of
+   empty space between the last feature and the button.
+
+   The reference does the opposite: the button sits directly under the
+   features, and whatever slack the card has is left BELOW it. Same equal
+   card heights, no hole in the middle.
+   -------------------------------------------------------------------------- */
+.kzd-plan-card-body {
+  justify-content: flex-start;
+}
+/* The features list no longer needs to reserve trailing space, since the
+   button follows it immediately rather than being pushed away from it. */
+.kzd-plan-card-features {
+  margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Mobile checkout: two defects found by looking at the rendered rows.
+   -------------------------------------------------------------------------- */
+@media (max-width: 575.98px) {
+
+  /* 1. Both prices were rendering at once -- "ZAR 99.00 /mo" stacked above
+        "ZAR 82.50 /mo". The redesign block set display:block on the monthly
+        AND yearly spans together, which overrode the base rule that keeps
+        the yearly one hidden until the grid carries .is-yearly. Only one
+        price may ever be visible. */
+  .kzd-plan-price-monthly { display: block; }
+  .kzd-plan-price-yearly { display: none; }
+  .kzd-plan-grid.is-yearly .kzd-plan-price-monthly { display: none; }
+  .kzd-plan-grid.is-yearly .kzd-plan-price-yearly { display: block; }
+
+  /* 2. The stretched link must cover the whole row. A later global
+        `margin-top: 14px` (added to close the gap above the DESKTOP card
+        button) also applied to this absolutely-positioned overlay, pushing
+        it 15px down so it no longer aligned with the card it covers. */
+  .kzd-plan-card-cta {
+    margin-top: 0;
+    background: none;
+  }
+  .kzd-plan-card.is-recommended .kzd-plan-card-cta {
+    background: none;
+  }
+}
+
+/* The gap fix belongs to the desktop card layout only -- on mobile the same
+   selector is a full-card overlay, where a top margin is a misalignment
+   rather than breathing room. */
+@media (min-width: 576px) {
+  .kzd-plan-card-cta { margin-top: 14px; }
+}
+
+/* ==========================================================================
+   KNOWLEDGE BASE INDEX (mod_support_kb_index.html.twig [override])
+
+   Same card language as the homepage KB grid and the article page: a
+   near-invisible resting border, 16px radius, no gradient tiles, no icon
+   slabs. Search leads the page because in a help centre that is the
+   primary action, not a header accessory.
+   ========================================================================== */
+.kzd-kb-index {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 8px 0 12px;
+}
+
+/* --- Hero + search --- */
+.kzd-kb-hero {
+  text-align: center;
+  padding: 8px 0 30px;
+}
+.kzd-kb-hero h1 {
+  margin: 0 0 8px;
+  font-size: clamp(26px, 3.4vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1A1A1A;
+}
+.kzd-kb-hero p {
+  margin: 0 0 22px;
+  font-size: 15px;
+  color: #6B6B6B;
+}
+.kzd-kb-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 560px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1.5px solid rgba(26, 26, 26, 0.12);
+  border-radius: 999px;
+  padding: 5px 5px 5px 16px;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.kzd-kb-search:focus-within {
+  border-color: #1A1A1A;
+  box-shadow: 0 0 0 4px rgba(26, 26, 26, 0.1);
+}
+.kzd-kb-search-icon {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  color: #6B6B6B;
+}
+.kzd-kb-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: none;
+  font-size: 15px;
+  color: #1A1A1A;
+  padding: 11px 0;
+}
+.kzd-kb-search input::placeholder { color: #6B6B6B; }
+.kzd-kb-search button {
+  flex: none;
+  border: 0;
+  border-radius: 999px;
+  background: #1A1A1A;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 11px 22px;
+  min-height: 44px;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.kzd-kb-search button:hover { background: #1A1A1A; }
+
+/* --- Search results --- */
+.kzd-kb-resultline {
+  font-size: 14px;
+  color: #6B6B6B;
+  margin: 0 0 14px;
+}
+.kzd-kb-results {
+  background: #fff;
+  border: 1px solid rgba(26, 26, 26, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 34px;
+}
+.kzd-kb-result {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 18px;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.07);
+  text-decoration: none;
+  transition: background .15s ease;
+}
+.kzd-kb-result:last-child { border-bottom: 0; }
+.kzd-kb-result:hover { background: rgba(26, 26, 26, 0.035); }
+.kzd-kb-result-title { font-size: 15px; font-weight: 600; color: #1A1A1A; }
+.kzd-kb-result-cat { font-size: 12px; color: #6B6B6B; white-space: nowrap; }
+.kzd-kb-result-arrow { width: 15px; height: 15px; color: #6B6B6B; }
+
+/* --- Category cards --- */
+.kzd-kb-subhead {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin: 0 0 14px;
+}
+/* auto-fit, not a fixed 3-up batch: with two categories the stock layout
+   left a third of the row blank. */
+.kzd-kb-cats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+  gap: 18px;
+  /* Cards size to their own content. h-100 is what stretched a category
+     with no articles to match one with three, producing the empty middle. */
+  align-items: start;
+}
+.kzd-kb-cat {
+  background: #fff;
+  border: 1px solid rgba(26, 26, 26, 0.08);
+  border-radius: 16px;
+  padding: 24px 22px 20px;
+  box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04);
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+/* The shared .kzd-reveal-card component ends its reveal animation with a
+   permanent flat 2px black underline -- a deliberate accent on the darker
+   promo cards it was built for, but a stark stray line under a soft white
+   content card like this one. Two classes (0,2,1) to reliably beat the
+   page's own inline `.kzd-reveal-card::after` (0,1,1): that inline <style>
+   block renders after this linked stylesheet in the document, so equal
+   specificity would let it win the tie. */
+.kzd-kb-cat.kzd-reveal-card::after { content: none; }
+.kzd-kb-cat:hover {
+  border-color: rgba(26, 26, 26, 0.28);
+  box-shadow: 0 20px 40px -20px rgba(26, 26, 26, 0.25), 0 6px 14px -8px rgba(26, 26, 26, 0.1);
+  transform: translateY(-3px);
+}
+.kzd-kb-cat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #1A1A1A;
+  margin-bottom: 14px;
+}
+.kzd-kb-cat-icon .icon { width: 16px; height: 16px; color: #fff; }
+.kzd-kb-cat-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.kzd-kb-cat-head h3 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -0.2px; }
+.kzd-kb-cat-head h3 a { color: #1A1A1A; text-decoration: none; }
+.kzd-kb-cat-head h3 a:hover { color: #1A1A1A; }
+.kzd-kb-cat-count {
+  flex: none;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #6B6B6B;
+  background: rgba(26, 26, 26, 0.06);
+  border-radius: 999px;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+.kzd-kb-cat-desc {
+  margin: 7px 0 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #6B6B6B;
+}
+.kzd-kb-cat-list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid rgba(26, 26, 26, 0.07);
+}
+.kzd-kb-cat-list li + li { margin-top: 2px; }
+.kzd-kb-cat-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  /* padding-block gives each row a 24px+ touch target without changing
+     the visual rhythm. */
+  padding: 7px 0;
+  font-size: 14px;
+  color: #3A3A3A;
+  text-decoration: none;
+  transition: color .15s ease;
+}
+.kzd-kb-cat-list a .icon {
+  width: 13px;
+  height: 13px;
+  flex: none;
+  color: #D9D9D9;
+  transition: transform .2s ease, color .15s ease;
+}
+.kzd-kb-cat-list a:hover { color: #1A1A1A; }
+.kzd-kb-cat-list a:hover .icon { color: #1A1A1A; transform: translateX(3px); }
+.kzd-kb-cat-more {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #1A1A1A;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.28);
+  padding-bottom: 1px;
+}
+.kzd-kb-cat-more:hover { border-bottom-color: #1A1A1A; }
+/* Says what is true instead of holding a list-shaped gap open. */
+.kzd-kb-cat-empty {
+  margin: 14px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(26, 26, 26, 0.07);
+  font-size: 13px;
+  color: #6B6B6B;
+}
+
+/* --- Empty / no-results --- */
+.kzd-kb-empty {
+  text-align: center;
+  background: #fff;
+  border: 1px solid rgba(26, 26, 26, 0.08);
+  border-radius: 16px;
+  padding: 44px 24px;
+}
+.kzd-kb-empty h2 { margin: 0 0 8px; font-size: 20px; font-weight: 700; color: #1A1A1A; }
+.kzd-kb-empty p { margin: 0 0 20px; font-size: 14.5px; color: #6B6B6B; }
+.kzd-kb-empty-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+.kzd-kb-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 11px 22px;
+  border-radius: 999px;
+  background: #1A1A1A;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.kzd-kb-btn-primary:hover { background: #1A1A1A; color: #fff; }
+.kzd-kb-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(26, 26, 26, 0.16);
+  color: #1A1A1A;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.kzd-kb-btn-ghost:hover { border-color: #1A1A1A; color: #1A1A1A; }
+
+/* --- Ask-a-human band --- */
+.kzd-kb-ask {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 34px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: rgba(26, 26, 26, 0.04);
+  border: 1px solid rgba(26, 26, 26, 0.08);
+}
+.kzd-kb-ask strong { display: block; font-size: 15px; color: #1A1A1A; }
+.kzd-kb-ask span { display: block; margin-top: 3px; font-size: 13.5px; color: #6B6B6B; }
+
+@media (max-width: 575.98px) {
+  .kzd-kb-hero { padding: 4px 0 24px; }
+  .kzd-kb-search {
+    flex-wrap: wrap;
+    border-radius: 16px;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  .kzd-kb-search input { flex: 1 1 100%; padding: 4px 0; }
+  .kzd-kb-search-icon { display: none; }
+  .kzd-kb-search button { flex: 1 1 100%; }
+  .kzd-kb-cat { padding: 18px 18px 16px; }
+  .kzd-kb-ask { flex-direction: column; align-items: flex-start; }
+  .kzd-kb-ask .kzd-kb-btn-primary { width: 100%; justify-content: center; }
+}
+
+
+/* KB index: three links sat under the 24px WCAG 2.2 (2.5.8) target minimum
+   on their short axis -- the two category-title links at 22px and the
+   "View all N articles" link at 21px. Padding-block lifts the hit area
+   without moving anything visually, since the surrounding margins already
+   carry the rhythm. */
+.kzd-kb-cat-head h3 a {
+  display: inline-block;
+  padding-block: 3px;
+}
+.kzd-kb-cat-more {
+  padding-block: 4px;
+}
+
+
+/* ==========================================================================
+   Touch targets (from the site-wide responsiveness audit, 8 widths x every
+   page). On a touchscreen a link needs ~44px of height to hit reliably; these
+   measured 19-31px. The tap area grows, the text does not move: inline-flex
+   with a min-height, and negative margins where the extra height would
+   otherwise push the layout apart. Mouse users (fine pointers) keep the
+   original compact sizes.
+   ========================================================================== */
+@media (pointer: coarse) {
+    .kzd-auth-back-link a,
+    .kzd-auth-links a,
+    .kzd-auth-footer-note a,
+    .kzd-kb-cat-head h3 a,
+    .kzd-kb-cat-more,
+    .kzd-kb-article-eyebrow,
+    .kzd-kb-side-title,
+    .kzd-stat-link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        margin-top: -8px;
+        margin-bottom: -8px;
+    }
+    .kzd-kb-search input { min-height: 48px; }
+    .kzd-topbar-home { min-height: 40px; }
+    /* The add-on (e.g. domain privacy) checkbox: its label is clickable, but
+       the box itself was a 16px target. */
+    .addons .form-check-input,
+    .kzd-addon .form-check-input { width: 22px; height: 22px; }
+}
+/* Password reset: its "Back to Login" button inherited a 10.5px label. */
+.btn.btn-outline-primary.w-100 { font-size: 14px; }
+
+/* ==========================================================================
+   Dark mode, component by component (from a dark-mode audit of the public
+   pages and the client area). Many components hard-code light-mode colours,
+   so the theme variables alone left white cards with light text, and
+   near-black text and buttons on the near-black page. Same neutrals as
+   light mode, inverted: #1A1A1A canvas, #242424 raised surfaces, #3A3A3A
+   lines, #D9D9D9 body text, #F4F5F7 headings, Light Silver actions with
+   Rich Black text. The order flow pins itself to light on purpose and is
+   untouched.
+   ========================================================================== */
+[data-bs-theme=dark] body { color: #D9D9D9; }
+
+/* Raised surfaces that were hard-coded white */
+[data-bs-theme=dark] .card,
+[data-bs-theme=dark] .kzd-auth-wrapper,
+[data-bs-theme=dark] .kzd-kb-article-card,
+[data-bs-theme=dark] .kzd-kb-cat,
+[data-bs-theme=dark] .kzd-kb-side-card,
+[data-bs-theme=dark] .kzd-kb-search {
+    background-color: #242424 !important;
+    border-color: #3A3A3A !important;
+    color: #D9D9D9 !important;
+    box-shadow: none !important;
+}
+[data-bs-theme=dark] .form-control,
+[data-bs-theme=dark] .form-select,
+[data-bs-theme=dark] .kzd-kb-search input {
+    background-color: #1A1A1A !important;
+    border-color: #3A3A3A !important;
+    color: #F4F5F7 !important;
+}
+[data-bs-theme=dark] .form-control::placeholder { color: #A7A7A7 !important; }
+[data-bs-theme=dark] .form-control:focus,
+[data-bs-theme=dark] .form-select:focus { border-color: #A7A7A7 !important; box-shadow: 0 0 0 3px rgba(244, 244, 244, 0.12) !important; }
+
+/* Headings and strong text */
+[data-bs-theme=dark] h1, [data-bs-theme=dark] h2, [data-bs-theme=dark] h3,
+[data-bs-theme=dark] h4, [data-bs-theme=dark] h5, [data-bs-theme=dark] h6,
+[data-bs-theme=dark] strong,
+[data-bs-theme=dark] .kzd-kb-article-title,
+[data-bs-theme=dark] .kzd-kb-side-heading,
+[data-bs-theme=dark] .kzd-form-section-label,
+[data-bs-theme=dark] .form-label {
+    color: #F4F5F7 !important;
+}
+/* Body copy and quiet text */
+[data-bs-theme=dark] .kzd-kb-article-card,
+[data-bs-theme=dark] .kzd-kb-article-card li,
+[data-bs-theme=dark] .kzd-kb-article-card p,
+[data-bs-theme=dark] .kzd-kb-cat p,
+[data-bs-theme=dark] .kzd-kb-side-card p,
+[data-bs-theme=dark] .kzd-kb-side-card span,
+[data-bs-theme=dark] .kzd-kb-cat span,
+[data-bs-theme=dark] .text-muted,
+[data-bs-theme=dark] .text-secondary,
+[data-bs-theme=dark] .form-hint,
+[data-bs-theme=dark] small {
+    color: #A7A7A7 !important;
+}
+[data-bs-theme=dark] .kzd-kb-article-card li,
+[data-bs-theme=dark] .kzd-kb-article-card p { color: #D9D9D9 !important; }
+
+/* Links */
+[data-bs-theme=dark] a:not(.btn):not(.nav-link),
+[data-bs-theme=dark] .kzd-kb-article-eyebrow,
+[data-bs-theme=dark] .kzd-kb-cat-more,
+[data-bs-theme=dark] .kzd-kb-side-title {
+    color: #F4F5F7 !important;
+}
+
+/* Buttons: Light Silver fill + Rich Black text; outlines in Light Silver */
+[data-bs-theme=dark] .btn-primary,
+[data-bs-theme=dark] .kzd-btn-gradient {
+    background: #D9D9D9 !important;
+    border-color: #D9D9D9 !important;
+    color: #1A1A1A !important;
+}
+[data-bs-theme=dark] .btn-primary:hover,
+[data-bs-theme=dark] .kzd-btn-gradient:hover { background: #FFFFFF !important; border-color: #FFFFFF !important; color: #1A1A1A !important; }
+[data-bs-theme=dark] .btn-outline-primary,
+[data-bs-theme=dark] .btn-outline-secondary {
+    background: transparent !important;
+    border-color: #6B6B6B !important;
+    color: #F4F5F7 !important;
+}
+[data-bs-theme=dark] .btn-outline-primary:hover,
+[data-bs-theme=dark] .btn-outline-secondary:hover { background: #F4F5F7 !important; border-color: #F4F5F7 !important; color: #1A1A1A !important; }
+
+/* Client-area navigation: active item */
+[data-bs-theme=dark] .nav-link { color: #A7A7A7; }
+[data-bs-theme=dark] .nav-link:hover { color: #F4F5F7; }
+[data-bs-theme=dark] .nav-link.active {
+    color: #F4F5F7 !important;
+    background-color: rgba(244, 244, 244, 0.1) !important;
+}
+
+/* Status text keeps its meaning, lightened enough to read on dark */
+[data-bs-theme=dark] .text-danger { color: #F0A89E !important; }
+[data-bs-theme=dark] .text-success { color: #9FD0B0 !important; }
+[data-bs-theme=dark] .text-warning { color: #E8C987 !important; }
+/* Quiet text that was Medium Gray: on dark it takes Silver, the step that
+   reads on #1A1A1A / #242424 (7.9:1 / 7.1:1). */
+[data-bs-theme=dark] .kzd-kb-article-meta,
+[data-bs-theme=dark] .kzd-kb-article-meta span,
+[data-bs-theme=dark] .kzd-kb-help-text,
+[data-bs-theme=dark] .kzd-kb-help-text p,
+[data-bs-theme=dark] .kzd-kb-side-label,
+[data-bs-theme=dark] .kzd-auth-links,
+[data-bs-theme=dark] .kzd-auth-links span { color: #A7A7A7 !important; }
+[data-bs-theme=dark] .kzd-auth-footer-note,
+[data-bs-theme=dark] .kzd-auth-footer-note span { color: #A7A7A7 !important; }
+
+/* Bootstrap's own greys, onto the document's scale (they measured 4.26:1
+   and 1.28:1 in the client area). */
+.btn-outline-secondary { --bs-btn-color: #3A3A3A; --bs-btn-border-color: #A7A7A7; --bs-btn-hover-bg: #1A1A1A; --bs-btn-hover-border-color: #1A1A1A; --bs-btn-hover-color: #FFFFFF; }
+.badge.bg-secondary-subtle { background-color: #F4F5F7 !important; color: #3A3A3A !important; }
+[data-bs-theme=dark] .badge.bg-secondary-subtle { background-color: #3A3A3A !important; color: #F4F5F7 !important; }
+[data-bs-theme=dark] .kzd-kb-hero p,
+[data-bs-theme=dark] .kzd-kb-ask span { color: #A7A7A7 !important; }
+
+/* ==========================================================================
+   One shape system, site-wide (design doc section 7 + the owner's pill
+   rule for buttons). Earlier rules in this file squared off buttons, cards,
+   list groups, selects and pagination (border-radius: 0), so the client
+   area did not match the public pages -- the same "New Order" button was a
+   pill on the dashboard and square beside a help article.
+   ========================================================================== */
+.btn:not(.btn-close):not(.btn-link) { border-radius: 999px !important; }
+/* A button fused to a field keeps one rounded outer edge, not two pills. */
+.input-group > .btn:not(:first-child) { border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important; }
+.input-group > .btn:not(:last-child) { border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important; }
+.card, .page-password-reset .card { border-radius: 16px !important; }
+.card > .card-header:first-child { border-top-left-radius: 16px; border-top-right-radius: 16px; }
+.card > .card-footer:last-child { border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; }
+.list-group { border-radius: 12px; overflow: hidden; }
+.form-control, .form-select, .page-password-reset .form-select { border-radius: 12px; }
+.input-group > .form-control:not(:last-child), .input-group > .form-select:not(:last-child) { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.input-group > .form-control:not(:first-child), .input-group > .form-select:not(:first-child) { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.badge { border-radius: 999px !important; }
+.page-link { border-radius: 8px !important; }
+
+/* Sidebar: no dividers (with rounded items they curved at the ends) and no
+   2px left bar; the current page is a soft rounded fill, the way Apple's
+   own sidebars mark it. */
+#sidebarMenu .offcanvas-item { border: 0 !important; border-radius: 12px; }
+#sidebarMenu .offcanvas-item.active { border-left: 0 !important; background: rgba(26, 26, 26, 0.06); }
+#sidebarMenu .offcanvas-item.active > .nav-link { font-weight: 600; }
+[data-bs-theme=dark] #sidebarMenu .offcanvas-item.active { background: rgba(244, 244, 244, 0.09); }
+[data-bs-theme=dark] #sidebarMenu .nav-link.active { background: transparent !important; }
+
+/* Auth pages (login / signup / password reset): tighter vertical rhythm.
+   The wrapper used to centre a short form inside a full-height column
+   (min-height:100vh + justify-content:center + 56px padding), and the logo
+   added Bootstrap's my-4 on top of that -- on a laptop the card started
+   ~230px down the page with nothing above it but the back link and mark.
+   Now the stack starts at the top with small, viewport-scaled spacing, the
+   way SaaS sign-in screens do, and phones use the dynamic viewport so the
+   mobile address bar does not add phantom height. */
+.kzd-auth-wrapper {
+  min-height: 100vh;
+  min-height: 100dvh;
+  justify-content: flex-start;
+  padding: clamp(16px, 4vh, 40px) 16px clamp(24px, 5vh, 48px);
+}
+.kzd-auth-back-link { margin-bottom: 4px; }
+.kzd-auth-logo-row { margin: 0; }
+.kzd-auth-logo-row img,
+.kzd-auth-logo-row .my-4 { margin-top: 4px !important; margin-bottom: 16px !important; height: 40px !important; }
+.page-login .card-body,
+.page-signup .card-body,
+.page-password-reset .card-body { padding: 2.25rem 2rem; }
+.page-login h5.text-center,
+.page-signup h5.text-center,
+.page-password-reset h5.text-center { margin-top: 0 !important; margin-left: 0 !important; margin-right: 0 !important; margin-bottom: 1.5rem !important; text-wrap: balance; }
+@media (max-width: 600px) {
+  .kzd-auth-wrapper { padding: 12px 12px 24px; }
+  .kzd-auth-logo-row img,
+  .kzd-auth-logo-row .my-4 { height: 34px !important; margin-bottom: 12px !important; }
+  .page-login .card-body,
+  .page-signup .card-body,
+  .page-password-reset .card-body { padding: 1.75rem 1.25rem; }
+}
+
+/* Client dashboard polish (2026-10-22). Premium SaaS rhythm:
+   - one button size everywhere: 44px pills, 14px/600 labels, so "New Order"
+     no longer sits smaller than "New Ticket" / "My Profile";
+   - the sidebar and the content start on the same line, 28px under the
+     header instead of touching its border;
+   - card headers are white with a hairline, not a grey band;
+   - only clickable cards lift on hover; data cards stay still. */
+body.dashboard .container-fluid > .row,
+body:has(#sidebarMenu) .container-fluid > .row { padding-top: 28px; }
+#sidebarMenu .kzd-sidebar-cta,
+.kzd-quick-actions .btn,
+.kzd-portal-nav .kzd-btn-gradient {
+  min-height: 44px;
+  padding: 0 20px;
+  border-radius: 999px;
+  font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+#sidebarMenu .kzd-sidebar-cta { width: 100%; }
+.kzd-quick-actions .btn .icon,
+#sidebarMenu .kzd-sidebar-cta .icon { width: 16px; height: 16px; }
+.kzd-quick-actions .btn-outline-primary {
+  background: #FFFFFF;
+  border: 1px solid rgba(26, 26, 26, 0.16) !important;
+  color: #1A1A1A;
+}
+.kzd-quick-actions .btn-outline-primary:hover {
+  background: #F4F5F7;
+  border-color: rgba(26, 26, 26, 0.32) !important;
+  color: #1A1A1A;
+}
+body.dashboard .card { border-radius: 16px; border-color: rgba(26, 26, 26, 0.1); box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04); }
+body.dashboard .card:hover { transform: none; box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04); border-color: rgba(26, 26, 26, 0.1); }
+body.dashboard .kzd-stat-card:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -24px rgba(26, 26, 26, 0.35); border-color: rgba(26, 26, 26, 0.18); }
+body.dashboard .card-header {
+  background: #FFFFFF;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+  border-radius: 16px 16px 0 0 !important;
+  padding: 18px 22px !important;
+}
+body.dashboard .card-header h6 {
+  font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  padding: 0 !important;
+}
+body.dashboard .card .list-group-item { padding: 16px 22px; border-color: rgba(26, 26, 26, 0.06); }
+body.dashboard .card .list-group-item:hover { background: #F4F5F7; }
+body.dashboard .card .list-group-item:last-child { border-radius: 0 0 16px 16px !important; }
+[data-bs-theme=dark] body.dashboard .card-header { background: transparent; border-bottom-color: rgba(255, 255, 255, 0.08); }
+[data-bs-theme=dark] .kzd-quick-actions .btn-outline-primary { background: transparent; border-color: rgba(255, 255, 255, 0.2) !important; color: #F4F5F7; }
+@media (max-width: 767px) {
+  body.dashboard .container-fluid > .row,
+  body:has(#sidebarMenu) .container-fluid > .row { padding-top: 16px; }
+  .kzd-quick-actions .btn { flex: 1 1 calc(50% - 6px); }
 }

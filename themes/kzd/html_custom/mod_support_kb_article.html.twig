@@ -1,0 +1,92 @@
+{% extends request.ajax ? "layout_blank.html.twig" : "layout_default.html.twig" %}
+{% set active_menu = 'kb' %}
+
+{% block meta_title %}{{ article.title }}{% endblock %}
+{% block meta_description %}{{ (article.content ?? '')|markdown_to_html|striptags|trim|truncate(160) }}{% endblock %}
+
+{% block body_class %}kb-article{% endblock %}
+{% block head %}{{ 'css/markdown.css' | public_asset_url | stylesheet_tag }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+    <a href="{{ 'support/kb'|url }}">{{ 'Knowledge Base'|trans }}</a>
+</li>
+<li class="breadcrumb-item">
+    <a href='{{ "support/kb/#{article.category.slug}"|url }}'>{{ article.category.title }}</a>
+</li>
+<li class="breadcrumb-item active" aria-current="page">{{ article.title }}</li>
+{% endblock %}
+
+{# KZD Solutions: the stock article page was plain Bootstrap defaults --
+   default-weight display-6 title, muted-gray meta text, bare .card
+   wrappers with no icon system, .bg-light for the help prompt. Rebuilt
+   against the same card/icon-badge recipe already proven on the homepage
+   KB grid (.kzd-kb-card) and dashboard (.kzd-stat-card): near-invisible
+   resting border, 16px radius (the site's one exception to its sharp-
+   corners rule, reserved for cards), soft navy-tinted icon badges,
+   tabular/tracked meta labels. #}
+{% block content %}
+{% set related_articles = guest.support_kb_article_get_list({ 'kb_article_category_id': article.category.id, 'per_page': 6 }).list|filter(related_article => related_article.id != article.id)|slice(0, 5) %}
+<div class="row g-4 justify-content-center kzd-kb-article">
+    <article class="col-lg-9">
+        <div class="kzd-kb-article-head">
+            <a class="kzd-kb-article-eyebrow" href='{{ "support/kb/#{article.category.slug}"|url }}'>{{ article.category.title }}</a>
+            <h1 class="kzd-kb-article-title">{{ article.title }}</h1>
+            <div class="kzd-kb-article-meta">
+                {% if article.updated_at %}
+                    <span>{{ 'Updated'|trans }} {{ '%time% ago'|trans({ '%time%': article.updated_at|timeago }) }}</span>
+                {% endif %}
+                {% if guest.support_kb_article_views_enabled %}
+                    <span><svg class="icon"><use href="#eye" /></svg>{{ article.views }} {{ 'views'|trans }}</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="kzd-kb-article-card">
+            <article class="kb-article-content markdown-body bg-transparent text-reset">
+                {{ (article.content ?? '')|markdown_to_html }}
+            </article>
+        </div>
+
+        <div class="kzd-kb-help-card">
+            <div class="kzd-kb-help-icon"><svg class="icon"><use href="#lifebuoy" /></svg></div>
+            <div class="kzd-kb-help-text">
+                <h2>{{ 'Still need help?'|trans }}</h2>
+                <p>{{ 'If this article did not answer your question, our support team can help.'|trans }}</p>
+            </div>
+            <a href="{{ 'support/contact-us'|url }}" class="btn btn-primary kzd-btn-gradient">{{ 'Contact support'|trans }}</a>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{{ 'support/kb'|url }}" class="btn btn-outline-primary">{{ 'Browse all articles'|trans }}</a>
+            <a href='{{ "support/kb/#{article.category.slug}"|url }}' class="btn btn-outline-primary">{{ 'More in this category'|trans }}</a>
+        </div>
+    </article>
+
+    <aside class="col-lg-3">
+        <div class="position-sticky kzd-kb-sidebar" style="top: 1rem;">
+            <div class="kzd-kb-side-card">
+                <div class="kzd-kb-side-icon"><svg class="icon"><use href="#book" /></svg></div>
+                <div class="kzd-kb-side-label">{{ 'Category'|trans }}</div>
+                <a class="kzd-kb-side-title" href='{{ "support/kb/#{article.category.slug}"|url }}'>{{ article.category.title }}</a>
+                <a class="btn btn-outline-primary btn-sm w-100" href="{{ 'support/kb'|url }}">{{ 'Knowledge Base'|trans }}</a>
+            </div>
+
+            <div class="kzd-kb-side-card">
+                <h2 class="kzd-kb-side-heading">{{ 'Related articles'|trans }}</h2>
+                {% if related_articles %}
+                    <div class="kzd-kb-related-list">
+                        {% for related_article in related_articles %}
+                            <a class="kzd-kb-related-item" href='{{ "support/kb/#{related_article.category.slug}/#{related_article.slug}"|url }}'>
+                                <span>{{ related_article.title }}</span>
+                                <svg class="icon"><use href="#chevron-right" /></svg>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="kzd-kb-side-empty">{{ 'No related articles yet.'|trans }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </aside>
+</div>
+{% endblock %}

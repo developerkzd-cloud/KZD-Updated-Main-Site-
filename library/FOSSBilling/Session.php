@@ -58,8 +58,14 @@ class Session implements InjectionAwareInterface
             'httponly' => $currentCookieParams['httponly'],
         ];
 
+        // KZD: Lax, not Strict. A Strict cookie is withheld on any navigation
+        // that arrives from another site, so a client returning from the
+        // Paystack payment page (or following a link from kzdsolutions.co.za)
+        // landed logged out and the portal issued them a fresh, empty session.
+        // Lax still withholds the cookie on cross-site POSTs (forms keep their
+        // CSRF protection) while letting top-level links back in.
         if (Config::getProperty('security.mode', 'strict') === 'strict') {
-            $cookieParams['samesite'] = 'Strict';
+            $cookieParams['samesite'] = 'Lax';
         }
 
         session_set_cookie_params($cookieParams);

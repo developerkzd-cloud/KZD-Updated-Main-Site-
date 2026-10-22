@@ -25,6 +25,15 @@ call, no shared session, no embedded iframe — it's a plain link handoff.
 **If a product's ID changes (e.g. catalog gets reset), update the map in
 this one file and the corresponding constant wherever it's referenced.**
 
+**⚠️ Drift found, not yet resolved**: this table describes the website as
+a separate static repo, but the actual marketing homepage (hero, prompt
+bar, "Describe your business" copy) lives in *this* repo, as
+`themes/kzd/html_custom/mod_index_dashboard.html.twig` — FOSSBilling's own
+guest Index module. Either the marketing homepage's source of truth has
+quietly moved here and this section is stale, or that file is a duplicate
+of something meant to live in `KZD-Website-Updates`. Worth resolving
+deliberately rather than leaving both plausible.
+
 ## Why this split, not a monolith
 
 The website is a fast, cheap-to-host static site optimized for marketing/SEO.
@@ -99,3 +108,6 @@ A lot of "content" isn't in template files at all — it's in the database:
   fix that works from one CLI context may not reflect what the actual
   website is doing. If something behaves differently in a browser than in
   a CLI test script, check which PHP binary is actually in play.
+- **AI Website Builder**: a third application, not part of either repo
+  above — see `AI_WEBSITE_BUILDER.md`. Mounted at `/build` via a reverse
+  proxy to a small Node/Express process. Not currently in git at all.

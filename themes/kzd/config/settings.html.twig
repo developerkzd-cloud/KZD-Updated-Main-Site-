@@ -9,6 +9,19 @@
             <option value="dark">{{ 'Bootstrap Dark'|trans }}</option>
         </select>
     </div>
+
+    <div class="row g-3">
+        <div class="col-lg-4">
+            <label class="form-label" for="kzd_brand_color">{{ 'Brand Colour'|trans }}</label>
+            <input class="form-control form-control-color w-100" type="color" name="kzd_brand_color" id="kzd_brand_color" value="#1A1A1A" title="{{ 'Choose a brand colour'|trans }}">
+            <div class="form-text">{{ 'Used for buttons, links, active states and highlights across the whole client area, including the homepage and login/signup pages.'|trans }}</div>
+        </div>
+        <div class="col-lg-4">
+            <label class="form-label" for="kzd_brand_color_hover">{{ 'Brand Colour (hover / lighter accent)'|trans }}</label>
+            <input class="form-control form-control-color w-100" type="color" name="kzd_brand_color_hover" id="kzd_brand_color_hover" value="#3A3A3A" title="{{ 'Choose a hover / secondary accent colour'|trans }}">
+            <div class="form-text">{{ 'Used for hover states and as the lighter accent on dark backgrounds (e.g. the hero banner, footer).'|trans }}</div>
+        </div>
+    </div>
 </section>
 
 <section class="mb-4">
@@ -59,6 +72,11 @@
         <div class="col-lg-6">
             <label class="form-label" for="login_page_logo_url">{{ 'Logo Link URL'|trans }}</label>
             <input class="form-control" type="text" name="login_page_logo_url" id="login_page_logo_url" value="">
+        </div>
+        <div class="col-lg-6">
+            <label class="form-label" for="kzd_site_url">{{ 'KZD Solutions website URL'|trans }}</label>
+            <input class="form-control" type="url" name="kzd_site_url" id="kzd_site_url" value="" placeholder="https://kzdsolutions.co.za">
+            <small class="form-hint">{{ 'Where every logo and "Back to homepage" link goes: the marketing site, not this portal.'|trans }}</small>
         </div>
         <div class="col-12">
             <label class="form-label d-block">{{ 'Show Password Reset Link'|trans }}</label>

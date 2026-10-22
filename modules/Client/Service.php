@@ -751,6 +751,57 @@ class Service implements InjectionAwareInterface
         return $client;
     }
 
+    /**
+     * Finds the client matching a verified Google account email, or creates
+     * one. Google has already verified the email address, so this skips
+     * FOSSBilling's own email-confirmation step and never touches a
+     * password -- the account is only ever usable via Google sign-in unless
+     * the client later sets a password from their profile.
+     *
+     * @throws InformationException if signups are disabled, the matching
+     *                               account isn't active, or Google didn't
+     *                               provide an email address
+     */
+    public function findOrCreateClientFromGoogleProfile(array $profile): \Model_Client
+    {
+        $email = strtolower(trim((string) ($profile['email'] ?? '')));
+        if ($email === '') {
+            throw new InformationException('Google did not provide an email address for this account.');
+        }
+        $email = $this->di['tools']->validateAndSanitizeEmail($email);
+
+        $existing = $this->di['db']->findOne('Client', 'email = :email', [':email' => $email]);
+        if ($existing instanceof \Model_Client) {
+            if ($existing->status !== \Model_Client::ACTIVE) {
+                throw new InformationException('This account is not active. Please contact support.');
+            }
+
+            return $existing;
+        }
+
+        $config = $this->di['mod_config']('client');
+        if (isset($config['disable_signup']) && $config['disable_signup']) {
+            throw new InformationException('New registrations are temporarily disabled');
+        }
+
+        $firstName = trim((string) ($profile['given_name'] ?? '')) ?: (trim((string) ($profile['name'] ?? '')) ?: 'Google');
+        $lastName = trim((string) ($profile['family_name'] ?? ''));
+
+        $client = $this->guestCreateClient([
+            'email' => $email,
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'auth_type' => 'google',
+        ]);
+
+        // Google already verified this address -- don't make the client
+        // confirm it again via FOSSBilling's own email-confirmation flow.
+        $client->email_approved = 1;
+        $this->di['db']->store($client);
+
+        return $client;
+    }
+
     public function createPasswordResetRequestForClient(\Model_Client $client): string
     {
         $existingReset = $this->di['db']->findOne('ClientPasswordReset', 'client_id = ?', [$client->id]);

@@ -43,7 +43,7 @@ if ($addonId) {
     $insertPayment->execute(['a_price' => ADDON_PRICE]);
     $paymentId = (int) $pdo->lastInsertId();
 
-    $description = 'Optional -- protect your domain and privacy. Hides your WHOIS contact '
+    $description = 'Optional. Protect your domain and privacy by hiding your WHOIS contact '
         . 'details from public lookup.';
 
     // hidden = 1: not independently browsable/orderable as a standalone

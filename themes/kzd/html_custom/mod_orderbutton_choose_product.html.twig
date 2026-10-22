@@ -1,0 +1,65 @@
+{% set products = guest.product_get_list %}
+<div class="accordion-item">
+    <h3 class="accordion-header">
+        {# This step only renders when no product has been chosen, and it was
+           the ONLY step in the accordion that never received `show`. Every
+           other one opens conditionally (#order when a product is set,
+           #register / #checkout when ?checkout=1), so landing on /order with
+           no product left every panel shut: a page of headings with nothing
+           to act on and no way forward. Signing in from there looked like the
+           login had failed, because the page genuinely could not advance.
+           It is the first step of the flow, so it opens by default. #}
+        {# Only open this when there is genuinely nothing else to resume. A
+           signed-in visitor with a domain already in the cart who lands on
+           plain /order was being sent back to "Select Product" — the first
+           step of a purchase they are already halfway through. #}
+        {% set kzd_cart = guest.cart_get %}
+        {% set kzd_cart_count = kzd_cart.items is defined ? kzd_cart.items|length : 0 %}
+        {# The catalogue is a detour, not the entry point: it opens only when
+           the visitor picks it from this header. The domain step owns the
+           "nothing selected yet" state instead (see
+           mod_orderbutton_product_configuration.html.twig), which is both the
+           flow this site is built around and what the step indicator above
+           already claims is active.
+
+           The one exception is a store with no domain product at all, where
+           there would be nothing for the domain step to default to. Without
+           this fallback that state has no open panel -- the dead end that was
+           reported twice. The condition is the exact inverse of the one that
+           defaults the domain step, so between them every state is claimed by
+           exactly one panel, never zero and never two (two is not benign: the
+           accordion is data-bs-parent bound and silently keeps only the
+           first). #}
+        {% set kzd_has_domain_product = guest.product_category_get_list.list|reduce(
+            (carry, category) => carry|merge(category.products|filter(p => p.type == 'domain')), [])|length > 0 %}
+        {% set kzd_open_products = not request.product and kzd_cart_count == 0 and not kzd_has_domain_product %}
+        <button class="accordion-button{% if not kzd_open_products %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#products" aria-expanded="{{ kzd_open_products ? 'true' : 'false' }}" aria-controls="products">
+            <svg class="icon me-2"><use href="#apps" /></svg>
+            <span>{{ 'Select Product'|trans }}</span>&nbsp;<span class="badge bg-info">{{ products.list|length }} {{ 'Items'|trans }}</span>
+        </button>
+    </h3>
+    {# `and not request.checkout` is load-bearing: with a domain already in
+       the cart the URL is /order?checkout=1 and carries no product param, so
+       keying only off `request.product` opened this panel there too. The
+       accordion is data-bs-parent bound and shows one panel at a time, so
+       this step won the slot ahead of #register / #checkout and the cart
+       flow dead-ended on "Select Product" instead of reaching payment. #}
+    <div id="products" class="accordion-collapse collapse{% if kzd_open_products %} show{% endif %}" data-bs-parent="#orderManager">
+        <div class="accordion-body">
+            {% for i, category in guest.product_category_get_list.list %}
+                <h4 {% if i > 0 %} class="mt-3" {% endif %}>{{ category.title }}</h4>
+                <span>{{ (category.description ?? '')|markdown_to_html }}</span>
+                <div class="kzd-order-product-grid">
+                    {% for i, product in category.products|sort((a, b) => a.priority <=> b.priority) %}
+                        {% set product_icon = product.type == 'domain' ? 'search' : (product.type == 'hosting' and 'email' in product.slug ? 'mail' : (product.type == 'hosting' ? 'layout-grid' : 'apps')) %}
+                        <a class="kzd-order-product-card" href="{{ 'order'|url(query: { 'product': product.id, 'show_custom_form_values': request.show_custom_form_values }) }}">
+                            <span class="kzd-order-product-icon"><svg class="icon"><use href="#{{ product_icon }}" /></svg></span>
+                            <span class="kzd-order-product-title">{{ product.title }}</span>
+                            <svg class="icon kzd-order-product-arrow"><use href="#arrow-right" /></svg>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

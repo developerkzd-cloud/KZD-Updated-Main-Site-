@@ -55,12 +55,16 @@
                             {% for gtw in guest.invoice_gateways %}
                                 {% if invoice.currency in gtw.accepted_currencies and (gtw.allow_single or (invoice.subscribable and gtw.allow_recurrent)) %}
                                 {% set banklink = 'invoice/banklink'|url %}
+                                {% set gtw_display_title = gtw.title == 'Paystack' ? 'Pay with card'|trans : gtw.title %}
                                 <div class="invoice-gateway rounded-2 p-2">
                                     <input type="radio" class="btn-check border-0" name="gateway_id" gateway_id="{{ gtw.id }}" id="{{ gtw.id }}" autocomplete="off">
-                                    <label class="btn" for="{{ gtw.id }}"
-                                        style="background: transparent url('{{gtw.logo.logo}}') no-repeat center center; background-size: contain; height:{{gtw.logo.height}}; width:{{gtw.logo.width}};"
-                                        onclick="paymentPrompt('{{ gtw.id }}', {{ gtw.allow_recurrent ? 'true' : 'false' }}, {{ gtw.allow_single ? 'true' : 'false' }}, `{{ gtw.title }}`)"
-                                        data-bs-toggle="tooltip" data-bs-title="{{ gtw.title }}"></label>
+                                    <label class="btn d-flex align-items-center justify-content-center gap-2" for="{{ gtw.id }}"
+                                        style="height:{{gtw.logo.height}}; min-width:{{gtw.logo.width}}; padding: 0 16px;"
+                                        onclick="paymentPrompt('{{ gtw.id }}', {{ gtw.allow_recurrent ? 'true' : 'false' }}, {{ gtw.allow_single ? 'true' : 'false' }}, `{{ gtw_display_title }}`)"
+                                        data-bs-toggle="tooltip" data-bs-title="{{ gtw_display_title }}">
+                                        <svg class="icon"><use href="#credit-card" /></svg>
+                                        {{ gtw_display_title }}
+                                    </label>
                                     </div>
                                 {% endif %}
                             {% endfor %}

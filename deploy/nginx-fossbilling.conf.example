@@ -1,0 +1,112 @@
+# Production nginx server block for the KZD Solutions FOSSBilling site.
+#
+# Why this file exists: this project ships an .htaccess with deny rules for
+# .git/, data/, config.php, *.log, *.sql, *.twig, composer.json etc. — but
+# .htaccess is an Apache-only mechanism. This site's actual production
+# deploy is nginx (see kzd-ai-website-builder-app/deploy/nginx-location.conf,
+# which this file's /build block is copied from verbatim). nginx never reads
+# .htaccess, so none of those protections apply unless reimplemented here.
+#
+# Fill in the bracketed [VALUES] for your real domain and paths, then drop
+# the server{} block into your nginx sites-available config.
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name [yourdomain.co.za] www.[yourdomain.co.za];
+
+    # Once TLS is issued (e.g. via certbot), redirect everything to https
+    # instead of serving plaintext here. Don't enable HSTS below until
+    # you've confirmed https works end to end — a broken cert plus HSTS
+    # can lock visitors out of the http fallback for the life of the
+    # max-age.
+    # return 301 https://$host$request_uri;
+
+    root /var/www/fossbilling;          # [adjust to your deploy path]
+    index index.php;
+
+    client_max_body_size 25m;           # theme/branding uploads, KB attachments
+
+    # --- Security headers -------------------------------------------------
+    # Inline <style>/<script> blocks are used throughout the kzd theme's own
+    # templates (not third-party injected content), so 'unsafe-inline' is
+    # kept for style-src/script-src rather than breaking the site. This
+    # still blocks loading remote script/object sources, framing by other
+    # sites, and MIME-sniffing attacks.
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self'; object-src 'none'; base-uri 'self'" always;
+    # Uncomment once https is confirmed working:
+    # add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+    # --- The AI Website Builder, mounted at /build -------------------------
+    # Identical to kzd-ai-website-builder-app/deploy/nginx-location.conf —
+    # keep both in sync if either changes.
+    location /build/ {
+        proxy_pass http://127.0.0.1:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # --- Deny direct access to anything that isn't meant to be served ------
+    # Mirrors the extension/path blocklist in this project's own .htaccess.
+    location ~ /\.git {
+        deny all;
+        return 404;
+    }
+    location ^~ /data/ {
+        deny all;
+        return 404;
+    }
+    location ~* \.(htaccess|htpasswd|bak|conf|inc|ini|lock|log|old|sh|sql|twig|yaml)$ {
+        deny all;
+        return 404;
+    }
+    location ~* /(composer\.json|composer\.lock|README\.md|CHANGELOG\.md|config\.php|config\.old\.php|config-sample\.php)$ {
+        deny all;
+        return 404;
+    }
+    location ~ /themes/[^/]+/config/ {
+        deny all;
+        return 404;
+    }
+
+    # --- Static assets: long cache lifetime, since filenames are
+    #     cache-busted with a ?v= query string on every edit --------------
+    location ~* ^/(themes|public)/.*\.(css|js|png|jpg|jpeg|gif|svg|webp|ico|woff2?|ttf)$ {
+        expires 30d;
+        add_header Cache-Control "public, immutable";
+        try_files $uri =404;
+    }
+
+    # --- Compression ---------------------------------------------------
+    gzip on;
+    gzip_vary on;
+    gzip_types text/css application/javascript application/json text/plain image/svg+xml;
+    gzip_min_length 1024;
+
+    # --- PHP front controller ------------------------------------------
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ ^/(index|ipn)\.php$ {
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;   # [adjust to your PHP-FPM socket/port]
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    # Any other .php file (there shouldn't be requests for one) is denied,
+    # matching the .htaccess rule that only allows index.php/ipn.php/install
+    # through directly.
+    location ~ \.php$ {
+        deny all;
+        return 404;
+    }
+}

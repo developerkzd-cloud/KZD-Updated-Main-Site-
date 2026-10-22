@@ -158,6 +158,16 @@ class Guest extends \FOSSBilling\Api\AbstractApi
     }
 
     /**
+     * Whether "Continue with Google" should be shown on the login/signup
+     * pages -- true once an admin has configured a Google OAuth Client ID
+     * and Secret under System Settings.
+     */
+    public function google_oauth_enabled(): bool
+    {
+        return $this->getDi()['google_oauth']->isConfigured();
+    }
+
+    /**
      * Password reset confirmation email will be sent to email.
      *
      * @throws \FOSSBilling\Exception

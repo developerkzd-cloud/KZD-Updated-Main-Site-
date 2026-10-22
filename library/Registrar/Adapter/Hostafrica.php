@@ -78,6 +78,14 @@ class Registrar_Adapter_Hostafrica extends Registrar_AdapterAbstract
 
     public function isDomainAvailable(Registrar_Domain $domain): bool
     {
+        // Local preview only: with 'kzd_simulate_domain_lookup' => true in
+        // config.php the search answers without calling HostAfrica, whose API
+        // rejects any IP not on the reseller whitelist. Never set it on a live
+        // server: it does not reflect real availability.
+        if (FOSSBilling\Config::getProperty('kzd_simulate_domain_lookup', false) === true) {
+            return $this->_simulatedAvailability($domain);
+        }
+
         $params = [
             'searchTerm' => $domain->getSld(),
             // getTld() defaults to returning the TLD WITH its leading dot (FOSSBilling
@@ -454,6 +462,21 @@ class Registrar_Adapter_Hostafrica extends Registrar_AdapterAbstract
         $this->getLog()->warning('HostAfrica: unrecognised response, treating as failure: ' . json_encode($result));
 
         return false;
+    }
+
+    /**
+     * Stand-in answer for local previews (see isDomainAvailable()). Well-known
+     * brands and one- or two-letter names come back taken so the "Unavailable,
+     * try another ending" path can be seen too; anything else is available.
+     */
+    private function _simulatedAvailability(Registrar_Domain $domain): bool
+    {
+        $taken = ['google', 'facebook', 'amazon', 'microsoft', 'apple', 'youtube', 'netflix', 'takealot', 'kzdsolutions', 'hostafrica', 'gmail', 'yahoo'];
+        $sld = strtolower($domain->getSld());
+        $available = strlen($sld) > 2 && !in_array($sld, $taken, true);
+        $this->getLog()->info('HostAfrica (simulated): ' . $domain->getName() . ($available ? ' available' : ' taken'));
+
+        return $available;
     }
 
     public function isTestEnv()

@@ -1,0 +1,71 @@
+{% extends request.ajax ? "layout_blank.html.twig" : "layout_default.html.twig" %}
+{% set active_menu = 'order' %}
+
+{% block meta_title %}{{ 'Order'|trans }}{% endblock %}
+{% block meta_description %}{{ 'Browse available products and services, compare options, and place your order online.'|trans }}{% endblock %}
+
+{% set loader_nr = request.loader|default("8")%}
+{% set loader_url = ('img/assets/loaders/loader'~loader_nr~'.gif') %}
+
+{% block body_class %}order-index{% endblock %}
+{% block breadcrumb %}
+    <li class="active breadcrumb-item" aria-current="page">{{ 'Order'|trans }}</li>
+{% endblock %}
+{% block content_before %}{% endblock %}
+
+{#
+  KZD Solutions: the stock "Products" card-header sat above the (also
+  header-carrying) domain/checkout panels, reading as a redundant extra
+  step in a page that's supposed to feel like one continuous flow. Kept
+  the same card/currency-selector structure (nothing functional changed)
+  but generalised the title to "Order" -- it stays accurate across all
+  three steps, not just the domain search -- and let kzd-overrides.css
+  flatten the header down to a slim strip instead of a full gray banner.
+#}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            {# data-bs-theme="light": this whole redesigned order/checkout
+               flow (domain search, results, cart, gateway picker) was
+               built with hardcoded light backgrounds (#fff cards/fields)
+               and never given dark-mode contrast pairs. Under the site's
+               dark-mode toggle, Bootstrap's own theme-aware elements (the
+               outer .card) correctly flipped dark while text inside my
+               hardcoded-white elements inherited dark-mode's light body
+               color, producing invisible white-on-white input text. This
+               attribute pins every Bootstrap CSS variable inside this
+               subtree back to light-mode values regardless of the
+               document-level theme, which fixes both the outer card and,
+               since all the affected text color was inherited rather
+               than hardcoded, every nested element at once. #}
+            <div class="card mb-4 kzd-order-page-card" data-bs-theme="light">
+                <div class="card-header py-3 py-3 kzd-order-page-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="w-100">
+                            <h1 class="mb-1">{{ 'Order'|trans }}</h1>
+                            {{ include('mod_orderbutton_currency.html.twig') }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body overflow-hidden">
+                    {{ include('mod_orderbutton_content.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar2 %}
+    {{ include('partial_currency.html.twig') }}
+{% endblock %}
+
+{% block js %}
+{% autoescape "js" %}
+<script>
+    function resizeIframe(obj) {
+        obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+        document.getElementById('loader-image').style.display = 'none';
+    }
+</script>
+{% endautoescape %}
+{% endblock %}

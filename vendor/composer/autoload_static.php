@@ -2195,6 +2195,7 @@ class ComposerStaticInit38fc7436dd7776432192c06dc2e7f30e
         'FOSSBilling\\SecurityCheckResult' => __DIR__ . '/../..' . '/library/FOSSBilling/SecurityCheckResult.php',
         'FOSSBilling\\Security\\AuthenticationRequiredException' => __DIR__ . '/../..' . '/library/FOSSBilling/Security/AuthenticationRequiredException.php',
         'FOSSBilling\\Security\\EmailValidationRequiredException' => __DIR__ . '/../..' . '/library/FOSSBilling/Security/EmailValidationRequiredException.php',
+        'FOSSBilling\\Security\\GoogleOAuth' => __DIR__ . '/../..' . '/library/FOSSBilling/Security/GoogleOAuth.php',
         'FOSSBilling\\Security\\RandomizedTimeFloor' => __DIR__ . '/../..' . '/library/FOSSBilling/Security/RandomizedTimeFloor.php',
         'FOSSBilling\\Security\\RateLimitException' => __DIR__ . '/../..' . '/library/FOSSBilling/Security/RateLimitException.php',
         'FOSSBilling\\Security\\RateLimitResult' => __DIR__ . '/../..' . '/library/FOSSBilling/Security/RateLimitResult.php',

@@ -25,7 +25,11 @@ touch stock code. **[core edit]** = a stock file was directly modified.
 ## Domain registrars
 
 - **HostAfrica adapter** — `library/Registrar/Adapter/Hostafrica.php`
-  **[core edit — new adapter file]**. See `HOSTAFRICA.md`.
+  **[core edit — new adapter file]**. See `HOSTAFRICA.md`, including its
+  **local-dev-only test-mode stub** — fabricates availability results
+  when `test_mode=1` since the real API can't be reached from local dev.
+  Must be removed/verified inert before this file goes anywhere near
+  production.
 - **OpenProvider adapter** — `library/Registrar/Adapter/OpenProvider.php` +
   `OpenProvider/API.php` **[core edit — new adapter files]**. See
   `OPENPROVIDER.md`.
@@ -39,6 +43,22 @@ touch stock code. **[core edit]** = a stock file was directly modified.
   Colors/typography centralized in `themes/kzd/assets/build/css/kzd-overrides.css`
   (loaded after the compiled theme CSS, overrides via CSS custom properties
   — doesn't touch the compiled build itself).
+- **Auth pages (login/signup/password-reset) simplified to a single
+  centered column** — these three pages used to share a two-pane split
+  layout (`partial_auth_panel.html.twig`): a dark left panel promoting the
+  AI Website Builder (animated mesh background, floating video demo,
+  feature checklist, "Describe your business" copy) next to the actual
+  form. Removed entirely per direct request — nothing in that panel was
+  helping someone sign in, and a returning customer doesn't need the
+  builder re-sold to them at the one moment they just want to get in.
+  `partial_auth_panel.html.twig` **[deleted, was override]** — zero
+  remaining references. `.kzd-auth-wrapper` **[core edit in
+  kzd-overrides.css]** rebuilt from a two-pane flex split into a centered
+  single column (subtle dot-grid + soft radial background, unchanged
+  card/back-link/footer components recentered). The mobile-only company
+  logo (`d-lg-none`, since desktop used to show the logo in the now-gone
+  panel instead) is now shown on all breakpoints — the one functional
+  fix required by the removal, not just a style change.
 - **Admin theme** (`themes/admin_default/`) — mostly stock. Two
   customizations: the admin login card shows the KZD logo + name
   (`html_custom/partial_admin_auth_card.html.twig`), and the dashboard
@@ -56,20 +76,120 @@ touch stock code. **[core edit]** = a stock file was directly modified.
 
 ## Ordering / checkout flow
 
-- **Step indicator** — `themes/kzd/html_custom/mod_orderbutton_content.html.twig`
-  **[override]**. Purely visual progress bar across the order accordion
-  (Product → Configure → Account → Cart → Payment), driven by Bootstrap's
-  `shown.bs.collapse` event. No backend changes.
+**Bug fix: invisible white-on-white text in the domain search field
+(and other bespoke form controls in this flow), reported live.**
+`.kzd-domain-search-input` (and `.kzd-domain-search-tld`,
+`.kzd-domain-years select`, `.kzd-domain-epp-input`, `.kzd-promo-form
+input`) never set their own `color` — unlike Bootstrap's real
+`.form-control`, which explicitly declares `color: var(--bs-body-color)`
+on itself. Native `<input>`/`<select>` elements get their own UA-stylesheet
+default text color independent of normal CSS inheritance from ancestors;
+without an explicit author `color`, browsers apply their own dark-mode
+form-control rendering (white text) based on the OS/browser preference —
+completely bypassing this site's own `data-bs-theme` toggle system, since
+that only redefines CSS custom properties, not the browser's native
+UA-level default for unstyled form controls. Plain text elements
+(`.kzd-cart-item-title` etc.) don't have this problem — only real
+`<input>`/`<select>` elements do. Fixed by adding an explicit
+`color: var(--bs-body-color)` (and, where missing, `background: #fff`) to
+every bespoke form-control class in this flow. Separately,
+`mod_order_index.html.twig` / `mod_order_product.html.twig`'s
+`.kzd-order-page-card` **[both overrides, edited]** now also carries
+`data-bs-theme="light"` — this whole redesigned flow was built with
+hardcoded light-only colors and never given real dark-mode contrast
+pairs, so it's pinned to light mode regardless of the site-wide toggle
+(matches what was already done for the auth pages, see "Branding" above).
+
+**Superseded** — this whole section originally described a 5-chip step
+indicator (Product → Configure → Account → Cart → Payment) across the
+stock Bootstrap accordion. That flow was replaced outright with a flattened
+2-step design (Domain → Checkout), modelled on HostAfrica's own
+search-results-cart-payment pattern. The old auto-check/cross-sell/
+linked-domain mechanics described below (still real, still in the code)
+now sit inside the new layout rather than the old one.
+
+- **Flattened to 2 steps: Domain → Checkout.** `themes/kzd/html_custom/
+  mod_orderbutton_content.html.twig` **[override]**. `#orderSteps` now
+  renders exactly 2 chips (`order`, `checkout`) instead of 5; "Choose
+  Product" and "Payment" (the gateway-redirect scaffold `#payment-html`)
+  never get their own chip and fold into whichever chip they visually
+  belong to via a `foldInto` map in the inline script. `Choose Product`
+  itself is skipped in the DOM entirely (`{% if not request.product %}`)
+  whenever a product arrives pre-selected — the normal path, since the
+  homepage domain search always hands off with `?product=`.
+  `mod_orderbutton_choose_product.html.twig` is untouched — still there as
+  a fallback for the rare case of landing on bare `/order`.
+- **Signing in is a gate at Checkout, not a numbered step.** Previously
+  "Login or Register" was its own accordion item with equal visual weight
+  to Domain/Checkout. It's still a separate accordion item
+  (`html_custom/mod_orderbutton_client.html.twig` **[override, was
+  stock]** — restyled with a lock icon instead of a step number, and the
+  Sign In / Create Account switch moved from a buried text link under each
+  form into a real top segmented tab bar, `id="in-tab"`/`id="up-tab"` kept
+  exactly as stock so Bootstrap's Tab JS binds the same way) but it's not
+  in `#orderSteps` at all — `register` folds into the `checkout` chip. It
+  already auto-opens when a guest reaches checkout
+  (`{% if request.checkout and not client %} show{% endif %}`, unchanged
+  from stock), so functionally this was already "prompt right before
+  paying" — the step indicator was the only thing making it *look* like a
+  separate planned-ahead step.
+- **Domain search redesigned as a live search bar + results panel**,
+  matching HostAfrica's reference UI. `html_custom/
+  mod_servicedomain_order_form.html.twig` **[override]** — every
+  functional id/name/the entire embedded check/pricing/transfer JS from
+  the previous version is unchanged (see the "Checkout UX: auto-check..."
+  section below, still accurate for the *behaviour*, just not the
+  markup/classes it's attached to); only the surrounding markup/classes
+  were rebuilt (segmented Register/Transfer tabs, icon+input+TLD-select
+  search row, an "Available"/error+suggestions results card). The
+  TLD-unavailable error box now also doubles as the generic "couldn't
+  reach the registrar" error display (see `HOSTAFRICA.md`'s IP-whitelist
+  note) — both paths render the same suggestion-chip UI, so a registrar
+  failure and a genuinely-taken domain look the same to the customer,
+  which is a deliberate simplification, not a bug.
+- **Checkout redesigned as one 2-column cart+payment screen**
+  (`html_custom/mod_orderbutton_checkout.html.twig` **[override]**,
+  already existed as an override for the cross-sell work below — this
+  session's change was to its markup/layout, not the add/remove-item,
+  promo, or cross-sell logic, which are untouched). Cart items, cross-sell
+  block, and promo code sit in a left column; a sticky order summary +
+  payment method picker + Pay Now button sit in a right column. All
+  functional attributes kept identical to stock/previous
+  (`#checkoutButton`, `#loginMessage`, `name="gateway_id"`,
+  `cart/apply_promo`, `cart/remove_promo`, `cart/remove_item`,
+  `cart/checkout`).
+- **"Start Over" removed.** The old escape-hatch button (`cart/reset` via
+  a styled confirm modal, see "Styled confirmation modals" below) was
+  removed from `mod_orderbutton_content.html.twig` entirely, per explicit
+  request — one less thing on the page. `cart/reset` itself is untouched
+  and still reachable via the API if a "clear cart" affordance is ever
+  wanted again.
+- **`mod_order_index.html.twig` / `mod_order_product.html.twig`**
+  **[override, new files]** — the two stock Order-module templates that
+  wrap `mod_orderbutton_content.html.twig` in a page chrome
+  (`/order` and `/order/:id`/`/order/:slug` respectively) both had a full
+  gray "Products" card-header banner sitting above the redesigned flow,
+  reading as a redundant extra step. Both now render a slim "Order" title
+  strip instead (`kzd-order-page-card`/`kzd-order-page-header` classes in
+  `kzd-overrides.css`) — cosmetic only, no route/controller changes.
+- **Payment gateway trimmed to one option.** DB-only change, not code:
+  `pay_gateway.enabled` set to `0` for "Custom" (manual/offline), leaving
+  Paystack as the only active gateway shown at checkout — matches the
+  "only one payment gateway" requirement. Reversible any time via
+  Admin → Payment Gateways; not represented in any migration/seed script,
+  so it won't survive a database reset.
+- **⚠️ Local-dev-only registrar stub** — see `HOSTAFRICA.md`'s new
+  "Local dev test-mode stub" section. Domain search cannot be exercised
+  against the real HostAfrica API from local dev (IP whitelist), so
+  `isDomainAvailable()` fabricates a result when `test_mode=1`. Must not
+  ship to production as-is.
 - **Mid-order login/register redirect fix** — guest header nav Login link
   and the session-expiry JS redirect now carry `?redirect_uri=` so a
   customer who logs in mid-checkout lands back where they were instead of
   the homepage. Touches `themes/kzd/html/layout_default.html.twig`
   **[core edit]** and `html_custom/mod_page_login.html.twig` /
-  `mod_page_signup.html.twig` **[override]**.
-- **Domain order form** — `html_custom/mod_servicedomain_order_form.html.twig`
-  **[override]**: TLD-unavailable error box with alternative-TLD
-  suggestions, and pre-fills EPP/transfer code + domain name from the
-  website's query params (`?epp=`, `?sld=`, `?tld=`, `?action=transfer`).
+  `mod_page_signup.html.twig` **[override]**. Unaffected by the redesign
+  above.
 
 ## Domain Protection & Privacy add-on
 
@@ -432,6 +552,72 @@ touch stock code. **[core edit]** = a stock file was directly modified.
 - **Invoice numbering** — `KZD-100001` format. **No code change** — this is
   purely the `invoice_series` / `invoice_series_paid` / `invoice_starting_number`
   system settings (Admin → System Settings → Invoices).
+
+## Homepage prompt bar (`mod_index_dashboard.html.twig`)
+
+- **Example chips now actually fill the search bar.** The hero's "Describe
+  your business" prompt bar has 4 example chips below it (Restaurant,
+  Consulting, Online store, Fitness coach) — they rendered as plain
+  `<span>`s with `cursor: default` and no click handler at all, purely
+  decorative. `html_custom/mod_index_dashboard.html.twig` **[override]**:
+  converted to real `<button type="button" data-kzd-example-chip="...">`
+  elements; a small IIFE in the same file's inline `<script>` fills
+  `[data-kzd-prompt-input]` and dispatches a real `input` event (not just
+  `.value = ...`) so the existing animated-placeholder IIFE — which
+  listens for genuine `input` events to hide itself — reacts exactly as if
+  the visitor had typed it themselves.
+- **Note**: this file lives at `themes/kzd/html_custom/`, i.e. inside
+  *this* repo, not the separate `KZD-Website-Updates` static site
+  described in `ARCHITECTURE.md`'s "two-repository split". Worth
+  reconciling at some point — either the marketing homepage's source of
+  truth has quietly moved to FOSSBilling's own guest Index module and
+  `ARCHITECTURE.md` needs updating, or this file is a duplicate of
+  something that's supposed to live on the other side. Not resolved as
+  part of this session's work; flagging so it doesn't get lost.
+
+## Client dashboard (`mod_index_dashboard.html.twig`, logged-in view)
+
+- **Same template file serves both the guest marketing homepage and the
+  logged-in client dashboard.** `{% extends client ? "layout_default..." :
+  "layout_public..." %}` at the top, then `{% block body %}{% if client
+  %}{{ parent() }}{% else %}...{% endif %}{% endblock %}` near the bottom:
+  logged-in clients fall through to the normal `layout_default` body (which
+  renders `{% block content %}` — the actual dashboard, defined earlier in
+  the file), guests get the full custom marketing page injected directly
+  into `body`, bypassing the layout's content block entirely. Easy to miss
+  when searching for "the dashboard template" vs "the homepage template" —
+  they're the same file.
+- **The dashboard content itself (`{% block content %}`) already carries a
+  full premium redesign**: `.kzd-quick-actions` (New Order/New Ticket/My
+  Profile buttons), `.kzd-stat-card` grid (Account Balance, Invoices,
+  Active Services, Open Tickets) with hover-lift, a gradient top-border
+  reveal, circular icon badges that invert color on hover, and
+  `font-variant-numeric: tabular-nums` on the stat values (the same
+  Stripe-signature pattern independently arrived at here). Styles live in
+  `kzd-overrides.css` under the "Dashboard: quick actions + overview stat
+  cards" comment.
+- **Bug: a plain, unstyled "Welcome to the KZD Solutions Client Portal"
+  banner with a bullet list sat above those stat cards.** This was *not*
+  template content — grepping the theme for that literal text finds
+  nothing. It's FOSSBilling's stock `{% if settings.showcase_enabled %}`
+  block (a bare Bootstrap `alert alert-info`), driven by the
+  admin-configurable `showcase_text` setting (Index module, rendered via
+  `markdown_to_html`), sitting untouched above an otherwise redesigned
+  page. Removed the block from `html_custom/mod_index_dashboard.html.twig`
+  entirely so the quick actions + stat cards are the first thing a client
+  sees. If a "welcome" message is wanted again later, it needs to be built
+  as a styled component matching the rest of the page, not re-enabled via
+  the `showcase_enabled` setting (that always renders as the plain stock
+  alert regardless of theme).
+
+## AI Website Builder (separate application)
+
+A third codebase, not part of either repo in `ARCHITECTURE.md`'s
+"two-repository split" — see `AI_WEBSITE_BUILDER.md` for the full
+breakdown (source location, deploy topology, this session's changes).
+Mounted at `/build` on the same domain as FOSSBilling via a reverse proxy —
+the homepage prompt bar above is a plain `<form method="get"
+action="/build">`, no JS handoff involved.
 
 ## Infrastructure / workflow
 

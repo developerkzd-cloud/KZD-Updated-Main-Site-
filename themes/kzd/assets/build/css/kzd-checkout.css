@@ -1,0 +1,725 @@
+/* ==========================================================================
+   Order + checkout page skin (body.order-index only).
+
+   Loaded after kzd-overrides.css and scoped to the order page, so nothing
+   else on the site changes. It reskins; it does not re-lay-out: the grid,
+   accordion and phone "plans as rows" rules in kzd-overrides.css still do
+   the structural work, and every form id/name the payment flow relies on is
+   untouched.
+
+   Direction (researched on Refero + the Apple DESIGN.md reference):
+   - Apple's checkout is the foundation: a white page, plain-language
+     headings at display size with tight tracking, soft 12px inputs, hairline
+     dividers instead of boxes, no shadows on cards, one action colour, and
+     every button a pill.
+   - Intercom's checkout lends the order summary: a quiet tinted side panel
+     ending in a bold "due today" line, one big pay button and a single line
+     of trust copy under it.
+   - KZD's own system replaces Apple's blue: navy #1A1A1A is the one action
+     colour, ink #1A1A1A the text, Hanken Grotesk the only family, and the
+     plan cards match the homepage pricing section.
+
+   !important is used where kzd-overrides.css already forces the same
+   property with !important -- this file is the final layer by design.
+   ========================================================================== */
+
+body.order-index {
+    --co-ink: #1A1A1A;
+    --co-navy: #1A1A1A;
+    --co-body: #3A3A3A;
+    --co-muted: #6B6B6B;
+    --co-faint: #6B6B6B;
+    --co-line: #F4F4F4;
+    --co-ring: rgba(26, 26, 26, 0.10);
+    --co-parchment: #F4F4F4;
+    background: #FFFFFF;
+}
+
+/* ---- Buttons: one shape everywhere on this page ---- */
+body.order-index .btn,
+body.order-index .kzd-pay-now-btn,
+body.order-index .kzd-plan-card-cta,
+body.order-index .kzd-promo-apply,
+body.order-index .kzd-panel-tab {
+    border-radius: 999px !important;
+}
+body.order-index .btn-primary,
+body.order-index .kzd-pay-now-btn {
+    background: var(--co-navy) !important;
+    border: 1px solid var(--co-navy) !important;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+    transition: background 180ms ease, border-color 180ms ease, transform 120ms ease, box-shadow 180ms ease;
+}
+body.order-index .btn-primary {
+    min-height: 48px; padding: 0 28px !important;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 15px !important;
+}
+body.order-index .btn-primary:hover,
+body.order-index .kzd-pay-now-btn:hover {
+    background: var(--co-ink) !important; border-color: var(--co-ink) !important;
+    box-shadow: 0 14px 30px -12px rgba(26, 26, 26, 0.55) !important;
+}
+body.order-index .btn-outline-primary {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(26, 26, 26, 0.28) !important;
+    color: var(--co-navy) !important;
+    font-weight: 700 !important;
+    padding: 9px 20px !important;
+}
+body.order-index .btn-outline-primary:hover {
+    background: var(--co-navy) !important; border-color: var(--co-navy) !important; color: #FFFFFF !important;
+}
+body.order-index .btn:active,
+body.order-index .kzd-pay-now-btn:active,
+body.order-index .kzd-plan-card-cta:active { transform: scale(0.97); }
+body.order-index .btn:focus-visible,
+body.order-index .kzd-pay-now-btn:focus-visible,
+body.order-index .kzd-plan-card-cta:focus-visible,
+body.order-index .kzd-panel-tab:focus-visible {
+    outline: 2px solid var(--co-navy) !important; outline-offset: 3px;
+    box-shadow: none !important;
+}
+
+/* ---- The page itself: no card chrome, the content sits on the page ---- */
+body.order-index .kzd-order-page-card {
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    max-width: 1180px; margin-left: auto; margin-right: auto;
+}
+body.order-index .kzd-order-page-header {
+    background: transparent !important;
+    border-bottom: 1px solid var(--co-line) !important;
+    padding-left: 0 !important; padding-right: 0 !important;
+}
+body.order-index .kzd-order-page-header h1 {
+    font-size: clamp(32px, 3.4vw, 40px) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.025em !important;
+    color: var(--co-ink) !important;
+}
+@media (min-width: 576px) {
+    body.order-index .kzd-order-page-card > .card-body {
+        padding-left: 0 !important; padding-right: 0 !important;
+    }
+}
+
+/* Secure bar: was a solid navy band; now one quiet line of trust copy,
+   the way Apple and Intercom carry it. */
+body.order-index .kzd-secure-bar {
+    background: transparent !important;
+    color: var(--co-muted) !important;
+    margin: 0 0 8px !important;
+    padding: 14px 0 !important;
+    border-bottom: 1px solid var(--co-line);
+    border-radius: 0 !important;
+}
+body.order-index .kzd-secure-bar-brand,
+body.order-index .kzd-secure-bar-label { color: var(--co-ink) !important; }
+body.order-index .kzd-secure-bar-divider { background: var(--co-line) !important; }
+body.order-index .kzd-secure-bar-trust { color: var(--co-muted) !important; }
+body.order-index .kzd-secure-bar .icon { color: var(--co-navy) !important; }
+
+/* Step indicator: small and quiet, no heavy rule under it. */
+body.order-index .kzd-order-steps {
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+    padding: 20px 0 8px !important;
+}
+body.order-index .kzd-order-steps::before,
+body.order-index .kzd-order-steps::after,
+body.order-index .kzd-order-step::before,
+body.order-index .kzd-order-step::after { background: var(--co-line) !important; }
+body.order-index .kzd-order-step-icon {
+    background: #FFFFFF !important;
+    border: 1px solid var(--co-line) !important;
+    color: var(--co-faint) !important;
+    box-shadow: none !important;
+}
+body.order-index .kzd-order-step.is-active .kzd-order-step-icon,
+body.order-index .kzd-order-step.is-done .kzd-order-step-icon {
+    background: var(--co-navy) !important; border-color: var(--co-navy) !important; color: #FFFFFF !important;
+}
+body.order-index .kzd-order-step-label { color: var(--co-faint) !important; font-weight: 600 !important; }
+body.order-index .kzd-order-step.is-active .kzd-order-step-label { color: var(--co-ink) !important; }
+
+/* ---- Section headers: plain-language headings, hairlines between ---- */
+body.order-index #orderManager .accordion-item {
+    border: 0 !important;
+    border-bottom: 1px solid var(--co-line) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+body.order-index #orderManager .accordion-button {
+    background: transparent !important;
+    box-shadow: none !important;
+    color: var(--co-ink) !important;
+    font-size: clamp(21px, 2vw, 26px) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+    padding: 26px 0 !important;
+}
+body.order-index #orderManager .accordion-button.collapsed {
+    color: var(--co-faint) !important;
+    font-size: 19px !important;
+    font-weight: 600 !important;
+}
+body.order-index #orderManager .accordion-button.collapsed:hover { color: var(--co-ink) !important; }
+body.order-index .kzd-order-panel-step {
+    background: #FFFFFF !important;
+    border: 1px solid var(--co-line) !important;
+    color: var(--co-muted) !important;
+    box-shadow: none !important;
+}
+body.order-index #orderManager .accordion-button:not(.collapsed) .kzd-order-panel-step {
+    background: var(--co-navy) !important; border-color: var(--co-navy) !important; color: #FFFFFF !important;
+}
+/* "7 Items" was a green block; a count is a badge, so a grey pill. */
+body.order-index #orderManager .accordion-button .badge {
+    background: var(--co-parchment) !important;
+    color: var(--co-muted) !important;
+    border-radius: 999px !important;
+    font-weight: 600 !important;
+    padding: 5px 10px !important;
+}
+
+/* ---- Forms: Apple's soft inputs ---- */
+body.order-index .form-control,
+body.order-index .form-select {
+    border: 1px solid #D9D9D9 !important;
+    border-radius: 12px !important;
+    background: #FFFFFF !important;
+    color: var(--co-ink) !important;
+    box-shadow: none !important;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+body.order-index .form-control:focus,
+body.order-index .form-select:focus {
+    border-color: var(--co-navy) !important;
+    box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.14) !important;
+}
+body.order-index .form-floating > label { color: var(--co-muted) !important; }
+
+/* Sign In / Create Account: the same pill segmented control as the
+   homepage billing switch. */
+body.order-index .kzd-panel-tabs {
+    display: inline-flex !important;
+    gap: 4px !important;
+    padding: 4px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 0 0 1px var(--co-ring), 0 1px 2px rgba(26, 26, 26, 0.04) !important;
+    margin-bottom: 24px !important;
+}
+body.order-index .kzd-panel-tab {
+    border: 0 !important;
+    background: transparent !important;
+    color: var(--co-muted) !important;
+    font-weight: 600 !important;
+    padding: 10px 20px !important;
+    box-shadow: none !important;
+}
+body.order-index .kzd-panel-tab.active {
+    background: var(--co-navy) !important;
+    color: #FFFFFF !important;
+}
+
+/* ---- Checkout: main column on white, summary on a tinted panel ---- */
+body.order-index #checkout .accordion-body,
+body.order-index .kzd-checkout-grid {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: 0 !important;
+}
+body.order-index .kzd-checkout-grid { padding: 8px 0 32px !important; }
+
+/* Cart line */
+body.order-index .kzd-cart-item {
+    background: #FFFFFF !important;
+    border: 0 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 0 0 1px var(--co-ring), 0 1px 2px rgba(26, 26, 26, 0.04) !important;
+}
+body.order-index .kzd-cart-item-icon {
+    background: var(--co-parchment) !important;
+    border: 0 !important;
+    border-radius: 12px !important;
+    color: var(--co-navy) !important;
+}
+body.order-index .kzd-cart-item-title { color: var(--co-ink) !important; font-weight: 600 !important; }
+body.order-index .kzd-cart-item-period { color: var(--co-muted) !important; font-weight: 400 !important; }
+body.order-index .kzd-cart-item-price strong { color: var(--co-ink) !important; font-variant-numeric: tabular-nums; }
+body.order-index .kzd-cart-item-remove {
+    border-radius: 999px !important;
+    color: var(--co-faint) !important;
+}
+body.order-index .kzd-cart-item-remove:hover { background: var(--co-parchment) !important; color: var(--co-ink) !important; }
+
+/* Plan section heading */
+body.order-index .kzd-plan-section-copy h2 {
+    color: var(--co-ink) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+}
+body.order-index .kzd-plan-section-copy p { color: var(--co-muted) !important; }
+
+/* Billing switch: pill track, navy for the chosen term. */
+body.order-index .kzd-billing-toggle {
+    background: #FFFFFF !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    box-shadow: 0 0 0 1px var(--co-ring), 0 1px 2px rgba(26, 26, 26, 0.04) !important;
+    padding: 4px !important;
+}
+body.order-index .kzd-billing-toggle label {
+    border-radius: 999px !important;
+    color: var(--co-muted) !important;
+    font-weight: 600 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+body.order-index .kzd-billing-toggle input:checked + label {
+    background: var(--co-navy) !important;
+    color: #FFFFFF !important;
+}
+body.order-index .kzd-billing-toggle-note {
+    color: var(--co-navy) !important;
+    background: rgba(26, 26, 26, 0.07);
+    border-radius: 999px;
+    padding: 4px 11px;
+    font-weight: 600 !important;
+}
+
+/* Plan cards: the homepage pricing cards, compact. */
+body.order-index .kzd-plan-card {
+    background: #FFFFFF !important;
+    border: 0 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 0 0 1px var(--co-ring), 0 1px 2px rgba(26, 26, 26, 0.04) !important;
+    transition: box-shadow 200ms ease, transform 200ms ease;
+}
+body.order-index .kzd-plan-card:hover {
+    box-shadow: 0 0 0 1px rgba(26, 26, 26, 0.2), 0 14px 28px -16px rgba(26, 26, 26, 0.25) !important;
+}
+body.order-index .kzd-plan-card.is-recommended {
+    box-shadow: 0 0 0 2px var(--co-navy), 0 14px 32px -18px rgba(26, 26, 26, 0.35) !important;
+}
+body.order-index .kzd-plan-card-ribbon {
+    background: var(--co-navy) !important;
+    color: #FFFFFF !important;
+    border-radius: 999px !important;
+    text-transform: none !important;
+    letter-spacing: 0.01em !important;
+    font-weight: 700 !important;
+}
+body.order-index .kzd-plan-card-name { color: var(--co-ink) !important; font-weight: 700 !important; }
+body.order-index .kzd-plan-price-amount {
+    color: var(--co-ink) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+    font-variant-numeric: tabular-nums;
+}
+body.order-index .kzd-plan-price-currency,
+body.order-index .kzd-plan-price-period,
+body.order-index .kzd-plan-price-yearly-note { color: var(--co-muted) !important; }
+body.order-index .kzd-plan-card-divider { background: var(--co-line) !important; }
+body.order-index .kzd-plan-card-features li { color: var(--co-body) !important; }
+body.order-index .kzd-plan-card-features .icon { color: var(--co-navy) !important; }
+/* On phones each plan is a tappable row: the link is stretched invisibly
+   over the whole row (kzd-overrides.css), so it must stay transparent
+   there. The pill button treatment is for the card layout only. */
+@media (min-width: 576px) {
+    body.order-index .kzd-plan-card-cta {
+        background: #FFFFFF !important;
+        border: 1px solid rgba(26, 26, 26, 0.28) !important;
+        color: var(--co-navy) !important;
+        font-weight: 700 !important;
+        box-shadow: none !important;
+        transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+    }
+    body.order-index .kzd-plan-card-cta:hover,
+    body.order-index .kzd-plan-card.is-recommended .kzd-plan-card-cta {
+        background: var(--co-navy) !important;
+        border-color: var(--co-navy) !important;
+        color: #FFFFFF !important;
+    }
+    body.order-index .kzd-plan-card.is-recommended .kzd-plan-card-cta:hover {
+        background: var(--co-ink) !important; border-color: var(--co-ink) !important;
+    }
+}
+@media (max-width: 575.98px) {
+    body.order-index .kzd-plan-card-cta,
+    body.order-index .kzd-plan-card-cta:hover,
+    body.order-index .kzd-plan-card.is-recommended .kzd-plan-card-cta {
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        color: inherit !important;
+    }
+    body.order-index .kzd-plan-card { border: 0 !important; }
+    body.order-index .kzd-plan-includes .icon,
+    body.order-index .kzd-plan-includes svg { color: var(--co-navy) !important; }
+    body.order-index .kzd-plan-includes { padding: 16px 18px !important; }
+}
+
+/* What every plan shares. */
+body.order-index .kzd-plan-includes {
+    background: var(--co-parchment) !important;
+    border: 0 !important;
+    border-radius: 16px !important;
+    color: var(--co-body) !important;
+}
+body.order-index .kzd-plan-includes-label { color: var(--co-navy) !important; }
+
+/* Order summary: the tinted side panel. */
+body.order-index .kzd-order-summary {
+    background: var(--co-parchment) !important;
+    border: 0 !important;
+    border-radius: 24px !important;
+    box-shadow: none !important;
+}
+body.order-index .kzd-order-summary::before,
+body.order-index .kzd-order-summary::after { display: none !important; }
+body.order-index .kzd-order-summary h4 {
+    color: var(--co-ink) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
+}
+body.order-index .kzd-summary-items li,
+body.order-index .kzd-promo-row,
+body.order-index .kzd-summary-total { border-color: #D9D9D9 !important; }
+body.order-index .kzd-summary-item-name { color: var(--co-ink) !important; }
+body.order-index .kzd-summary-item-period { color: var(--co-muted) !important; }
+body.order-index .kzd-summary-item-price { color: var(--co-ink) !important; font-variant-numeric: tabular-nums; }
+body.order-index .kzd-promo-link { color: var(--co-navy) !important; font-weight: 600 !important; }
+body.order-index .kzd-promo-form input {
+    border: 1px solid #D9D9D9 !important;
+    border-radius: 999px !important;
+    background: #FFFFFF !important;
+}
+body.order-index .kzd-promo-apply {
+    background: var(--co-navy) !important; color: #FFFFFF !important; border: 0 !important;
+}
+body.order-index .kzd-summary-total td { color: var(--co-ink) !important; }
+body.order-index .kzd-summary-total td:last-child {
+    font-weight: 700 !important;
+    letter-spacing: -0.025em !important;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Payment method */
+body.order-index .kzd-gateway-heading h4 { color: var(--co-muted) !important; }
+body.order-index .kzd-gateway-option {
+    background: #FFFFFF !important;
+    border: 0 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 0 0 1px var(--co-ring) !important;
+}
+body.order-index .kzd-gateway-option:has(input:checked) {
+    box-shadow: 0 0 0 2px var(--co-navy) !important;
+}
+body.order-index .kzd-gateway-radio-dot { border-color: var(--co-navy) !important; }
+body.order-index .kzd-gateway-icon {
+    background: var(--co-parchment) !important;
+    color: var(--co-navy) !important;
+    border-radius: 10px !important;
+}
+body.order-index .kzd-gateway-name { color: var(--co-ink) !important; font-weight: 600 !important; }
+
+body.order-index .kzd-pay-now-btn {
+    min-height: 52px !important;
+    font-size: 16px !important;
+}
+
+/* The sign-in reminder where the Pay button will appear: a calm note,
+   not loose body text. */
+body.order-index .kzd-login-message {
+    background: #FFFFFF;
+    border-radius: 14px;
+    box-shadow: 0 0 0 1px var(--co-ring);
+    color: var(--co-body) !important;
+    padding: 14px 16px !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+}
+body.order-index .kzd-checkout-trust { color: var(--co-muted) !important; }
+body.order-index .kzd-checkout-trust .icon { color: var(--co-navy) !important; }
+
+@media (prefers-reduced-motion: reduce) {
+    body.order-index .btn:active,
+    body.order-index .kzd-pay-now-btn:active,
+    body.order-index .kzd-plan-card-cta:active { transform: none; }
+}
+
+/* The shared-features strip needed its own inset. */
+body.order-index .kzd-plan-includes { padding: 14px 20px !important; }
+
+/* The Paystack icon was still drawn white from the old dark tile. */
+body.order-index .kzd-gateway-icon .icon,
+body.order-index .kzd-gateway-icon svg { color: var(--co-navy) !important; stroke: currentColor; }
+
+/* Collapsed sections carried large empty gaps between them. */
+body.order-index #orderManager .accordion-header { margin: 0 !important; }
+body.order-index #orderManager .accordion-item > .accordion-collapse:not(.show) { margin: 0 !important; padding: 0 !important; }
+
+/* The step indicator's rule was a thick grey bar; a hairline is enough. */
+body.order-index .kzd-order-steps { border-bottom: 1px solid var(--co-line) !important; }
+
+@media (max-width: 575.98px) {
+    /* A 2px navy rule under the plan heading read as a stray bar; the
+       page's dividers are hairlines. */
+    body.order-index .kzd-plan-section-head { border-bottom: 1px solid var(--co-line) !important; }
+    /* A parent crops the 1px ring shadow at the row edges, so rows take a
+       real border here instead, and the recommended row a 2px navy one. */
+    body.order-index .kzd-plan-card {
+        border: 1px solid var(--co-line) !important;
+        box-shadow: none !important;
+    }
+    body.order-index .kzd-plan-card.is-recommended {
+        border: 2px solid var(--co-navy) !important;
+    }
+    /* The shared-feature ticks were green; the page's one accent is navy. */
+    body.order-index .kzd-plan-includes > span::before { border-color: var(--co-navy) !important; }
+}
+
+/* ==========================================================================
+   Step 1 for a plan: "Set up your plan" (product configuration).
+   Refero: Grammarly's plan-cadence step (billing periods as selectable
+   cards with the saving on each), Wix's domain step (one rounded search
+   field with the action attached). Cards, rings, pills and type match the
+   homepage pricing section and the checkout below.
+   ========================================================================== */
+body.order-index .kzd-config { background: transparent !important; border: 0 !important; padding: 0 !important; }
+
+body.order-index .kzd-config-plan {
+    padding: 24px 26px; border-radius: 16px; background: #FFFFFF;
+    box-shadow: 0 0 0 1px var(--co-ring), 0 1px 2px rgba(26, 26, 26, 0.04);
+}
+body.order-index .kzd-config-plan-head {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    padding-bottom: 18px; margin-bottom: 18px; border-bottom: 1px solid var(--co-line);
+}
+body.order-index .kzd-config-eyebrow {
+    display: block; margin-bottom: 6px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--co-navy);
+}
+body.order-index .kzd-config-plan-name {
+    margin: 0 !important; font-size: clamp(22px, 2.2vw, 26px) !important; font-weight: 700 !important;
+    letter-spacing: -0.02em !important; color: var(--co-ink) !important;
+}
+body.order-index .kzd-config-change {
+    flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: 0 16px;
+    border-radius: 999px; border: 1px solid rgba(26, 26, 26, 0.28);
+    color: var(--co-navy) !important; font-size: 13.5px; font-weight: 700; text-decoration: none !important;
+    transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+body.order-index .kzd-config-change:hover { background: var(--co-navy); border-color: var(--co-navy); color: #FFFFFF !important; }
+body.order-index .kzd-config-feats {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px 28px;
+}
+body.order-index .kzd-config-feats li { display: flex; align-items: baseline; gap: 10px; font-size: 14.5px; line-height: 1.4; color: var(--co-body); }
+body.order-index .kzd-config-feats svg { flex: none; color: var(--co-navy); position: relative; top: 2px; }
+body.order-index .kzd-config-feats strong { color: var(--co-ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+body.order-index .kzd-config-note { margin: 16px 0 0; font-size: 13.5px; color: var(--co-muted); }
+
+body.order-index .kzd-config-heading {
+    margin: 32px 0 6px !important; font-size: 18px !important; font-weight: 700 !important;
+    letter-spacing: -0.01em !important; color: var(--co-ink) !important;
+}
+body.order-index .kzd-config-lede { margin: 0 0 16px !important; font-size: 14.5px !important; line-height: 1.55; color: var(--co-muted) !important; max-width: 62ch; }
+
+/* Billing periods as selectable cards: navy ring on the chosen one. */
+body.order-index .kzd-period-picker {
+    display: grid !important; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)) !important;
+    gap: 12px !important; margin-top: 14px !important;
+}
+body.order-index .kzd-period-pill {
+    position: relative; display: flex !important; flex-direction: column !important; align-items: flex-start !important;
+    gap: 4px !important; min-height: 0 !important; padding: 18px 18px 16px !important; margin: 0 !important;
+    border: 0 !important; border-radius: 16px !important; background: #FFFFFF !important; color: var(--co-ink) !important;
+    box-shadow: 0 0 0 1px var(--co-ring), 0 1px 2px rgba(26, 26, 26, 0.04) !important;
+    cursor: pointer; transform: none !important;
+    transition: box-shadow 180ms ease, background 180ms ease;
+}
+body.order-index .kzd-period-pill:hover { box-shadow: 0 0 0 1px rgba(26, 26, 26, 0.25), 0 10px 24px -16px rgba(26, 26, 26, 0.3) !important; }
+body.order-index .kzd-period-pill:has(input:checked) {
+    background: rgba(26, 26, 26, 0.035) !important;
+    box-shadow: 0 0 0 2px var(--co-navy) !important;
+}
+body.order-index .kzd-period-pill:has(input:focus-visible) { outline: 2px solid var(--co-navy); outline-offset: 3px; }
+body.order-index .kzd-period-pill input { position: absolute; opacity: 0; pointer-events: none; }
+body.order-index .kzd-period-pill-label {
+    font-size: 13px !important; font-weight: 600 !important; color: var(--co-muted) !important;
+    text-transform: none !important; letter-spacing: 0 !important;
+}
+body.order-index .kzd-period-pill-price {
+    font-size: 20px !important; font-weight: 700 !important; letter-spacing: -0.02em !important;
+    color: var(--co-ink) !important; font-variant-numeric: tabular-nums;
+}
+body.order-index .kzd-period-pill-save {
+    margin-top: 4px; padding: 3px 10px !important; border-radius: 999px !important;
+    background: rgba(26, 26, 26, 0.07) !important; color: var(--co-navy) !important;
+    font-size: 12px !important; font-weight: 700 !important;
+}
+body.order-index .kzd-period-pill-badge {
+    position: absolute !important; top: -10px !important; right: 14px !important; left: auto !important;
+    padding: 3px 10px !important; border-radius: 999px !important;
+    background: var(--co-navy) !important; color: #FFFFFF !important;
+    font-size: 11px !important; font-weight: 700 !important; letter-spacing: 0.01em !important; text-transform: none !important;
+}
+
+/* Domain: Register / Transfer / Own domain as the page's pill switch. */
+body.order-index .kzd-config-seg {
+    display: inline-flex !important; flex-direction: row !important; flex-wrap: wrap; gap: 4px !important;
+    padding: 4px !important; margin: 0 0 18px !important; border: 0 !important; border-radius: 999px !important;
+    background: #FFFFFF; box-shadow: 0 0 0 1px var(--co-ring), 0 1px 2px rgba(26, 26, 26, 0.04);
+}
+body.order-index .kzd-config-seg .nav-link {
+    margin: 0 !important; padding: 9px 18px !important; border-radius: 999px !important;
+    background: transparent !important; color: var(--co-muted) !important;
+    font-size: 14px !important; font-weight: 600 !important; line-height: 1.2;
+}
+body.order-index .kzd-config-seg .nav-link:hover { color: var(--co-ink) !important; }
+body.order-index .kzd-config-seg .nav-link.active { background: var(--co-navy) !important; color: #FFFFFF !important; }
+body.order-index .kzd-config-domain .form-label { font-size: 14px; font-weight: 600; color: var(--co-ink); margin-bottom: 8px; }
+/* The name and its extension read as one rounded field. */
+body.order-index .kzd-config-domain .input-group {
+    max-width: 440px !important; border-radius: 999px; background: #FFFFFF;
+    box-shadow: 0 0 0 1px #D9D9D9; overflow: hidden; flex-wrap: nowrap;
+    transition: box-shadow 160ms ease;
+}
+body.order-index .kzd-config-domain .input-group:focus-within { box-shadow: 0 0 0 1px var(--co-navy), 0 0 0 4px rgba(26, 26, 26, 0.14); }
+body.order-index .kzd-config-domain .input-group > .form-control,
+body.order-index .kzd-config-domain .input-group > .form-select,
+body.order-index .kzd-config-domain .input-group > .input-group-text {
+    border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+    min-height: 46px; font-size: 15px !important; background-color: transparent !important;
+}
+body.order-index .kzd-config-domain .input-group > .form-control:first-child { padding-left: 20px !important; }
+body.order-index .kzd-config-domain .input-group > :last-child:not(:first-child) {
+    border-left: 1px solid var(--co-line) !important; max-width: 110px !important; font-weight: 600;
+}
+body.order-index .kzd-config-domain .d-flex.gap-2 { align-items: center; gap: 10px !important; }
+body.order-index .kzd-config-domain #domain-check,
+body.order-index .kzd-config-domain #transfer-check { min-height: 46px; padding: 0 24px !important; }
+body.order-index .kzd-config-domain .text-muted { color: var(--co-muted) !important; }
+body.order-index .kzd-config-domain .form-check-input:checked { background-color: var(--co-navy); border-color: var(--co-navy); }
+body.order-index .kzd-config-domain #registration-years,
+body.order-index .kzd-config-domain input[name="domain[transfer_code]"] {
+    min-height: 44px; border-radius: 12px !important; margin-top: 10px; max-width: 440px !important;
+}
+body.order-index .kzd-config-domain .alert-warning {
+    border: 0; border-radius: 14px; background: #FFF8EB; color: #5B4410; max-width: 560px;
+}
+
+/* One clear way forward. */
+body.order-index .kzd-order-cta-row {
+    margin-top: 28px !important; padding-top: 24px !important;
+    border-top: 1px solid var(--co-line) !important; display: flex; justify-content: flex-end;
+}
+body.order-index #config-next { min-height: 52px; padding: 0 30px !important; font-size: 16px !important; }
+body.order-index #config-next svg { transition: transform 200ms ease; }
+body.order-index #config-next:hover svg { transform: translateX(3px); }
+
+@media (max-width: 575.98px) {
+    body.order-index .kzd-config-plan { padding: 20px; }
+    body.order-index .kzd-config-feats { grid-template-columns: minmax(0, 1fr); }
+    body.order-index .kzd-config-plan-head { flex-direction: column; }
+    body.order-index .kzd-period-picker { grid-template-columns: minmax(0, 1fr) !important; }
+    body.order-index .kzd-config-seg { display: flex !important; }
+    body.order-index .kzd-config-seg .nav-link { flex: 1; text-align: center; padding: 9px 10px !important; }
+    body.order-index .kzd-config-domain .d-flex.gap-2 { flex-direction: column; align-items: stretch; }
+    body.order-index .kzd-config-domain .input-group { max-width: none !important; }
+    body.order-index #config-next { width: 100%; }
+}
+
+/* The old period-pill check indicator (a pseudo-element in
+   kzd-overrides.css) drew a navy blob on the chosen card; the navy ring
+   is the indicator now. */
+body.order-index .kzd-period-pill::before,
+body.order-index .kzd-period-pill::after { display: none !important; content: none !important; }
+
+/* ==========================================================================
+   Domain taken -> "try another ending" (domain page and plan setup).
+   Replaces a wall of bordered boxes whose labels had turned invisible
+   (a site-wide button colour made them white on white). One result line,
+   then rows of the same name on other endings with the real yearly price
+   and a Check pill -- the Namecheap / Vercel domain-search pattern, in the
+   site's navy and pill system. Six shown first, the rest one click away.
+   ========================================================================== */
+body.order-index .kzd-dsug {
+    margin-top: 14px !important; padding: 18px !important;
+    border: 0 !important; border-radius: 16px !important;
+    background: #FFFFFF !important; color: #1A1A1A !important;
+    box-shadow: 0 0 0 1px rgba(26, 26, 26, 0.09), 0 1px 2px rgba(26, 26, 26, 0.04) !important;
+    max-width: 760px !important; font-size: 14.5px !important;
+}
+body.order-index .kzd-dsug-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; line-height: 1.4; color: #3A3A3A; }
+body.order-index .kzd-dsug-head strong { color: #1A1A1A; font-weight: 700; }
+body.order-index .kzd-dsug-badge {
+    flex: none; padding: 3px 10px; border-radius: 999px;
+    background: #FDECEC; color: #9B2C2C; font-size: 12px; font-weight: 700;
+}
+body.order-index .kzd-dsug-label {
+    margin: 16px 0 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #6B6B6B;
+}
+body.order-index .kzd-dsug-list {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;
+}
+body.order-index .kzd-dsug-row {
+    width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 12px;
+    min-height: 52px; padding: 8px 8px 8px 16px; text-align: left; cursor: pointer;
+    border: 0 !important; border-radius: 14px !important;
+    background: #F4F4F4 !important; color: #1A1A1A !important;
+    font-family: inherit; font-size: 14.5px !important; font-weight: 500;
+    box-shadow: inset 0 0 0 1px transparent;
+    transition: background 160ms ease, box-shadow 160ms ease;
+}
+body.order-index .kzd-dsug-row:hover { background: #FFFFFF !important; box-shadow: inset 0 0 0 1px rgba(26, 26, 26, 0.28), 0 8px 18px -12px rgba(26, 26, 26, 0.35); }
+body.order-index .kzd-dsug-row:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 2px; }
+/* The ending is the point of each row, so when space runs out the NAME is
+   shortened and the ending always shows in full. */
+body.order-index .kzd-dsug-name { display: flex; min-width: 0; white-space: nowrap; color: #3A3A3A; }
+body.order-index .kzd-dsug-sld { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+body.order-index .kzd-dsug-name b { flex: none; color: #1A1A1A; font-weight: 700; }
+body.order-index .kzd-dsug-price { font-size: 13.5px; font-weight: 700; color: #1A1A1A; font-variant-numeric: tabular-nums; white-space: nowrap; }
+body.order-index .kzd-dsug-price small { font-size: 12px; font-weight: 500; color: #6B6B6B; margin-left: 1px; }
+body.order-index .kzd-dsug-go {
+    display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px;
+    background: #1A1A1A; color: #FFFFFF; font-size: 13px; font-weight: 700;
+    transition: background 160ms ease;
+}
+body.order-index .kzd-dsug-row:hover .kzd-dsug-go { background: #1A1A1A; }
+body.order-index .kzd-dsug-more {
+    display: block; margin: 12px auto 0; padding: 8px 16px; min-height: 40px; border-radius: 999px;
+    border: 1px solid rgba(26, 26, 26, 0.25) !important; background: #FFFFFF !important; color: #1A1A1A !important;
+    font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer;
+}
+body.order-index .kzd-dsug-more:hover { background: #1A1A1A !important; color: #FFFFFF !important; }
+@media (max-width: 640px) {
+    body.order-index .kzd-dsug { padding: 14px !important; }
+    body.order-index .kzd-dsug-list { grid-template-columns: minmax(0, 1fr); }
+    /* Price under the domain, Check to the right of both. */
+    body.order-index .kzd-dsug-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas: "name go" "price go";
+        row-gap: 2px; padding: 10px 8px 10px 14px;
+    }
+    body.order-index .kzd-dsug-name { grid-area: name; }
+    body.order-index .kzd-dsug-price { grid-area: price; font-size: 12.5px; }
+    body.order-index .kzd-dsug-go { grid-area: go; }
+}
+
+/* "Couldn't check": the registrar lookup failed, which says nothing about
+   whether the name is free -- grey, not the red "taken/unavailable" badge. */
+body.order-index .kzd-dsug-badge.kzd-dsug-badge-neutral {
+    background: #F4F5F7;
+    color: #3A3A3A;
+}

@@ -1579,6 +1579,7 @@ return array(
     'FOSSBilling\\SecurityCheckResult' => $baseDir . '/library/FOSSBilling/SecurityCheckResult.php',
     'FOSSBilling\\Security\\AuthenticationRequiredException' => $baseDir . '/library/FOSSBilling/Security/AuthenticationRequiredException.php',
     'FOSSBilling\\Security\\EmailValidationRequiredException' => $baseDir . '/library/FOSSBilling/Security/EmailValidationRequiredException.php',
+    'FOSSBilling\\Security\\GoogleOAuth' => $baseDir . '/library/FOSSBilling/Security/GoogleOAuth.php',
     'FOSSBilling\\Security\\RandomizedTimeFloor' => $baseDir . '/library/FOSSBilling/Security/RandomizedTimeFloor.php',
     'FOSSBilling\\Security\\RateLimitException' => $baseDir . '/library/FOSSBilling/Security/RateLimitException.php',
     'FOSSBilling\\Security\\RateLimitResult' => $baseDir . '/library/FOSSBilling/Security/RateLimitResult.php',

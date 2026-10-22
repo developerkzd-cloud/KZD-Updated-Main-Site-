@@ -62,6 +62,37 @@ actual customization. Harmless, but expect to see this kind of noise on any
 file that predates the git-based deploy setup (`DEPLOYMENT.md`) — check
 with `git diff -w` before assuming a real conflict.
 
+## ⚠️ Local-dev test-mode stub — REMOVE before production
+
+`isDomainAvailable()` has a short-circuit at the top: when
+`isTestEnv()` is true (i.e. `tld_registrar.test_mode = 1` for this
+registrar's row — already `1` in the local dev database), it skips the
+real API call entirely and returns a fabricated result from a private
+`_stubIsDomainAvailable()` helper instead (deterministic per full domain
+name via `crc32() % 2`, plus a short hardcoded "always taken" list —
+google/facebook/amazon/apple/microsoft/kzd/kzdsolutions — so the
+taken/suggestions UI path is easy to exercise on demand). Both are marked
+`// KZD Solutions / LOCAL DEV STUB — TEMPORARY, REMOVE BEFORE GOING LIVE`
+inline.
+
+**Why this exists**: the IP-whitelist wall above means domain search
+can't be exercised end-to-end from local dev at all — every real lookup
+fails identically whether the code is correct or not, making it
+impossible to visually verify the order/checkout flow (see
+`CUSTOMIZATIONS.md`'s "Ordering / checkout flow") locally. This stub
+exists purely so that flow could be built and demoed.
+
+**Not currently dangerous to production as-is** — it's gated behind
+`test_mode`, and there's no reason that flag would be `1` in the
+production database (it wasn't a stock FOSSBilling default; someone would
+have to deliberately enable it in Admin → Domain registration). But it
+means "test mode" no longer means "hit HostAfrica's sandbox" for this
+adapter, it means "fabricate results with no network call at all" — don't
+enable `test_mode` on this registrar anywhere it matters without knowing
+that, and don't merge this block to `develop`/`main` without either
+removing it or gating it behind something more explicit than a DB flag
+someone could flip by accident.
+
 ## Known gaps
 
 - Error handling relies on the (undocumented) HostAfrica error envelope

@@ -7,7 +7,7 @@
 <div class="offcanvas-md offcanvas-end" tabindex="-1" id="sidebarMenu">
     <div class="offcanvas-body d-md-flex flex-column overflow-y-visible">
         {% if client %}
-            <a class="btn btn-primary kzd-sidebar-cta mb-3" href="{{ 'order'|url }}">
+            <a class="btn btn-primary kzd-btn-gradient kzd-sidebar-cta mb-3" href="{{ 'order'|url }}">
                 <svg class="icon"><use href="#shopping-cart" /></svg>
                 {{ 'New Order'|trans }}
             </a>
@@ -30,7 +30,7 @@
                     <li class="nav-item offcanvas-item{% if current_active_menu == 'order' %} active{% endif %}">
                         <a class="nav-link d-flex align-items-center gap-2{% if current_active_menu == 'order' %} active{% endif %}" href="{{ 'order'|url }}"{% if current_active_menu == 'order' %} aria-current="page"{% endif %}>
                             <svg class="icon"><use href="#shopping-cart" /></svg>
-                            {{ 'Order'|trans }}
+                            {{ 'Browse Plans'|trans }}
                         </a>
                     </li>
                 {% endif %}

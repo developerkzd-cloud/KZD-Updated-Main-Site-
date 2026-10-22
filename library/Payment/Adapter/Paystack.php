@@ -161,9 +161,9 @@ class Payment_Adapter_Paystack extends Payment_AdapterAbstract implements FOSSBi
         // handles every other redirect-based gateway: submit immediately, and
         // only show the button as a fallback for clients with JS disabled.
         $form  = '<form name="payment_form" action="' . htmlspecialchars($authUrl) . '" method="get">' . PHP_EOL;
-        $form .= '<input class="btn btn-primary btn-lg" type="submit" value="Pay with Paystack" id="payment_button"/>' . PHP_EOL;
+        $form .= '<input class="btn btn-primary btn-lg" type="submit" value="Pay with card" id="payment_button"/>' . PHP_EOL;
         $form .= '</form>' . PHP_EOL;
-        $form .= sprintf('<h2>%s</h2>', __trans('Redirecting to Paystack...'));
+        $form .= sprintf('<h2>%s</h2>', __trans('Redirecting to secure payment...'));
         // Plain JS, not jQuery -- the kzd client theme doesn't load jQuery
         // anywhere, so a $(document).ready(...) call here silently throws
         // "$ is not defined" and never runs, leaving the button as the only

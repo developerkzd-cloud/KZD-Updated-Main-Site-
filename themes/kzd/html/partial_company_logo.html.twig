@@ -1,6 +1,7 @@
 {% set logo_url = logo_url|default(null) %}
 {% set dark_logo_url = dark_logo_url|default(null) %}
-{% set link_url = link_url|default('/'|url) %}
+{# Logo clicks go to the KZD Solutions website (theme setting kzd_site_url), never the portal's own homepage. #}
+{% set link_url = link_url|default(settings.kzd_site_url|default('https://kzdsolutions.co.za')) %}
 {% set link_class = link_class|default('') %}
 {% set link_rel = link_rel|default(null) %}
 {% set image_class = image_class|default('') %}
