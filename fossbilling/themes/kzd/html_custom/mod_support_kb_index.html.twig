@@ -1,0 +1,156 @@
+{% extends request.ajax ? "layout_blank.html.twig" : "layout_default.html.twig" %}
+{% set active_menu = 'kb' %}
+
+{% block meta_title %}{{ 'Knowledge Base'|trans }}{% endblock %}
+{% block meta_description %}{{ 'Browse help articles, tutorials, and answers to common questions in our knowledge base.'|trans }}{% endblock %}
+
+{% block body_class %}kb-index{% endblock %}
+{% block breadcrumb %}
+    {% if request.q %}
+        <li class="breadcrumb-item"><a href="{{ 'support/kb'|url }}">{{ 'Knowledge Base'|trans }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ request.q }}</li>
+    {% else %}
+        <li class="breadcrumb-item active" aria-current="page">{{ 'Knowledge Base'|trans }}</li>
+    {% endif %}
+{% endblock %}
+
+{#
+  KZD Solutions override of the stock Knowledge Base index.
+
+  What was wrong with the stock page, measured on the live site:
+
+  - Categories were laid out with |batch(3) into fixed .col-md-4 columns,
+    so two categories filled two thirds of the row and left a third of the
+    page blank. The grid now sizes itself to however many categories exist.
+
+  - Every card was .card h-100 with the "View all articles" link in a
+    card-footer, so a category with NO articles yet ("Frequently asked
+    questions") rendered as a title, a line of description, then roughly
+    180px of empty white, then the link pinned to the bottom. Cards now
+    size to their own content, and a category with no articles says so
+    plainly instead of reserving space for a list that isn't there.
+
+  - There was nothing to tell you how big a category was before clicking.
+    Each card now carries its real article count, taken from the data --
+    never an invented or rounded-up number.
+
+  - Search sat inline in the card header at input-group size. In a help
+    centre search is the primary action, not a header accessory, so it
+    leads the page at full width.
+
+  Everything here reads from the same guest.support_kb_* calls the stock
+  template used; no new data source, no article content fetched (that call
+  increments view counts), nothing invented.
+#}
+{% block content %}
+    {% if request.q %}
+        {% set kbcategories = guest.support_kb_category_get_list({ "q": request.q }) %}
+        {% set kbarticles = guest.support_kb_article_get_list({ "search": request.q, "per_page": 10 }) %}
+    {% else %}
+        {% set kbcategories = guest.support_kb_category_get_list %}
+        {% set kbarticles = null %}
+    {% endif %}
+
+    <div class="kzd-kb-index">
+        <header class="kzd-kb-hero">
+            <h1>{{ 'How can we help?'|trans }}</h1>
+            <p>{{ 'Search our guides, or browse by topic below.'|trans }}</p>
+            <form method="get" action="" class="kzd-kb-search" role="search">
+                <svg class="icon kzd-kb-search-icon" aria-hidden="true"><use href="#search" /></svg>
+                <input name="q" type="search" value="{{ request.q }}"
+                       placeholder="{{ 'Search for an answer'|trans }}"
+                       aria-label="{{ 'Search the knowledge base'|trans }}">
+                <button type="submit">{{ 'Search'|trans }}</button>
+            </form>
+        </header>
+
+        {% if request.q %}
+            <p class="kzd-kb-resultline">
+                {% set kbresult_count = kbarticles and kbarticles.list ? kbarticles.list|length : 0 %}
+                {{ kbresult_count }}
+                {{ (kbresult_count == 1 ? 'result for' : 'results for')|trans }}
+                <strong>{{ request.q }}</strong>
+            </p>
+        {% endif %}
+
+        {% if kbarticles and kbarticles.list %}
+            <div class="kzd-kb-results">
+                {% for article in kbarticles.list %}
+                    <a class="kzd-kb-result" href='{{ "support/kb/#{article.category.slug}/#{article.slug}"|url }}'>
+                        <span class="kzd-kb-result-title">{{ article.title }}</span>
+                        <span class="kzd-kb-result-cat">{{ article.category.title }}</span>
+                        <svg class="icon kzd-kb-result-arrow" aria-hidden="true"><use href="#arrow-right" /></svg>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if kbcategories.list|length %}
+            {% if request.q %}<h2 class="kzd-kb-subhead">{{ 'Matching topics'|trans }}</h2>{% endif %}
+            <div class="kzd-kb-cats">
+                {% for category in kbcategories.list %}
+                    {% set kb_count = category.articles is defined and category.articles ? category.articles|length : 0 %}
+                    <div class="kzd-kb-cat">
+                        <div class="kzd-kb-cat-head">
+                            <h3><a href='{{ "support/kb/#{category.slug}"|url }}'>{{ category.title }}</a></h3>
+                            {% if kb_count %}
+                                {# The real number, straight from the list. #}
+                                <span class="kzd-kb-cat-count">{{ kb_count }} {{ (kb_count == 1 ? 'article' : 'articles')|trans }}</span>
+                            {% endif %}
+                        </div>
+                        {% if category.description %}
+                            <p class="kzd-kb-cat-desc">{{ category.description }}</p>
+                        {% endif %}
+
+                        {% if kb_count %}
+                            <ul class="kzd-kb-cat-list">
+                                {% for article in category.articles|slice(0, 4) %}
+                                    <li>
+                                        <a href='{{ "support/kb/#{article.category.slug}/#{article.slug}"|url }}'>
+                                            <span>{{ article.title }}</span>
+                                            <svg class="icon" aria-hidden="true"><use href="#arrow-right" /></svg>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <a class="kzd-kb-cat-more" href='{{ "support/kb/#{category.slug}"|url }}'>
+                                {{ 'View all'|trans }} {{ kb_count }} {{ (kb_count == 1 ? 'article' : 'articles')|trans }}
+                            </a>
+                        {% else %}
+                            {# No list, and no space held open for one. #}
+                            <p class="kzd-kb-cat-empty">{{ 'No articles in this topic yet.'|trans }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="kzd-kb-empty">
+                {% if request.q %}
+                    <h2>{{ 'Nothing matched that search'|trans }}</h2>
+                    <p>{{ 'Try a different wording, browse the topics, or ask us directly.'|trans }}</p>
+                    <div class="kzd-kb-empty-actions">
+                        {# Carry the search straight into the ticket form so the
+                           visitor never has to type the same question twice. #}
+                        <a class="kzd-kb-btn-primary" href="{{ 'support/contact-us'|url(query: {'subject': request.q}) }}">{{ 'Contact support'|trans }}</a>
+                        <a class="kzd-kb-btn-ghost" href="{{ 'support/kb'|url }}">{{ 'Browse all topics'|trans }}</a>
+                    </div>
+                {% else %}
+                    <h2>{{ 'No articles yet'|trans }}</h2>
+                    <p>{{ 'Our knowledge base is being written. In the meantime our team can help directly.'|trans }}</p>
+                    <div class="kzd-kb-empty-actions">
+                        <a class="kzd-kb-btn-primary" href="{{ 'support/contact-us'|url }}">{{ 'Contact support'|trans }}</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {# A help centre should always end with a way to reach a person. #}
+        <aside class="kzd-kb-ask">
+            <div>
+                <strong>{{ "Can't find what you need?"|trans }}</strong>
+                <span>{{ 'Open a ticket and our support team will come back to you.'|trans }}</span>
+            </div>
+            <a class="kzd-kb-btn-primary" href="{{ request.q ? 'support/contact-us'|url(query: {'subject': request.q}) : 'support'|url }}">{{ 'Contact support'|trans }}</a>
+        </aside>
+    </div>
+{% endblock %}

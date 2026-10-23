@@ -1,0 +1,146 @@
+{% set loader_nr = request.loader | default("8") %}
+{% set loader_url = ('img/assets/loaders/loader'~loader_nr~'.gif') %}
+{# Pre-resolved here (not just inside mod_orderbutton_product_configuration.html.twig)
+   so the step-indicator chip below can also tell a domain/hosting product apart from a
+   plain one-time digital item (e.g. the AI builder's "Website Generation" fee) --
+   "Domain" as a step label/heading only makes sense for the former. #}
+{% set product = request.product ? guest.product_get({"id":request.product}) : null %}
+{% set kzd_is_domain_step = product is null or product.type in ['domain', 'hosting'] %}
+
+{#
+  KZD Solutions: flattened from a 5-chip accordion wizard down to a 2-step
+  feel (Domain -> Checkout), matching the search -> results -> cart+payment
+  flow used on the reference site. Signing in/registering isn't shown as its
+  own step -- for a guest it appears as a gate right at the Checkout step
+  (see mod_orderbutton_client.html.twig), not as something to plan for
+  ahead of time. The underlying accordion-item structure/ids are untouched
+  (Bootstrap's data-bs-parent single-open-at-a-time behaviour already does
+  the "one step visible at a time" work) -- only the step indicator's chip
+  count/labels changed, "Choose Product" is skipped entirely when a product
+  arrives pre-selected from the homepage domain search (the normal path),
+  and kzd-overrides.css re-skins the accordion chrome into plain page
+  sections so it no longer reads as a settings-panel wizard.
+#}
+<div class="row">
+    <div class="col-md-12">
+        <div class="kzd-order-shell" id="orderbutton">
+
+                {# Secure-checkout header bar -- bleeds to the edges of the outer
+                   .kzd-order-page-card via negative margins matching that card's
+                   own padding exactly (see kzd-order-page-card > .card-body in
+                   kzd-overrides.css: 8px 24px 32px mobile, 8px 40px 40px desktop).
+                   Trust copy deliberately doesn't name the underlying processor
+                   (Paystack) to customers -- "PCI-DSS compliant" is true of the
+                   actual processor handling card data without KZD itself claiming
+                   a certification it doesn't hold, same intent as before. #}
+                <div class="kzd-secure-bar">
+                    <span class="kzd-secure-bar-brand">{{ company.name|default('KZD Solutions') }}</span>
+                    <span class="kzd-secure-bar-divider"></span>
+                    <span class="kzd-secure-bar-label">{{ 'Secure checkout'|trans }}</span>
+                    <span class="kzd-secure-bar-trust">
+                        <svg class="icon"><use href="#lock" /></svg>
+                        {{ 'SSL encrypted &middot; PCI-DSS compliant payments'|trans|raw }}
+                    </span>
+                </div>
+
+                {# Step indicator: purely visual, mirrors whichever accordion section
+                   is currently open. data-step-target must match that section's
+                   accordion-collapse id (see mod_orderbutton_*.html.twig). Only 2
+                   chips now -- signing in/registering isn't a step of its own, it's
+                   a gate that appears right at the Checkout step for guests (see
+                   mod_orderbutton_client.html.twig), so "register" and
+                   "payment-html" both fold into the Checkout chip below. #}
+                <div class="kzd-order-steps d-flex" id="orderSteps">
+                    <div class="kzd-order-step" data-step-target="order">
+                        <span class="kzd-order-step-icon"><svg class="icon"><use href="#search" /></svg></span>
+                        <span class="kzd-order-step-label">{{ kzd_is_domain_step ? 'Domain'|trans : 'Order details'|trans }}</span>
+                    </div>
+                    <div class="kzd-order-step" data-step-target="checkout">
+                        <span class="kzd-order-step-icon"><svg class="icon"><use href="#credit-card" /></svg></span>
+                        <span class="kzd-order-step-label">{{ 'Checkout'|trans }}</span>
+                    </div>
+                </div>
+
+                <div id="orderManager" class="accordion">
+
+                    {% if not request.product %}
+                        {{ include('mod_orderbutton_choose_product.html.twig') }}
+                    {% endif %}
+
+                    {{ include('mod_orderbutton_product_configuration.html.twig') }}
+
+                    {% if not client %}
+                        {{ include('mod_orderbutton_client.html.twig') }}
+                    {% endif %}
+
+                    {{ include('mod_orderbutton_checkout.html.twig') }}
+
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#payment-html" aria-expanded="false" aria-controls="payment-html">
+                                <svg class="icon me-2"><use href="#credit-card" /></svg>
+                                {{ 'Payment'|trans }}
+                            </button>
+                        </h3>
+                        <div id="payment-html" class="accordion-collapse collapse" data-bs-parent="#orderManager">
+                            <div class="accordion-body">
+                                <div class="accordion-inner" id="payment-html-inner"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                {# KZD Solutions: white-labeled instance -- "Powered by FOSSBilling"
+                   credit intentionally removed (was here, gated behind the
+                   'branding' extension toggle in the stock template). #}
+
+        </div>
+    </div>
+</div>
+<div class="loading"
+     style="display: none; background: rgba(0,0,0,.5) no-repeat; width:100%; height:100%; position:fixed; top:0; left:0; z-index:999;">
+    <img src="{{ loader_url | mod_asset_url('orderbutton') }}"
+         style="display: block; margin-left: auto; margin-right: auto;position: relative; top : 50%">
+</div>
+
+{{ include('mod_orderbutton_js.html.twig') }}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Only 2 chips actually exist now (order/checkout) — fold the
+        // accordion sections that no longer get their own chip into
+        // whichever chip they visually belong to.
+        var foldInto = { products: 'order', register: 'checkout', 'payment-html': 'checkout' };
+        var stepOrder = ['order', 'checkout'];
+        var steps = document.querySelectorAll('#orderSteps .kzd-order-step');
+
+        function setActiveStep(targetId) {
+            targetId = foldInto[targetId] || targetId;
+            var activeIndex = stepOrder.indexOf(targetId);
+            if (activeIndex === -1) {
+                return;
+            }
+            steps.forEach(function (step) {
+                var stepIndex = stepOrder.indexOf(step.dataset.stepTarget);
+                step.classList.remove('is-active', 'is-done');
+                if (stepIndex === activeIndex) {
+                    step.classList.add('is-active');
+                } else if (stepIndex < activeIndex) {
+                    step.classList.add('is-done');
+                }
+            });
+        }
+
+        var orderManager = document.getElementById('orderManager');
+        if (orderManager) {
+            orderManager.addEventListener('shown.bs.collapse', function (event) {
+                setActiveStep(event.target.id);
+            });
+
+            var openSection = orderManager.querySelector('.accordion-collapse.show');
+            setActiveStep(openSection ? openSection.id : 'order');
+        }
+    });
+</script>

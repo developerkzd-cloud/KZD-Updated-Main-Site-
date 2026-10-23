@@ -1,0 +1,1367 @@
+<?php
+
+declare(strict_types=1);
+/**
+ * Copyright 2022-2025 FOSSBilling
+ * SPDX-License-Identifier: Apache-2.0.
+ *
+ * @copyright FOSSBilling (https://www.fossbilling.org)
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
+ */
+
+namespace Box\Mod\Servicedomain;
+
+use Box\Mod\Product\Entity\Product;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
+use Symfony\Component\Finder\Finder;
+
+class Service implements \FOSSBilling\InjectionAwareInterface
+{
+    protected ?\Pimple\Container $di = null;
+    private Filesystem $filesystem;
+
+    public function __construct()
+    {
+        $this->filesystem = new Filesystem();
+    }
+
+    public function setDi(\Pimple\Container $di): void
+    {
+        $this->di = $di;
+        if (isset($di['filesystem'])) {
+            $this->filesystem = $di['filesystem'];
+        }
+    }
+
+    public function getDi(): ?\Pimple\Container
+    {
+        return $this->di;
+    }
+
+    public function getModulePermissions(): array
+    {
+        return [
+            'manage_domains' => [
+                'type' => 'bool',
+                'display_name' => __trans('Manage domains'),
+                'description' => __trans('Allows the staff member to manage domain services (nameservers, contacts, privacy, transfers).'),
+            ],
+            'manage_tlds' => [
+                'type' => 'bool',
+                'display_name' => __trans('Manage TLDs'),
+                'description' => __trans('Allows the staff member to create, update, and delete TLDs and their pricing.'),
+            ],
+            'manage_registrars' => [
+                'type' => 'bool',
+                'display_name' => __trans('Manage registrars'),
+                'description' => __trans('Allows the staff member to install, update, and delete domain registrars.'),
+            ],
+        ];
+    }
+
+    public function getCartProductTitle(Product $product, array $data): ?string
+    {
+        // Keeps the "registration"/"transfer" action word here (cart only,
+        // this one screen) so a non-technical client can tell what they're
+        // actually paying for right now. This word never appears again --
+        // generateOrderTitle() (used for the persisted order and every
+        // invoice after this one) only ever returns the bare domain name,
+        // so a transfer's renewal next year is never labelled "transfer"
+        // again, just the domain name at the normal renewal price. See the
+        // explanatory note next to the cart total
+        // (mod_orderbutton_checkout.html.twig) for where that distinction
+        // is spelled out to the client.
+        if (
+            isset($data['action']) && $data['action'] == 'register'
+            && isset($data['register_tld']) && isset($data['register_sld'])
+        ) {
+            return __trans('Domain :domain registration', [':domain' => $data['register_sld'] . $data['register_tld']]);
+        }
+
+        if (
+            isset($data['action']) && $data['action'] == 'transfer'
+            && isset($data['transfer_tld']) && isset($data['transfer_sld'])
+        ) {
+            return __trans('Domain :domain transfer', [':domain' => $data['transfer_sld'] . $data['transfer_tld']]);
+        }
+
+        return $product->getTitle();
+    }
+
+    public function validateOrderData(&$data): void
+    {
+        $validator = $this->di['validator'];
+
+        $required = [
+            'action' => 'Are you registering new domain or transferring existing? Action parameter missing',
+        ];
+        $validator->checkRequiredParamsForArray($required, $data);
+
+        $action = $data['action'];
+        if (!in_array($action, ['register', 'transfer', 'owndomain'])) {
+            throw new \FOSSBilling\Exception('Invalid domain action.');
+        }
+
+        if ($action == 'owndomain') {
+            $required = [
+                'owndomain_tld' => 'Domain TLD is required.',
+                'owndomain_sld' => 'Domain name is required.',
+            ];
+            $this->di['validator']->checkRequiredParamsForArray($required, $data);
+
+            if (!$validator->isSldValid($data['owndomain_sld'])) {
+                $safe_dom = htmlspecialchars((string) $data['owndomain_sld'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+                throw new \FOSSBilling\InformationException('Domain name :domain is invalid', [':domain' => $safe_dom]);
+            }
+
+            if (!$validator->isTldValid($data['owndomain_tld'])) {
+                throw new \FOSSBilling\InformationException('TLD is invalid');
+            }
+        }
+
+        if ($action == 'transfer') {
+            $required = [
+                'transfer_tld' => 'Transfer domain type (TLD) is required.',
+                'transfer_sld' => 'Transfer domain name (SLD) is required.',
+            ];
+            $this->di['validator']->checkRequiredParamsForArray($required, $data);
+
+            if (!$validator->isSldValid($data['transfer_sld'])) {
+                $safe_dom = htmlspecialchars((string) $data['transfer_sld'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+                throw new \FOSSBilling\InformationException('Domain name :domain is invalid', [':domain' => $safe_dom]);
+            }
+
+            $tld = $this->tldFindOneByTld($data['transfer_tld']);
+            if (!$tld instanceof \Model_Tld) {
+                throw new \FOSSBilling\InformationException('TLD not found');
+            }
+
+            $domain = $data['transfer_sld'] . $tld->tld;
+            if (!$this->canBeTransferred($tld, $data['transfer_sld'])) {
+                throw new \FOSSBilling\InformationException(':domain cannot be transferred!', [':domain' => $domain]);
+            }
+
+            $data['period'] = '1Y';
+            $data['quantity'] = 1;
+        }
+
+        if ($action == 'register') {
+            $required = [
+                'register_tld' => 'Domain registration tld parameter missing.',
+                'register_sld' => 'Domain registration sld parameter missing.',
+                'register_years' => 'Domain registration period is missing. Please check domain availability before proceeding.',
+            ];
+            $this->di['validator']->checkRequiredParamsForArray($required, $data);
+
+            if (!$validator->isSldValid($data['register_sld'])) {
+                $safe_dom = htmlspecialchars((string) $data['register_sld'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+                throw new \FOSSBilling\InformationException('Domain name :domain is invalid', [':domain' => $safe_dom]);
+            }
+
+            $tld = $this->tldFindOneByTld($data['register_tld']);
+            if (!$tld instanceof \Model_Tld) {
+                throw new \FOSSBilling\InformationException('TLD not found');
+            }
+
+            $years = (int) $data['register_years'];
+            if ($years < $tld->min_years) {
+                throw new \FOSSBilling\Exception(':tld can be registered for at least :years years', [':tld' => $tld->tld, ':years' => $tld->min_years]);
+            }
+
+            $domain = $data['register_sld'] . $tld->tld;
+            if (!$this->isDomainAvailable($tld, $data['register_sld'])) {
+                throw new \FOSSBilling\InformationException(':domain is already registered!', [':domain' => $domain]);
+            }
+
+            $data['period'] = $years . 'Y';
+        }
+    }
+
+    public function generateOrderTitle(array $config): ?string
+    {
+        return match ($config['action']) {
+            'transfer' => $config['transfer_sld'] . $config['transfer_tld'],
+            'register' => $config['register_sld'] . $config['register_tld'],
+            default => null,
+        };
+    }
+
+    /**
+     * Creates domain service object from order.
+     *
+     * @return \Model_ServiceDomain
+     */
+    public function action_create(\Model_ClientOrder $order)
+    {
+        $orderService = $this->di['mod_service']('order');
+        $c = $orderService->getConfig($order);
+
+        $this->validateOrderData($c);
+
+        [$sld, $tld] = $this->_getTuple($c);
+        $years = $c['register_years'] ?? 1;
+
+        // @todo ?
+        $systemService = $this->di['mod_service']('system');
+        $ns = $systemService->getNameservers();
+        if (empty($ns)) {
+            throw new \FOSSBilling\InformationException('Default domain nameservers are not configured');
+        }
+
+        $tldModel = $this->tldFindOneByTld($tld);
+
+        $model = $this->di['db']->dispense('ServiceDomain');
+        $model->client_id = $order->client_id;
+        $model->tld_registrar_id = $tldModel->tld_registrar_id;
+        $model->sld = $sld;
+        $model->tld = $tld;
+        $model->period = $years;
+        $model->transfer_code = $c['transfer_code'] ?? null;
+        $model->privacy = false;
+        $model->protection_purchased = false;
+        $model->protection_order_id = null;
+        $model->protection_registrar_status = null;
+        $model->action = $c['action'];
+        $model->ns1 = (isset($c['ns1']) && !empty($c['ns1'])) ? $c['ns1'] : $ns['nameserver_1'];
+        $model->ns2 = (isset($c['ns2']) && !empty($c['ns1'])) ? $c['ns2'] : $ns['nameserver_2'];
+        $model->ns3 = (isset($c['ns3']) && !empty($c['ns1'])) ? $c['ns3'] : $ns['nameserver_3'];
+        $model->ns4 = (isset($c['ns4']) && !empty($c['ns1'])) ? $c['ns4'] : $ns['nameserver_4'];
+
+        $client = $this->di['db']->getExistingModelById('Client', $model->client_id, 'Client not found');
+
+        $model->contact_first_name = $client->first_name;
+        $model->contact_last_name = $client->last_name;
+        $model->contact_email = $client->email;
+        $model->contact_company = $client->company;
+        $model->contact_address1 = $client->address_1;
+        $model->contact_address2 = $client->address_2;
+        $model->contact_country = $client->country;
+        $model->contact_city = $client->city;
+        $model->contact_state = $client->state;
+        $model->contact_postcode = $client->postcode;
+        $model->contact_phone_cc = $client->phone_cc;
+        $model->contact_phone = $client->phone;
+
+        $model->created_at = date('Y-m-d H:i:s');
+        $model->updated_at = date('Y-m-d H:i:s');
+
+        $protectionOrder = $this->findProtectionAddonOrder($order);
+        if ($protectionOrder instanceof \Model_ClientOrder) {
+            $model->protection_purchased = true;
+            $model->protection_order_id = $protectionOrder->id;
+            $this->di['logger']->info('Domain Protection & Privacy selected for domain service (order #%s, protection order #%s)', $order->id, $protectionOrder->id);
+        }
+
+        $this->di['db']->store($model);
+
+        return $model;
+    }
+
+    /**
+     * Find the "Domain Protection & Privacy" add-on order (if any) that was
+     * added to the same cart/checkout as this domain order. Add-on orders
+     * share the domain order's `group_id` (the cart id every order from one
+     * checkout is stamped with -- see Cart\Service::createFromCart()) and
+     * are otherwise ordinary orders, so this only inspects orders already
+     * present in that group rather than assuming anything about the addon
+     * product's own lifecycle.
+     *
+     * Known limitation: if a customer registers multiple domains in one
+     * cart and selects protection for only some of them, group_id alone
+     * can't tell which domain a given protection order belongs to (every
+     * order from that checkout shares the same group_id). This only
+     * disambiguates correctly when there is a single eligible protection
+     * order in the group, which covers the normal one-domain-at-a-time
+     * checkout.
+     */
+    private function findProtectionAddonOrder(\Model_ClientOrder $order): ?\Model_ClientOrder
+    {
+        if (empty($order->group_id)) {
+            return null;
+        }
+
+        $addonProductIds = $this->getDomainAddonProductIds((int) $order->product_id);
+        if (empty($addonProductIds)) {
+            return null;
+        }
+
+        $placeholders = implode(',', array_fill(0, count($addonProductIds), '?'));
+        $candidates = $this->di['db']->find(
+            'ClientOrder',
+            "group_id = ? AND client_id = ? AND id != ? AND product_id IN ({$placeholders})",
+            [$order->group_id, $order->client_id, $order->id, ...$addonProductIds]
+        );
+
+        if (empty($candidates)) {
+            return null;
+        }
+
+        if (count($candidates) > 1) {
+            $this->di['logger']->warning('Multiple Domain Protection & Privacy candidate orders found in cart group %s for domain order #%s -- using the first match', $order->group_id, $order->id);
+        }
+
+        return reset($candidates);
+    }
+
+    /**
+     * Add-on product IDs attached to the given domain product (Product
+     * module is fully Doctrine-managed in this FOSSBilling version -- no
+     * legacy RedBean 'Product' bean exists, so lookups go through
+     * Product\Service, matching how the rest of the codebase accesses
+     * products, e.g. Cart\Service::addItem()).
+     *
+     * @return int[]
+     */
+    private function getDomainAddonProductIds(int $domainProductId): array
+    {
+        try {
+            $domainProduct = $this->di['mod_service']('product')->findProductById($domainProductId);
+        } catch (\FOSSBilling\InformationException) {
+            return [];
+        }
+
+        $addonProductIds = json_decode((string) $domainProduct->getAddons(), true);
+
+        return is_array($addonProductIds) ? array_map('intval', $addonProductIds) : [];
+    }
+
+    /**
+     * Current price of the Domain Protection & Privacy add-on, read live
+     * from its product configuration (Admin -> Products) rather than
+     * hardcoded, so an admin changing the price is reflected everywhere
+     * immediately -- client/admin display included. Returns null if no
+     * add-on is currently attached to the main domain product.
+     */
+    public function getProtectionAddonPrice(): ?float
+    {
+        $productService = $this->di['mod_service']('product');
+
+        $domainProduct = $productService->getMainDomainProduct();
+        if (!$domainProduct) {
+            return null;
+        }
+
+        $addonProductIds = $this->getDomainAddonProductIds((int) $domainProduct->getId());
+        if (empty($addonProductIds)) {
+            return null;
+        }
+
+        try {
+            $addonProduct = $productService->findProductById(reset($addonProductIds));
+        } catch (\FOSSBilling\InformationException) {
+            return null;
+        }
+
+        $pricing = $productService->getProductPricingArray($addonProduct);
+
+        return isset($pricing['recurrent']['1Y']['price']) ? (float) $pricing['recurrent']['1Y']['price'] : null;
+    }
+
+    /**
+     * Register or transfer domain on activation.
+     *
+     * @return \Model_ServiceDomain
+     */
+    public function action_activate(\Model_ClientOrder $order)
+    {
+        $orderService = $this->di['mod_service']('order');
+        $model = $orderService->getOrderService($order);
+        if (!$model instanceof \Model_ServiceDomain) {
+            throw new \FOSSBilling\Exception('Could not activate order. Service was not created');
+        }
+
+        // @adapterAction
+        [$domain, $adapter] = $this->_getD($model);
+        if ($model->action == 'register') {
+            $adapter->registerDomain($domain);
+        }
+
+        if ($model->action == 'transfer') {
+            $adapter->transferDomain($domain);
+        }
+
+        // reset action
+        $model->action = null;
+        $this->di['db']->store($model);
+
+        // Domain Protection & Privacy is deliberately NOT enabled at
+        // order/registrar-creation time (see Hostafrica.php _buildAddons())
+        // -- it's activated as its own explicit step here, only once
+        // registration/transfer has actually succeeded, so a registrar
+        // failure never leaves the domain in an inconsistent state and a
+        // failure here never blocks the domain registration itself.
+        if ($model->protection_purchased) {
+            try {
+                $this->enablePrivacyProtection($model);
+            } catch (\Throwable $e) {
+                $this->di['logger']->error('Domain Protection & Privacy activation failed for domain service #%s (order #%s): %s', $model->id, $order->id, $e->getMessage());
+            }
+        }
+
+        try {
+            $this->syncWhois($model, $order);
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+        }
+
+        return $model;
+    }
+
+    public function action_renew(\Model_ClientOrder $order): bool
+    {
+        $orderService = $this->di['mod_service']('order');
+        $model = $orderService->getOrderService($order);
+        if (!$model instanceof \Model_ServiceDomain) {
+            throw new \FOSSBilling\Exception('Order :id has no active service', [':id' => $order->id]);
+        }
+        // @adapterAction
+        [$domain, $adapter] = $this->_getD($model);
+        $adapter->renewDomain($domain);
+
+        $this->syncWhois($model, $order);
+
+        return true;
+    }
+
+    /**
+     * @todo
+     */
+    public function action_suspend(\Model_ClientOrder $order): bool
+    {
+        return true;
+    }
+
+    /**
+     * @todo
+     */
+    public function action_unsuspend(\Model_ClientOrder $order): bool
+    {
+        return true;
+    }
+
+    public function action_cancel(\Model_ClientOrder $order): bool
+    {
+        $orderService = $this->di['mod_service']('order');
+        $model = $orderService->getOrderService($order);
+        if (!$model instanceof \Model_ServiceDomain) {
+            throw new \FOSSBilling\Exception('Order :id has no active service', [':id' => $order->id]);
+        }
+        // @adapterAction
+        [$domain, $adapter] = $this->_getD($model);
+        $adapter->deleteDomain($domain);
+
+        return true;
+    }
+
+    public function action_uncancel(\Model_ClientOrder $order): bool
+    {
+        $this->action_activate($order);
+
+        return true;
+    }
+
+    public function action_delete(\Model_ClientOrder $order): void
+    {
+        $orderService = $this->di['mod_service']('order');
+        $service = $orderService->getOrderService($order);
+
+        if ($service instanceof \Model_ServiceDomain) {
+            // cancel if not canceled
+            if ($order->status != \Model_ClientOrder::STATUS_CANCELED) {
+                $this->action_cancel($order);
+            }
+            $this->di['db']->trash($service);
+        }
+    }
+
+    protected function syncWhois(\Model_ServiceDomain $model, \Model_ClientOrder $order)
+    {
+        // @adapterAction
+        [$domain, $adapter] = $this->_getD($model);
+
+        // update whois
+        $whois = $adapter->getDomainDetails($domain);
+
+        $locked = $whois->getLocked();
+        if ($locked !== null) {
+            $model->locked = $locked;
+        }
+
+        $privacy = $whois->getPrivacyEnabled();
+        if ($privacy !== null) {
+            $model->privacy = $privacy;
+        }
+
+        // sync whois
+        $contact = $whois->getContactRegistrar();
+
+        $model->contact_first_name = $contact->getFirstName();
+        $model->contact_last_name = $contact->getLastName();
+        $model->contact_email = $contact->getEmail();
+        $model->contact_company = $contact->getCompany();
+        $model->contact_address1 = $contact->getAddress1();
+        $model->contact_address2 = $contact->getAddress2();
+        $model->contact_country = $contact->getCountry();
+        $model->contact_city = $contact->getCity();
+        $model->contact_state = $contact->getState();
+        $model->contact_postcode = $contact->getZip();
+        $model->contact_phone_cc = $contact->getTelCc();
+        $model->contact_phone = $contact->getTel();
+
+        $model->details = serialize($whois);
+        $model->expires_at = $this->formatRegistrarTimestamp($whois->getExpirationTime());
+        $model->registered_at = $this->formatRegistrarTimestamp($whois->getRegistrationTime());
+        $model->updated_at = date('Y-m-d H:i:s');
+
+        $this->di['db']->store($model);
+    }
+
+    public function updateNameservers(\Model_ServiceDomain $model, $data): bool
+    {
+        if (!isset($data['ns1'])) {
+            throw new \FOSSBilling\InformationException('Nameserver 1 is required');
+        }
+        if (!isset($data['ns2'])) {
+            throw new \FOSSBilling\InformationException('Nameserver 2 is required');
+        }
+
+        $ns1 = $data['ns1'];
+        $ns2 = $data['ns2'];
+        $ns3 = $data['ns3'] ?? null;
+        $ns4 = $data['ns4'] ?? null;
+
+        // @adapterAction
+        [$domain, $adapter] = $this->_getD($model);
+        $domain->setNs1($ns1);
+        $domain->setNs2($ns2);
+        $domain->setNs3($ns3);
+        $domain->setNs4($ns4);
+        $adapter->modifyNs($domain);
+
+        $model->ns1 = $ns1;
+        $model->ns2 = $ns2;
+        $model->ns3 = $ns3;
+        $model->ns4 = $ns4;
+        $model->updated_at = date('Y-m-d H:i:s');
+
+        $id = $this->di['db']->store($model);
+
+        $this->di['logger']->info('Updated domain #%s nameservers', $id);
+
+        return true;
+    }
+
+    public function updateContacts(\Model_ServiceDomain $model, $data): bool
+    {
+        $required = [
+            'contact' => 'Required field contact is missing',
+        ];
+        $this->di['validator']->checkRequiredParamsForArray($required, $data);
+
+        $contact = $data['contact'];
+
+        $required = [
+            'first_name' => 'Required field first_name is missing',
+            'last_name' => 'Required field last_name is missing',
+            'email' => 'Required field email is missing',
+            'address1' => 'Required field address1 is missing',
+            'country' => 'Required field country is missing',
+            'city' => 'Required field city is missing',
+            'state' => 'Required field state is missing',
+            'postcode' => 'Required field postcode is missing',
+            'phone_cc' => 'Required field phone_cc is missing',
+            'phone' => 'Required field phone is missing',
+        ];
+        $this->di['validator']->checkRequiredParamsForArray($required, $contact);
+
+        $model->contact_first_name = $contact['first_name'];
+        $model->contact_last_name = $contact['last_name'];
+        $model->contact_email = $contact['email'];
+        $model->contact_company = $contact['company'];
+        $model->contact_address1 = $contact['address1'];
+        $model->contact_address2 = $contact['address2'];
+        $model->contact_country = $contact['country'];
+        $model->contact_city = $contact['city'];
+        $model->contact_state = $contact['state'];
+        $model->contact_postcode = $contact['postcode'];
+        $model->contact_phone_cc = $contact['phone_cc'];
+        $model->contact_phone = $contact['phone'];
+
+        // @adapterAction
+        [$domain, $adapter] = $this->_getD($model);
+        $adapter->modifyContact($domain);
+
+        $model->updated_at = date('Y-m-d H:i:s');
+
+        $id = $this->di['db']->store($model);
+
+        $this->di['logger']->info('Updated domain #%s WHOIS details', $id);
+
+        return true;
+    }
+
+    public function getTransferCode(\Model_ServiceDomain $model)
+    {
+        // @adapterAction
+        [$domain, $adapter] = $this->_getD($model);
+
+        return $adapter->getEpp($domain);
+    }
+
+    public function lock(\Model_ServiceDomain $model): bool
+    {
+        // @adapterAction
+        [$domain, $adapter] = $this->_getD($model);
+        $epp = $adapter->lock($domain);
+
+        $model->locked = true;
+        $model->updated_at = date('Y-m-d H:i:s');
+
+        $id = $this->di['db']->store($model);
+
+        $this->di['logger']->info('Locking domain #%s', $id);
+
+        return true;
+    }
+
+    public function unlock(\Model_ServiceDomain $model): bool
+    {
+        // @adapterAction
+        [$domain, $adapter] = $this->_getD($model);
+        $epp = $adapter->unlock($domain);
+
+        $model->locked = false;
+        $model->updated_at = date('Y-m-d H:i:s');
+
+        $id = $this->di['db']->store($model);
+
+        $this->di['logger']->info('Unlocking domain #%s', $id);
+
+        return true;
+    }
+
+    /**
+     * Calls the registrar to enable WHOIS privacy and persists the outcome.
+     *
+     * Unlike the previous implementation, this only marks `privacy` (and
+     * `protection_registrar_status`) as active when the adapter actually
+     * reports success -- a registrar-reported failure is recorded as such
+     * and re-thrown, never silently treated as success. Different
+     * registrar adapters signal failure differently (HostAfrica returns
+     * false, others may throw) -- both are handled here so this stays
+     * correct regardless of which adapter is active.
+     */
+    public function enablePrivacyProtection(\Model_ServiceDomain $model): bool
+    {
+        // @adapterAction
+        [$domain, $adapter] = $this->_getD($model);
+
+        try {
+            $success = $adapter->enablePrivacyProtection($domain) !== false;
+        } catch (\Throwable $e) {
+            $model->protection_registrar_status = 'failed';
+            $model->updated_at = date('Y-m-d H:i:s');
+            $this->di['db']->store($model);
+
+            $this->di['logger']->error('Failed to enable privacy protection for domain service #%s: %s', $model->id, $e->getMessage());
+
+            throw $e;
+        }
+
+        $model->privacy = $success;
+        $model->protection_registrar_status = $success ? 'active' : 'failed';
+        $model->updated_at = date('Y-m-d H:i:s');
+
+        $id = $this->di['db']->store($model);
+
+        if ($success) {
+            $this->di['logger']->info('Enabled privacy protection of #%s domain', $id);
+        } else {
+            $this->di['logger']->warning('Registrar reported failure enabling privacy protection of #%s domain', $id);
+
+            throw new \FOSSBilling\InformationException('The registrar was unable to enable privacy protection for this domain. Please try again or contact support.');
+        }
+
+        return true;
+    }
+
+    /**
+     * Calls the registrar to disable WHOIS privacy and persists the
+     * outcome. Same success/failure handling as enablePrivacyProtection()
+     * -- see that method's docblock.
+     */
+    public function disablePrivacyProtection(\Model_ServiceDomain $model): bool
+    {
+        // @adapterAction
+        [$domain, $adapter] = $this->_getD($model);
+
+        try {
+            $success = $adapter->disablePrivacyProtection($domain) !== false;
+        } catch (\Throwable $e) {
+            $this->di['logger']->error('Failed to disable privacy protection for domain service #%s: %s', $model->id, $e->getMessage());
+
+            throw $e;
+        }
+
+        if (!$success) {
+            $this->di['logger']->warning('Registrar reported failure disabling privacy protection of #%s domain', $model->id);
+
+            throw new \FOSSBilling\InformationException('The registrar was unable to disable privacy protection for this domain. Please try again or contact support.');
+        }
+
+        $model->privacy = false;
+        $model->protection_registrar_status = null;
+        $model->updated_at = date('Y-m-d H:i:s');
+
+        $id = $this->di['db']->store($model);
+
+        $this->di['logger']->info('Disabled privacy protection of #%s domain', $id);
+
+        return true;
+    }
+
+    public function canBeTransferred(\Model_Tld $model, $sld)
+    {
+        if (empty($sld)) {
+            throw new \FOSSBilling\InformationException('Domain name is invalid');
+        }
+
+        if (!$model->allow_transfer) {
+            throw new \FOSSBilling\InformationException('Domain cannot be transferred', null, 403);
+        }
+
+        // @adapterAction
+        $domain = new \Registrar_Domain();
+        $domain->setTld($model->tld);
+        $domain->setSld($sld);
+
+        $tldRegistrar = $this->di['db']->load('TldRegistrar', $model->tld_registrar_id);
+        $adapter = $this->registrarGetRegistrarAdapter($tldRegistrar);
+
+        return $adapter->isDomaincanBeTransferred($domain);
+    }
+
+    public function isDomainAvailable(\Model_Tld $model, $sld)
+    {
+        if (empty($sld)) {
+            throw new \FOSSBilling\InformationException('Domain name is invalid');
+        }
+
+        $validator = $this->di['validator'];
+        if (!$validator->isSldValid($sld)) {
+            $safe_dom = htmlspecialchars((string) $sld, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+            throw new \FOSSBilling\InformationException('Domain name :domain is invalid', [':domain' => $safe_dom]);
+        }
+
+        if (!$model->allow_register) {
+            throw new \FOSSBilling\InformationException('Domain cannot be registered', null, 403);
+        }
+
+        // @adapterAction
+        $domain = new \Registrar_Domain();
+        $domain->setTld($model->tld);
+        $domain->setSld($sld);
+
+        $tldRegistrar = $this->di['db']->load('TldRegistrar', $model->tld_registrar_id);
+        $adapter = $this->registrarGetRegistrarAdapter($tldRegistrar);
+
+        return $adapter->isDomainAvailable($domain);
+    }
+
+    public function syncExpirationDate($model): void
+    {
+        // @todo
+    }
+
+    public function toApiArray(\Model_ServiceDomain $model, $deep = false, $identity = null): array
+    {
+        $data = [
+            'domain' => $model->sld . $model->tld,
+            'sld' => $model->sld,
+            'tld' => $model->tld,
+            'ns1' => $model->ns1,
+            'ns2' => $model->ns2,
+            'ns3' => $model->ns3,
+            'ns4' => $model->ns4,
+            'period' => $model->period,
+            'privacy' => $model->privacy,
+            'protection_purchased' => (bool) $model->protection_purchased,
+            'protection_registrar_status' => $model->protection_registrar_status,
+            'protection_price' => $this->getProtectionAddonPrice(),
+            'locked' => $model->locked,
+            'registered_at' => $model->registered_at,
+            'expires_at' => $model->expires_at,
+            'contact' => [
+                'first_name' => $model->contact_first_name,
+                'last_name' => $model->contact_last_name,
+                'email' => $model->contact_email,
+                'company' => $model->contact_company,
+                'address1' => $model->contact_address1,
+                'address2' => $model->contact_address2,
+                'country' => $model->contact_country,
+                'city' => $model->contact_city,
+                'state' => $model->contact_state,
+                'postcode' => $model->contact_postcode,
+                'phone_cc' => $model->contact_phone_cc,
+                'phone' => $model->contact_phone,
+            ],
+        ];
+
+        if ($identity instanceof \Model_Admin) {
+            $data['transfer_code'] = $model->transfer_code;
+            $data['protection_order_id'] = $model->protection_order_id;
+
+            $tldRegistrar = $this->di['db']->load('TldRegistrar', $model->tld_registrar_id);
+            $data['registrar'] = $tldRegistrar instanceof \Model_TldRegistrar ? $tldRegistrar->name : null;
+        }
+
+        return $data;
+    }
+
+    private function _getTuple($data): array
+    {
+        $action = $data['action'];
+        [$sld, $tld] = [null, null];
+
+        if ($action == 'owndomain') {
+            $sld = $data['owndomain_sld'];
+            $tld = str_contains((string) $data['domain']['owndomain_tld'], '.') ? $data['domain']['owndomain_tld'] : '.' . $data['domain']['owndomain_tld'];
+        }
+
+        if ($action == 'transfer') {
+            $sld = $data['transfer_sld'];
+            $tld = $data['transfer_tld'];
+        }
+
+        if ($action == 'register') {
+            $sld = $data['register_sld'];
+            $tld = $data['register_tld'];
+        }
+
+        return [$sld, $tld];
+    }
+
+    protected function _getD(\Model_ServiceDomain $model): array
+    {
+        $orderService = $this->di['mod_service']('order');
+        $order = $orderService->getServiceOrder($model);
+
+        $tldRegistrar = $this->di['db']->load('TldRegistrar', $model->tld_registrar_id);
+
+        if ($order instanceof \Model_ClientOrder) {
+            $adapter = $this->registrarGetRegistrarAdapter($tldRegistrar, $order);
+        } else {
+            $adapter = $this->registrarGetRegistrarAdapter($tldRegistrar);
+        }
+
+        $d = new \Registrar_Domain();
+
+        $d->setLocked($model->locked);
+        // Drives the `idprotection` add-on flag on renewal (see
+        // Hostafrica.php _buildAddons()) -- reflects whether the customer
+        // has purchased Domain Protection & Privacy, not whether the
+        // registrar has confirmed it active, so a renewal keeps asking for
+        // it even if a prior activation attempt failed.
+        $d->setPrivacyEnabled((bool) $model->protection_purchased);
+        $d->setNs1($model->ns1);
+        $d->setNs2($model->ns2);
+        $d->setNs3($model->ns3);
+        $d->setNs4($model->ns4);
+
+        // merge info with current profile
+        $client = $this->di['db']->load('Client', $model->client_id);
+
+        $email = empty($model->contact_email) ? $client->email : $model->contact_email;
+        $first_name = empty($model->contact_first_name) ? $client->first_name : $model->contact_first_name;
+        $last_name = empty($model->contact_last_name) ? $client->last_name : $model->contact_last_name;
+
+        // Domains are deliberately registered under KZD's own reseller
+        // account, not the client's -- KZD retains nameserver/account
+        // control throughout the hosting relationship (see docs/HOSTAFRICA.md
+        // and docs/ARCHITECTURE.md), so the registrant contact should
+        // consistently be KZD's own registered business address rather than
+        // depend on whether a given client happened to fill in their
+        // profile. A per-order contact override (set explicitly on the
+        // domain service record, not from the client's profile) still wins
+        // if staff ever deliberately set one for a specific domain; the
+        // client's own profile is only consulted as a last-resort fallback
+        // in case a company setting is ever left blank.
+        $companyDefaults = $this->_getCompanyContactDefaults();
+
+        $city = $model->contact_city ?: ($companyDefaults['city'] ?: $client->city);
+        $zip = $model->contact_postcode ?: ($companyDefaults['postcode'] ?: $client->postcode);
+        $country = $model->contact_country ?: ($companyDefaults['country'] ?: $client->country);
+        $state = $model->contact_state ?: ($companyDefaults['state'] ?: $client->state);
+        $phone = $model->contact_phone ?: ($companyDefaults['phone'] ?: $client->phone);
+        $phone_cc = $model->contact_phone_cc ?: ($companyDefaults['phone_cc'] ?: $client->phone_cc);
+        $company = empty($model->contact_company) ? $client->company : $model->contact_company;
+        $address1 = $model->contact_address1 ?: ($companyDefaults['address1'] ?: $client->address_1);
+        $address2 = empty($model->contact_address2) ? $client->address_2 : $model->contact_address2;
+        $birthday = !empty($client->birthday) ? $client->birthday : '';
+        $company_number = !empty($client->company_number) ? $client->company_number : '';
+        $document_nr = (string) ($this->di['mod_service']('client')->resolveDocumentNumber($client) ?? '');
+
+        $contact = new \Registrar_Domain_Contact();
+        $contact
+            ->setEmail($email)
+            ->setUsername($email)
+            ->setPassword($this->di['tools']->generatePassword(10))
+            ->setFirstname($first_name)
+            ->setLastname($last_name)
+            ->setCity($city)
+            ->setZip($zip)
+            ->setCountry($country)
+            ->setState($state)
+            ->setTel($phone)
+            ->setTelCC($phone_cc)
+            ->setCompany($company)
+            ->setCompanyNumber($company_number)
+            ->setAddress1($address1)
+            ->setAddress2($address2)
+            ->setFax($phone)
+            ->setFaxCC($phone_cc)
+            ->setBirthday($birthday)
+            ->setDocumentNr($document_nr);
+
+        $d->setContactRegistrar($contact);
+        $d->setContactAdmin($contact);
+        $d->setContactTech($contact);
+        $d->setContactBilling($contact);
+
+        $d->setTld($model->tld);
+        $d->setSld($model->sld);
+        $d->setRegistrationPeriod($model->period);
+        $d->setEpp($model->transfer_code);
+
+        if ($model->expires_at) {
+            $d->setExpirationTime(strtotime($model->expires_at));
+        }
+
+        return [$d, $adapter];
+    }
+
+    /**
+     * KZD's own registered business address, used as the default registrant
+     * contact for domain registrations -- see the comment in _getD() above.
+     * Configured via the same `setting` table every other company_* field
+     * lives in (Admin -> System Settings -> Company), so it stays editable
+     * without a code change if the business address ever changes.
+     *
+     * @return array{address1: string, city: string, state: string, postcode: string, country: string, phone: string, phone_cc: string}
+     */
+    private function _getCompanyContactDefaults(): array
+    {
+        $params = ['company_address_1', 'company_city', 'company_state', 'company_postcode', 'company_country', 'company_tel', 'company_phone_cc'];
+        $placeholders = implode(',', array_fill(0, count($params), '?'));
+        $rows = $this->di['db']->getAll("SELECT param, value FROM setting WHERE param IN ({$placeholders})", $params);
+
+        $settings = [];
+        foreach ($rows as $row) {
+            $settings[$row['param']] = $row['value'];
+        }
+
+        return [
+            'address1' => $settings['company_address_1'] ?? '',
+            'city' => $settings['company_city'] ?? '',
+            'state' => $settings['company_state'] ?? '',
+            'postcode' => $settings['company_postcode'] ?? '',
+            'country' => $settings['company_country'] ?? '',
+            'phone' => $settings['company_tel'] ?? '',
+            'phone_cc' => $settings['company_phone_cc'] ?? '',
+        ];
+    }
+
+    public static function onBeforeAdminCronRun(\Box_Event $event): bool
+    {
+        try {
+            $di = $event->getDi();
+            $domainService = $di['mod_service']('servicedomain');
+            $domainService->batchSyncExpirationDates();
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+        }
+
+        return true;
+    }
+
+    public function batchSyncExpirationDates(): bool
+    {
+        $key = 'servicedomain_last_sync';
+
+        $ss = $this->di['mod_service']('system');
+        $last_time = $ss->getParamValue($key);
+        if ($last_time && (time() - strtotime((string) $last_time)) < 86400 * 30) {
+            return false;
+        }
+
+        $list = $this->di['db']->find('ServiceDomain');
+
+        foreach ($list as $domain) {
+            try {
+                $this->syncExpirationDate($domain);
+            } catch (\Exception $e) {
+                error_log($e->getMessage());
+            }
+        }
+
+        $ss->setParamValue($key, date('Y-m-d H:i:s'));
+        $this->di['logger']->info('Executed action to synchronize domain expiration dates with registrar');
+
+        return true;
+    }
+
+    public function tldCreate($data)
+    {
+        $model = $this->di['db']->dispense('Tld');
+        $model->tld = $data['tld'];
+        $model->tld_registrar_id = $data['tld_registrar_id'];
+        $model->price_registration = $data['price_registration'];
+        $model->price_renew = $data['price_renew'];
+        $model->price_transfer = $data['price_transfer'];
+        $model->min_years = isset($data['min_years']) ? (int) $data['min_years'] : 1;
+        $model->allow_register = isset($data['allow_register']) ? (bool) $data['allow_register'] : true;
+        $model->allow_transfer = isset($data['allow_transfer']) ? (bool) $data['allow_transfer'] : true;
+        $model->active = isset($data['active']) && (bool) $data['active'];
+        $model->updated_at = date('Y-m-d H:i:s');
+        $model->created_at = date('Y-m-d H:i:s');
+
+        $id = $this->di['db']->store($model);
+
+        $this->di['logger']->info('Created new top level domain %s', $model->tld);
+
+        return $id;
+    }
+
+    public function tldUpdate(\Model_Tld $model, $data): bool
+    {
+        $model->tld_registrar_id = $data['tld_registrar_id'] ?? $model->tld_registrar_id;
+        $model->price_registration = $data['price_registration'] ?? $model->price_registration;
+        $model->price_renew = $data['price_renew'] ?? $model->price_renew;
+        $model->price_transfer = $data['price_transfer'] ?? $model->price_transfer;
+        $model->min_years = $data['min_years'] ?? $model->min_years;
+        $model->allow_register = $data['allow_register'] ?? $model->allow_register;
+        $model->allow_transfer = $data['allow_transfer'] ?? $model->allow_transfer;
+        $model->active = $data['active'] ?? $model->active;
+        $model->updated_at = date('Y-m-d H:i:s');
+
+        $this->di['db']->store($model);
+
+        $this->di['logger']->info('Updated top level domain %s', $model->tld);
+
+        return true;
+    }
+
+    public function tldGetSearchQuery($data): array
+    {
+        $query = 'SELECT * FROM tld';
+
+        $hide_inactive = (bool) ($data['hide_inactive'] ?? false);
+        $allow_register = $data['allow_register'] ?? null;
+        $allow_transfer = $data['allow_transfer'] ?? null;
+
+        $where = [];
+        $bindings = [];
+
+        if ($hide_inactive) {
+            $where[] = 'active = 1';
+        }
+
+        if ($allow_register !== null) {
+            $where[] = 'allow_register = 1';
+        }
+
+        if ($allow_transfer !== null) {
+            $where[] = 'allow_transfer = 1';
+        }
+
+        if (!empty($where)) {
+            $query = $query . ' WHERE ' . implode(' AND ', $where);
+        }
+
+        $query .= ' ORDER BY id ASC';
+
+        return [$query, $bindings];
+    }
+
+    public function tldFindAllActive()
+    {
+        return $this->di['db']->find('Tld', 'active = 1 ORDER by id ASC');
+    }
+
+    public function tldFindOneActiveById($id)
+    {
+        return $this->di['db']->findOne('Tld', 'id = :id AND active = 1 ORDER by id ASC', [':id' => $id]);
+    }
+
+    public function tldGetPairs()
+    {
+        return $this->di['db']->getAssoc('SELECT id, tld from tld WHERE active = 1 ORDER by id ASC');
+    }
+
+    public function tldAlreadyRegistered($tld): bool
+    {
+        $tld = $this->di['db']->findOne('Tld', 'tld = :tld ORDER by id ASC', [':tld' => $tld]);
+
+        return $tld instanceof \Model_Tld;
+    }
+
+    public function tldRm(\Model_Tld $model): bool
+    {
+        $id = $model->id;
+        $this->di['db']->trash($model);
+        $this->di['logger']->info('Deleted top level domain %s', $id);
+
+        return true;
+    }
+
+    public function tldToApiArray(\Model_Tld $model, $identity = null): array
+    {
+        $result = [
+            'id' => $model->id,
+            'tld' => $model->tld,
+            'price_registration' => $model->price_registration,
+            'price_renew' => $model->price_renew,
+            'price_transfer' => $model->price_transfer,
+            'active' => $model->active,
+            'allow_register' => $model->allow_register,
+            'allow_transfer' => $model->allow_transfer,
+            'min_years' => $model->min_years,
+        ];
+
+        if ($identity instanceof \Model_Admin) {
+            $tldRegistrar = $this->di['db']->load('TldRegistrar', $model->tld_registrar_id);
+
+            $result['registrar'] = [
+                'id' => $model->tld_registrar_id,
+                'title' => $tldRegistrar instanceof \Model_TldRegistrar ? $tldRegistrar->name : null,
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return \Model_Tld|null
+     */
+    public function tldFindOneByTld($tld)
+    {
+        return $this->di['db']->findOne('Tld', 'tld = :tld ORDER by id ASC', [':tld' => $tld]);
+    }
+
+    public function tldFindOneById($id)
+    {
+        return $this->di['db']->findOne('Tld', 'id = :id ORDER by id ASC', [':id' => $id]);
+    }
+
+    public function registrarGetSearchQuery($data): array
+    {
+        $query = 'SELECT * FROM tld_registrar ORDER BY name ASC';
+        $bindings = [];
+
+        return [$query, $bindings];
+    }
+
+    /**
+     * @return mixed[][]|string[]
+     */
+    public function registrarGetAvailable(): array
+    {
+        $query = "SELECT 'registrar', 'name' FROM tld_registrar GROUP BY registrar";
+
+        $exists = $this->di['db']->getAssoc($query);
+
+        $adapters = [];
+
+        $finder = new Finder();
+        $finder->files()->in(Path::join(PATH_LIBRARY, 'Registrar', 'Adapter'))->name('*.php')->depth('== 0');
+        foreach ($finder as $file) {
+            $adapter = $file->getFilenameWithoutExtension();
+            if (!array_key_exists($adapter, $exists)) {
+                $adapters[] = $adapter;
+            }
+        }
+
+        return $adapters;
+    }
+
+    public function registrarGetPairs()
+    {
+        $query = 'SELECT tr.id, tr.name FROM tld_registrar tr ORDER BY tr.id DESC';
+
+        return $this->di['db']->getAssoc($query);
+    }
+
+    public function registrarGetActiveRegistrar()
+    {
+        return $this->di['db']->findOne('TldRegistrar', 'config IS NOT NULL LIMIT 1');
+    }
+
+    public function registrarGetConfiguration(\Model_TldRegistrar $model): array
+    {
+        return json_decode($model->config ?? '', true) ?? [];
+    }
+
+    public function registrarGetRegistrarAdapterConfig(\Model_TldRegistrar $model)
+    {
+        $class = $this->registrarGetRegistrarAdapterClassName($model);
+
+        return call_user_func([$class, 'getConfig']);
+    }
+
+    private function registrarGetRegistrarAdapterClassName(\Model_TldRegistrar $model): string
+    {
+        $file = Path::join(PATH_LIBRARY, 'Registrar', 'Adapter', "{$model->registrar}.php");
+        if (!$this->filesystem->exists($file)) {
+            throw new \FOSSBilling\InformationException('Domain registrar :adapter was not found', [':adapter' => $model->registrar]);
+        }
+
+        $class = sprintf('Registrar_Adapter_%s', $model->registrar);
+        if (!class_exists($class)) {
+            require_once $file;
+        }
+
+        if (!class_exists($class)) {
+            throw new \FOSSBilling\InformationException('Registrar :adapter was not found', [':adapter' => $class]);
+        }
+
+        return $class;
+    }
+
+    public function registrarGetRegistrarAdapter(\Model_TldRegistrar $r, ?\Model_ClientOrder $order = null)
+    {
+        $config = $this->registrarGetConfiguration($r);
+        $class = $this->registrarGetRegistrarAdapterClassName($r);
+        $registrar = new $class($config);
+        if (!$registrar instanceof \Registrar_AdapterAbstract) {
+            throw new \FOSSBilling\Exception('Registrar adapter :adapter should extend Registrar_AdapterAbstract', [':adapter' => $class]);
+        }
+
+        $registrar->setLog($this->di['logger']);
+
+        if ($order) {
+            $registrar->setOrder($order);
+        }
+
+        if (isset($r->test_mode) && $r->test_mode) {
+            $registrar->enableTestMode();
+        }
+
+        return $registrar;
+    }
+
+    public function registrarCreate($code): bool
+    {
+        $model = $this->di['db']->dispense('TldRegistrar');
+        $model->name = $code;
+        $model->registrar = $code;
+        $model->test_mode = 0;
+
+        $this->di['db']->store($model);
+
+        $this->di['logger']->info('Installed new domain registrar %s', $code);
+
+        return true;
+    }
+
+    public function registrarCopy(\Model_TldRegistrar $model)
+    {
+        $new = $this->di['db']->dispense('TldRegistrar');
+        $new->name = $model->name . ' (Copy)';
+        $new->registrar = $model->registrar;
+        $new->test_mode = $model->test_mode;
+
+        $id = $this->di['db']->store($new);
+
+        $this->di['logger']->info('Copied domain registrar %s', $model->registrar);
+
+        return $id;
+    }
+
+    public function registrarUpdate(\Model_TldRegistrar $model, $data): bool
+    {
+        $model->name = $data['title'] ?? $model->name;
+        $model->test_mode = $data['test_mode'] ?? $model->test_mode;
+        if (isset($data['config']) && is_array($data['config'])) {
+            $model->config = json_encode($data['config']);
+        }
+
+        $this->di['db']->store($model);
+
+        $this->di['logger']->info('Updated domain registrar %s configuration', $model->registrar);
+
+        return true;
+    }
+
+    public function registrarRm(\Model_TldRegistrar $model): bool
+    {
+        $domains = $this->di['db']->find('ServiceDomain', 'tld_registrar_id = :registrar_id', [':registrar_id' => $model->id]);
+        $count = \FOSSBilling\Tools::safeCount($domains);
+
+        if ($count > 0) {
+            throw new \FOSSBilling\InformationException('Registrar is used by :count: domains', [':count:' => $count], 707);
+        }
+
+        $tlds = $this->di['db']->find('Tld', 'tld_registrar_id = :registrar_id', [':registrar_id' => $model->id]);
+        $count = \FOSSBilling\Tools::safeCount($tlds);
+
+        if ($count > 0) {
+            throw new \FOSSBilling\InformationException('Registrar is used by :count: TLDs', [':count:' => $count], 707);
+        }
+
+        $name = $model->name;
+
+        $this->di['db']->trash($model);
+
+        $this->di['logger']->info('Removed domain registrar %s', $name);
+
+        return true;
+    }
+
+    public function registrarToApiArray(\Model_TldRegistrar $model): array
+    {
+        $c = $this->registrarGetRegistrarAdapterConfig($model);
+
+        return [
+            'id' => $model->id,
+            'title' => $model->name,
+            'label' => $c['label'],
+            'config' => $this->registrarGetConfiguration($model),
+            'form' => $c['form'],
+            'test_mode' => $model->test_mode,
+        ];
+    }
+
+    public function updateDomain(\Model_ServiceDomain $s, $data): bool
+    {
+        $s->ns1 = $data['ns1'] ?? $s->ns1;
+        $s->ns2 = $data['ns2'] ?? $s->ns2;
+        $s->ns3 = $data['ns3'] ?? $s->ns3;
+        $s->ns4 = $data['ns4'] ?? $s->ns4;
+
+        $s->period = (int) ($data['period'] ?? $s->period);
+        $s->privacy = (bool) ($data['privacy'] ?? $s->privacy);
+        $s->locked = (bool) ($data['locked'] ?? $s->locked);
+        $s->transfer_code = $data['transfer_code'] ?? $s->transfer_code;
+        $s->updated_at = date('Y-m-d H:i:s');
+
+        $this->di['db']->store($s);
+
+        $this->di['logger']->info('Updated domain #%s without sending actions to server', $s->id);
+
+        return true;
+    }
+
+    private function formatRegistrarTimestamp(mixed $timestamp): ?string
+    {
+        if (!is_numeric($timestamp) || (int) $timestamp <= 0) {
+            return null;
+        }
+
+        return date('Y-m-d H:i:s', (int) $timestamp);
+    }
+}

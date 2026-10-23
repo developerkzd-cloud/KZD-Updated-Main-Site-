@@ -1,0 +1,88 @@
+{#
+  KZD Solutions addition: FOSSBilling's own api.js has a fully-built
+  styled-modal code path for `fb_api_link({modal: {...}})` confirmations
+  and prompts (see the type==="confirm"/"danger"/"prompt" branches) --
+  but it only uses that path if `typeof Modals !== "undefined"`, and
+  nothing anywhere in stock FOSSBilling (client or admin) ever actually
+  defines a `Modals` global. It silently falls back to the browser's
+  native window.confirm()/window.prompt() every time as a result --
+  confirmed live (e.g. removing a cart item). This defines that missing
+  `Modals` global with a `.create(options)` matching exactly what
+  api.js already calls, using Bootstrap 5's own Modal component (no new
+  dependency -- bootstrap is already loaded for this theme). No changes
+  to FOSSBilling core needed.
+
+  Included from both layout_default.html.twig and layout_public.html.twig
+  since the client theme's order/checkout pages (mod_orderbutton_index)
+  extend layout_public, not layout_default.
+#}
+<script>
+    window.Modals = {
+        create(options) {
+            const isPrompt = options.type === 'prompt';
+
+            const modalEl = document.createElement('div');
+            modalEl.className = 'modal fade';
+            modalEl.tabIndex = -1;
+            modalEl.setAttribute('aria-hidden', 'true');
+            modalEl.innerHTML =
+                '<div class="modal-dialog modal-dialog-centered">' +
+                    '<div class="modal-content">' +
+                        '<div class="modal-header">' +
+                            '<h5 class="modal-title"></h5>' +
+                            '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>' +
+                        '</div>' +
+                        '<div class="modal-body"></div>' +
+                        '<div class="modal-footer">' +
+                            '<button type="button" class="btn btn-link text-secondary" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>' +
+                            '<button type="button" class="btn"></button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+
+            // Dynamic strings set via textContent/value, never innerHTML --
+            // matches window.confirm()/window.prompt()'s own plain-text
+            // behaviour and avoids trusting `content`/`title` as markup.
+            modalEl.querySelector('.modal-title').textContent = options.title || '';
+
+            const body = modalEl.querySelector('.modal-body');
+            let inputEl = null;
+            if (isPrompt) {
+                const label = document.createElement('label');
+                label.className = 'form-label';
+                label.textContent = options.label || 'Label';
+                inputEl = document.createElement('input');
+                inputEl.type = 'text';
+                inputEl.className = 'form-control';
+                inputEl.value = options.value || '';
+                body.append(label, inputEl);
+            } else {
+                const p = document.createElement('p');
+                p.className = 'mb-0';
+                p.textContent = options.content || '';
+                body.append(p);
+            }
+
+            const confirmBtn = modalEl.querySelector('.modal-footer .btn:not(.btn-link)');
+            confirmBtn.className = 'btn btn-' + (options.confirmButtonColor || 'primary');
+            confirmBtn.textContent = options.confirmButton || 'Confirm';
+
+            document.body.append(modalEl);
+            const modal = new bootstrap.Modal(modalEl);
+
+            confirmBtn.addEventListener('click', () => {
+                if (isPrompt) {
+                    options.promptConfirmCallback?.(inputEl.value);
+                } else {
+                    options.confirmCallback?.();
+                }
+                modal.hide();
+            });
+
+            modalEl.addEventListener('hidden.bs.modal', () => modalEl.remove());
+            modalEl.addEventListener('shown.bs.modal', () => inputEl?.focus());
+
+            modal.show();
+        },
+    };
+</script>

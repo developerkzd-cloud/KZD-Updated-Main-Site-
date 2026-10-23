@@ -5,8 +5,6 @@ node_modules/
 # Next.js cache (Turbopack root is the repo root; see kzd-next/next.config.ts)
 .next/
 
-# Billing portal is its own repo (developerkzd-cloud/KZD-Fossbilling)
-/fossbilling/
 # Local test artefacts and backups
 .playwright-mcp/
 *.bak-*

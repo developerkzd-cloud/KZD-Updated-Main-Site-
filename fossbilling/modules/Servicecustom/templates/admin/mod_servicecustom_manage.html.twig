@@ -1,0 +1,37 @@
+{% import 'macro_functions.html.twig' as mf %}
+<div class="card-body">
+{% if not service %}
+    <div class="mb-3">
+        <h3 class="card-title mb-1">{{ order.title }} {{ 'Management'|trans }}</h3>
+        <p class="text-secondary mb-0">{{ 'Status'|trans }}: {{ mf.status_badge(order.status, 'order') }}</p>
+    </div>
+    <div class="alert alert-warning mb-0">
+        {{ 'The custom service for this order could not be found. It may not have been provisioned yet, or its service record may have been removed.'|trans }}
+    </div>
+{% else %}
+    <div class="mb-3">
+        <h3 class="card-title mb-1">{{ order.title }} {{ 'Management'|trans }}</h3>
+        <p class="text-secondary mb-0">{{ 'Update the custom service values stored against this order. These fields are defined by the selected custom service plugin.'|trans }}</p>
+    </div>
+
+    <form method="post" action="{{ 'servicecustom/update'|api_url }}" {{ fb_api_form({message: 'Service Updated'|trans}) }}>
+        <div class="row g-3">
+            {% for name, value in service %}
+                <div class="col-12">
+                    <label class="form-label">{{ name }}</label>
+                    <textarea class="form-control" rows="3" name="config[{{ name }}]">{{ value }}</textarea>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-secondary mb-0">{{ 'This service does not currently expose any editable configuration values.'|trans }}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <input type="hidden" name="order_id" value="{{ order.id }}">
+        <div class="d-flex justify-content-end mt-4">
+            <button class="btn btn-primary" type="submit">{{ 'Update'|trans }}</button>
+        </div>
+    </form>
+{% endif %}
+</div>

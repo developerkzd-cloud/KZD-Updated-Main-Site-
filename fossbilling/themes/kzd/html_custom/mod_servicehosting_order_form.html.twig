@@ -1,0 +1,481 @@
+{#
+  KZD Solutions override of the stock Servicehosting order form.
+
+  Only change: the product info block ({{ product_details }} -- title,
+  description bullet list, billing/pricing, quantity selector) was
+  wrapped in stock FOSSBilling as `<h5 class="mb-1">{{ product_details }}</h5>`.
+  That makes every nested element (including the plain bullet-list
+  description) inherit bold heading styling, since it's all nested
+  inside an <h5>. Rendered unwrapped instead, matching how the same
+  block renders for every other product type
+  (modules/Orderbutton/templates/client/mod_orderbutton_product_configuration.html.twig
+  renders `{{ product_details }}` directly, no heading wrapper).
+#}
+{% set periods = guest.system_periods %}
+{% set pricing = product.pricing %}
+{% set tlds = guest.serviceDomain_tlds({"allow_register":1}) %}
+{% set transfer_tlds = guest.serviceDomain_tlds({"allow_transfer":1}) %}
+
+{# Domain configuration settings default to enabled when unset. #}
+{% set allow_register = product.config.allow_domain_register ?? true %}
+{% set allow_transfer = product.config.allow_domain_transfer ?? true %}
+{% set allow_own = product.config.allow_domain_own ?? true %}
+{% set allow_subdomain = product.config.allow_subdomain ?? false %}
+{% set subdomain_base_domain = product.config.subdomain_base_domain ?? null %}
+
+{# Determine which options are actually available #}
+{% set can_register = allow_register and tlds is not empty %}
+{% set can_transfer = allow_transfer and transfer_tlds is not empty %}
+{% set can_own = allow_own %}
+{% set can_subdomain = allow_subdomain and subdomain_base_domain %}
+
+{# Only show domain configuration section if at least one option is available #}
+{% set show_domain_config = can_register or can_transfer or can_own or can_subdomain %}
+
+{# Determine which option should be active by default.
+   KZD Solutions addition: honour an explicit ?action= request param (e.g.
+   from the "add hosting to a domain already in your cart" cross-sell on the
+   checkout step, or a future direct link) when that action is actually
+   available for this product -- falls back to the original
+   capability-based priority order otherwise, so normal traffic without the
+   param is unaffected. #}
+{% set requested_action = request.action ?? null %}
+{% set default_action = null %}
+{% if requested_action == 'owndomain' and can_own %}
+    {% set default_action = 'owndomain' %}
+{% elseif requested_action == 'transfer' and can_transfer %}
+    {% set default_action = 'transfer' %}
+{% elseif requested_action == 'register' and can_register %}
+    {% set default_action = 'register' %}
+{% elseif can_register %}
+    {% set default_action = 'register' %}
+{% elseif can_transfer %}
+    {% set default_action = 'transfer' %}
+{% elseif can_own %}
+    {% set default_action = 'owndomain' %}
+{% elseif can_subdomain %}
+    {% set default_action = 'subdomain' %}
+{% endif %}
+
+{# KZD Solutions addition: when this hosting order arrives from the
+   checkout-step cross-sell for a domain already sitting in the cart
+   (see mod_orderbutton_checkout.html.twig's ?linked_domain=1 links),
+   the customer already told us exactly which domain this hosting plan
+   connects to -- showing the whole Register/Transfer/Own domain picker
+   again and asking them to re-confirm ownership is pure redundancy.
+   Skip straight to a short confirmation instead. #}
+{% set linked_domain_sld = request.owndomain_sld ?? null %}
+{% set linked_domain_tld = request.owndomain_tld ?? null %}
+{% set show_linked_domain_notice = (request.linked_domain ?? null) == '1' and can_own and linked_domain_sld and linked_domain_tld %}
+
+{{ product_details }}
+
+{% if show_domain_config %}
+<h4 class="kzd-config-heading">{{ 'Connect a domain'|trans }}</h4>
+
+{% if show_linked_domain_notice %}
+<p class="kzd-config-lede">
+    {{ 'This hosting package will be linked to'|trans }} <strong>{{ linked_domain_sld }}{{ linked_domain_tld }}</strong>, {{ 'which is already in your cart.'|trans }}
+</p>
+<input type="hidden" name="domain[owndomain_sld]" value="{{ linked_domain_sld }}">
+<input type="hidden" name="domain[owndomain_tld]" value="{{ linked_domain_tld }}">
+<input type="hidden" name="domain[owndomain_authorized]" value="1">
+{% else %}
+<p class="kzd-config-lede">{{ 'Your website and email will live on this domain. Register a new one, transfer one you already have, or connect a domain you own.'|trans }}</p>
+
+<div class="kzd-config-domain">
+    <nav class="nav nav-pills kzd-config-seg" role="tablist">
+        {% if can_register %}
+            <a class="nav-link{% if default_action == 'register' %} active{% endif %}" href="#"
+               id="register-tab" data-bs-toggle="tab" data-bs-target="#register-tab-pane"
+               role="tab" aria-controls="register-tab-pane" data-action="register">{{ 'Register'|trans }}</a>
+        {% endif %}
+        {% if can_transfer %}
+            <a class="nav-link{% if default_action == 'transfer' %} active{% endif %}" href="#"
+               id="transfer-tab" data-bs-toggle="tab" data-bs-target="#transfer-tab-pane"
+               role="tab" aria-controls="transfer-tab-pane" data-action="transfer">{{ 'Transfer'|trans }}</a>
+        {% endif %}
+        {% if can_own %}
+            <a class="nav-link{% if default_action == 'owndomain' %} active{% endif %}" href="#"
+               id="owndomain-tab" data-bs-toggle="tab" data-bs-target="#owndomain-tab-pane"
+               role="tab" aria-controls="owndomain-tab-pane" data-action="owndomain">{{ 'Own domain'|trans }}</a>
+        {% endif %}
+        {% if can_subdomain %}
+            <a class="nav-link{% if default_action == 'subdomain' %} active{% endif %}" href="#"
+               id="subdomain-tab" data-bs-toggle="tab" data-bs-target="#subdomain-tab-pane"
+               role="tab" aria-controls="subdomain-tab-pane" data-action="subdomain">{{ 'Free subdomain'|trans }}</a>
+        {% endif %}
+    </nav>
+
+    <div class="tab-content kzd-config-panes">
+        {% if can_register %}
+            <div class="tab-pane{% if default_action == 'register' %} show active{% endif %}" id="register-tab-pane"
+                 role="tabpanel" aria-labelledby="register-tab" tabindex="0">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="form-label">{{ 'Register a new domain'|trans }}</label>
+                        <div class="d-flex gap-2">
+                            {# One field for the whole domain -- no extension dropdown.
+                               The hidden domain[register_sld] / [register_tld] carry
+                               the two halves (build/js/kzd-domain-input.js). #}
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" type="text" id="kzd-register-domain"
+                                       value="{{ request.register_sld ? request.register_sld ~ request.register_tld : '' }}"
+                                       placeholder="{{ 'yourbusiness.co.za'|trans }}"
+                                       aria-label="{{ 'Domain name, including its ending'|trans }}"
+                                       autocomplete="off" autocapitalize="off" spellcheck="false">
+                                <input type="hidden" name="domain[register_sld]" value="{{ request.register_sld }}">
+                                <input type="hidden" name="domain[register_tld]" value="{{ request.register_tld }}">
+                            </div>
+                            <button class="btn btn-sm btn-primary" type="button" id="domain-check">{{ 'Check'|trans }}</button>
+                        </div>
+                        <div id="domain-check-error" class="alert alert-warning mt-2" style="display:none;"></div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div id="register-config" style="display:none;">
+                            <label class="mt-2">
+                                <select class="form-select form-select-sm" name="domain[register_years]" id="registration-years"></select>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if can_transfer %}
+            <div class="tab-pane{% if default_action == 'transfer' %} show active{% endif %}" id="transfer-tab-pane"
+                 role="tabpanel" aria-labelledby="transfer-tab" tabindex="0">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="form-label">{{ 'Transfer your existing domain'|trans }}</label>
+                        <div class="d-flex gap-2">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" type="text" id="kzd-transfer-domain"
+                                       value="{{ request.transfer_sld ? request.transfer_sld ~ request.transfer_tld : '' }}"
+                                       placeholder="{{ 'yourbusiness.co.za'|trans }}"
+                                       aria-label="{{ 'Domain to transfer, including its ending'|trans }}"
+                                       autocomplete="off" autocapitalize="off" spellcheck="false">
+                                <input type="hidden" name="domain[transfer_sld]" value="{{ request.transfer_sld }}">
+                                <input type="hidden" name="domain[transfer_tld]" value="{{ request.transfer_tld }}">
+                            </div>
+                            <button class="btn btn-sm btn-primary" type="button" id="transfer-check">{{ 'Check'|trans }}</button>
+                        </div>
+                        <div id="transfer-check-error" class="alert alert-warning mt-2" style="display:none;"></div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div id="transfer-config" style="display:none;">
+                            <p class="fs-7 mt-2">{{ 'Transfer price is'|trans }}&nbsp;<span class="fw-bold" id="transfer-price"></span></p>
+                            <input class="form-control form-control-sm" type="text" name="domain[transfer_code]" value="{{ request.transfer_code }}"
+                                   style="max-width: 320px" placeholder="{{ 'Authorization/EPP code (optional)'|trans }}">
+                            <p class="fs-7 text-muted mt-1" style="max-width: 500px;">
+                                {{ 'Most domains have a secret authorization code (EPP code) from their current registrar. If you have it, add it here to speed things up -- if not, no problem, we\'ll help you get the transfer moving after you order.'|trans }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if can_own %}
+            <div class="tab-pane{% if default_action == 'owndomain' %} show active{% endif %}" id="owndomain-tab-pane"
+                 role="tabpanel" aria-labelledby="owndomain-tab" tabindex="0">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="form-label">{{ 'Use your existing domain'|trans }}</label>
+                        <div class="input-group">
+                            <input class="form-control form-control-sm" type="text" id="kzd-owndomain-domain"
+                                   value="{{ request.owndomain_sld ? request.owndomain_sld ~ request.owndomain_tld : '' }}"
+                                   placeholder="{{ 'yourbusiness.co.za'|trans }}"
+                                   aria-label="{{ 'Your existing domain, including its ending'|trans }}"
+                                   autocomplete="off" autocapitalize="off" spellcheck="false">
+                            <input type="hidden" name="domain[owndomain_sld]" value="{{ request.owndomain_sld }}">
+                            <input type="hidden" name="domain[owndomain_tld]" value="{{ request.owndomain_tld }}">
+                        </div>
+                        <div id="owndomain-error" class="alert alert-warning mt-2" style="display:none;"></div>
+                        <p class="fs-7 text-muted mt-2">{{ 'You will need to update your nameservers to point to our servers.'|trans }}</p>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" name="domain[owndomain_authorized]" value="1" id="owndomain-authorized"{% if default_action == 'owndomain' %} required{% endif %}>
+                            <label class="form-check-label fs-7" for="owndomain-authorized">
+                                {{ 'I own this domain, or I am authorised to manage it.'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if can_subdomain %}
+            <div class="tab-pane{% if default_action == 'subdomain' %} show active{% endif %}" id="subdomain-tab-pane"
+                 role="tabpanel" aria-labelledby="subdomain-tab" tabindex="0">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="form-label">{{ 'Choose your free subdomain'|trans }}</label>
+                        <div class="input-group" style="max-width: 420px;">
+                            <input class="form-control form-control-sm" type="text" name="domain[subdomain_sld]"
+                                   value="{{ request.subdomain_sld }}"
+                                   placeholder="{{ 'Subdomain'|trans }}">
+                            <span class="input-group-text input-group-text-sm">.{{ subdomain_base_domain|trim('.') }}</span>
+                        </div>
+                        <p class="fs-7 text-muted mt-2">{{ 'This free subdomain is provided by us. No domain registration or transfer will be added to this order.'|trans }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<input type="hidden" name="domain[action]" value="{{ default_action }}" id="domain-action">
+{% endif %}
+
+{% set currency = guest.cart_get_currency %}
+<script>
+    // Each ending with its real yearly registration price, for the
+    // "try another ending" list shown when a name is taken.
+    const kzdTldPrices = [{% for tld in tlds %}{ tld: "{{ tld.tld }}", price: {{ (tld.price_registration * currency.conversion_rate)|number_format(2, '.', '') }} }{% if not loop.last %}, {% endif %}{% endfor %}];
+    const kzdCurrencyCode = "{{ currency.code }}";
+    const kzdRegisterableTlds = [{% for tld in tlds %}"{{ tld.tld }}"{% if not loop.last %}, {% endif %}{% endfor %}];
+    const kzdTransferableTlds = [{% for tld in transfer_tlds %}"{{ tld.tld }}"{% if not loop.last %}, {% endif %}{% endfor %}];
+
+    function fadeIn(el) {
+        el.style.removeProperty('display');
+        el.style.opacity = '0';
+        el.style.transition = 'opacity 0.15s ease-in';
+        requestAnimationFrame(() => el.style.opacity = '1');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Update domain action when switching tabs. The own-domain
+        // ownership checkbox must only be `required` while that tab is
+        // actually selected -- a required field hidden inside an inactive
+        // tab-pane is invisible/not focusable, and browsers silently block
+        // the *entire* form's submission for it with no visible error,
+        // breaking Register/Transfer even though the problem is really on
+        // a different tab entirely.
+        const ownDomainCheckbox = document.getElementById('owndomain-authorized');
+        document.querySelectorAll('.nav-pills .nav-link[data-action]').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                const actionInput = document.getElementById('domain-action');
+                if (actionInput) {
+                    actionInput.value = action;
+                }
+                if (ownDomainCheckbox) {
+                    ownDomainCheckbox.required = (action === 'owndomain');
+                }
+            });
+        });
+
+        const formatCurrency = (price, rate, code, multiply) => {
+            let total = parseFloat(price) * parseFloat(rate);
+            if (typeof multiply !== 'undefined') {
+                total *= multiply;
+            }
+            return new Intl.NumberFormat(undefined, {
+                style: 'currency',
+                currency: code,
+                currencyDisplay: 'narrowSymbol',
+            }).format(total);
+        };
+
+        // One typed field per option, split into the hidden name/extension
+        // fields the order reads.
+        const registerVisible = document.getElementById('kzd-register-domain');
+        const transferVisible = document.getElementById('kzd-transfer-domain');
+        const ownVisible = document.getElementById('kzd-owndomain-domain');
+        const kzdField = (n) => document.querySelector('input[name="domain[' + n + ']"]');
+        if (window.KZDDomain) {
+            window.KZDDomain.bind(registerVisible, kzdField('register_sld'), kzdField('register_tld'), kzdRegisterableTlds);
+            window.KZDDomain.bind(transferVisible, kzdField('transfer_sld'), kzdField('transfer_tld'), kzdTransferableTlds);
+            window.KZDDomain.bind(ownVisible, kzdField('owndomain_sld'), kzdField('owndomain_tld'), [], { anyTld: true });
+        }
+        const kzdShowError = (box, msg) => { if (box) { box.classList.remove('kzd-dsug'); box.textContent = msg; box.style.display = ''; } };
+        [[registerVisible, 'domain-check'], [transferVisible, 'transfer-check']].forEach(function (pair) {
+            if (!pair[0]) return;
+            pair[0].addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') { e.preventDefault(); const b = document.getElementById(pair[1]); if (b) b.click(); }
+            });
+        });
+
+        // An own domain has no Check button, so it is validated when the
+        // order is submitted. Capture phase, so this runs before the form's
+        // own submit handler and can stop a malformed domain being sent.
+        const kzdForm = (ownVisible || registerVisible || transferVisible)?.closest('form');
+        if (kzdForm) {
+            kzdForm.addEventListener('submit', function (e) {
+                const action = (document.getElementById('domain-action') || {}).value;
+                if (action !== 'owndomain' || !window.KZDDomain) return;
+                const box = document.getElementById('owndomain-error');
+                const r = window.KZDDomain.parse(ownVisible.value, [], { anyTld: true });
+                if (!r.ok) {
+                    e.preventDefault(); e.stopImmediatePropagation();
+                    kzdShowError(box, r.error);
+                    ownVisible.focus();
+                    return;
+                }
+                if (box) box.style.display = 'none';
+                kzdField('owndomain_sld').value = r.sld;
+                kzdField('owndomain_tld').value = r.tld;
+            }, true);
+        }
+
+        // Domain registration check
+        const domainCheck = document.getElementById('domain-check');
+        const registerSldInput = registerVisible;
+        let domainChecked = false;
+
+        const resetRegisterCheck = () => {
+            if (!domainChecked) {
+                return;
+            }
+
+            domainChecked = false;
+            if (domainCheck) domainCheck.style.display = '';
+            const registerConfig = document.getElementById('register-config');
+            if (registerConfig) registerConfig.style.display = 'none';
+            const yearsSelect = document.getElementById('registration-years');
+            if (yearsSelect) yearsSelect.innerHTML = '';
+        };
+
+        if (registerSldInput) {
+            registerSldInput.addEventListener('input', resetRegisterCheck);
+        }
+        if (domainCheck) {
+            domainCheck.addEventListener('click', function(event) {
+                event.preventDefault();
+                const errorBox = document.getElementById('domain-check-error');
+                if (errorBox) errorBox.style.display = 'none';
+                const parsed = window.KZDDomain ? window.KZDDomain.parse(registerVisible.value, kzdRegisterableTlds) : { ok: false, error: 'Enter a domain.' };
+                if (!parsed.ok) { kzdShowError(errorBox, parsed.error); return; }
+                kzdField('register_sld').value = parsed.sld;
+                kzdField('register_tld').value = parsed.tld;
+                const sld = parsed.sld;
+                const tld = parsed.tld;
+                const domain = sld + tld;
+
+                FOSSBilling.api.guest.post('servicedomain/check', { sld: sld, tld: tld },
+                    function(result) {
+                        setRegistrationPricing(tld);
+                        const registerConfig = document.getElementById('register-config');
+                        if (registerConfig) fadeIn(registerConfig);
+                        domainChecked = true;
+                        domainCheck.style.display = 'none';
+                    },
+                    function(err) {
+                        if (!errorBox || !window.KZDDomain) return;
+                        window.KZDDomain.renderSuggestions(errorBox, {
+                            sld: sld, tld: tld, message: err && err.message,
+                            tlds: kzdTldPrices, currency: kzdCurrencyCode,
+                            onPick: function(altTld) {
+                                registerVisible.value = sld + altTld;
+                                registerVisible.dispatchEvent(new Event('input'));
+                                domainCheck.click();
+                            },
+                        });
+                    },
+                );
+            });
+        }
+
+        // Domain transfer check
+        const transferCheck = document.getElementById('transfer-check');
+        const transferSldInput = transferVisible;
+        let transferChecked = false;
+
+        const resetTransferCheck = () => {
+            if (!transferChecked) {
+                return;
+            }
+            transferChecked = false;
+            if (transferCheck) transferCheck.style.display = '';
+            const transferConfig = document.getElementById('transfer-config');
+            if (transferConfig) transferConfig.style.display = 'none';
+        };
+
+        if (transferSldInput) {
+           transferSldInput.addEventListener('input', resetTransferCheck);
+        }
+
+        if (transferCheck) {
+            transferCheck.addEventListener('click', function(event) {
+                event.preventDefault();
+                const transferErr = document.getElementById('transfer-check-error');
+                if (transferErr) transferErr.style.display = 'none';
+                const parsed = window.KZDDomain ? window.KZDDomain.parse(transferVisible.value, kzdTransferableTlds) : { ok: false, error: 'Enter a domain.' };
+                if (!parsed.ok) { kzdShowError(transferErr, parsed.error); return; }
+                kzdField('transfer_sld').value = parsed.sld;
+                kzdField('transfer_tld').value = parsed.tld;
+                const sld = parsed.sld;
+                const tld = parsed.tld;
+
+                FOSSBilling.api.guest.post('servicedomain/can_be_transferred', { sld: sld, tld: tld },
+                    function(result) {
+                        setTransferPricing(tld);
+                        const transferConfig = document.getElementById('transfer-config');
+                        if (transferConfig) fadeIn(transferConfig);
+                        transferChecked = true;
+                        transferCheck.style.display = 'none';
+                    },
+                );
+            });
+        }
+
+        function setRegistrationPricing(tld) {
+            FOSSBilling.api.guest.post('servicedomain/pricing', { tld: tld },
+                function(result) {
+                    const yearsSelect = document.getElementById('registration-years');
+                    if (!yearsSelect) return;
+                    yearsSelect.innerHTML = '';
+
+                    const regPrice = Number(result.price_registration);
+                    let renewPrice = Number(result.price_renew);
+
+                    if (result.price_renew === null || typeof result.price_renew === 'undefined' || isNaN(renewPrice)) {
+                        renewPrice = regPrice;
+                    }
+
+                    const yearLabel = "{{ ' Year @ '|trans }}";
+                    const yearsLabel = "{{ ' Years @ '|trans }}";
+
+                    for (let i = 1; i <= 5; i++) {
+                        const totalPrice = (i === 1) ? regPrice : regPrice + (i - 1) * renewPrice;
+                        const priceFormatted = formatCurrency(
+                            totalPrice,
+                            {{ currency.conversion_rate }},
+                            "{{ currency.code }}",
+                            1
+                        );
+
+                        yearsSelect.append(
+                            new Option(i + (i === 1 ? yearLabel : yearsLabel) + priceFormatted, i)
+                        );
+                    }
+                },
+            );
+        }
+
+        function setTransferPricing(tld) {
+            FOSSBilling.api.guest.post('servicedomain/pricing', { tld: tld },
+                function(result) {
+                    const price = formatCurrency(result.price_transfer, {{ currency.conversion_rate }}, "{{ currency.code }}");
+                    const transferPriceEl = document.getElementById('transfer-price');
+                    if (transferPriceEl) transferPriceEl.textContent = price;
+                },
+            );
+        }
+
+        // Handle addons visibility
+        const addons = document.querySelector('.addons');
+        const orderButton = document.getElementById('order-button');
+
+        if (addons && orderButton && getComputedStyle(addons).display === 'none') {
+            orderButton.addEventListener('click', function handler(event) {
+                event.preventDefault();
+                orderButton.style.display = 'none';
+                addons.style.display = 'block';
+                orderButton.removeEventListener('click', handler);
+                return false;
+            });
+        }
+    });
+</script>

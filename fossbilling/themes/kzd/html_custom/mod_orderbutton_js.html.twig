@@ -1,0 +1,151 @@
+{#
+  Theme override of the Orderbutton module's client JS.
+
+  Why this exists: onLogin() reached straight for #checkoutButton and
+  #loginMessage and set .hidden on them. Those two only render once there
+  is something to pay for — open /order with no product chosen (the
+  "Select Product" step) and the whole checkout section is absent, so the
+  first of them returns null and the handler dies with
+
+      Cannot set properties of null (setting 'hidden')
+
+  right after "You logged in successfully". The login itself had already
+  succeeded, so the visitor saw a success message and an error together,
+  and the page never caught up with the fact that they were now signed in.
+
+  Everything here is the module's original logic with the DOM lookups
+  guarded. The one behavioural addition: when the checkout section is not
+  on the page, the page was rendered for a guest and cannot be patched
+  into a signed-in state from the client side, so it reloads and the
+  server renders it correctly.
+
+  Kept as a theme override rather than a core edit so a FOSSBilling
+  update does not silently revert it.
+#}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.accordion-body').forEach(accordionBody => {
+            accordionBody.addEventListener('shown.bs.collapse', function() {
+                /* Only present in popup/iframe mode. */
+                const popup = document.getElementById('popup-iframe');
+                if (popup) {
+                    popup.height = document.body.clientHeight;
+                }
+            });
+        });
+
+        document.getElementById('show-promo-field')?.addEventListener('click', function() {
+            const applyPromo = document.getElementById('apply-promo');
+            if (applyPromo) {
+                applyPromo.style.display = 'block';
+            }
+            this.style.display = 'none';
+            document.getElementById('promocode')?.focus();
+        });
+
+        document.querySelectorAll('.register-login a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const bsTab = new bootstrap.Tab(this);
+                bsTab.show();
+            });
+        });
+
+    });
+
+    function onOrderCheckout(result){
+        if (result.invoice_hash) {
+            FOSSBilling.api.guest.post('invoice/payment', { hash: result.invoice_hash, gateway_id: result.gateway_id, auto_redirect: true },
+                (r) => {
+                    let checkoutEl = document.getElementById('checkout');
+                    let paymentHtmlEl = document.getElementById('payment-html');
+                    let paymentInner = document.getElementById('payment-html-inner');
+                    if (r.iframe) {
+                        if (paymentInner) {
+                            paymentInner.innerHTML = r.result;
+                        }
+                        if (checkoutEl) {
+                            bootstrap.Collapse.getOrCreateInstance(checkoutEl).hide();
+                            checkoutEl.remove();
+                        }
+                        if (paymentHtmlEl) {
+                            bootstrap.Collapse.getOrCreateInstance(paymentHtmlEl).show();
+                        }
+                    } else {
+                        const link = '{{ "invoice/banklink"|url }}' + '/' + result.invoice_hash + '/' + result.gateway_id;
+                        if (paymentInner) {
+                            paymentInner.innerHTML = '<a href="' + link + '" target="_parent" id="redirect-to-gateway">Redirect to Payment Gateway</a>';
+                        }
+                        if (checkoutEl) {
+                            bootstrap.Collapse.getOrCreateInstance(checkoutEl).hide();
+                        }
+                        document.getElementById('checkout-inner')?.remove();
+                        if (paymentHtmlEl) {
+                            bootstrap.Collapse.getOrCreateInstance(paymentHtmlEl).show();
+                        }
+                        /* If the gateway link never made it into the DOM there is
+                           nothing to click; fall back to navigating directly
+                           rather than throwing on a null. */
+                        const redirect = document.getElementById('redirect-to-gateway');
+                        if (redirect) {
+                            redirect.click();
+                        } else {
+                            window.top.location.href = link;
+                        }
+                    }
+                });
+        } else {
+            window.top.location.href = ('{{ "order/service/manage"|url }}' + '/' + result.order_id);
+        }
+    }
+
+    /* Shared by both sign-in paths so the two cannot drift apart. */
+    function kzdApplySignedInState(){
+        const registerEl = document.getElementById('register');
+        const checkoutEl = document.getElementById('checkout');
+        const checkoutButton = document.querySelector('#checkoutButton');
+        const loginMessage = document.querySelector('#loginMessage');
+
+        if (registerEl) {
+            bootstrap.Collapse.getOrCreateInstance(registerEl).hide();
+        }
+        if (checkoutButton) {
+            checkoutButton.hidden = false;
+        }
+        if (loginMessage) {
+            loginMessage.hidden = true;
+        }
+
+        /* No checkout section means this page was rendered for a guest with
+           nothing in the cart. There is no signed-in state to switch to
+           client-side, so let the server render it. */
+        if (!checkoutEl) {
+            window.location.reload();
+            return;
+        }
+
+        setTimeout(() => {
+            registerEl?.parentElement?.remove();
+            bootstrap.Collapse.getOrCreateInstance(checkoutEl).show();
+        }, 500);
+    }
+
+    function onLogin(result){
+        FOSSBilling.message("{{ 'You logged in successfully'|trans }}");
+        kzdApplySignedInState();
+    }
+
+    function onAccountCreate(result){
+        const emailEl = document.getElementById('reg-email');
+        const passwordEl = document.getElementById('reg-password');
+        if (!emailEl || !passwordEl) {
+            window.location.reload();
+            return;
+        }
+        FOSSBilling.api.guest.post('client/login', { email: emailEl.value, password: passwordEl.value },
+            () => {
+                FOSSBilling.message("{{ 'You logged in successfully'|trans }}");
+                kzdApplySignedInState();
+            });
+    }
+</script>

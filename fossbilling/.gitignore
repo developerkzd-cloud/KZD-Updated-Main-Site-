@@ -1,0 +1,36 @@
+/config.php
+/config.old.php
+
+# Auto-downloaded GeoIP databases (library/FOSSBilling/GeoIP/Reader.php
+# re-fetches these from GitHub whenever they're missing or >7 days old,
+# via the admin cron -- see System\Service::onBeforeAdminCronRun()). Not
+# source, just periodically-refreshed binary data; committing them only
+# produces permanent "modified" noise in git status once the cron updates
+# them past the baseline snapshot.
+/library/FOSSBilling/GeoIP/Databases/*.mmdb
+
+# Local design-capture tooling (screenshots + credentials for Penpot work, never deployed)
+/_design-capture/
+/data/cache/*
+/data/log/*
+/data/uploads/*
+!/data/cache/index.html
+!/data/log/index.html
+!/data/uploads/index.html
+
+# IDE / editor
+/.vscode/
+/.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# temp / backup files
+*.tmp
+*.bak
+*.orig
+*.swp

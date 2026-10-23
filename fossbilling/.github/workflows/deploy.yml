@@ -1,0 +1,24 @@
+name: Deploy to Production (Contabo)
+
+on:
+  schedule:
+    # 2:00 AM SAST (UTC+2) = midnight UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          # The remote key is forced-command restricted (see
+          # /root/fossbilling-deploy.sh on the server) -- whatever is sent
+          # here is ignored server-side and that script runs instead. Kept
+          # descriptive rather than blank so the Actions log reads clearly.
+          script: "deploy fossbilling"

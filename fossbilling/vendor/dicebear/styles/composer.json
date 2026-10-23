@@ -1,0 +1,6 @@
+{
+    "name": "dicebear/styles",
+    "description": "Official DiceBear avatar styles.",
+    "type": "library",
+    "require": {}
+}

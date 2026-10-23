@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+{% set active_locale = guest.system_locale|default('en')|replace({'_': '-'}) %}
+{% set canonical_url = guest.system_current_url|url %}
+{% set company = guest.system_company %}
+{% set public_logo_url = company.logo_url %}
+{% set public_dark_logo_url = company.logo_url_dark %}
+{% set page_title = (settings.meta_title_prefix ~ ' ' ~ block('meta_title') ~ ' ' ~ settings.meta_title_suffix)|trim %}
+<html lang="{{ active_locale }}" data-bs-theme="{{ settings.theme|default('light') }}">
+<head>
+    <meta charset="utf-8">
+    <title>{{ page_title }}</title>
+    <meta name="color-scheme" content="light dark">
+
+    <meta name="description" content="{% block meta_description %}{{ settings.meta_description }}{% endblock %}">
+    <meta name="keywords" content="{{ settings.meta_keywords }}">
+    <meta name="robots" content="{{ settings.meta_robots }}">
+    <meta name="author" content="{{ settings.meta_author }}">
+    <meta name="generator" content="KZD Billing">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% block canonical %}
+        <link rel="canonical" href="{{ canonical_url }}">
+    {% endblock %}
+
+    {% block opengraph %}
+        <meta property="og:title" content="{{ page_title }}" />
+        <meta property="og:type" content="website" />
+        <meta property="og:description" content="{{ block('meta_description') }}" />
+        <meta property="og:url" content="{{ canonical_url }}" />
+        <meta property="og:site_name" content="{{ guest.system_company.name }}" />
+    {% endblock %}
+
+    {{ include('partials/theme_init.html.twig') }}
+
+    <link rel="stylesheet" href="{{ 'build/css/vendor.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'build/css/huraga.css' | asset_url }}">
+    {# ?v= is a cache buster. asset_url emits a bare URL with no version, so a
+   browser that has loaded this stylesheet once keeps serving it from cache
+   and never sees an edit -- which is exactly what happened: a finished
+   redesign looked unchanged on the reporter's machine while rendering
+   correctly everywhere else. Bump this string whenever the stylesheet
+   changes. #}
+    <link rel="stylesheet" href="{{ 'build/css/kzd-overrides.css' | asset_url }}?v=20261022-dash1">
+    <link rel="stylesheet" href="{{ 'build/css/kzd-checkout.css' | asset_url }}?v=20261022-err1">
+    <script src="{{ 'build/js/kzd-domain-input.js' | asset_url }}?v=20261022-err3"></script>
+    <script src="{{ 'build/js/kzd-celebrate.js' | asset_url }}?v=20260928-mono1" defer></script>
+    {% set kzd_brand = settings.kzd_brand_color|default('#1A1A1A') %}
+    {% set kzd_brand_hover = settings.kzd_brand_color_hover|default('#3A3A3A') %}
+    <style>
+        :root, [data-bs-theme=light] {
+            --bs-primary: {{ kzd_brand }};
+            --bs-primary-text-emphasis: {{ kzd_brand }};
+            --bs-link-color: {{ kzd_brand }};
+            --bs-link-hover-color: {{ kzd_brand_hover }};
+            --kzd-accent: {{ kzd_brand }};
+            --kzd-accent-light: {{ kzd_brand_hover }};
+        }
+    </style>
+
+    <link rel="shortcut icon" href="{{ guest.system_company.favicon_url }}">
+
+    {{ 'js/fossbilling.js' | public_asset_url | script_tag }}
+    {{ 'js/api.js' | public_asset_url | script_tag }}
+    <script type="module" src="{{ 'build/js/huraga.js' | asset_url }}"></script>
+    <script defer src="{{ 'build/js/kzd-reveal.js' | asset_url }}"></script>
+    {{ include('partials/kzd_modals.html.twig') }}
+    {{ include('partials/kzd_password_toggle.html.twig') }}
+    {% block head %}{% endblock %}
+    {% block js %}
+    <script>
+        document.addEventListener('click', function (e) {
+            var btn = e.target.closest('[data-kzd-password-toggle]');
+            if (!btn) return;
+            var input = document.getElementById(btn.getAttribute('data-kzd-password-toggle'));
+            if (!input) return;
+            var showing = input.type === 'text';
+            input.type = showing ? 'password' : 'text';
+            btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+            btn.innerHTML = '<svg class="icon" style="width: 17px; height: 17px;"><use href="#' + (showing ? 'lock' : 'lock-open') + '" /></svg>';
+        });
+    </script>
+    {% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+    <div class="d-none">{{ svg_sprite() }}</div>
+    {{ render_widgets('client.theme.body.start') }}
+    {% block body %}{% endblock %}
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1070;" aria-live="polite" aria-atomic="true"></div>
+    {{ include('partial_pending_messages.html.twig', ignore_missing: true) }}
+    {{ render_widgets('client.theme.body.end') }}
+</body>
+</html>

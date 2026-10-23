@@ -1,0 +1,211 @@
+{#
+  KZD Solutions override of the stock Orderbutton "Product Configuration"
+  step. Structure/IDs/form action are identical to stock (the embedded JS in
+  mod_servicedomain_order_form.html.twig and mod_orderbutton_js.html.twig
+  targets #config-next, the cart/add_item POST, etc. directly) — only the
+  copy and wrapping classes changed, so nothing here can break the actual
+  add-to-cart flow. Renamed "Product Configuration" -> "Choose your domain"
+  and "Next" -> "Add to Cart" to match the flatter, HostAfrica-style
+  search -> results -> cart flow requested for the whole order page.
+#}
+{% if product is not defined or not product %}
+    {% set product = request.product ? guest.product_get({"id":request.product}) : null %}
+{% endif %}
+{# Default entry point: the domain step, not the product catalogue.
+
+   Landing on plain /order used to expand "Select Product" -- a list of seven
+   tiles -- while the step indicator directly above it said the active step
+   was "Domain". The two disagreed, and the catalogue is a detour for the
+   flow this site is actually built around: search a domain, add it, check
+   out. Worse, the "1 Choose your domain" header rendered even with no
+   product set, while the #order panel it toggles did not exist, so the
+   header was a dead control.
+
+   Resolving the domain product from the catalogue by TYPE rather than a
+   hardcoded id, so this keeps working if products are reordered or renamed.
+   Only when nothing is selected and the cart is empty -- a visitor
+   part-way through an order is never pulled back to step one. #}
+{% set kzd_domain_candidates = guest.product_category_get_list.list|reduce(
+    (carry, category) => carry|merge(category.products|filter(p => p.type == 'domain')), []) %}
+{% set kzd_conf_cart = guest.cart_get %}
+{% set kzd_conf_cart_count = kzd_conf_cart.items is defined and kzd_conf_cart.items ? kzd_conf_cart.items|length : 0 %}
+{% if not product and kzd_conf_cart_count == 0 and kzd_domain_candidates|length %}
+    {% set product = guest.product_get({"id": kzd_domain_candidates|first.id}) %}
+{% endif %}
+{# Heading only says "domain" for products that actually involve one --
+   a plain one-time digital item (type=custom, e.g. the AI builder's
+   "Website Generation" fee) gets a generic label instead. #}
+{% set kzd_is_domain_product = product is null or product.type in ['domain', 'hosting'] %}
+<div class="accordion-item kzd-order-panel">
+    <h3 class="accordion-header kzd-order-panel-header">
+        <button class="accordion-button {% if not product %}collapsed{%endif%}" type="button" data-bs-toggle="collapse" data-bs-target="#order" aria-expanded="true" aria-controls="order">
+            <span class="kzd-order-panel-step">1</span>
+            {{ product and product.type == 'hosting' ? 'Set up your plan'|trans : (kzd_is_domain_product ? 'Choose your domain'|trans : 'Order details'|trans) }}
+        </button>
+    </h3>
+    {% if product %}
+    <div id="order" class="accordion-collapse collapse {% if product %}show{%endif%}" data-bs-parent="#orderManager">
+        <div class="accordion-body">
+            <div class="accordion-inner">
+                {# KZD Solutions addition: the AI website builder's publish screen
+                   lets the owner pre-pick a hosting plan before they ever reach
+                   checkout (?next_hosting=<product id> on the domain link it
+                   sends here). Without this, that choice was decorative -- the
+                   domain form's own "Continue to checkout" went straight to
+                   payment, the same as if no plan had ever been picked, so the
+                   owner would have had to come back and choose hosting a second
+                   time after already choosing it once. Scoped to the domain
+                   product specifically: every other product's own order form
+                   (hosting included) keeps going straight to checkout exactly as
+                   before, since request.next_hosting is only ever sent alongside
+                   a domain product. #}
+                {% set kzd_next_redirect = (product.type == 'domain' and request.next_hosting)
+                    ? ('order'|url(query: { 'product': request.next_hosting }))
+                    : ('order'|url(query: { 'checkout' : 1 }) ~ (request.show_custom_form_values ? '&show_custom_form_values=1' : '')) %}
+                <form method="post" action="{{ 'cart/add_item'|api_url(role: 'guest') }}" style="background:none;" class="form-{{ product.form_id ? guest.formbuilder_get( {"id":product.form_id}).style.type : 0 }}"
+                    {{ fb_api_form({message: 'Product Added to Shopping Cart'|trans, redirect: kzd_next_redirect}) }}>
+                    {% set product_details %}
+                        <div class="well kzd-config">
+                            {# Plan summary. When the description carries a "- " feature
+                               list (every hosting plan does), it is shown the homepage
+                               pricing way: figures in bold, two columns, with any
+                               remaining prose lines kept as a note. The "**Title** -
+                               R149/month" line is dropped -- it only repeats the title
+                               and the price the billing cards below already show.
+                               Anything without a list keeps the stock markdown render. #}
+                            {% set kzd_desc_lines = (product.description ?? '')|split('\n')|map(l => l|trim)|filter(l => l) %}
+                            {% set kzd_feats = kzd_desc_lines|filter(l => l starts with '- ')|map(l => l|slice(2)) %}
+                            <div class="kzd-config-plan">
+                                <div class="kzd-config-plan-head">
+                                    <div>
+                                        <span class="kzd-config-eyebrow">{{ product.type == 'hosting' ? 'Your plan'|trans : 'Your order'|trans }}</span>
+                                        <h3 class="kzd-config-plan-name">{{ product.title }}</h3>
+                                    </div>
+                                    {% if product.type == 'hosting' %}
+                                        <a class="kzd-config-change" href="{{ '/'|url }}#plans">{{ 'Change plan'|trans }}</a>
+                                    {% endif %}
+                                </div>
+                                {% if kzd_feats|length > 0 %}
+                                    <ul class="kzd-config-feats">
+                                        {% for f in kzd_feats %}
+                                            {% set words = f|split(' ') %}
+                                            <li>
+                                                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                {% if f matches '/^\\d+ GB /' %}
+                                                    <span><strong>{{ words|slice(0, 2)|join(' ') }}</strong> {{ words|slice(2)|join(' ') }}</span>
+                                                {% elseif f matches '/^\\d+ /' %}
+                                                    <span><strong>{{ words|first }}</strong> {{ words|slice(1)|join(' ') }}</span>
+                                                {% else %}
+                                                    <span>{{ f }}</span>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% for note in kzd_desc_lines|filter(l => not (l starts with '- ') and not (l starts with '**' ~ product.title)) %}
+                                        <p class="kzd-config-note">{{ note|replace({'**': '', '*': '', '_': ''}) }}</p>
+                                    {% endfor %}
+                                {% elseif product.description %}
+                                    <div class="kzd-config-desc">{{ (product.description ?? '')|markdown_to_html }}</div>
+                                {% endif %}
+                            </div>
+
+                            {% if product.pricing.type is defined %}
+                                <h4 class="kzd-config-heading">{{ 'Billing period'|trans }}</h4>
+
+                                {% set cart_currency = guest.cart_get_currency %}
+                                {% if product.pricing.type == 'recurrent' %}
+                                    {# Pill-based period picker (was a plain <select>). Each pill is a
+                                       real radio input (name="period", same as before -- cart/add_item
+                                       never changed) with its label styled as the visible control, so
+                                       this needs no JS at all; :has(input:checked) alone drives the
+                                       selected state. Per-pill "Save X%" is computed against the
+                                       monthly price (months-equivalent cost vs monthly x months), and
+                                       whichever period is annual gets a "Most popular" tag -- the same
+                                       two conventions (per-period savings math, one recommended tier
+                                       flagged) every subscription billing page from Linear to Notion to
+                                       Vercel uses so a buyer sees the year-vs-month tradeoff before
+                                       they pay, not just a price. #}
+                                    {% set periods = guest.system_periods %}
+                                    {# Public-facing pricing.recurrent is keyed 1W/1M/3M/6M/1Y/2Y/3Y --
+                                       not the DB column prefixes (w/m/q/b/a/bia/tria) those keys are
+                                       built from. #}
+                                    {% set period_months = {'1W': 0.25, '1M': 1, '3M': 3, '6M': 6, '1Y': 12, '2Y': 24, '3Y': 36} %}
+                                    {% set base_monthly = (product.pricing.recurrent['1M'] is defined and product.pricing.recurrent['1M'].enabled) ? product.pricing.recurrent['1M'].price : null %}
+                                    {% set popular_code = (product.pricing.recurrent['1Y'] is defined and product.pricing.recurrent['1Y'].enabled) ? '1Y' : null %}
+                                    {% set any_selected = false %}
+                                    <div class="kzd-period-picker">
+                                        {% for code,prices in product.pricing.recurrent %}
+                                            {% if prices.enabled %}
+                                                {% set months = period_months[code] ?? 1 %}
+                                                {% set monthly_equiv = months > 0 ? prices.price / months : prices.price %}
+                                                {% set savings_pct = (base_monthly and base_monthly > 0 and months > 1) ? ((1 - (monthly_equiv / base_monthly)) * 100)|round : null %}
+                                                {% set is_checked = request.period == code or (not request.period and not any_selected and (code == popular_code or loop.last)) %}
+                                                {% if is_checked %}{% set any_selected = true %}{% endif %}
+                                                <label class="kzd-period-pill{% if code == popular_code %} kzd-period-pill-popular{% endif %}">
+                                                    <input type="radio" name="period" value="{{ code }}"{% if is_checked %} checked="checked"{% endif %}>
+                                                    {% if code == popular_code %}<span class="kzd-period-pill-badge">{{ 'Most popular'|trans }}</span>{% endif %}
+                                                    <span class="kzd-period-pill-label">{{ periods[code] }}</span>
+                                                    <span class="kzd-period-pill-price">{{ (prices.price * cart_currency.conversion_rate)|format_currency(cart_currency.code) }}</span>
+                                                    {% if savings_pct and savings_pct > 0 %}
+                                                        <span class="kzd-period-pill-save">{{ 'Save'|trans }} {{ savings_pct }}%</span>
+                                                    {% endif %}
+                                                </label>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                {% elseif product.pricing.type == 'free' %}
+                                <span class="badge text-bg-success">{{ 0|format_currency(cart_currency.code) }}</span>
+                                {% else %}
+                                <span class="badge text-bg-success">{{ (product.pricing.once.price * cart_currency.conversion_rate)|format_currency(cart_currency.code) }}</span>
+                                {% endif %}
+                            {% endif %}
+                            {% if product.allow_quantity_select %}
+                            <div class="row mt-3">
+                                <div class="col-12 col-md-4 col-xl-3">
+                                    <span>{{ 'Quantity'|trans }}</span>
+                                </div>
+                                <div class="col">
+                                    <input
+                                        type="number"
+                                        name="quantity"
+                                        value="1"
+                                        min="1"
+                                        {% if product.stock_control %}max="{{ product.quantity_in_stock }}"{% endif %}
+                                        class="form-control w-50"
+                                        style="max-width: 120px; text-align: center;"
+                                    >
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    {% endset %}
+
+                    {% set tpl = "mod_service"~product.type~"_order_form.html.twig" %}
+                    {% if guest.system_template_exists({"file":tpl}) %}
+                        {{ include(tpl, product) }}
+                    {% elseif product.form_id and guest.extension_is_on({"mod":"formbuilder"}) %}
+                        {{ product_details }}
+                        {% set form = guest.formbuilder_get({"id":product.form_id}) %}
+                        {{ include('mod_formbuilder_build.html.twig', product) }}
+                    {% else %}
+                        {{ product_details }}
+                    {% endif %}
+
+                    {{ include('mod_orderbutton_addons.html.twig', product) }}
+
+                    <input type="hidden" name="multiple" value="1" />
+                    <input type="hidden" name="id" value="{{ product.id }}" />
+                    <div class="kzd-order-cta-row">
+                        {# Same #config-next submit (cart/add_item, then the redirect to
+                           checkout); the label now says where it goes. #}
+                        <button type="submit" class="btn btn-primary" id="config-next">
+                            {{ 'Continue to checkout'|trans }}
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
