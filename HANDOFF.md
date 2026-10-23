@@ -13,7 +13,7 @@ asked that nothing be committed until they say the round of updates is done.
 | Part | Folder | What it does | Local URL |
 |---|---|---|---|
 | Marketing site | `kzd-next/` (Next.js 16, React 19, CSS Modules) | kzdsolutions.co.za: home, services, hosting, domains, AI builder pages | http://localhost:3000 |
-| Billing portal | `fossbilling/` (PHP 8.3, FOSSBilling, `kzd` theme). **A nested git repo with its own `.git`.** | my.kzdsolutions.co.za: login, signup, order, checkout, client dashboard, invoices | http://localhost:8080 |
+| Billing portal | `fossbilling/` (PHP 8.3, FOSSBilling, `kzd` theme). Tracked in this repo since 2026-10-23 (imported from `developerkzd-cloud/KZD-Fossbilling` with its history). | my.kzdsolutions.co.za: login, signup, order, checkout, client dashboard, invoices | http://localhost:8080 |
 | AI website builder | separate folder `C:\Users\hands\Downloads\kzd-ai-website-builder-app` (Vite + Express). Its built files are also copied to `fossbilling/build/`. | Generates sites from a prompt. kzd-next serves it at `/build` through a rewrite | http://localhost:3001/build |
 | Old static site | repo root (`index.html`, `css/`, `js/`) | Superseded by kzd-next. Ignore it, but `kzd-next/src/app/globals.css` still imports `css/kzd-tokens.css` | n/a |
 
@@ -85,7 +85,7 @@ Secrets that exist on this machine, and where they are:
 | Logs (can contain emails, IPs, stack traces) | `fossbilling/data/log/*` | `fossbilling/.gitignore` |
 
 Checklist before every push:
-1. `git status` in **both** the repo root and `fossbilling/` (it is a separate repo). Read the file list.
+1. `git status` at the repo root (it covers `fossbilling/` too). Read the file list.
 2. Confirm none of these show up: `config.php`, any `.env*` other than `.env.example`, `*.sql`, `data/log`, `data/cache`, `data/uploads`, `*.pem`, `*.key`.
 3. Grep what you are about to commit:
    `git diff --cached | grep -nE "gsk_|sk_live_|sk_test_|pk_live_|GOCSPX-|BEGIN .*PRIVATE KEY|password\s*=>"`
